@@ -1,2 +1,2 @@
 amp-version: 2.10.x
-cms-release: 2.10.02
+cms-release: 2.10.03
