@@ -551,3 +551,13 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
  * Remove the leading hash signs to disable.
  */
 # $conf['allow_authorize_operations'] = FALSE;
+
+/**
+ * Allow environment specific configuration overrides.
+ */
+if (file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.custom.php')) {
+  include_once('settings.custom.php');
+}
+else {
+  die('Environment specific configuration file "settings.custom.php" is missing.');
+}
