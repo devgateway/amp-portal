@@ -44,6 +44,7 @@ Disallow: /LICENSE.txt
 Disallow: /MAINTAINERS.txt
 Disallow: /update.php
 Disallow: /UPGRADE.txt
+Disallow: /VERSION.txt
 Disallow: /xmlrpc.php
 # Paths (clean URLs)
 Disallow: /admin/
