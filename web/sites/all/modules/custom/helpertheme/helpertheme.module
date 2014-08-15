@@ -1,0 +1,76 @@
+<?php
+/**
+ * @file
+ * Define theme helper functions.
+ *
+ * @TODO: When the theme is finished switch to a custom and small version of modernizr.
+ */
+
+/**
+ * Implements hook_ds_layout_info().
+ */
+function helpertheme_ds_layout_info() {
+  $path = drupal_get_path('module', 'helpertheme');
+
+  $layouts = array();
+
+  $layouts['hoverblock'] = array(
+    'label' => t('HelperTheme: Hover Block'),
+    'path' => $path . '/dslayouts/hoverblock',
+    'regions' => array(
+      'hover' => t('Hover'),
+      'main' => t('Main'),
+    ),
+  );
+
+  $layouts['simplelayout'] = array(
+    'label' => t('HelperTheme: Simple Layout'),
+    'path' => $path . '/dslayouts/simplelayout',
+    'regions' => array(
+      'main' => t('Main'),
+    ),
+  );
+
+  $layouts['mobject'] = array(
+    'label' => t('HelperTheme: CSS Media Object'),
+    'path' => $path . '/dslayouts/mobject',
+    'regions' => array(
+      'side' => t('Side'),
+      'main' => t('Main'),
+    ),
+  );
+
+  $layouts['mobjectstacked'] = array(
+    'label' => t('HelperTheme: CSS Media Object (stacked)'),
+    'path' => $path . '/dslayouts/mobjectstacked',
+    'regions' => array(
+      'above' => t('Above'),
+      'side' => t('Side'),
+      'main' => t('Main'),
+      'below' => t('Below'),
+    ),
+  );
+
+  return $layouts;
+}
+
+/**
+ * Preprocess variables for page.tpl.php
+ */
+function helpertheme_preprocess_page(&$variables) {
+  // Check to see whether or not the page template should be changed.
+  if (!empty($_REQUEST['page-template'])) {
+    // Only accept simple page template names.
+    if (preg_match('/^[a-z0-9-]+$/', $_REQUEST['page-template'])) {
+      $variables['theme_hook_suggestion'] = 'page__' . $_REQUEST['page-template'];
+    }
+  }
+}
+
+/**
+ * Implements hook_admin_paths_alter().
+ */
+function helpertheme_admin_paths_alter(&$paths) {
+  $paths['node/*/*'] = FALSE;
+  $paths['user/*/*'] = FALSE;
+}

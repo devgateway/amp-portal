@@ -20,6 +20,9 @@ package = "Features"
 project = "date_migrate_example"
 version = "7.x-2.0"
 
+; Hide from modules/features lists.
+hidden = 1
+
 ; Information added by Drupal.org packaging script on 2014-07-29
 version = "7.x-2.8"
 core = "7.x"
