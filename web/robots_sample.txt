@@ -16,6 +16,13 @@
 # For syntax checking, see:
 # http://www.frobee.com/robots-txt-check
 
+# No robots should visit this site further.
+# @see: http://www.robotstxt.org/robotstxt.html
+#
+# User-agent: *
+# Disallow: /
+# When uncommenting the above lines everything below should removed.
+
 User-agent: *
 Crawl-delay: 10
 # Directories
