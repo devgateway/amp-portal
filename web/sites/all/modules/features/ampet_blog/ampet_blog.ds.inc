@@ -42,12 +42,7 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
-    'body' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
-      ),
-    ),
-    'field_blog_image' => array(
+    'field_blog_event_date' => array(
       'formatter_settings' => array(
         'ft' => array(),
       ),
@@ -111,11 +106,13 @@ function ampet_blog_ds_layout_settings_info() {
     'regions' => array(
       'main' => array(
         0 => 'field_blog_image',
-        1 => 'body',
+        1 => 'field_blog_event_date',
+        2 => 'body',
       ),
     ),
     'fields' => array(
       'field_blog_image' => 'main',
+      'field_blog_event_date' => 'main',
       'body' => 'main',
     ),
     'classes' => array(),
