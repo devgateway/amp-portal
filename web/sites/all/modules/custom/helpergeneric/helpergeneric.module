@@ -62,6 +62,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     case 'dependencies':
       // Hide custom features from dependencies.
       $entries_list = array(
+        'ampet_blog',
+        'ampet_page',
+        'amppermissions',
+        'ampsettings',
+        'ampviewsettings',
       );
       break;
 
@@ -88,6 +93,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'execute php code',
         'switch users',
 
+        // Hide ds_ui module permissions.
+        'admin_view_modes',
+        'admin_fields',
+        'admin_classes',
+
         // Hide less module permissions.
         'administer less',
       );
@@ -96,6 +106,8 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     case 'variable':
       // Hide variables that should not be exported.
       $entries_list = array(
+        'additional_settings__active_tab_blog',
+        'additional_settings__active_tab_page',
         'cache',
         'cache_lifetime',
         'clean_url',
@@ -103,6 +115,22 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'cron_last',
         'css_js_query_string',
         'ctools_last_cron',
+        'date_api_version',
+
+        'date_default_timezone',
+        'date_first_day',
+        'date_format_long',
+        'date_format_medium',
+        'date_format_short',
+        'date_format_shortest',
+        'date_views_month_format_with_year',
+        'date_views_month_format_without_year',
+        'date_views_day_format_with_year',
+        'date_views_day_format_without_year',
+        'date_views_week_format_with_year',
+        'date_views_week_format_without_year',
+
+        'dblog_row_limit',
         'drupal_private_key',
         'drupal_css_cache_files',
         'drupal_http_request_fails',
@@ -120,16 +148,16 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'install_profile',
         'install_task',
         'install_time',
-        'job_scheduler_rebuild_all',
-        'less_devel',
-        'less_dir',
-        'less_engine',
-        'less_watch',
+        // 'job_scheduler_rebuild_all',
+        // 'less_devel',
+        // 'less_dir',
+        // 'less_engine',
+        // 'less_watch',
         'menu_expanded',
         'menu_masks',
         'page_cache_maximum_age',
         'page_compression',
-        'path_alias_whitelist',
+        // 'path_alias_whitelist',
         'preprocess_css',
         'preprocess_js',
         'site_default_country',
@@ -140,6 +168,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'update_scripts_clear_cache',
         'update_scripts_directory',
         'update_scripts_revert_features',
+        'views_ui_always_live_preview',
+        'views_ui_show_advanced_help_warning',
+        'views_ui_show_master_display',
+        'views_ui_show_performance_statistics',
+        'views_ui_show_sql_query',
       );
       break;
 
@@ -161,6 +194,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     if (isset($component_export['options']['sources'][$name])) {
       unset($component_export['options']['sources'][$name]);
       $removed_entries_list[] = check_plain($name);
+    }
+
+    if ($component == 'dependencies') {
+      if (isset($component_export['options']['detected'][$name])) {
+        unset($component_export['options']['detected'][$name]);
+      }
     }
   }
 
