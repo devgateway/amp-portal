@@ -4,6 +4,8 @@
  * Define generic settings.
  */
 
+include_once 'helpergeneric.forms.inc';
+
 /**
  * Implements hook_update_projects_alter().
  *
@@ -39,177 +41,6 @@ function helpergeneric_update_projects_alter(&$projects) {
   if (!empty($not_updated)) {
     $message = 'The following modules are not being checked for updates: @moduleslist';
     drupal_set_message(t($message, array('@moduleslist' => implode(', ', $not_updated))), 'warning');
-  }
-}
-
-/**
- * Implements hook_features_api_alter().
- *
- * Prevent exporting of some features API components.
- */
-function helpergeneric_features_api_alter(&$components) {
-  // We manage menu_links manually or via update scripts.
-  unset($components['menu_links']);
-}
-
-/**
- * Implements hook_features_component_export_alter().
- *
- * Filter the available compoenents in the (re)create feature form.
- */
-function helpergeneric_features_component_export_alter(&$component_export, $component) {
-  switch ($component) {
-    case 'dependencies':
-      // Hide custom features from dependencies.
-      $entries_list = array(
-        'ampet_blog',
-        'ampet_page',
-        'amppermissions',
-        'ampsettings',
-        'ampviewsettings',
-      );
-      break;
-
-    case 'menu_custom':
-      // Hide menus.
-      $entries_list = array(
-        'devel',
-        'main-menu',
-        'management',
-        'navigation',
-        'user-menu',
-      );
-      break;
-
-    case 'user_permission':
-      $entries_list = array(
-        // Hide admin_menu module permissions.
-        'access administration menu',
-        'flush caches',
-        'display drupal links',
-
-        // Hide devel module permissions.
-        'access devel information',
-        'execute php code',
-        'switch users',
-
-        // Hide ds_ui module permissions.
-        'admin_view_modes',
-        'admin_fields',
-        'admin_classes',
-
-        // Hide less module permissions.
-        'administer less',
-      );
-      break;
-
-    case 'variable':
-      // Hide variables that should not be exported.
-      $entries_list = array(
-        'additional_settings__active_tab_blog',
-        'additional_settings__active_tab_page',
-        'cache',
-        'cache_lifetime',
-        'clean_url',
-        'cron_key',
-        'cron_last',
-        'css_js_query_string',
-        'ctools_last_cron',
-        'date_api_version',
-
-        'date_default_timezone',
-        'date_first_day',
-        'date_format_long',
-        'date_format_medium',
-        'date_format_short',
-        'date_format_shortest',
-        'date_views_month_format_with_year',
-        'date_views_month_format_without_year',
-        'date_views_day_format_with_year',
-        'date_views_day_format_without_year',
-        'date_views_week_format_with_year',
-        'date_views_week_format_without_year',
-
-        'dblog_row_limit',
-        'drupal_private_key',
-        'drupal_css_cache_files',
-        'drupal_http_request_fails',
-        'drupal_js_cache_files',
-        // 'entity_cache_tables_created',
-        // 'entityreference:base-tables',
-        'error_level',
-        'features_codecache',
-        'features_default_export_path',
-        'features_ignored_orphans',
-        'features_semaphore',
-        'file_temporary_path',
-        'htmlpurifier_version_current',
-        // 'image_toolkit',
-        'install_profile',
-        'install_task',
-        'install_time',
-        // 'job_scheduler_rebuild_all',
-        // 'less_devel',
-        // 'less_dir',
-        // 'less_engine',
-        // 'less_watch',
-        'menu_expanded',
-        'menu_masks',
-        'page_cache_maximum_age',
-        'page_compression',
-        // 'path_alias_whitelist',
-        'preprocess_css',
-        'preprocess_js',
-        'site_default_country',
-        'site_mail',
-        'site_name',
-        'theme_default',
-        'update_last_check',
-        'update_scripts_clear_cache',
-        'update_scripts_directory',
-        'update_scripts_revert_features',
-        'views_ui_always_live_preview',
-        'views_ui_show_advanced_help_warning',
-        'views_ui_show_master_display',
-        'views_ui_show_performance_statistics',
-        'views_ui_show_sql_query',
-      );
-      break;
-
-    case 'views_view':
-      // Hide views.
-      $entries_list = array(
-        'redirects',
-      );
-      break;
-
-  }
-
-  if (empty($entries_list)) {
-    return;
-  }
-
-  $removed_entries_list = array();
-  foreach ($entries_list as $name) {
-    if (isset($component_export['options']['sources'][$name])) {
-      unset($component_export['options']['sources'][$name]);
-      $removed_entries_list[] = check_plain($name);
-    }
-
-    if ($component == 'dependencies') {
-      if (isset($component_export['options']['detected'][$name])) {
-        unset($component_export['options']['detected'][$name]);
-      }
-    }
-  }
-
-  if (!empty($removed_entries_list)) {
-    $message = 'The following are not listed in the <b>%name</b> components export list: @entries';
-    $t_args = array(
-      '%name' => $component_export['name'] . " (${component})",
-      '@entries' => implode(', ', $removed_entries_list),
-    );
-    drupal_set_message(t($message, $t_args), 'warning');
   }
 }
 
@@ -295,26 +126,15 @@ function helpergeneric_htmlpurifier_info() {
 }
 
 /**
- * Implements hook_form_alter().
- */
-function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'user_login') {
-    drupal_set_title('Log in');
-    $form['actions']['cancel'] = array(
-      '#type' => 'link',
-      '#title' => t('Lost password?'),
-      '#href' => 'user/password',
-      '#weight' => 20,
-    );
-  }
-}
-
-/**
  * Determines if the current user is user 1.
  *
  * @return bool
  *   TRUE if the user is user 1, FALSE otherwise.
  */
 function helpergeneric_is_user_one() {
+  if (variable_get('helpergeneric_is_user_one_skip', FALSE)) {
+    return FALSE;
+  }
+
   return $GLOBALS['user']->uid == 1;
 }
