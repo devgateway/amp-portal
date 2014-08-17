@@ -77,10 +77,14 @@ function _update_scripts_scan_directory($current_directory) {
   $update_scripts = array();
   switch ($basedir) {
     case 'task':
+    case 'temporary':
     case 'environment':
       $script_pattern = UPDATE_SCRIPTS_TASKS_PATTERN;
       if ($basedir == 'environment') {
         $script_pattern = UPDATE_SCRIPTS_ENVIRONMENT_PATTERN;
+      }
+      if ($basedir == 'temporary') {
+        $script_pattern = UPDATE_SCRIPTS_TEMPORARY_PATTERN;
       }
 
       $files = scandir($current_directory);
