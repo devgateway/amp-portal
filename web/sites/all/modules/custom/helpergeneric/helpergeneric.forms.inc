@@ -98,7 +98,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'drupal_http_request_fails',
         'drupal_js_cache_files',
         // 'entity_cache_tables_created',
-        // 'entityreference:base-tables',
+        'entityreference:base-tables',
         'error_level',
         'features_codecache',
         'features_default_export_path',
@@ -126,15 +126,30 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'site_mail',
         'site_name',
         'theme_default',
+
+        // update.module
         'update_last_check',
+
+        // update_scripts.module
         'update_scripts_clear_cache',
         'update_scripts_directory',
         'update_scripts_revert_features',
+
+        // views.module
+        'views_show_additional_queries',
+
+        // views_ui.module
         'views_ui_always_live_preview',
+        'views_ui_custom_theme',
+        'views_ui_display_embed',
+        'views_ui_show_advanced_column',
         'views_ui_show_advanced_help_warning',
+        'views_ui_show_listing_filters',
         'views_ui_show_master_display',
         'views_ui_show_performance_statistics',
+        'views_ui_show_preview_information',
         'views_ui_show_sql_query',
+        'views_ui_show_sql_query_where',
       );
       break;
 

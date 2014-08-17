@@ -43,3 +43,4 @@ features[variable][] = rel_build_registration_ignore
 features[variable][] = user_admin_role
 features[variable][] = user_pictures
 features[variable][] = user_register
+features[variable][] = views_exposed_filter_any_label

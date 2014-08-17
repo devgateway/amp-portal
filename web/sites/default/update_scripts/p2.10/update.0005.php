@@ -37,12 +37,12 @@ $modules = array(
   // 'media_youtube',
   'file_entity',
 
-  // 'panels',
+  'panels',
+    // 'panels_ipe',
     // 'panels_mini',
     // 'panels_node',
-    // 'panels_ipe',
     // ctools:
-    // 'page_manager',
+    'page_manager',
 
   'views',
     // 'views_ui',
@@ -97,6 +97,9 @@ variable_set('ds_extras_hidden_region', 1);
 
 // Hide "Manage form display" link.
 variable_set('rel_build_form_registration', 0);
+
+// Always show the advanced display settings.
+variable_get('views_ui_show_advanced_column', 1);
 
 // Always show the master display.
 variable_set('views_ui_show_master_display', 1);
