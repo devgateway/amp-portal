@@ -9,6 +9,9 @@
  * Implements hook_file_default_displays().
  */
 function file_entity_file_default_displays() {
+  // @HACK: Temporary change: there is no need for default file displays if they are set up properly.
+  return;
+
   $file_displays = array();
 
   $file_display = new stdClass();
