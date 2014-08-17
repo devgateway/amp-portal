@@ -726,6 +726,9 @@ function _features_export_build($feature, &$form_state) {
         }
       }
     }
+
+    // Allow modules to filter the available components.
+    drupal_alter('features_component_export', $component_export, $component);
     $export['components'][$component] = $component_export;
   }
   $export['features_exclude'] = $excluded;
