@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the AMP View Settings feature.
+ */
+
+include_once 'ampviewsettings.features.inc';
