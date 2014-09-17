@@ -5,6 +5,44 @@
  */
 
 /**
+ * Implements hook_update_projects_alter().
+ *
+ * Hide project-specific modules from the module update list.
+ */
+function helpergeneric_update_projects_alter(&$projects) {
+  $not_updated = array();
+  foreach ($projects as $project_name => $project_info) {
+    if ($project_info['project_type'] == 'core') {
+      continue;
+    }
+
+    // Determine where the module is located.
+    $projet_path = drupal_get_path($project_info['project_type'], $project_info['name']);
+
+    // Projects like 'features_extra' don't contain a module called 'features_extra' so an empty path is returned.
+    $project_location = '';
+    if (!empty($projet_path)) {
+      $project_location = dirname($projet_path);
+    }
+
+    // Do not query updates for custom modules and features.
+    switch ($project_location) {
+      case 'sites/all/modules/custom':
+      case 'sites/all/modules/features':
+        // Hide project-specific modules from the update list.
+        $not_updated[] = $projects[$project_name]['info']['name'];
+        unset($projects[$project_name]);
+        break;
+    }
+  }
+
+  if (!empty($not_updated)) {
+    $message = 'The following modules are not being checked for updates: @moduleslist';
+    drupal_set_message(t($message, array('@moduleslist' => implode(', ', $not_updated))), 'warning');
+  }
+}
+
+/**
  * Implements hook_features_api_alter().
  *
  * Prevent exporting of some features API components.
@@ -194,7 +232,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
  * Implements hook_form_FORM_ID_alter() for node_form().
  */
 function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
-  if (!helpergeneric_is_user_one()) {
+  if (helpergeneric_cleanup_ui()) {
     helpergeneric_cleanup_node_form($form, $form_state, $form_id);
   }
 
@@ -270,7 +308,7 @@ function helpergeneric_node_form_event_date_validate($form, &$form_state) {
  * Implements hook_form_FORM_ID_alter() for user_profile_form().
  */
 function helpergeneric_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  if (!helpergeneric_is_user_one()) {
+  if (helpergeneric_cleanup_ui()) {
     helpergeneric_cleanup_user_form($form, $form_state, $form_id);
   }
 }
@@ -288,7 +326,7 @@ function helpergeneric_cleanup_user_form(&$form, &$form_state, $form_id) {
  * Implements hook_form_FORM_ID_alter() for file_entity_edit().
  */
 function helpergeneric_form_file_entity_edit_alter(&$form, &$form_state, $form_id) {
-  if (!helpergeneric_is_user_one()) {
+  if (helpergeneric_cleanup_ui()) {
     helpergeneric_cleanup_file_form($form, $form_state, $form_id);
   }
 }

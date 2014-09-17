@@ -13,6 +13,23 @@ function ampviewsettings_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'ds_classes_fields';
+  $strongarm->value = 'clearfix|Clearfix
+layout-block|Layout Block';
+  $export['ds_classes_fields'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'ds_classes_regions';
+  $strongarm->value = 'clearfix|Clearfix
+layout-block|Layout: Block
+layout-right-sidebar|Layout: 2 cols: Right Sidebar';
+  $export['ds_classes_regions'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'ds_extras_field_permissions';
   $strongarm->value = 0;
   $export['ds_extras_field_permissions'] = $strongarm;
