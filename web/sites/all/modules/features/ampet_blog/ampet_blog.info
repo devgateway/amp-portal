@@ -17,6 +17,7 @@ dependencies[] = media
 dependencies[] = node
 dependencies[] = options
 dependencies[] = page_manager
+dependencies[] = panels
 dependencies[] = strongarm
 dependencies[] = text
 dependencies[] = title

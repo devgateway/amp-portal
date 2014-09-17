@@ -42,9 +42,11 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
-    'field_blog_event_date' => array(
+    'title_field' => array(
       'formatter_settings' => array(
-        'ft' => array(),
+        'ft' => array(
+          'func' => 'theme_ds_field_reset',
+        ),
       ),
     ),
   );
@@ -101,23 +103,34 @@ function ampet_blog_ds_layout_settings_info() {
   $ds_layout->entity_type = 'node';
   $ds_layout->bundle = 'blog';
   $ds_layout->view_mode = 'full';
-  $ds_layout->layout = 'simplelayout';
+  $ds_layout->layout = 'doublelayout';
   $ds_layout->settings = array(
     'regions' => array(
-      'main' => array(
-        0 => 'field_blog_image',
-        1 => 'field_blog_event_date',
-        2 => 'body',
+      'left' => array(
+        0 => 'title_field',
+        1 => 'field_blog_image',
+        2 => 'field_blog_event_date',
+        3 => 'body',
       ),
     ),
     'fields' => array(
-      'field_blog_image' => 'main',
-      'field_blog_event_date' => 'main',
-      'body' => 'main',
+      'title_field' => 'left',
+      'field_blog_image' => 'left',
+      'field_blog_event_date' => 'left',
+      'body' => 'left',
     ),
-    'classes' => array(),
+    'classes' => array(
+      'layout_class' => array(
+        'clearfix' => 'clearfix',
+        'layout-right-sidebar' => 'layout-right-sidebar',
+      ),
+      'left' => array(
+        'layout-block' => 'layout-block',
+      ),
+    ),
     'wrappers' => array(
-      'main' => 'div',
+      'left' => 'div',
+      'right' => 'div',
       'ds_hidden' => 'div',
     ),
     'layout_wrapper' => 'div',
@@ -125,7 +138,7 @@ function ampet_blog_ds_layout_settings_info() {
     'layout_attributes_merge' => 1,
     'layout_link_attribute' => '',
     'layout_link_custom' => '',
-    'hide_page_title' => '0',
+    'hide_page_title' => '1',
     'page_option_title' => '',
   );
   $export['node|blog|full'] = $ds_layout;
