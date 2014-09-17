@@ -1,0 +1,90 @@
+
+html,
+body {
+  background-color: transparent;
+  color: #333333;
+  font-family: "Times New Roman", serif;
+  font-size: 12pt;
+  height: auto;
+}
+
+.page-wrapper {
+  margin: 1em 0;
+  padding: 0;
+  width: auto;
+}
+
+.main-content {
+  margin: 1em 0;
+  padding: 0;
+  width: auto;
+}
+
+.header-items,
+.main-navigation,
+.tabs-wrapper {
+  display: none;
+}
+
+.messages {
+  background-color: transparent !important;
+  border-radius: 0px;
+  color: #333333 !important;
+}
+
+/**
+ * Avoid page breaks inside paragraphs, blockquotes, lists, and preformatted
+ * text.
+ */
+p, blockquote, ul, ol, dl, pre {
+  page-break-inside: avoid;
+}
+
+.page-title {
+  margin-top: 0;
+}
+
+// Avoid page breaks straight after a heading.
+h1, h2, h3, h4, h5, h6 {
+  page-break-after: avoid;
+}
+
+// Put tables on their own page.
+table {
+  page-break-inside: avoid;
+}
+
+th {
+  text-align: left; /* LTR */
+  color: #006;
+  border-bottom: 1px solid #ccc;
+}
+tr.odd {
+  background-color: #ddd;
+}
+tr.even {
+  background-color: #fff;
+}
+td {
+  padding: 5px;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+a[href^="http://"]:after,
+a[href^="https://"]:after,
+a[href^="ftp://"]:after {
+  content: " (" attr(href) ")";
+  font-family: monospace, sans-serif;
+  font-size: 0.9em;
+}
+
+abbr[title]:after,
+acronym[title]:after {
+  content: " (" attr(title) ")";
+  font-family: monospace, sans-serif;
+  font-size: 0.9em;
+}

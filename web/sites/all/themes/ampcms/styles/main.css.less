@@ -1,0 +1,58 @@
+
+@import './lib/custom-grid.less';
+@import './lib/helpers.less';
+
+html {
+  background-color: @clmain;
+}
+
+.site-name {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+// Style local actions.
+.page-title {
+  display: inline-block;
+}
+.action-links {
+  display: inline;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-left: 0.5em;
+    display: inline-block;
+  }
+}
+
+.entity-action.has-icon {
+  svg {
+    fill: @clpassive;
+    vertical-align: text-bottom;
+  }
+  &:hover {
+    svg {
+      fill: @clanchor;
+    }
+  }
+  .mdzr-inlinesvg & {
+    .title {
+      display: none;
+    }
+  }
+}
+
+.maintenance-page {
+  .main-header {
+    position: relative;
+  }
+  .main-content {
+    float: none;
+    margin-left: 0;
+    margin: 1em 0;
+    padding: 0 1em 1em;
+    min-height: 10em;
+    width: auto;
+  }
+}
