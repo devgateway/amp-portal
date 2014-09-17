@@ -7,41 +7,50 @@
 include_once 'helpergeneric.forms.inc';
 
 /**
- * Implements hook_update_projects_alter().
- *
- * Hide project-specific modules from the module update list.
+ * Implements hook_menu().
  */
-function helpergeneric_update_projects_alter(&$projects) {
-  $not_updated = array();
-  foreach ($projects as $project_name => $project_info) {
-    if ($project_info['project_type'] == 'core') {
-      continue;
-    }
+function helpergeneric_menu() {
+  $items = array();
 
-    // Determine where the module is located.
-    $projet_path = drupal_get_path($project_info['project_type'], $project_info['name']);
+  $items['admin/settings'] = array(
+    'title' => 'Settings',
+    'description' => 'Administer Project settings.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer nodes'),
+    'weight' => 30,
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
 
-    // Projects like 'features_extra' don't contain a module called 'features_extra' so an empty path is returned.
-    $project_location = '';
-    if (!empty($projet_path)) {
-      $project_location = dirname($projet_path);
-    }
+  $items['admin/settings/generic'] = array(
+    'title' => 'Generic settings',
+    'description' => 'Project generic settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_settings_form'),
+    'access arguments' => array('administer nodes'),
+    'file' => 'helpergeneric.admin.inc',
+    'weight' => -32,
+  );
 
-    // Do not query updates for custom modules and features.
-    switch ($project_location) {
-      case 'sites/all/modules/custom':
-      case 'sites/all/modules/features':
-        // Hide project-specific modules from the update list.
-        $not_updated[] = $projects[$project_name]['info']['name'];
-        unset($projects[$project_name]);
-        break;
-    }
-  }
+  $items['admin/settings/main-menu'] = array(
+    'title' => 'Edit Main menu',
+    'description' => 'Edit the main menu links.',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/structure/menu/manage/main-menu'),
+    'access arguments' => array('administer menu'),
+    'weight' => -19,
+  );
 
-  if (!empty($not_updated)) {
-    $message = 'The following modules are not being checked for updates: @moduleslist';
-    drupal_set_message(t($message, array('@moduleslist' => implode(', ', $not_updated))), 'warning');
-  }
+  $items['admin/settings/user-menu'] = array(
+    'title' => 'Edit User menu',
+    'description' => 'Edit the user menu links.',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/structure/menu/manage/user-menu'),
+    'access arguments' => array('administer menu'),
+    'weight' => -18,
+  );
+
+  return $items;
 }
 
 /**
@@ -126,15 +135,21 @@ function helpergeneric_htmlpurifier_info() {
 }
 
 /**
- * Determines if the current user is user 1.
+ * Determines if we should cleanup the UI in a way that developers can disable.
  *
- * @return bool
- *   TRUE if the user is user 1, FALSE otherwise.
+ * NOTE: This is NOT for security, you should still set proper access settings.
  */
-function helpergeneric_is_user_one() {
-  if (variable_get('helpergeneric_is_user_one_skip', FALSE)) {
-    return FALSE;
+function helpergeneric_cleanup_ui() {
+  // Allow anyone with the cookie to force ui cleanup settings.
+  if (isset($_COOKIE['helpergeneric_cleanup_ui_force'])) {
+    return (bool) $_COOKIE['helpergeneric_cleanup_ui_force'];
   }
 
-  return $GLOBALS['user']->uid == 1;
+  // If variable is set, force ui cleanup settings only for UID1.
+  $forced_value = variable_get('helpergeneric_cleanup_ui_force', NULL);
+  if ($GLOBALS['user']->uid == 1 && isset($forced_value)) {
+    return (bool) $forced_value;
+  }
+
+  return TRUE;
 }
