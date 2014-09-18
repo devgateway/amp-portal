@@ -2,7 +2,7 @@
 @import './lib/custom-sprite.less';
 
 .header-links {
-  margin: 0;
+  margin: 1em 0;
   padding: 0;
 
   li {
@@ -31,10 +31,11 @@
 }
 
 .main-navigation {
+  font-size: 0.875em;
+
   svg {
     fill: @clcontent__separator;
     margin-right: 0.5em;
-    vertical-align: text-bottom;
   }
 
   .top-listitem {
@@ -43,9 +44,9 @@
 
   .top-link {
     display: inline-block;
-    font-size: 0.875em;
     font-weight: bold;
     padding: 1em;
+    line-height: 2em;
     text-decoration: none;
     text-transform: uppercase;
     &.active,

@@ -295,8 +295,24 @@ function helpertheme_html_head_alter(&$head_elements) {
  */
 function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
   $available_icons = array(
-    'anchor',
     'home',
+    'arrow',
+
+    // fill="#4B4A4A"
+    'dashboard',
+    'datasource1',
+    'datasource2',
+    'datasource3',
+
+    // fill="#CFCECE"
+    'documents',
+    'locations',
+    'login',
+    'maps',
+    'organization',
+    'reports',
+    'sector',
+
     'add',
     'view',
     'edit',

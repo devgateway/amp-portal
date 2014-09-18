@@ -163,6 +163,8 @@ function _helpertheme_form_element_label_custom($variables) {
 
 /**
  * Returns HTML for a single local action link.
+ *
+ * @see helpertheme_theme_registry_alter()
  */
 function helpertheme_menu_local_action($variables) {
   $link = $variables['element']['#link'];
@@ -223,7 +225,7 @@ function helpertheme_menu_local_action($variables) {
 }
 
 /**
- * Helper function for fbcmongodb_menu_local_tasks_alter().
+ * Helper function for helpertheme_menu_local_action().
  */
 function _helpertheme_menu_local_action_title($title, $icon, $size) {
   $svgicon = helpertheme_get_svg_icons($icon, array('width' => $size, 'height' => $size));
