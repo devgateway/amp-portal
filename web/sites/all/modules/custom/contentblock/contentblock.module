@@ -355,3 +355,15 @@ function contentblock_ds_field_settings_form($field) {
 function contentblock_ds_field_format_summary($field) {
   return ds_ds_field_format_summary($field);
 }
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function contentblock_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'panels' && $plugin == 'styles') {
+    return 'plugins/' . $plugin;
+  }
+  if ($module == 'ctools' && $plugin == 'content_types') {
+    return 'plugins/' . $plugin;
+  }
+}
