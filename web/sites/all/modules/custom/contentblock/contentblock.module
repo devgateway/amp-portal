@@ -254,7 +254,7 @@ function contentblock_menu_local_tasks_alter(&$data, $router_item, $root_path) {
 function contentblock_entity_ui_bundle_add_page($entity_type) {
   // Set the title, as we're a MENU_LOCAL_ACTION and hence just get tab titles.
   module_load_include('inc', 'entity', 'includes/entity.ui');
-  drupal_set_title(entity_ui_get_action_title('add', $entity_type));
+  drupal_set_title(contentblock_entity_ui_get_page_title('add', $entity_type));
 
   // Get entity info for our bundles.
   $info = entity_get_info($entity_type);
@@ -277,6 +277,45 @@ function contentblock_entity_ui_bundle_add_page($entity_type) {
     }
   }
   return theme('item_list', array('items' => $items));
+}
+
+/**
+ * Gets the page title for the passed operation.
+ * @see entity_ui_get_page_title()
+ */
+function contentblock_entity_ui_get_page_title($op, $entity_type, $entity = NULL) {
+  module_load_include('inc', 'entity', 'includes/entity.ui');
+
+  $label = entity_label($entity_type, $entity);
+
+  // Get the entity information.
+  $entity_info = entity_get_info($entity_type);
+  $t_args = array(
+    '@entity_type_label' => drupal_strtolower($entity_info['label']),
+    '%label' => $label,
+  );
+
+  switch ($op) {
+    case 'view':
+      return $label;
+    case 'edit':
+      return t('Edit @entity_type_label %label', $t_args);
+    case 'clone':
+      return t('Clone @entity_type_label %label', $t_args);
+    case 'revert':
+      return t('Revert @entity_type_label %label', $t_args);
+    case 'delete':
+      return t('Delete @entity_type_label %label', $t_args);
+    case 'export':
+      return t('Export @entity_type_label %label', $t_args);
+  }
+  if (isset($entity)) {
+    list(, , $bundle) = entity_extract_ids($entity_type, $entity);
+  }
+  else {
+    $bundle = NULL;
+  }
+  return entity_ui_get_action_title($op, $entity_type, $bundle);
 }
 
 /**

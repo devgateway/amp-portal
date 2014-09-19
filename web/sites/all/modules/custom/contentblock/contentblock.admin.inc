@@ -14,6 +14,10 @@ function contentblock_form($form, &$form_state, $entity) {
   $entity_type = $entity->entityType();
   $entity_controller = entity_get_controller($entity_type);
 
+  if (isset($form_state['op'])) {
+    drupal_set_title(contentblock_entity_ui_get_page_title($form_state['op'], $entity_type, $entity), PASS_THROUGH);
+  }
+
   // $form['additional_settings'] = array(
   //   '#type' => 'vertical_tabs',
   //   '#weight' => 99,
