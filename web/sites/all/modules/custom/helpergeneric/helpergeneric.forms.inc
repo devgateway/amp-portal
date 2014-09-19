@@ -149,15 +149,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'install_task',
         'install_time',
         // 'job_scheduler_rebuild_all',
-        // 'less_devel',
-        // 'less_dir',
-        // 'less_engine',
-        // 'less_watch',
+
         'menu_expanded',
         'menu_masks',
         'page_cache_maximum_age',
         'page_compression',
-        // 'path_alias_whitelist',
+        'path_alias_whitelist',
         'preprocess_css',
         'preprocess_js',
         'site_default_country',
@@ -165,18 +162,27 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'site_name',
         'theme_default',
 
-        // update.module
+        // Custom variables.
+        'helpergeneric_cleanup_ui_force',
+
+        // Hide less.module variables.
+        'less_devel',
+        'less_dir',
+        'less_engine',
+        'less_watch',
+
+        // Hide update.module variables.
         'update_last_check',
 
-        // update_scripts.module
+        // Hide update_scripts.module variables.
         'update_scripts_clear_cache',
         'update_scripts_directory',
         'update_scripts_revert_features',
 
-        // views.module
+        // Hide views.module variables.
         'views_show_additional_queries',
 
-        // views_ui.module
+        // Hide views_ui.module variables.
         'views_ui_always_live_preview',
         'views_ui_custom_theme',
         'views_ui_display_embed',

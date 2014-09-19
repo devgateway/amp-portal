@@ -74,9 +74,8 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'full' => array(
@@ -111,19 +110,12 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-        ),
-        'type' => 'date_default',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 4,
       ),
       'full' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'date',
         'settings' => array(
           'format_type' => 'shortest',
@@ -270,13 +262,14 @@ function ampet_blog_field_default_field_instances() {
       ),
       'full' => array(
         'label' => 'hidden',
-        'module' => 'title',
+        'module' => 'helpergeneric',
         'settings' => array(
+          'show_actions' => 1,
           'title_class' => 'page-title',
           'title_link' => '',
           'title_style' => 'h1',
         ),
-        'type' => 'title_linked',
+        'type' => 'title_with_actions',
         'weight' => 0,
       ),
     ),

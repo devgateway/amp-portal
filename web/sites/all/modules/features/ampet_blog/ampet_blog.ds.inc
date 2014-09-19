@@ -83,7 +83,11 @@ function ampet_blog_ds_layout_settings_info() {
       'title_field' => 'main',
       'body' => 'main',
     ),
-    'classes' => array(),
+    'classes' => array(
+      'layout_class' => array(
+        'clearfix' => 'clearfix',
+      ),
+    ),
     'wrappers' => array(
       'side' => 'div',
       'main' => 'div',
