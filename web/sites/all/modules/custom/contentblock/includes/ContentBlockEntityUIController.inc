@@ -69,6 +69,7 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
       'title' => 'Edit',
       'type' => MENU_LOCAL_TASK,
       'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+      'weight' => 0,
     ) + $defaults;
     $items[$this->entity_path . '/' . $wildcard . '/delete'] = array(
       'page callback' => 'drupal_get_form',
@@ -79,6 +80,7 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
       'title' => 'Delete',
       'type' => MENU_LOCAL_TASK,
       'context' => MENU_CONTEXT_INLINE,
+      'weight' => 1,
     ) + $defaults;
 
     /**
