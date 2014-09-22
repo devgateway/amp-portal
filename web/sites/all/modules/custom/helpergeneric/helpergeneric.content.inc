@@ -34,10 +34,7 @@ function _helpergeneric_cbreference_settings_form($varname, &$form, &$form_state
   $table_header = array(t('Content Blocks'), t('Weight'), t('Style'));
   $columns_count = count($table_header);
 
-  $form['varname'] = array(
-    '#type' => 'hidden',
-    '#value' => $varname,
-  );
+  $form_state['varname'] = $varname;
 
   $form[$varname] = array(
     '#type' => 'table',
@@ -153,7 +150,7 @@ function _helpergeneric_cbreference_settings_form($varname, &$form, &$form_state
  * Process system_theme_settings form submissions.
  */
 function helpergeneric_contentblock_submit($form, &$form_state) {
-  $varname = $form_state['values']['varname'];
+  $varname = $form_state['varname'];
   $ref_values = &$form_state['values'][$varname];
 
   foreach ($ref_values as $key => $value) {
@@ -206,6 +203,6 @@ function _helpergeneric_helperadd_submit($form, &$form_state) {
  * @see _helpergeneric_helperadd_submit()
  */
 function _helpergeneric_ajax_form_references($form, $form_state) {
-  $varname = $form_state['values']['varname'];
+  $varname = $form_state['varname'];
   return $form[$varname];
 }

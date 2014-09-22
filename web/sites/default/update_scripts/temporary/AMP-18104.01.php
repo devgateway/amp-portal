@@ -2,6 +2,7 @@
 
 // Prepare a list of features to be installed.
 $feature_names = array(
+  'ampcontentblock',
   'ampet_blog',
   'ampet_page',
   'ampfileentity',

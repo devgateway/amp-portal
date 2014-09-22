@@ -36,10 +36,10 @@ function helpergeneric_update_projects_alter(&$projects) {
     }
   }
 
-  if (!empty($not_updated)) {
-    $message = 'The following modules are not being checked for updates: @moduleslist';
-    drupal_set_message(t($message, array('@moduleslist' => implode(', ', $not_updated))), 'warning');
-  }
+  // if (!empty($not_updated)) {
+  //   $message = 'The following modules are not being checked for updates: @moduleslist';
+  //   drupal_set_message(t($message, array('@moduleslist' => implode(', ', $not_updated))), 'warning');
+  // }
 }
 
 /**
@@ -108,6 +108,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
       $entries_list = array(
         // Custom variables.
         'contentblock_blockref_blog',
+        'contentblock_blockref_homepage',
         'date_format_shortest',
         'helpergeneric_cleanup_ui_force',
 
