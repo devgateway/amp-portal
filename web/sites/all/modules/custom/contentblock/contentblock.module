@@ -117,14 +117,24 @@ function contentblock_get_types() {
   $items = array();
 
   $items['html'] = array(
-    'label' => t('HTML Block'),
-    'description' => t('Use "HTML Blocks" for...'),
+    'label' => t('HTML'),
+    'description' => t('Use "HTML" for...'),
+    'weight' => 0,
+  );
+  $items['links'] = array(
+    'label' => t('Links List'),
+    'description' => t('Use "Links List" for...'),
+    'weight' => 0,
+  );
+  $items['image'] = array(
+    'label' => t('Image'),
+    'description' => t('Use "Image" for...'),
     'weight' => 0,
   );
   $items['organization'] = array(
     'label' => t('Organization'),
     'description' => t('Use "Organizations" for...'),
-    'weight' => 1,
+    'weight' => 0,
   );
 
   return $items;
@@ -365,5 +375,22 @@ function contentblock_ctools_plugin_directory($module, $plugin) {
   }
   if ($module == 'ctools' && $plugin == 'content_types') {
     return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function contentblock_entity_view_alter(&$build, $entity_type) {
+  if ($entity_type != 'contentblock') {
+    return;
+  }
+
+  // Add contextual links for this node, except when the node is already being
+  // displayed on its own page. Modules may alter this behavior (for example,
+  // to restrict contextual links to certain view modes) by implementing
+  // hook_node_view_alter().
+  if (!empty($build['#entity']->cbid)) {
+    $build['#contextual_links']['contentblock'] = array('contentblock', array($build['#entity']->cbid));
   }
 }
