@@ -69,8 +69,9 @@ function theme_cbstyle_style_render_region($vars) {
   // Add a class to the wrapper.
   $contentblock_attributes['class'][] = 'panel-contentblock';
   if (!empty($vars['settings']['region_classes'])) {
-    dpm($vars['settings'], '$vars[settings]');
+    $contentblock_attributes['class'] += $vars['settings']['region_classes'];
   }
+
   if (!empty($vars['settings']['extra_classes'])) {
     // Sanitize the provided list of classes.
     $class_list = explode(' ', $vars['settings']['extra_classes']);

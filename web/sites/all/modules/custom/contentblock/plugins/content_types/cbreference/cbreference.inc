@@ -11,21 +11,16 @@
  * by the system that includes this file.
  */
 $plugin = array(
+  'category' => t('Custom'),
   'title' => t('CB Reference'),
+  'description' => t('Add a entity from your site as content stored in a variable.'),
+  'icon' => 'icon.png',
   'single' => TRUE,
   'defaults' => array(
     'variable_name' => '',
-    // 'links' => FALSE,
-    // 'remove_title' => FALSE,
-    // 'linked_title' => FALSE,
-    'identifier' => '',
-    'build_mode' => 'default',
+    'template' => '',
   ),
-  'icon' => 'icon.png',
-  'description' => t('Add a entity from your site as content stored in a variable.'),
-  'category' => t('Custom'),
   'top level' => TRUE,
-  'js' => array('misc/autocomplete.js'),
 );
 
 /**
@@ -35,64 +30,39 @@ $plugin = array(
  */
 function contentblock_cbreference_content_type_render($subtype, $conf, $panel_args) {
   $block = new stdClass();
-
-  // Get the referenced entity id.
-  $entity_id = variable_get($conf['variable_name'], NULL);
-
-  $language = NULL;
-  // Support translations.
-  // if (module_exists('translation')) {
-  //   if ($translations = module_invoke('translation', 'entity_get_translations', $entity_id)) {
-  //     if (isset($translations[$GLOBALS['language']->language]))  {
-  //       $entity_id = $translations[$GLOBALS['language']->language]->entity_id;
-  //     }
-  //   }
-  // }
-
-  if (!is_numeric($entity_id)) {
-    return;
-  }
-
-  $entity = entity_load_single('contentblock', $entity_id);
-  if (!entity_access('view', 'contentblock', $entity)) {
-    return;
-  }
-
-  // We need to alter the entity content.
-  $entity = clone($entity);
-
   $block->module = 'contentblock';
-  $block->delta = $entity->identifier();
+  $block->delta = $conf['variable_name'];
 
-  // Set block->title to the plain entity title, then additionally set block->title_link to
-  // the entity url if required. The actual link is rendered in ctools_content_render().
-  $block->title = check_plain($entity->label());
-
-  $remove_title = FALSE;
-  // if (!empty($conf['remove_title'])) {
-  //   $remove_title = TRUE;
-  // }
-
-  // if (empty($conf['remove_title']) && !empty($conf['linked_title'])) {
-  //   $entity_uri = $entity->uri();
-  //   $block->title_link = $entity_uri['path'];
-  // }
-
-  if (!empty($conf['identifier'])) {
-    $entity->ctools_template_identifier = $conf['identifier'];
+  // Get the settings.
+  $contentblocks = variable_get($conf['variable_name'], NULL);
+  if (empty($contentblocks) || !is_array($contentblocks)) {
+    return;
   }
 
-  // Handle existing configurations with the deprecated 'teaser' option.
-  if (isset($conf['teaser'])) {
-    $conf['build_mode'] = $conf['teaser'] ? 'teaser' : 'full';
+  foreach ($contentblocks as $info) {
+    if (empty($info['contentblock']) || !is_numeric($info['contentblock'])) {
+      continue;
+    }
+
+    $entity = entity_load_single('contentblock', $info['contentblock']);
+    if (!entity_access('view', 'contentblock', $entity)) {
+      continue;
+    }
+
+    if (!empty($conf['template'])) {
+      $entity->ctools_template_identifier = $conf['template'];
+    }
+
+    $view_mode = 'default';
+    if (!empty($info['view_mode'])) {
+      $view_mode = $info['view_mode'];
+    }
+
+    // @TODO: Add language support.
+    $language = NULL;
+
+    $block->content[] = $entity->view($view_mode, $language);
   }
-
-  $block->content = $entity->view($conf['build_mode'], $language, $remove_title);
-
-  // Hide links if they've been suppressed.
-  // if (!empty($conf['links'])) {
-  //   $block->content['links']['#access'] = FALSE;
-  // }
 
   return $block;
 }
@@ -102,19 +72,6 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
  */
 function contentblock_cbreference_content_type_edit_form($form, &$form_state) {
   $conf = $form_state['conf'];
-
-  // $form['remove_title'] = array(
-  //   '#type' => 'checkbox',
-  //   '#default_value' => !empty($conf['remove_title']),
-  //   '#title' => t('Remove entity title'),
-  // );
-
-  // $form['linked_title'] = array(
-  //   '#type' => 'checkbox',
-  //   '#default_value' => !empty($conf['linked_title']),
-  //   '#title' => t('Link the entity title to the entity'),
-  //   '#description' => t('Check this box if you would like your pane title to link to the entity.'),
-  // );
 
   $form['variable_name'] = array(
     '#title' => t('Variable Name'),
@@ -127,38 +84,13 @@ function contentblock_cbreference_content_type_edit_form($form, &$form_state) {
     '#weight' => -10,
   );
 
-  // $form['links'] = array(
-  //   '#type' => 'checkbox',
-  //   '#default_value' => $conf['links'],
-  //   '#title' => t('Include entity links for "add comment", "read more" etc.'),
-  // );
-
-  $form['identifier'] = array(
+  $form['template'] = array(
     '#type' => 'textfield',
-    '#default_value' => !empty($conf['identifier']) ? $conf['identifier'] : '',
+    '#default_value' => !empty($conf['template']) ? $conf['template'] : '',
     '#title' => t('Template identifier'),
     '#description' => t('This identifier will be added as a template suggestion to display this entity: entity--panel--IDENTIFIER.tpl.php. Please see the Drupal theming guide for information about template suggestions.'),
   );
 
-  $entity = entity_get_info('contentblock');
-  $build_mode_options = array('default' => t('Default'));
-  foreach ($entity['view modes'] as $mode => $option) {
-    $build_mode_options[$mode] = t($option['label']);
-  }
-
-  // Handle existing configurations with the deprecated 'teaser' option.
-  // Also remove the teaser key from the form_state.
-  if (isset($conf['teaser']) || !isset($conf['build_mode'])) {
-    unset($form_state['conf']['teaser']);
-    $conf['build_mode'] = $conf['teaser'] ? 'teaser' : 'full';
-  }
-  $form['build_mode'] = array(
-    '#title' => t('Build mode'),
-    '#type' => 'select',
-    '#description' => t('Select a build mode for this entity.'),
-    '#options' => $build_mode_options,
-    '#default_value' => $conf['build_mode'],
-  );
   return $form;
 }
 
@@ -171,23 +103,18 @@ function contentblock_cbreference_content_type_edit_form_validate(&$form, &$form
   }
 
   $variable_name = $form_state['values']['variable_name'];
-  $entity_id = variable_get($variable_name, NULL);
+  $contentblocks = variable_get($variable_name, NULL);
 
-  if (empty($entity_id)) {
+  if (empty($contentblocks)) {
     return;
   }
-
-  // $entity = entity_load_single('contentblock', $entity_id);
-  // if (empty($entity)) {
-  //   form_error($form['variable_name'], t('Invalid variable, it does not contain a valid entity ID.'));
-  // }
 }
 
 /**
  * Validate the entity selection.
  */
 function contentblock_cbreference_content_type_edit_form_submit($form, &$form_state) {
-  foreach (array('variable_name', 'links', 'remove_title', 'linked_title', 'identifier', 'build_mode') as $key) {
+  foreach (array('variable_name', 'template') as $key) {
     $form_state['conf'][$key] = $form_state['values'][$key];
   }
 }
@@ -206,16 +133,10 @@ function contentblock_cbreference_content_type_admin_title($subtype, $conf) {
 function contentblock_cbreference_content_type_admin_info($subtype, $conf) {
   $variable_name = $conf['variable_name'];
 
-  $entity_id = variable_get($variable_name, NULL);
-  if (!is_numeric($entity_id) || 1) {
-    return t('Variable @var does not contain a valid contentblock id.', array('@var' => $variable_name));
+  $variable_name = variable_get($variable_name, NULL);
+  if (!isset($variable_name)) {
+    return t('Variable @var does not exist.', array('@var' => $variable_name));
   }
 
-  $entity = entity_load_single('contentblock', $entity_id);
-  if (empty($entity)) {
-    return t('Refereneced contentblock %entity_id does not exist.', array('%entity_id' => $entity_id));
-  }
-
-  // Just return the entity label.
-  return $entity->label();
+  return $variable_name;
 }
