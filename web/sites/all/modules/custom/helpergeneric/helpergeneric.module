@@ -81,6 +81,16 @@ function helpergeneric_menu() {
     'weight' => -18,
   );
 
+  // Page callback that outputs JSON for project specific nodevar autocomplete suggestions.
+  $items['helpergeneric/contentblock/autocomplete'] = array(
+    'title' => 'Autocomplete',
+    'page callback' => 'helpergeneric_entity_autocomplete',
+    'page arguments' => array('contentblock'),
+    'access arguments' => array('administer nodes'),
+    'type' => MENU_CALLBACK,
+    'file' => 'helpergeneric.admin.inc',
+  );
+
   return $items;
 }
 
@@ -313,6 +323,25 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
   // Attach "Add blog entry" link to "Blog" listing page title.
   if ($root_path == 'blog') {
     $action_router_item = menu_get_item('node/add/blog');
+
+    if ($action_router_item['access']) {
+      $action_router_item['localized_options']['attributes']['target'] = '_blank';
+      $action_router_item['localized_options']['theme extra'] = array(
+        'entity action' => TRUE,
+        'icon' => 'add',
+      );
+
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $action_router_item,
+        '#weight' => 40,
+      );
+    }
+  }
+
+  // Attach "Add content block" link to "Page Content" settings page title.
+  if (strpos($root_path, 'admin/settings/page-content/') === 0) {
+    $action_router_item = menu_get_item('contentblock/add');
 
     if ($action_router_item['access']) {
       $action_router_item['localized_options']['attributes']['target'] = '_blank';
