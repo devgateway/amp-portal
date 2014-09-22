@@ -90,11 +90,14 @@ function _helpertheme_build_radioicons($element) {
  *   A collection of field theming functions.
  */
 function helpertheme_ds_field_theme_functions_info() {
-  return array('theme_ds_field_helpertheme_block' => t('HelperTheme: Block'));
+  return array(
+    'theme_ds_field_helpertheme_block' => t('HelperTheme: Block'),
+    'theme_ds_field_helpertheme_list' => t('HelperTheme: List'),
+    );
 }
 
 /**
- * Provide minimal HTML for the field.
+ * Render field using minmal HTML.
  */
 function theme_ds_field_helpertheme_block($variables) {
   $output = '';
@@ -117,6 +120,38 @@ function theme_ds_field_helpertheme_block($variables) {
   foreach ($variables['items'] as $delta => $item) {
     $output .= drupal_render($item);
   }
+  $output .="</div>";
+
+  return $output;
+}
+
+/**
+ * Render field as a simple HTML list.
+ */
+function theme_ds_field_helpertheme_list($variables) {
+  $output = '';
+  $config = $variables['ds-config'];
+  $classes = isset($config['classes']) ? ' ' . $config['classes'] : '';
+
+  // Add a simple wrapper.
+  $output .= '<div class="field field-helpertheme-list field-name-' . strtr($variables['element']['#field_name'], '_', '-') . $classes . '">';
+
+  // Render the label.
+  if (!$variables['label_hidden']) {
+    $output .= '<div class="label label-' . $variables['element']['#label_display'] . '">' . $variables['label'];
+    if (!isset($config['lb-col'])) {
+      $output .= ':&nbsp;';
+    }
+    $output .= '</div>';
+  }
+
+  // Render the items.
+  $rendered_items = array();
+  foreach ($variables['items'] as $delta => $item) {
+    $rendered_items[] = drupal_render($item);
+  }
+  $output .= theme('item_list', array('items' => $rendered_items));
+
   $output .="</div>";
 
   return $output;
