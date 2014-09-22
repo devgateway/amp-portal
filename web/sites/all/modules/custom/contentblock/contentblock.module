@@ -116,25 +116,29 @@ function contentblock_entity_info() {
 function contentblock_get_types() {
   $items = array();
 
-  $items['html'] = array(
-    'label' => t('HTML'),
-    'description' => t('Use "HTML" for...'),
-    'weight' => 0,
-  );
-  $items['links'] = array(
-    'label' => t('Links List'),
-    'description' => t('Use "Links List" for...'),
-    'weight' => 0,
-  );
   $items['image'] = array(
     'label' => t('Image'),
     'description' => t('Use "Image" for...'),
-    'weight' => 0,
   );
+
+  $items['links'] = array(
+    'label' => t('Links List'),
+    'description' => t('Use "Links List" for...'),
+  );
+
   $items['organization'] = array(
     'label' => t('Organization'),
     'description' => t('Use "Organizations" for...'),
-    'weight' => 0,
+  );
+
+  $items['predefined'] = array(
+    'label' => t('Predefined Widget'),
+    'description' => t('Use "Predefined Widgets" for...'),
+  );
+
+  $items['text'] = array(
+    'label' => t('Text'),
+    'description' => t('Use "Text" for...'),
   );
 
   return $items;
@@ -147,10 +151,6 @@ function contentblock_type_get_name($bundle) {
   $bundles = contentblock_get_types();
   return (isset($bundles[$bundle]['label'])) ? $bundles[$bundle]['label'] : FALSE;
 }
-
-// function contentblock_label($entity, $entity_type) {
-//   return 'lable goes hoere';
-// }
 
 /**
  * Access callback for custom survey entities.

@@ -127,7 +127,7 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
           'page arguments' => array($this->entityType, $bundle_type),
           'access callback' => 'entity_access',
           'access arguments' => array('create', $this->entityType),
-          'weight' => $bundle_info['weight'],
+          'weight' => isset($bundle_info['weight']) ? $bundle_info['weight'] : 0,
         ) + $defaults;
       }
     }
