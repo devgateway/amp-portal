@@ -33,23 +33,20 @@ html, body {
   }
 }
 
-.custom-layout {
-  .page-title {
-    margin: 0;
-  }
-  .field {
-    margin: 1em 0;
-  }
+.main-header,
+.main-navigation,
+.main-content {
+  .single-fluid-column();
 }
 
 .layout-right-sidebar {
   .group-left {
     .column(8);
-    .first-column();
+    .first-child-column();
   }
   .group-right {
     .column(4);
-    .last-column();
+    .last-child-column();
   }
 }
 
@@ -57,5 +54,9 @@ html, body {
   .box-sizing(border-box);
   background-color: @clcontent;
   border: @border_width solid @clcontent__separator;
-  padding: 1em;
+  padding: 0 1em;
+}
+
+.layout-separator {
+  margin-bottom: 1em;
 }

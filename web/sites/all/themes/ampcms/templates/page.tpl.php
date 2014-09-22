@@ -42,7 +42,7 @@
         <div class="breadcrumb-wrapper"><?php print $breadcrumb; ?></div>
       <?php endif; ?>
 
-      <?php if (!empty($tabs) && $display_tabs): ?>
+      <?php if (!empty($tabs['#primary']) && $display_tabs): ?>
         <div class="tabs-wrapper"><?php print render($tabs); ?></div>
       <?php endif; ?>
 

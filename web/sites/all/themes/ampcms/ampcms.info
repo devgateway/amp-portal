@@ -13,6 +13,7 @@ regions[content] = Content
 stylesheets[all][] = styles/lib/normalize.css
 stylesheets[all][] = styles/base.css.less
 stylesheets[all][] = styles/drupal.css.less
+stylesheets[all][] = styles/drupal/contextual.css.less
 stylesheets[all][] = styles/forms.css.less
 stylesheets[all][] = styles/reset.css.less
 
