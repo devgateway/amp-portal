@@ -57,13 +57,18 @@ function amphomepage_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-45639b4f-b222-4315-affb-f2ded107675d';
+    $pane->pid = 'new-8e12b315-2f57-4144-86eb-3e5963449bab';
     $pane->panel = 'middle';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'homepage-listing';
+    $pane->type = 'cbreference';
+    $pane->subtype = 'cbreference';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array();
+    $pane->configuration = array(
+      'variable_name' => 'contentblock_blockref_homepage',
+      'template' => '',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
@@ -72,9 +77,9 @@ function amphomepage_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '45639b4f-b222-4315-affb-f2ded107675d';
-    $display->content['new-45639b4f-b222-4315-affb-f2ded107675d'] = $pane;
-    $display->panels['middle'][0] = 'new-45639b4f-b222-4315-affb-f2ded107675d';
+    $pane->uuid = '8e12b315-2f57-4144-86eb-3e5963449bab';
+    $display->content['new-8e12b315-2f57-4144-86eb-3e5963449bab'] = $pane;
+    $display->panels['middle'][0] = 'new-8e12b315-2f57-4144-86eb-3e5963449bab';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
