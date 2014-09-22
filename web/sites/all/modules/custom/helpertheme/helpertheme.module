@@ -100,6 +100,7 @@ function helpertheme_menu() {
 function helpertheme_admin_paths_alter(&$paths) {
   $paths['node/*/*'] = FALSE;
   $paths['user/*/*'] = FALSE;
+  $paths['admin/settings*'] = FALSE;
 }
 
 /**
@@ -384,5 +385,14 @@ function helpertheme_form_menu_edit_item_save_icon($form, &$form_state) {
   }
   else {
     variable_del(HELPERTHEME_SVG_ICON_NAME_PREFIX . $mlid);
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function helpertheme_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'panels' && $plugin == 'layouts') {
+    return 'plugins/' . $plugin;
   }
 }

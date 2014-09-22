@@ -7,7 +7,7 @@
  * NOTE: It requires a "Class for layout" in the entity display settings.
  */
 ?>
-<<?php print $layout_wrapper; print $layout_attributes; ?> class="custom-layout custom-simplelayout <?php print $classes;?>">
+<<?php print $layout_wrapper; print $layout_attributes; ?> class="custom-layout custom-doublelayout clearfix<?php print $classes;?>">
 
   <?php if (isset($title_suffix['contextual_links'])): ?>
   <?php print render($title_suffix['contextual_links']); ?>
