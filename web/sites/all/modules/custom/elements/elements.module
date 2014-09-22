@@ -571,9 +571,9 @@ function elements_pre_render_table(array $element) {
 
       // Apply wrapper attributes of second-level elements as table cell
       // attributes.
-      //if (isset($element[$first][$second]['#wrapper_attributes'])) {
-      //  $column += $element[$first][$second]['#wrapper_attributes'];
-      //}
+      if (isset($element[$first][$second]['#wrapper_attributes'])) {
+       $column += $element[$first][$second]['#wrapper_attributes'];
+      }
 
       $row['data'][] = $column;
     }
@@ -590,10 +590,6 @@ function elements_pre_render_table(array $element) {
       array_unshift($args, $element['#attributes']['id']);
     }
     $element['#attached']['drupal_add_tabledrag'] = $element['#tabledrag'];
-  }
-
-  if (!empty($element['#tabledrag']) && !empty($element['#tableselect'])) {
-    $element['#attached']['css'][] = drupal_get_path('module', 'elements') . '/elements.table.css';
   }
 
   return $element;
