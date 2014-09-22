@@ -106,6 +106,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     case 'variable':
       // Hide variables that should not be exported.
       $entries_list = array(
+        // Custom variables.
+        'contentblock_blockref_blog',
+        'date_format_shortest',
+        'helpergeneric_cleanup_ui_force',
+
+        // Hide CORE variables.
         'additional_settings__active_tab_blog',
         'additional_settings__active_tab_page',
         'cache',
@@ -114,34 +120,17 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'cron_key',
         'cron_last',
         'css_js_query_string',
-        'ctools_last_cron',
-        'date_api_version',
-
         'date_default_timezone',
         'date_first_day',
         'date_format_long',
         'date_format_medium',
         'date_format_short',
-        'date_format_shortest',
-        'date_views_month_format_with_year',
-        'date_views_month_format_without_year',
-        'date_views_day_format_with_year',
-        'date_views_day_format_without_year',
-        'date_views_week_format_with_year',
-        'date_views_week_format_without_year',
-
         'dblog_row_limit',
         'drupal_private_key',
         'drupal_css_cache_files',
         'drupal_http_request_fails',
         'drupal_js_cache_files',
-        // 'entity_cache_tables_created',
-        'entityreference:base-tables',
         'error_level',
-        'features_codecache',
-        'features_default_export_path',
-        'features_ignored_orphans',
-        'features_semaphore',
         'file_temporary_path',
         'htmlpurifier_version_current',
         // 'image_toolkit',
@@ -149,7 +138,6 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'install_task',
         'install_time',
         // 'job_scheduler_rebuild_all',
-
         'menu_expanded',
         'menu_masks',
         'page_cache_maximum_age',
@@ -162,8 +150,31 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'site_name',
         'theme_default',
 
-        // Custom variables.
-        'helpergeneric_cleanup_ui_force',
+        // Hide ctools.module variables.
+        'ctools_last_cron',
+
+        // Hide date.module variables.
+        'date_api_version',
+        'date_views_month_format_with_year',
+        'date_views_month_format_without_year',
+        'date_views_day_format_with_year',
+        'date_views_day_format_without_year',
+        'date_views_week_format_with_year',
+        'date_views_week_format_without_year',
+
+        // Hide entity.module variables.
+        'entity_cache_tables_created',
+
+        // Hide entityreference.module variables.
+        'entityreference:base-tables',
+
+        // Hide features.module variables.
+        'features_codecache',
+        'features_default_export_path',
+        'features_feature_locked',
+        'features_ignored_orphans',
+        'features_lock_mode',
+        'features_semaphore',
 
         // Hide less.module variables.
         'less_devel',
