@@ -42,6 +42,25 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
+    'blog_sidebar' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+      'formatter_settings' => array(
+        'show_title' => 0,
+        'title_wrapper' => '',
+        'ctools' => 'a:3:{s:4:"conf";a:8:{s:13:"variable_name";s:26:"contentblock_blockref_blog";s:10:"identifier";s:0:"";s:10:"build_mode";s:7:"default";s:5:"links";N;s:12:"remove_title";N;s:12:"linked_title";N;s:14:"override_title";i:1;s:19:"override_title_text";s:0:"";}s:4:"type";s:11:"cbreference";s:7:"subtype";s:11:"cbreference";}',
+        'load_terms' => 0,
+        'ft' => array(
+          'func' => 'theme_ds_field_reset',
+        ),
+      ),
+    ),
+    'field_blog_image' => array(
+      'formatter_settings' => array(
+        'ft' => array(),
+      ),
+    ),
     'title_field' => array(
       'formatter_settings' => array(
         'ft' => array(
@@ -51,6 +70,41 @@ function ampet_blog_ds_field_settings_info() {
     ),
   );
   $export['node|blog|full'] = $ds_fieldsetting;
+
+  return $export;
+}
+
+/**
+ * Implements hook_ds_custom_fields_info().
+ */
+function ampet_blog_ds_custom_fields_info() {
+  $export = array();
+
+  $ds_field = new stdClass();
+  $ds_field->api_version = 1;
+  $ds_field->field = 'blog_sidebar';
+  $ds_field->label = 'Blog Sidebar';
+  $ds_field->field_type = 7;
+  $ds_field->entities = array(
+    'node' => 'node',
+  );
+  $ds_field->ui_limit = 'blog|full';
+  $ds_field->properties = array(
+    'default' => array(),
+    'settings' => array(
+      'show_title' => array(
+        'type' => 'checkbox',
+      ),
+      'title_wrapper' => array(
+        'type' => 'textfield',
+        'description' => 'Eg: h1, h2, p',
+      ),
+      'ctools' => array(
+        'type' => 'ctools',
+      ),
+    ),
+  );
+  $export['blog_sidebar'] = $ds_field;
 
   return $export;
 }
@@ -112,13 +166,17 @@ function ampet_blog_ds_layout_settings_info() {
     'regions' => array(
       'left' => array(
         0 => 'title_field',
-        1 => 'field_blog_image',
-        2 => 'field_blog_event_date',
-        3 => 'body',
+        2 => 'field_blog_image',
+        3 => 'field_blog_event_date',
+        4 => 'body',
+      ),
+      'right' => array(
+        1 => 'blog_sidebar',
       ),
     ),
     'fields' => array(
       'title_field' => 'left',
+      'blog_sidebar' => 'right',
       'field_blog_image' => 'left',
       'field_blog_event_date' => 'left',
       'body' => 'left',

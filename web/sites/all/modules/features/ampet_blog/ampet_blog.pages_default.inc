@@ -36,14 +36,14 @@ function ampet_blog_default_page_manager_pages() {
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
+    'body_classes_to_add' => 'layout-right-sidebar',
     'css_id' => '',
     'css' => '',
     'contexts' => array(),
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'doublelayout';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -75,7 +75,7 @@ function ampet_blog_default_page_manager_pages() {
       'center' => array(
         'type' => 'region',
         'title' => 'Center',
-        'width' => '74.99687539057618',
+        'width' => '39.55827807721361',
         'width_type' => '%',
         'parent' => 'main-row',
         'class' => '',
@@ -83,7 +83,7 @@ function ampet_blog_default_page_manager_pages() {
       'sidebar' => array(
         'type' => 'region',
         'title' => 'Sidebar',
-        'width' => '25.00312460942382',
+        'width' => '60.44172192278639',
         'width_type' => '%',
         'parent' => 'main-row',
         'class' => '',
@@ -92,15 +92,28 @@ function ampet_blog_default_page_manager_pages() {
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => array(),
-      'center' => array(),
+      'center' => array(
+        'css_id' => '',
+        'region_classes' => array(
+          'layout-block' => 'layout-block',
+        ),
+        'extra_classes' => '',
+      ),
+      'default' => NULL,
       'sidebar' => NULL,
+      'left' => array(
+        'css_id' => '',
+        'region_classes' => array(
+          'layout-block' => 'layout-block',
+        ),
+        'extra_classes' => '',
+      ),
+      'right' => NULL,
     ),
-    'sidebar' => array(
-      'style' => 'default',
-    ),
-    'style' => 'cbstyle',
     'center' => array(
+      'style' => 'cbstyle',
+    ),
+    'left' => array(
       'style' => 'cbstyle',
     ),
   );
@@ -110,59 +123,53 @@ function ampet_blog_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-5b11cd79-04da-46c4-80be-a14313246cf3';
-    $pane->panel = 'center';
+    $pane->pid = 'new-55b153a5-5c99-47e0-b729-4310bc433690';
+    $pane->panel = 'left';
     $pane->type = 'views_panes';
     $pane->subtype = 'blog_listing-listing';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'override_title' => 1,
+      'override_title' => 0,
       'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => array(),
-      'style' => 'cbstyle',
+      'settings' => NULL,
     );
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '5b11cd79-04da-46c4-80be-a14313246cf3';
-    $display->content['new-5b11cd79-04da-46c4-80be-a14313246cf3'] = $pane;
-    $display->panels['center'][0] = 'new-5b11cd79-04da-46c4-80be-a14313246cf3';
+    $pane->uuid = '55b153a5-5c99-47e0-b729-4310bc433690';
+    $display->content['new-55b153a5-5c99-47e0-b729-4310bc433690'] = $pane;
+    $display->panels['left'][0] = 'new-55b153a5-5c99-47e0-b729-4310bc433690';
     $pane = new stdClass();
-    $pane->pid = 'new-d09b5931-e01c-4154-b2d1-25f3890f6a98';
-    $pane->panel = 'sidebar';
+    $pane->pid = 'new-393bf714-7fc9-4a31-af3f-e73b5471db64';
+    $pane->panel = 'right';
     $pane->type = 'cbreference';
     $pane->subtype = 'cbreference';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
       'variable_name' => 'contentblock_blockref_blog',
-      'identifier' => '',
-      'build_mode' => 'default',
-      'links' => NULL,
-      'remove_title' => NULL,
-      'linked_title' => NULL,
-      'override_title' => 1,
+      'template' => '',
+      'override_title' => 0,
       'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
-      'style' => 'cbstyle',
-      'settings' => array(),
+      'settings' => NULL,
     );
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'd09b5931-e01c-4154-b2d1-25f3890f6a98';
-    $display->content['new-d09b5931-e01c-4154-b2d1-25f3890f6a98'] = $pane;
-    $display->panels['sidebar'][0] = 'new-d09b5931-e01c-4154-b2d1-25f3890f6a98';
-  $display->hide_title = PANELS_TITLE_PANE;
-  $display->title_pane = 'new-5b11cd79-04da-46c4-80be-a14313246cf3';
+    $pane->uuid = '393bf714-7fc9-4a31-af3f-e73b5471db64';
+    $display->content['new-393bf714-7fc9-4a31-af3f-e73b5471db64'] = $pane;
+    $display->panels['right'][0] = 'new-393bf714-7fc9-4a31-af3f-e73b5471db64';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['blog_listing'] = $page;

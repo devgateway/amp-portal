@@ -174,11 +174,12 @@ function ampet_blog_field_default_field_instances() {
       ),
       'full' => array(
         'label' => 'hidden',
-        'module' => 'file_entity',
+        'module' => 'image',
         'settings' => array(
-          'file_view_mode' => 'full',
+          'image_link' => '',
+          'image_style' => 'large',
         ),
-        'type' => 'file_rendered',
+        'type' => 'image',
         'weight' => 1,
       ),
     ),
