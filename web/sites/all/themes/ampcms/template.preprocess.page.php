@@ -111,6 +111,7 @@ function ampcms_css_alter(&$css) {
   );
   $exceptions_list = array(
     'sites/all/modules/contrib/admin_menu',
+    'sites/all/modules/contrib/media',
   );
 
   // The CSS_SYSTEM aggregation group doesn't make any sense and most of the
