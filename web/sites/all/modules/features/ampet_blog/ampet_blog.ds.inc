@@ -56,16 +56,16 @@ function ampet_blog_ds_field_settings_info() {
         ),
       ),
     ),
-    'field_blog_image' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
-      ),
-    ),
     'title_field' => array(
       'formatter_settings' => array(
         'ft' => array(
           'func' => 'theme_ds_field_reset',
         ),
+      ),
+    ),
+    'field_blog_image' => array(
+      'formatter_settings' => array(
+        'ft' => array(),
       ),
     ),
   );

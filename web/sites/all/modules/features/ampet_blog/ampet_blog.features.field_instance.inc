@@ -19,11 +19,11 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
+        'module' => 'ampviewsettings',
         'settings' => array(
           'trim_length' => 300,
         ),
-        'type' => 'text_summary_or_trimmed',
+        'type' => 'clean_text_summary_or_trimmed',
         'weight' => 2,
       ),
       'full' => array(
@@ -57,7 +57,7 @@ function ampet_blog_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 10,
+        'rows' => 20,
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
@@ -177,7 +177,7 @@ function ampet_blog_field_default_field_instances() {
         'module' => 'image',
         'settings' => array(
           'image_link' => '',
-          'image_style' => 'large',
+          'image_style' => 'img-normal',
         ),
         'type' => 'image',
         'weight' => 1,
@@ -213,7 +213,7 @@ function ampet_blog_field_default_field_instances() {
       ),
       'filefield_paths_enabled' => 1,
       'max_filesize' => '',
-      'max_resolution' => '1280x1280',
+      'max_resolution' => '2048x2048',
       'min_resolution' => '128x128',
       'title_field' => 0,
       'user_register_form' => FALSE,
@@ -226,14 +226,15 @@ function ampet_blog_field_default_field_instances() {
           'public' => 'public',
         ),
         'allowed_types' => array(
+          0 => 0,
           'audio' => 0,
           'document' => 0,
           'image' => 'image',
           'video' => 0,
         ),
         'browser_plugins' => array(
-          'media_default--media_browser_1' => 'media_default--media_browser_1',
-          'media_default--media_browser_my_files' => 0,
+          'media_library--image_library' => 'media_library--image_library',
+          'media_library--video_library' => 0,
           'upload' => 'upload',
         ),
         'progress_indicator' => 'throbber',
