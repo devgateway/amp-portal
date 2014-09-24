@@ -28,7 +28,7 @@
           // compatibility with existing media and is moderately more efficient
           // than re-building the element.
           var media = Drupal.settings.tagmap[match];
-          var media_json = match.replace('[[', '').replace(']]', '');
+          var media_json = match.replace(/^\[\[/, '').replace(/\]\]$/, '');
 
           // Ensure that the media JSON is valid.
           try {
