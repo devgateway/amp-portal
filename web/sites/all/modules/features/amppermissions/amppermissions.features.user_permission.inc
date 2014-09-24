@@ -48,6 +48,24 @@ function amppermissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'access contextual links'.
+  $permissions['access contextual links'] = array(
+    'name' => 'access contextual links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'contextual',
+  );
+
+  // Exported permission: 'access media browser'.
+  $permissions['access media browser'] = array(
+    'name' => 'access media browser',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media',
+  );
+
   // Exported permission: 'access site in maintenance mode'.
   $permissions['access site in maintenance mode'] = array(
     'name' => 'access site in maintenance mode',
@@ -163,6 +181,15 @@ function amppermissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'media',
+  );
+
+  // Exported permission: 'administer media wysiwyg view mode'.
+  $permissions['administer media wysiwyg view mode'] = array(
+    'name' => 'administer media wysiwyg view mode',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media_wysiwyg_view_mode',
   );
 
   // Exported permission: 'administer menu'.
@@ -408,15 +435,6 @@ function amppermissions_user_default_permissions() {
     'module' => 'features',
   );
 
-  // Exported permission: 'import media'.
-  $permissions['import media'] = array(
-    'name' => 'import media',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'media',
-  );
-
   // Exported permission: 'manage features'.
   $permissions['manage features'] = array(
     'name' => 'manage features',
@@ -541,6 +559,20 @@ function amppermissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'panels',
+  );
+
+  // Exported permission: 'use text format clean_summary'.
+  $permissions['use text format clean_summary'] = array(
+    'name' => 'use text format clean_summary',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
+  // Exported permission: 'use text format plain_text'.
+  $permissions['use text format plain_text'] = array(
+    'name' => 'use text format plain_text',
+    'roles' => array(),
+    'module' => 'filter',
   );
 
   // Exported permission: 'view files'.
