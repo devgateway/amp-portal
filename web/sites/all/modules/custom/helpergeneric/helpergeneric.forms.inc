@@ -62,8 +62,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     case 'dependencies':
       // Hide custom features from dependencies.
       $entries_list = array(
+        'ampcontentblock',
         'ampet_blog',
         'ampet_page',
+        'ampfileentity',
+        'amphomepage',
         'amppermissions',
         'ampsettings',
         'ampviewsettings',
@@ -182,6 +185,44 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'less_dir',
         'less_engine',
         'less_watch',
+
+        // Hide media.module variables.
+        // Dialog options.
+        'media_dialogclass',
+        'media_modal',
+        'media_draggable',
+        'media_resizable',
+        'media_minwidth',
+        'media_width',
+        'media_height',
+        'media_position',
+        'media_zindex',
+        'media_backgroundcolor',
+        'media_opacity',
+
+        // Hide media_wysiwyg.module variables.
+        'media_wysiwyg_wysiwyg_allowed_attributes',
+        'media_wysiwyg_wysiwyg_allowed_types',
+        'media_wysiwyg_wysiwyg_browser_plugins',
+        'media_wysiwyg_wysiwyg_default_view_mode',
+        'media_wysiwyg_wysiwyg_icon_title',
+        'media_wysiwyg_wysiwyg_upload_directory',
+        'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_audio_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_audio_wysiwyg_restricted_view_modes_status',
+        'media_wysiwyg_view_mode_document_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_document_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_document_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_document_wysiwyg_restricted_view_modes_status',
+        'media_wysiwyg_view_mode_image_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_image_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_image_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_image_wysiwyg_restricted_view_modes_status',
+        'media_wysiwyg_view_mode_video_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_video_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes_status',
 
         // Hide update.module variables.
         'update_last_check',
