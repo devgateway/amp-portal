@@ -116,11 +116,6 @@ function contentblock_entity_info() {
 function contentblock_get_types() {
   $items = array();
 
-  $items['image'] = array(
-    'label' => t('Image'),
-    'description' => t('Use "Image" for...'),
-  );
-
   $items['links'] = array(
     'label' => t('Links List'),
     'description' => t('Use "Links List" for...'),
