@@ -74,6 +74,19 @@ function ampcms_preprocess_page(&$variables) {// For now hide breadcrumb.
     '#tag' => 'p',
     '#value' => t('Please enable JavaScript for full use of this site.'),
   );
+
+  $style_main_content = FALSE;
+  if (arg(0) == 'admin') {
+    $style_main_content = TRUE;
+  }
+  else if (arg(2) != NULL && in_array(arg(0), array('node', 'contentblock'))) {
+    $style_main_content = TRUE;
+  }
+
+  $variables['main_content_classes'] = '';
+  if ($style_main_content) {
+    $variables['main_content_classes'] = ' layout-block';
+  }
 }
 
 /**
@@ -111,6 +124,8 @@ function ampcms_css_alter(&$css) {
   );
   $exceptions_list = array(
     'sites/all/modules/contrib/admin_menu',
+    'sites/all/modules/contrib/ctools',
+    'sites/all/modules/contrib/date',
     'sites/all/modules/contrib/media',
   );
 

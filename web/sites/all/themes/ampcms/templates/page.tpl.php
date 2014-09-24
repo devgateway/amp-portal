@@ -25,7 +25,7 @@
     </div>
   </nav>
 
-  <section role="main" id="main-content" class="main-content clearfix">
+  <section role="main" id="main-content" class="main-content clearfix<?php print $main_content_classes; ?>">
     <div class="main-content-inner">
       <?php print render($browser_warnings); ?>
 

@@ -236,13 +236,54 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     }
   }
 
-  if (!empty($removed_entries_list)) {
-    $message = 'The following are not listed in the <b>%name</b> components export list: @entries';
-    $t_args = array(
-      '%name' => $component_export['name'] . " (${component})",
-      '@entries' => implode(', ', $removed_entries_list),
+  // if (!empty($removed_entries_list)) {
+  //   $message = 'The following are not listed in the <b>%name</b> components export list: @entries';
+  //   $t_args = array(
+  //     '%name' => $component_export['name'] . " (${component})",
+  //     '@entries' => implode(', ', $removed_entries_list),
+  //   );
+  //   drupal_set_message(t($message, $t_args), 'warning');
+  // }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_login') {
+    drupal_set_title('Log in');
+    $form['actions']['cancel'] = array(
+      '#type' => 'link',
+      '#title' => t('Lost password?'),
+      '#href' => 'user/password',
+      '#weight' => 20,
     );
-    drupal_set_message(t($message, $t_args), 'warning');
+  }
+
+  if (!helpergeneric_cleanup_ui()) {
+    return;
+  }
+
+  if ($form_id == 'user_profile_form') {
+    _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'file_entity_add_upload') {
+    _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'file_entity_edit') {
+    _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'media_wysiwyg_format_form') {
+    _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for contentblock_form().
+ */
+function helpergeneric_form_contentblock_form_alter(&$form, &$form_state, $form_id) {
+  if (helpergeneric_cleanup_ui()) {
+    _helpergeneric_cleanup_contentblock_form($form, $form_state, $form_id);
   }
 }
 
@@ -251,7 +292,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
  */
 function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
   if (helpergeneric_cleanup_ui()) {
-    helpergeneric_cleanup_node_form($form, $form_state, $form_id);
+    _helpergeneric_cleanup_node_form($form, $form_state, $form_id);
   }
 
   // Control "Event Date" field visibility.
@@ -265,43 +306,6 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
     );
     // Remove event date value on submit if field_blog_entry_type is not an event.
     $form['#validate'][] = 'helpergeneric_node_form_event_date_validate';
-  }
-}
-
-/**
- * Helper function required by hook_form_FORM_ID_alter() for node_form().
- */
-function helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
-  // Do not display as vertical tabs.
-  $form['additional_settings'] = array();
-
-  if (isset($form['author'])) {
-    $form['author']['#access'] = FALSE;
-  }
-
-  // Hide "Comment settings" fieldset for all node types except "Blog entry".
-  if ($form['#node']->type != 'blog') {
-    $form['comment_settings']['#access'] = FALSE;
-  }
-
-  if (isset($form['menu'])) {
-    $form['menu']['#access'] = FALSE;
-  }
-
-  if (isset($form['redirect'])) {
-    $form['redirect']['#access'] = FALSE;
-  }
-
-  if (isset($form['revision_information'])) {
-    $form['revision_information']['#access'] = FALSE;
-  }
-
-  if (isset($form['options']['promote'])) {
-    $form['options']['promote']['#access'] = FALSE;
-  }
-
-  if (isset($form['options']['sticky'])) {
-    $form['options']['sticky']['#access'] = FALSE;
   }
 }
 
@@ -323,36 +327,28 @@ function helpergeneric_node_form_event_date_validate($form, &$form_state) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter() for user_profile_form().
+ * Helper function required by hook_form_FORM_ID_alter() for contentblock_form().
  */
-function helpergeneric_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  if (helpergeneric_cleanup_ui()) {
-    helpergeneric_cleanup_user_form($form, $form_state, $form_id);
-  }
-}
+function _helpergeneric_cleanup_contentblock_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
 
-/**
- * Helper function required by hook_form_FORM_ID_alter() for user_profile_form().
- */
-function helpergeneric_cleanup_user_form(&$form, &$form_state, $form_id) {
   if (isset($form['redirect'])) {
     $form['redirect']['#access'] = FALSE;
   }
-}
 
-/**
- * Implements hook_form_FORM_ID_alter() for file_entity_edit().
- */
-function helpergeneric_form_file_entity_edit_alter(&$form, &$form_state, $form_id) {
-  if (helpergeneric_cleanup_ui()) {
-    helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  if (isset($form['path'])) {
+    $form['path']['#access'] = FALSE;
   }
 }
 
 /**
  * Helper function required by hook_form_FORM_ID_alter() for file_entity_edit().
  */
-function helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
+function _helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
+
   if (isset($form['destination'])) {
     $form['destination']['#access'] = FALSE;
   }
@@ -364,6 +360,9 @@ function helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
   if (isset($form['redirect'])) {
     $form['redirect']['#access'] = FALSE;
   }
+  else if (isset($form['options']['fields']['redirect'])) {
+    $form['options']['fields']['redirect']['#access'] = FALSE;
+  }
 
   if (isset($form['user'])) {
     $form['user']['#access'] = FALSE;
@@ -371,16 +370,79 @@ function helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Implements hook_form_alter().
+ * Helper function required by hook_form_FORM_ID_alter() for node_form().
  */
-function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'user_login') {
-    drupal_set_title('Log in');
-    $form['actions']['cancel'] = array(
-      '#type' => 'link',
-      '#title' => t('Lost password?'),
-      '#href' => 'user/password',
-      '#weight' => 20,
-    );
+function _helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
+
+  if (isset($form['author'])) {
+    $form['author']['#access'] = FALSE;
+  }
+
+  // Hide "Comment settings" fieldset for all node types except "Blog entry".
+  if ($form['#node']->type != 'blog') {
+    $form['comment_settings']['#access'] = FALSE;
+  }
+
+  if (isset($form['menu'])) {
+    $form['menu']['#access'] = FALSE;
+  }
+
+  if (isset($form['redirect'])) {
+    $form['redirect']['#access'] = FALSE;
+  }
+
+  if (isset($form['path'])) {
+    $form['path']['#access'] = FALSE;
+  }
+
+  if (isset($form['revision_information'])) {
+    $form['revision_information']['#access'] = FALSE;
+  }
+
+  if (isset($form['options']['promote'])) {
+    $form['options']['promote']['#access'] = FALSE;
+  }
+
+  if (isset($form['options']['sticky'])) {
+    $form['options']['sticky']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Helper function required by hook_form_FORM_ID_alter() for user_profile_form().
+ */
+function _helpergeneric_cleanup_user_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
+
+  if (isset($form['redirect'])) {
+    $form['redirect']['#access'] = FALSE;
+  }
+
+  if (isset($form['path'])) {
+    $form['path']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Replace vertical tabs with normal fieldsets.
+ */
+function _helpergeneric_alter_vertical_tabs(&$form) {
+  // Do not display as vertical tabs.
+  $form['additional_settings'] = array();
+  foreach (element_children($form) as $key) {
+    if (isset($form[$key]['#group']) && $form[$key]['#group'] == 'additional_settings') {
+      unset($form[$key]['#group']);
+      $form[$key]['#collapsed'] = FALSE;
+      $form[$key]['#collapsible'] = FALSE;
+    }
+  }
+
+  if (!empty($form['#groups'])) {
+    foreach (element_children($form['#groups']) as $key) {
+      $form['#groups'][$key]->format_type = 'fieldset';
+    }
   }
 }

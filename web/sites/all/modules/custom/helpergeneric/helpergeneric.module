@@ -23,9 +23,9 @@ function helpergeneric_menu() {
     'file path' => drupal_get_path('module', 'system'),
   );
 
-  $items['admin/settings/page-content'] = array(
-    'title' => 'Page content settings',
-    'description' => 'Administer Page content.',
+  $items['admin/settings/static-content'] = array(
+    'title' => 'Static Content',
+    'description' => 'Administer static page content for the homepage and other pages.',
     'page callback' => 'system_admin_menu_block_page',
     'access arguments' => array('administer nodes'),
     'weight' => 30,
@@ -33,24 +33,22 @@ function helpergeneric_menu() {
     'file path' => drupal_get_path('module', 'system'),
   );
 
-  $items['admin/settings/page-content/homepage'] = array(
-    'title' => 'Homepage settings',
-    'description' => 'Configure Homepage settings.',
+  $items['admin/settings/static-content/homepage'] = array(
+    'title' => 'Homepage',
+    'description' => 'Configure homepage content.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('helpergeneric_homepage_content_settings_form'),
     'access arguments' => array('administer nodes'),
     'file' => 'helpergeneric.content.inc',
-    'weight' => -32,
   );
 
-  $items['admin/settings/page-content/blog'] = array(
-    'title' => 'Blog settings',
-    'description' => 'Configure Blog settings.',
+  $items['admin/settings/static-content/blog'] = array(
+    'title' => 'Blog Sidebar',
+    'description' => 'Configure blog sidebar content.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('helpergeneric_blog_content_settings_form'),
     'access arguments' => array('administer nodes'),
     'file' => 'helpergeneric.content.inc',
-    'weight' => -32,
   );
 
   $items['admin/settings/generic'] = array(
@@ -74,7 +72,7 @@ function helpergeneric_menu() {
 
   $items['admin/settings/user-menu'] = array(
     'title' => 'Edit User menu',
-    'description' => 'Edit the user menu links.',
+    'description' => 'Edit the top user menu links.',
     'page callback' => 'drupal_goto',
     'page arguments' => array('admin/structure/menu/manage/user-menu'),
     'access arguments' => array('administer menu'),
@@ -340,7 +338,7 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
   }
 
   // Attach "Add content block" link to "Page Content" settings page title.
-  if (strpos($root_path, 'admin/settings/page-content/') === 0) {
+  if (strpos($root_path, 'admin/settings/static-content/') === 0) {
     $action_router_item = menu_get_item('contentblock/add');
 
     if ($action_router_item['access']) {
