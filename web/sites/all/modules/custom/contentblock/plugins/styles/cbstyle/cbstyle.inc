@@ -10,9 +10,12 @@
 $plugin = array(
   'title' => t('CB Style'),
   'description' => t('Display the panes as a Content Block.'),
+
   'render region' => 'cbstyle_style_render_region',
-  'render pane' => 'cbstyle_style_render_pane',
   'settings form' => 'contentblock_cbstyle_style_settings_form',
+
+  'render pane' => 'cbstyle_style_render_pane',
+  'pane settings form' => 'contentblock_cbstyle_style_settings_form',
 );
 
 /**
@@ -54,8 +57,6 @@ function contentblock_cbstyle_style_settings_form($style_settings) {
  * Render region callback.
  */
 function theme_cbstyle_style_render_region($vars) {
-  $panel_content = $vars['display']->content;
-
   $contentblock_attributes = array();
   if (!empty($vars['settings']['css_id'])) {
     // Make sure the provided CSS ID is really unique.
@@ -91,18 +92,8 @@ function theme_cbstyle_style_render_region($vars) {
   foreach ($vars['panes'] as $pane_id => $pane_html_content) {
     // Make sure we have some content.
     if (empty($pane_html_content)) {
-      // $pane_html_content = '';
       continue;
     }
-
-    // Determine the title for the current pane.
-    $title = '';
-    if (!empty($vars['display']->content[$pane_id]->configuration['title'])) {
-      $title = check_plain($vars['display']->content[$pane_id]->configuration['title']);
-    }
-
-    // Create a class for the current contentblock.
-    $item_css_class = drupal_html_class('contentblock-content-' . $title);
 
     // Add the section content.
     $elements[$pane_id . '_content'] = array(
@@ -112,11 +103,16 @@ function theme_cbstyle_style_render_region($vars) {
       '#attributes' => array(
         'class' => array(
           'contentblock-section-content',
-          $item_css_class,
         ),
       ),
       '#weight' => 2 * $delta + 2,
     );
+
+    if (!empty($vars['display']->content[$pane_id]->configuration['title'])) {
+      $title = $vars['display']->content[$pane_id]->configuration['title'];
+      // Create a class for the current contentblock.
+      $elements[$pane_id . '_content']['#attributes']['class'][] = drupal_html_class('contentblock-content-' . $title);
+    }
 
     $delta++;
   }
@@ -130,5 +126,70 @@ function theme_cbstyle_style_render_region($vars) {
  * @ingroup themeable
  */
 function theme_cbstyle_style_render_pane($vars) {
-  return render($vars['content']->content);
+  // Make sure we have some content.
+  if (empty($vars['content']->content)) {
+    return;
+  }
+
+  $contentblock_attributes = array();
+  if (!empty($vars['settings']['css_id'])) {
+    // Make sure the provided CSS ID is really unique.
+    $contentblock_attributes['id'] = drupal_html_id($vars['settings']['css_id']);
+  }
+  else {
+    // Create a unique ID for the contentblock widget.
+    $contentblock_attributes['id'] = drupal_html_id('contentblock-' . $vars['pane']->pid);
+  }
+
+  // Add a class to the wrapper.
+  $contentblock_attributes['class'][] = 'panel-contentblock';
+  if (!empty($vars['settings']['region_classes'])) {
+    $contentblock_attributes['class'] += $vars['settings']['region_classes'];
+  }
+
+  if (!empty($vars['settings']['extra_classes'])) {
+    // Sanitize the provided list of classes.
+    $class_list = explode(' ', $vars['settings']['extra_classes']);
+    foreach ($class_list as $class) {
+      $contentblock_attributes['class'][] = drupal_html_class($class);
+    }
+  }
+
+  $elements = array(
+    '#tree' => TRUE,
+    '#prefix' => '<div' . drupal_attributes($contentblock_attributes) . '>',
+    '#suffix' => '</div>',
+  );
+
+  // Add the section title.
+  if (!empty($vars['content']->title)) {
+    $elements['pane_title'] = array(
+      '#tag' => 'h3',
+      '#theme' => 'html_tag',
+      '#value' => $vars['content']->title,
+      '#attributes' => array(
+        'class' => array(
+          'pane-title',
+        ),
+      ),
+    );
+  }
+
+  $elements['pane_content'] = array(
+    '#tag' => 'div',
+    '#theme' => 'html_tag',
+    '#value' => $vars['content']->content,
+    '#attributes' => array(
+      'class' => array(
+        'contentblock-pane-content',
+      ),
+    ),
+  );
+
+  if (!empty($vars['content']->title)) {
+    // Add the section content.
+    $elements['pane_content']['#attributes']['class'][] = drupal_html_class('contentblock-content-' . $vars['content']->title);
+  }
+
+  return drupal_render($elements);
 }
