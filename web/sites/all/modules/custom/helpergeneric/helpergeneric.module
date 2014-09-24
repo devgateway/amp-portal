@@ -297,12 +297,22 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
 
     // Attach "Cancel" link to the entity edit page title.
     if (count($router_item['original_map']) == 3 && $router_item['original_map'][2] == 'edit') {
-      // Load the view menu router item.
-      $action_router_path = implode('/', array_slice($router_item['original_map'], 0, -1));
-      $action_router_item = menu_get_item($action_router_path);
 
-      if ($action_router_item['access']) {
-        $action_router_item['localized_options']['theme extra'] = array(
+      $url_options = drupal_parse_url($_GET['destination']);
+      unset($_GET['destination']);
+
+      $alt_path= NULL;
+      if (!empty($url_options['path'])) {
+        $alt_path = $url_options['path'];
+      }
+
+      if ($alt_path) {
+        $link_item = array(
+          'title' => 'Cancel', // This is not used if we provide 'theme extra' settings.
+          'href' => $alt_path,
+          'localized_options' => $url_options,
+        );
+        $link_item['localized_options']['theme extra'] = array(
           'entity action' => TRUE,
           'title' => 'Cancel',
           'prefix' => '(',
@@ -311,9 +321,30 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
 
         $data['actions']['output'][] = array(
           '#theme' => 'menu_local_action',
-          '#link' => $action_router_item,
+
+          '#link' => $link_item,
           '#weight' => 50,
         );
+      }
+      else {
+        // Load the view menu router item.
+        $action_router_path = implode('/', array_slice($router_item['original_map'], 0, -1));
+        $action_router_item = menu_get_item($action_router_path);
+
+        if ($action_router_item['access']) {
+          $action_router_item['localized_options']['theme extra'] = array(
+            'entity action' => TRUE,
+            'title' => 'Cancel',
+            'prefix' => '(',
+            'suffix' => ')',
+          );
+
+          $data['actions']['output'][] = array(
+            '#theme' => 'menu_local_action',
+            '#link' => $action_router_item,
+            '#weight' => 50,
+          );
+        }
       }
     }
   }
