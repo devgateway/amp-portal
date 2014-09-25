@@ -42,6 +42,24 @@ function ampet_blog_field_default_field_instances() {
         'type' => 'text_summary_or_trimmed',
         'weight' => 1,
       ),
+      'teaser_featured' => array(
+        'label' => 'hidden',
+        'module' => 'ampviewsettings',
+        'settings' => array(
+          'trim_length' => 300,
+        ),
+        'type' => 'clean_text_summary_or_trimmed',
+        'weight' => 2,
+      ),
+      'teaser_normal' => array(
+        'label' => 'hidden',
+        'module' => 'ampviewsettings',
+        'settings' => array(
+          'trim_length' => 300,
+        ),
+        'type' => 'clean_text_summary_or_trimmed',
+        'weight' => 2,
+      ),
     ),
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
@@ -83,6 +101,18 @@ function ampet_blog_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 11,
+      ),
+      'teaser_featured' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
+      'teaser_normal' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
       ),
     ),
     'ds_extras_field_template' => 'theme_ds_field_minimal',
@@ -127,6 +157,18 @@ function ampet_blog_field_default_field_instances() {
         'type' => 'date_default',
         'weight' => 2,
       ),
+      'teaser_featured' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
+      ),
+      'teaser_normal' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
+      ),
     ),
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
@@ -164,12 +206,8 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
-        'settings' => array(
-          'image_link' => 'content',
-          'image_style' => 'thumbnail',
-        ),
-        'type' => 'image',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'full' => array(
@@ -181,6 +219,26 @@ function ampet_blog_field_default_field_instances() {
         ),
         'type' => 'image',
         'weight' => 1,
+      ),
+      'teaser_featured' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => 'content',
+          'image_style' => 'img-tfeatured',
+        ),
+        'type' => 'image',
+        'weight' => 0,
+      ),
+      'teaser_normal' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => 'content',
+          'image_style' => 'img-tnormal',
+        ),
+        'type' => 'image',
+        'weight' => 0,
       ),
     ),
     'ds_extras_field_template' => 'theme_ds_field_minimal',
@@ -255,7 +313,7 @@ function ampet_blog_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'title',
         'settings' => array(
-          'title_class' => '',
+          'title_class' => 'title',
           'title_link' => 'content',
           'title_style' => 'h3',
         ),
@@ -273,6 +331,28 @@ function ampet_blog_field_default_field_instances() {
         ),
         'type' => 'title_with_actions',
         'weight' => 0,
+      ),
+      'teaser_featured' => array(
+        'label' => 'hidden',
+        'module' => 'title',
+        'settings' => array(
+          'title_class' => 'title',
+          'title_link' => 'content',
+          'title_style' => 'h3',
+        ),
+        'type' => 'title_linked',
+        'weight' => 1,
+      ),
+      'teaser_normal' => array(
+        'label' => 'hidden',
+        'module' => 'title',
+        'settings' => array(
+          'title_class' => 'title',
+          'title_link' => 'content',
+          'title_style' => 'h3',
+        ),
+        'type' => 'title_linked',
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',

@@ -55,6 +55,12 @@ function ampet_blog_strongarm() {
       'revision' => array(
         'custom_settings' => FALSE,
       ),
+      'teaser_normal' => array(
+        'custom_settings' => TRUE,
+      ),
+      'teaser_featured' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
