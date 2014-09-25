@@ -6,7 +6,7 @@
  */
 
 /**
- * Page callback for 'admin/settings/page-content/homepage'.
+ * Page callback for 'admin/settings/static-content/homepage'.
  */
 function helpergeneric_homepage_content_settings_form($form, &$form_state) {
   $varname = 'contentblock_blockref_homepage';
@@ -16,7 +16,7 @@ function helpergeneric_homepage_content_settings_form($form, &$form_state) {
 }
 
 /**
- * Page callback for 'admin/settings/page-content/blog'.
+ * Page callback for 'admin/settings/static-content/blog'.
  */
 function helpergeneric_blog_content_settings_form($form, &$form_state) {
   $varname = 'contentblock_blockref_blog';
@@ -26,7 +26,7 @@ function helpergeneric_blog_content_settings_form($form, &$form_state) {
 }
 
 /**
- * Helper function for "page-content" forms.
+ * Helper function for "static-content" forms.
  */
 function _helpergeneric_cbreference_settings_form($varname, &$form, &$form_state) {
   $form = array();

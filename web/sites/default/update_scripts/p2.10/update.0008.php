@@ -3,8 +3,8 @@
 // Provide a list of modules to be installed.
 $modules = array(
   'wysiwyg',
-    // media:
-    'jquery_update',
+    // 'jquery_update',
+    // Enable WYSIWYG related media submodules.:
     'media_wysiwyg',
     'media_wysiwyg_view_mode',
 );
@@ -15,17 +15,17 @@ _us_module__install($modules);
 _us_views__disable('media_default');
 
 // Make sure the compressed version of jQuery and jQuery UI libraries are loaded.
-variable_set('jquery_update_compression_type', 'min');
+// variable_set('jquery_update_compression_type', 'min');
 
 // Do not use any CDN for jQuery and jQuery UI
-variable_set('jquery_update_jquery_cdn', 'none');
+// variable_set('jquery_update_jquery_cdn', 'none');
 
 // Make sure that jQuery version 1.8.x is used on the frontend of the website.
-variable_set('jquery_update_jquery_version', '1.8');
+// variable_set('jquery_update_jquery_version', '1.8');
 
 // Make sure that jQuery version 1.8.x is used on the admin interface.
 // Requried by the new version of media.module
-variable_set('jquery_update_jquery_admin_version', '1.8');
+// variable_set('jquery_update_jquery_admin_version', '1.8');
 
 // Set the fallback format to plain text.
 variable_set('filter_fallback_format', 'filtered_html');
@@ -146,13 +146,3 @@ foreach ($file_types as $type) {
   variable_set($status_var, 1);
   variable_set($mode_var, $view_modes);
 }
-
-db_update('system')
-  ->fields(array('weight' => 20))
-  ->condition('name', 'helpergeneric')
-  ->execute();
-
-db_update('system')
-  ->fields(array('weight' => 20))
-  ->condition('name', 'helpertheme')
-  ->execute();

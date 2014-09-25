@@ -34,7 +34,7 @@ function helpergeneric_menu() {
   );
 
   $items['admin/settings/static-content/homepage'] = array(
-    'title' => 'Homepage',
+    'title' => 'Homepage Content',
     'description' => 'Configure homepage content.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('helpergeneric_homepage_content_settings_form'),
@@ -43,7 +43,7 @@ function helpergeneric_menu() {
   );
 
   $items['admin/settings/static-content/blog'] = array(
-    'title' => 'Blog Sidebar',
+    'title' => 'Blog Sidebar Content',
     'description' => 'Configure blog sidebar content.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('helpergeneric_blog_content_settings_form'),
