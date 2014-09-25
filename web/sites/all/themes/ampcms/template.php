@@ -6,4 +6,5 @@
  */
 
 include_once('template.preprocess.page.php');
+include_once('template.preprocess.views.php');
 include_once('template.themeoverrides.php');
