@@ -80,6 +80,37 @@ function amphomepage_default_page_manager_pages() {
     $pane->uuid = '8e12b315-2f57-4144-86eb-3e5963449bab';
     $display->content['new-8e12b315-2f57-4144-86eb-3e5963449bab'] = $pane;
     $display->panels['middle'][0] = 'new-8e12b315-2f57-4144-86eb-3e5963449bab';
+    $pane = new stdClass();
+    $pane->pid = 'new-d07c4bc0-ca31-41ee-88ef-befce66b63d9';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'homepage-news_events';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'News And Events',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'style' => 'cbstyle',
+      'settings' => array(
+        'pane_classes' => array(
+          'layout-block' => 'layout-block',
+          'layout-separator' => 'layout-separator',
+        ),
+      ),
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'homepage-news-events-block two-columns-grid',
+    );
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'd07c4bc0-ca31-41ee-88ef-befce66b63d9';
+    $display->content['new-d07c4bc0-ca31-41ee-88ef-befce66b63d9'] = $pane;
+    $display->panels['middle'][1] = 'new-d07c4bc0-ca31-41ee-88ef-befce66b63d9';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
