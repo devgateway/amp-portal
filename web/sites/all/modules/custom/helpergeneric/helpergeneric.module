@@ -298,12 +298,13 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
     // Attach "Cancel" link to the entity edit page title.
     if (count($router_item['original_map']) == 3 && $router_item['original_map'][2] == 'edit') {
 
-      $url_options = drupal_parse_url($_GET['destination']);
-      unset($_GET['destination']);
-
       $alt_path= NULL;
-      if (!empty($url_options['path'])) {
-        $alt_path = $url_options['path'];
+      if (!empty($_GET['destination'])) {
+        $url_options = drupal_parse_url($_GET['destination']);
+        unset($_GET['destination']);
+        if (!empty($url_options['path'])) {
+          $alt_path = $url_options['path'];
+        }
       }
 
       if ($alt_path) {
