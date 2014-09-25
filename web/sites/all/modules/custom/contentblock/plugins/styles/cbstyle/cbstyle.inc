@@ -3,7 +3,7 @@
 
 /**
  * @file
- * Definition of the 'PanelTabs' region style. Inspired by the "Panels Tabs" module.
+ * Definition of the 'CB Style' region and page style.
  */
 
 // Plugin definition.
@@ -12,23 +12,16 @@ $plugin = array(
   'description' => t('Display the panes as a Content Block.'),
 
   'render region' => 'cbstyle_style_render_region',
-  'settings form' => 'contentblock_cbstyle_style_settings_form',
+  'settings form' => 'contentblock_cbstyle_style_region_settings_form',
 
   'render pane' => 'cbstyle_style_render_pane',
-  'pane settings form' => 'contentblock_cbstyle_style_settings_form',
+  'pane settings form' => 'contentblock_cbstyle_style_pane_settings_form',
 );
 
 /**
- * Settings form callback.
+ * 'settings form' callback.
  */
-function contentblock_cbstyle_style_settings_form($style_settings) {
-  $form['css_id'] = array(
-    '#type' => 'textfield',
-    '#default_value' => isset($style_settings['css_id']) ? $style_settings['css_id'] : '',
-    '#title' => t('CSS ID'),
-    '#description' => t('CSS ID to apply to this pane. This may be blank.'),
-  );
-
+function contentblock_cbstyle_style_region_settings_form($style_settings, $display, $pid, $type) {
   module_load_include('inc', 'ds', 'includes/ds.field_ui');
   $ds_classes = _ds_classes('ds_classes_regions');
   if (isset($ds_classes[''])) {
@@ -38,16 +31,42 @@ function contentblock_cbstyle_style_settings_form($style_settings) {
     '#type' => 'select',
     '#multiple' => TRUE,
     '#options' => $ds_classes,
-    '#title' => t('Choose additional CSS classes for the region'),
+    '#title' => t('Choose CSS classes for the region'),
     '#default_value' => isset($style_settings['region_classes']) ? $style_settings['region_classes'] : array(),
   );
 
+  $form['css_id'] = array(
+    '#type' => 'textfield',
+    '#default_value' => isset($style_settings['css_id']) ? $style_settings['css_id'] : '',
+    '#title' => t('CSS ID'),
+    '#description' => t('CSS ID to apply to this pane. This may be blank.'),
+  );
 
   $form['extra_classes'] = array(
     '#type' => 'textfield',
     '#default_value' => isset($style_settings['extra_classes']) ? $style_settings['extra_classes'] : '',
     '#title' => t('Extra CSS class'),
     '#description' => t('CSS class to apply to this pane. This may be blank.'),
+  );
+
+  return $form;
+}
+
+/**
+ * 'pane settings form' callback.
+ */
+function contentblock_cbstyle_style_pane_settings_form($style_settings, $display, $pid, $type) {
+  module_load_include('inc', 'ds', 'includes/ds.field_ui');
+  $ds_classes = _ds_classes('ds_classes_regions');
+  if (isset($ds_classes[''])) {
+    unset($ds_classes['']);
+  }
+  $form['pane_classes'] = array(
+    '#type' => 'select',
+    '#multiple' => TRUE,
+    '#options' => $ds_classes,
+    '#title' => t('Choose CSS classes for the region'),
+    '#default_value' => isset($style_settings['pane_classes']) ? $style_settings['pane_classes'] : array(),
   );
 
   return $form;
@@ -132,9 +151,9 @@ function theme_cbstyle_style_render_pane($vars) {
   }
 
   $contentblock_attributes = array();
-  if (!empty($vars['settings']['css_id'])) {
-    // Make sure the provided CSS ID is really unique.
-    $contentblock_attributes['id'] = drupal_html_id($vars['settings']['css_id']);
+  if (!empty($vars['pane']->css['css_id'])) {
+    // Provided CSS ID must be unique!
+    $contentblock_attributes['id'] = drupal_html_id($vars['pane']->css['css_id']);
   }
   else {
     // Create a unique ID for the contentblock widget.
@@ -143,13 +162,13 @@ function theme_cbstyle_style_render_pane($vars) {
 
   // Add a class to the wrapper.
   $contentblock_attributes['class'][] = 'panel-contentblock';
-  if (!empty($vars['settings']['region_classes'])) {
-    $contentblock_attributes['class'] += $vars['settings']['region_classes'];
+  if (!empty($vars['settings']['pane_classes'])) {
+    $contentblock_attributes['class'] += $vars['settings']['pane_classes'];
   }
 
-  if (!empty($vars['settings']['extra_classes'])) {
+  if (!empty($vars['pane']->css['css_class'])) {
     // Sanitize the provided list of classes.
-    $class_list = explode(' ', $vars['settings']['extra_classes']);
+    $class_list = explode(' ', $vars['pane']->css['css_class']);
     foreach ($class_list as $class) {
       $contentblock_attributes['class'][] = drupal_html_class($class);
     }
