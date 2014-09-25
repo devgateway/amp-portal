@@ -1,0 +1,391 @@
+<?php
+/**
+ * @file
+ * Exposes Custom Content Blocks.
+ */
+
+/**
+ * Define administrative URLs.
+ */
+define('CONTENTBLOCK_UI_PATH', 'contentblock');
+define('CONTENTBLOCK_ADMIN_UI_PATH', 'admin/content/contentblock');
+define('CONTENTBLOCK_BUNDLE_ADMIN_UI_PATH', 'admin/structure/contentblock');
+
+/**
+ * Implements hook_entity_info().
+ */
+function contentblock_entity_info() {
+  $entity_info = array();
+
+  $entity_info['contentblock'] = array(
+    'label' => t('Content Block'),
+    'plural label' => t('Content Blocks'),
+    'description' => t('A custom content block.'),
+
+    // We don't have a base table, entities are stored in MongoDB.
+    'base table' => 'contentblock',
+    'module' => 'contentblock',
+
+    'entity class' => 'ContentBlockEntity',
+    'controller class' => 'ContentBlockEntityController',
+    // 'extra fields controller class' => 'ContentBlockExtraFieldsController',
+    // 'metadata controller class' => 'ContentBlockMetadataController',
+    // 'i18n controller class' => 'EntityDefaultI18nStringController',
+
+    // 'entity cache' => FALSE,
+    // 'field cache' => FALSE,
+    'static cache' => TRUE,
+
+    'fieldable' => TRUE,
+
+    'access callback' => 'contentblock_access',
+    'uri callback' => 'entity_class_uri',
+
+    'menu wildcard' => 'contentblock',
+
+    'entity keys' => array(
+      'id' => 'cbid',
+      // 'revision' => '_vid',
+      'bundle' => 'type',
+      'label' => 'title',
+    ),
+
+    'field replacement' => array(
+      'title' => array(
+        'field' => array(
+          'type' => 'text',
+          'cardinality' => 1,
+          'translatable' => TRUE,
+        ),
+        'instance' => array(
+          'label' => t('Title'),
+          'description' => '',
+          'required' => TRUE,
+          'settings' => array(
+            'text_processing' => 0,
+          ),
+          'widget' => array(
+            'weight' => -5,
+          ),
+          'display' => array(
+            'default' => array(
+              'type' => 'hidden',
+            ),
+          ),
+        ),
+      ),
+    ),
+
+    'bundles' => array(),
+    'bundle keys' => array(
+      'bundle' => 'type',
+    ),
+    'bundles callback' => 'contentblock_get_types',
+
+    'admin ui' => array(
+      'path' => CONTENTBLOCK_ADMIN_UI_PATH,
+      'entity path' => CONTENTBLOCK_UI_PATH,
+      'bundle path' => CONTENTBLOCK_BUNDLE_ADMIN_UI_PATH,
+      'controller class' => 'ContentBlockEntityUIController',
+      'file' => 'contentblock.admin.inc',
+    ),
+
+    'view modes' => array(
+      // 'full' => array(
+      //   'label' => t('Full content block'),
+      //   'custom settings' => FALSE,
+      // ),
+    ),
+  );
+
+  foreach ($entity_info['contentblock']['bundles callback']() as $type => $bundle_info) {
+    $entity_info['contentblock']['bundles'][$type] = array(
+      'label' => $bundle_info['label'],
+      'admin' => array(
+        'path' => CONTENTBLOCK_BUNDLE_ADMIN_UI_PATH . '/manage/' . $type,
+      ),
+    );
+  }
+
+  return $entity_info;
+}
+
+/**
+ * Returns a list of question types.
+ */
+function contentblock_get_types() {
+  $items = array();
+
+  $items['links'] = array(
+    'label' => t('Links List'),
+    'description' => t('Use "Links List" for...'),
+  );
+
+  $items['organization'] = array(
+    'label' => t('Organization'),
+    'description' => t('Use "Organizations" for...'),
+  );
+
+  $items['predefined'] = array(
+    'label' => t('Predefined Widget'),
+    'description' => t('Use "Predefined Widgets" for...'),
+  );
+
+  $items['text'] = array(
+    'label' => t('Text'),
+    'description' => t('Use "Text" for...'),
+  );
+
+  return $items;
+}
+
+/**
+ * Returns the entity type name.
+ */
+function contentblock_type_get_name($bundle) {
+  $bundles = contentblock_get_types();
+  return (isset($bundles[$bundle]['label'])) ? $bundles[$bundle]['label'] : FALSE;
+}
+
+/**
+ * Access callback for custom survey entities.
+ */
+function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type) {
+  $rights = &drupal_static(__FUNCTION__, array());
+
+  $operations = array('administer', 'access overview', 'create', 'view', 'edit', 'delete');
+  if (!in_array($op, $operations, TRUE)) {
+    // If the $op was not one of the supported ones, we return access denied.
+    return FALSE;
+  }
+
+  // If no user object is supplied, the access check is for the current user.
+  if (empty($account)) {
+    $account = $GLOBALS['user'];
+  }
+
+
+  $cid = is_object($entity) ? $entity_type . ':' . $entity->identifier() : FALSE;
+
+  // If we've already checked access for this node, user and op, return from cache.
+  if ($cid && isset($rights[$account->uid][$cid][$op])) {
+    return $rights[$account->uid][$cid][$op];
+  }
+
+  if ($op == 'view') {
+    if (empty($cid)) {
+      return FALSE;
+    }
+
+    $allow = FALSE;
+    if (user_access("$entity_type entity administer") || user_access("$entity_type entity access overview")) {
+      $allow = TRUE;
+    }
+    else if ($entity->status && user_access("$entity_type entity $op")) {
+      $allow = TRUE;
+    }
+
+    $rights[$account->uid][$cid][$op] = $allow;
+    return $allow;
+  }
+
+  if (user_access("$entity_type entity $op")) {
+    if ($cid) {
+      $rights[$account->uid][$cid][$op] = TRUE;
+    }
+    return TRUE;
+  }
+
+  if ($cid) {
+    $rights[$account->uid][$cid][$op] = FALSE;
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function contentblock_permission() {
+  $perms = array();
+
+  $entity_type = 'contentblock';
+  $entity_info = entity_get_info($entity_type);
+
+  $operations = array('administer', 'access overview', 'create', 'view', 'edit', 'delete');
+  foreach ($operations as $op) {
+    $permision_string = "$entity_type entity $op";
+    $action = ucfirst($op);
+    $t_args = array('%entity' => $entity_info['plural label']);
+    $perms[$permision_string] = array(
+      'title' => t("$action %entity", $t_args),
+    );
+
+    if ($op == 'administer') {
+      $perms[$permision_string]['restrict access'] = TRUE;
+    }
+
+    if ($op == 'access overview') {
+      $perms[$permision_string]['title'] = t('Access the %entity overview page', $t_args);
+      $perms[$permision_string]['description'] = t('Get an overview of all %entity.', $t_args);
+    }
+  }
+
+  return $perms;
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function contentblock_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  // Add action link to 'contentblock/add' on 'admin/content/contentblock' page.
+  if ($root_path == CONTENTBLOCK_ADMIN_UI_PATH) {
+    $item = menu_get_item(CONTENTBLOCK_UI_PATH . '/add');
+    if ($item['access']) {
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+  }
+}
+/**
+ * Page callback to show links to add an entity of a specific bundle.
+ *
+ * Entity modules that provide a further description to their bundles may wish
+ * to implement their own version of this to show these.
+ *
+ * @see entity_ui_bundle_add_page()
+ */
+function contentblock_entity_ui_bundle_add_page($entity_type) {
+  // Set the title, as we're a MENU_LOCAL_ACTION and hence just get tab titles.
+  module_load_include('inc', 'entity', 'includes/entity.ui');
+  drupal_set_title(contentblock_entity_ui_get_page_title('add', $entity_type));
+
+  // Get entity info for our bundles.
+  $info = entity_get_info($entity_type);
+  $items = array();
+  foreach ($info['bundles'] as $bundle_name => $bundle_info) {
+    // Create an empty entity with just the bundle set to check for access.
+    $dummy_entity = entity_create($entity_type, array(
+      $info['entity keys']['bundle'] => $bundle_name,
+    ));
+    // If modules use a uid, they can default to the current-user
+    // in their create() method on the storage controller.
+    if (entity_access('create', $entity_type, $dummy_entity, $account = NULL)) {
+      if (isset($info['admin ui']['entity path'])) {
+        $add_path = $info['admin ui']['entity path'] . '/add/' . $bundle_name;
+      }
+      else {
+        $add_path = $info['admin ui']['path'] . '/add/' . $bundle_name;
+      }
+      $items[] = l(t('Add @label', array('@label' => $bundle_info['label'])), $add_path);
+    }
+  }
+  return theme('item_list', array('items' => $items));
+}
+
+/**
+ * Gets the page title for the passed operation.
+ * @see entity_ui_get_page_title()
+ */
+function contentblock_entity_ui_get_page_title($op, $entity_type, $entity = NULL) {
+  module_load_include('inc', 'entity', 'includes/entity.ui');
+
+  $label = entity_label($entity_type, $entity);
+
+  // Get the entity information.
+  $entity_info = entity_get_info($entity_type);
+  $t_args = array(
+    '@entity_type_label' => drupal_strtolower($entity_info['label']),
+    '%label' => $label,
+  );
+
+  switch ($op) {
+    case 'view':
+      return $label;
+    case 'edit':
+      return t('Edit @entity_type_label %label', $t_args);
+    case 'clone':
+      return t('Clone @entity_type_label %label', $t_args);
+    case 'revert':
+      return t('Revert @entity_type_label %label', $t_args);
+    case 'delete':
+      return t('Delete @entity_type_label %label', $t_args);
+    case 'export':
+      return t('Export @entity_type_label %label', $t_args);
+  }
+  if (isset($entity)) {
+    list(, , $bundle) = entity_extract_ids($entity_type, $entity);
+  }
+  else {
+    $bundle = NULL;
+  }
+  return entity_ui_get_action_title($op, $entity_type, $bundle);
+}
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function contentblock_field_extra_fields() {
+  $extra = array();
+
+
+  foreach (contentblock_get_types() as $bundle_type => $bundle_info) {
+    $extra['contentblock'][$bundle_type] = array(
+      'form' => array(
+        'title' => array(
+          'label' => t('Title'),
+          'description' => t('Title for @label', array('@label' => $bundle_info['label'])),
+          'weight' => -5,
+        ),
+      ),
+    );
+  }
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ds_field_settings_form().
+ */
+function contentblock_ds_field_settings_form($field) {
+  $form = array();
+  $form += ds_ds_field_settings_form($field);
+  return $form;
+}
+
+/**
+ * Implements hook_ds_field_format_summary().
+ */
+function contentblock_ds_field_format_summary($field) {
+  return ds_ds_field_format_summary($field);
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function contentblock_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'panels' && $plugin == 'styles') {
+    return 'plugins/' . $plugin;
+  }
+  if ($module == 'ctools' && $plugin == 'content_types') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function contentblock_entity_view_alter(&$build, $entity_type) {
+  if ($entity_type != 'contentblock') {
+    return;
+  }
+
+  // Add contextual links for this node, except when the node is already being
+  // displayed on its own page. Modules may alter this behavior (for example,
+  // to restrict contextual links to certain view modes) by implementing
+  // hook_node_view_alter().
+  if (!empty($build['#entity']->cbid)) {
+    $build['#contextual_links']['contentblock'] = array('contentblock', array($build['#entity']->cbid));
+  }
+}

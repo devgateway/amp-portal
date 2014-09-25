@@ -4,44 +4,92 @@
  * Define generic settings.
  */
 
-include_once 'helpergeneric.forms.inc';
+module_load_include('inc', 'helpergeneric', 'helpergeneric.field');
+module_load_include('inc', 'helpergeneric', 'helpergeneric.forms');
 
 /**
- * Implements hook_update_projects_alter().
- *
- * Hide project-specific modules from the module update list.
+ * Implements hook_menu().
  */
-function helpergeneric_update_projects_alter(&$projects) {
-  $not_updated = array();
-  foreach ($projects as $project_name => $project_info) {
-    if ($project_info['project_type'] == 'core') {
-      continue;
-    }
+function helpergeneric_menu() {
+  $items = array();
 
-    // Determine where the module is located.
-    $projet_path = drupal_get_path($project_info['project_type'], $project_info['name']);
+  $items['admin/settings'] = array(
+    'title' => 'Settings',
+    'description' => 'Administer Project settings.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer nodes'),
+    'weight' => 30,
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
 
-    // Projects like 'features_extra' don't contain a module called 'features_extra' so an empty path is returned.
-    $project_location = '';
-    if (!empty($projet_path)) {
-      $project_location = dirname($projet_path);
-    }
+  $items['admin/settings/static-content'] = array(
+    'title' => 'Static Content',
+    'description' => 'Administer static page content for the homepage and other pages.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer nodes'),
+    'weight' => 30,
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
 
-    // Do not query updates for custom modules and features.
-    switch ($project_location) {
-      case 'sites/all/modules/custom':
-      case 'sites/all/modules/features':
-        // Hide project-specific modules from the update list.
-        $not_updated[] = $projects[$project_name]['info']['name'];
-        unset($projects[$project_name]);
-        break;
-    }
-  }
+  $items['admin/settings/static-content/homepage'] = array(
+    'title' => 'Homepage Content',
+    'description' => 'Configure homepage content.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_homepage_content_settings_form'),
+    'access arguments' => array('administer nodes'),
+    'file' => 'helpergeneric.content.inc',
+  );
 
-  if (!empty($not_updated)) {
-    $message = 'The following modules are not being checked for updates: @moduleslist';
-    drupal_set_message(t($message, array('@moduleslist' => implode(', ', $not_updated))), 'warning');
-  }
+  $items['admin/settings/static-content/blog'] = array(
+    'title' => 'Blog Sidebar Content',
+    'description' => 'Configure blog sidebar content.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_blog_content_settings_form'),
+    'access arguments' => array('administer nodes'),
+    'file' => 'helpergeneric.content.inc',
+  );
+
+  $items['admin/settings/generic'] = array(
+    'title' => 'Generic settings',
+    'description' => 'Project generic settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_settings_form'),
+    'access arguments' => array('administer nodes'),
+    'file' => 'helpergeneric.admin.inc',
+    'weight' => -32,
+  );
+
+  $items['admin/settings/main-menu'] = array(
+    'title' => 'Edit Main menu',
+    'description' => 'Edit the main menu links.',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/structure/menu/manage/main-menu'),
+    'access arguments' => array('administer menu'),
+    'weight' => -19,
+  );
+
+  $items['admin/settings/user-menu'] = array(
+    'title' => 'Edit User menu',
+    'description' => 'Edit the top user menu links.',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/structure/menu/manage/user-menu'),
+    'access arguments' => array('administer menu'),
+    'weight' => -18,
+  );
+
+  // Page callback that outputs JSON for project specific nodevar autocomplete suggestions.
+  $items['helpergeneric/contentblock/autocomplete'] = array(
+    'title' => 'Autocomplete',
+    'page callback' => 'helpergeneric_entity_autocomplete',
+    'page arguments' => array('contentblock'),
+    'access arguments' => array('administer nodes'),
+    'type' => MENU_CALLBACK,
+    'file' => 'helpergeneric.admin.inc',
+  );
+
+  return $items;
 }
 
 /**
@@ -126,15 +174,233 @@ function helpergeneric_htmlpurifier_info() {
 }
 
 /**
- * Determines if the current user is user 1.
+ * Determines if we should cleanup the UI in a way that developers can disable.
  *
- * @return bool
- *   TRUE if the user is user 1, FALSE otherwise.
+ * NOTE: This is NOT for security, you should still set proper access settings.
  */
-function helpergeneric_is_user_one() {
-  if (variable_get('helpergeneric_is_user_one_skip', FALSE)) {
-    return FALSE;
+function helpergeneric_cleanup_ui() {
+  // Allow anyone with the cookie to force ui cleanup settings.
+  if (isset($_COOKIE['helpergeneric_cleanup_ui_force'])) {
+    return (bool) $_COOKIE['helpergeneric_cleanup_ui_force'];
   }
 
-  return $GLOBALS['user']->uid == 1;
+  // If variable is set, force ui cleanup settings only for UID1.
+  $forced_value = variable_get('helpergeneric_cleanup_ui_force', NULL);
+  if ($GLOBALS['user']->uid == 1 && isset($forced_value)) {
+    return (bool) $forced_value;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  // Attach "Edit" link to the user page.
+  if ($router_item['path'] == 'user/%') {
+    if (count($router_item['original_map']) == 2) {
+      // Load the edit menu router item.
+      $action_router_path = implode('/', $router_item['original_map']) . '/edit';
+      $action_router_item = menu_get_item($action_router_path);
+
+      if ($action_router_item['access']) {
+        $action_router_item['localized_options']['theme extra'] = array(
+          'entity action' => TRUE,
+          'icon' => 'edit',
+        );
+
+        $data['actions']['output'][] = array(
+          '#theme' => 'menu_local_action',
+          '#link' => $action_router_item,
+          '#weight' => -50,
+        );
+      }
+    }
+  }
+
+  // Attach "Cancel" link to the user edit page.
+  if ($router_item['path'] == 'user/%/edit') {
+
+    // Load the view menu router item.
+    $action_router_path = implode('/', array_slice($router_item['original_map'], 0, -1));
+    $action_router_item = menu_get_item($action_router_path);
+
+    if ($action_router_item['access']) {
+      $action_router_item['localized_options']['theme extra'] = array(
+        'entity action' => TRUE,
+        'title' => 'Cancel',
+        'prefix' => '(',
+        'suffix' => ')',
+      );
+
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $action_router_item,
+        '#weight' => 50,
+      );
+    }
+  }
+
+  // Attach action links to node and mongo entities.
+  $position = 1;
+  $attach_entity_actions = TRUE;
+  if (empty($router_item['load_functions'][$position]) || empty($router_item['map'][$position])) {
+    $attach_entity_actions = FALSE;
+  }
+  else {
+    if (!in_array($router_item['load_functions'][$position], array('entity_object_load', 'node_load'))) {
+      $attach_entity_actions = FALSE;
+    }
+  }
+
+  if ($attach_entity_actions) {
+    // Attach "Edit" link to the entity view page title.
+    if (count($router_item['original_map']) == 2) {
+      // Load the edit menu router item.
+      $action_router_path = implode('/', $router_item['original_map']) . '/edit';
+      $action_router_item = menu_get_item($action_router_path);
+
+      if ($action_router_item['access']) {
+        $action_router_item['localized_options']['theme extra'] = array(
+          'entity action' => TRUE,
+          'icon' => 'edit',
+        );
+
+        $data['actions']['output'][] = array(
+          '#theme' => 'menu_local_action',
+          '#link' => $action_router_item,
+          '#weight' => -50,
+        );
+      }
+    }
+
+    // Attach "Delete" link to the entity view page title.
+    if (count($router_item['original_map']) == 2) {
+      // Load the edit menu router item.
+      $action_router_path = implode('/', $router_item['original_map']) . '/delete';
+      $action_router_item = menu_get_item($action_router_path);
+
+      if ($action_router_item['access']) {
+        $action_router_item['localized_options']['theme extra'] = array(
+          'entity action' => TRUE,
+          'icon' => 'delete',
+        );
+
+        $data['actions']['output'][] = array(
+          '#theme' => 'menu_local_action',
+          '#link' => $action_router_item,
+          '#weight' => -49,
+        );
+      }
+    }
+
+    // Attach "Cancel" link to the entity edit page title.
+    if (count($router_item['original_map']) == 3 && $router_item['original_map'][2] == 'edit') {
+
+      $alt_path= NULL;
+      if (!empty($_GET['destination'])) {
+        $url_options = drupal_parse_url($_GET['destination']);
+        unset($_GET['destination']);
+        if (!empty($url_options['path'])) {
+          $alt_path = $url_options['path'];
+        }
+      }
+
+      if ($alt_path) {
+        $link_item = array(
+          'title' => 'Cancel', // This is not used if we provide 'theme extra' settings.
+          'href' => $alt_path,
+          'localized_options' => $url_options,
+        );
+        $link_item['localized_options']['theme extra'] = array(
+          'entity action' => TRUE,
+          'title' => 'Cancel',
+          'prefix' => '(',
+          'suffix' => ')',
+        );
+
+        $data['actions']['output'][] = array(
+          '#theme' => 'menu_local_action',
+
+          '#link' => $link_item,
+          '#weight' => 50,
+        );
+      }
+      else {
+        // Load the view menu router item.
+        $action_router_path = implode('/', array_slice($router_item['original_map'], 0, -1));
+        $action_router_item = menu_get_item($action_router_path);
+
+        if ($action_router_item['access']) {
+          $action_router_item['localized_options']['theme extra'] = array(
+            'entity action' => TRUE,
+            'title' => 'Cancel',
+            'prefix' => '(',
+            'suffix' => ')',
+          );
+
+          $data['actions']['output'][] = array(
+            '#theme' => 'menu_local_action',
+            '#link' => $action_router_item,
+            '#weight' => 50,
+          );
+        }
+      }
+    }
+  }
+
+  // Attach "Add blog entry" link to "Blog" listing page title.
+  if ($root_path == 'blog') {
+    $action_router_item = menu_get_item('node/add/blog');
+
+    if ($action_router_item['access']) {
+      $action_router_item['localized_options']['attributes']['target'] = '_blank';
+      $action_router_item['localized_options']['theme extra'] = array(
+        'entity action' => TRUE,
+        'icon' => 'add',
+      );
+
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $action_router_item,
+        '#weight' => 40,
+      );
+    }
+  }
+
+  // Attach "Add content block" link to "Page Content" settings page title.
+  if (strpos($root_path, 'admin/settings/static-content/') === 0) {
+    $action_router_item = menu_get_item('contentblock/add');
+
+    if ($action_router_item['access']) {
+      $action_router_item['localized_options']['attributes']['target'] = '_blank';
+      $action_router_item['localized_options']['theme extra'] = array(
+        'entity action' => TRUE,
+        'icon' => 'add',
+      );
+
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $action_router_item,
+        '#weight' => 40,
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_load().
+ */
+function helpergeneric_entity_load($entities, $entity_type) {
+  if ($entity_type != 'node') {
+    return;
+  }
+
+  foreach ($entities as $id => $entity) {
+    $local_actions = menu_local_actions();
+    if (!empty($local_actions)) {
+      $entity->action_links = drupal_render($local_actions);
+    }
+  }
 }

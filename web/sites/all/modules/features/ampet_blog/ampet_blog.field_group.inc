@@ -25,7 +25,7 @@ function ampet_blog_field_group_info() {
     'children' => array(
       0 => 'field_blog_image',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'label' => 'Resources',
       'instance_settings' => array(
@@ -33,7 +33,7 @@ function ampet_blog_field_group_info() {
         'classes' => '',
         'description' => '',
       ),
-      'formatter' => 'collapsed',
+      'formatter' => 'closed',
     ),
   );
   $export['group_resources|node|blog|form'] = $field_group;

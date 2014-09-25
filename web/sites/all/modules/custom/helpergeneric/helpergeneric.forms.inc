@@ -5,6 +5,44 @@
  */
 
 /**
+ * Implements hook_update_projects_alter().
+ *
+ * Hide project-specific modules from the module update list.
+ */
+function helpergeneric_update_projects_alter(&$projects) {
+  $not_updated = array();
+  foreach ($projects as $project_name => $project_info) {
+    if ($project_info['project_type'] == 'core') {
+      continue;
+    }
+
+    // Determine where the module is located.
+    $projet_path = drupal_get_path($project_info['project_type'], $project_info['name']);
+
+    // Projects like 'features_extra' don't contain a module called 'features_extra' so an empty path is returned.
+    $project_location = '';
+    if (!empty($projet_path)) {
+      $project_location = dirname($projet_path);
+    }
+
+    // Do not query updates for custom modules and features.
+    switch ($project_location) {
+      case 'sites/all/modules/custom':
+      case 'sites/all/modules/features':
+        // Hide project-specific modules from the update list.
+        $not_updated[] = $projects[$project_name]['info']['name'];
+        unset($projects[$project_name]);
+        break;
+    }
+  }
+
+  // if (!empty($not_updated)) {
+  //   $message = 'The following modules are not being checked for updates: @moduleslist';
+  //   drupal_set_message(t($message, array('@moduleslist' => implode(', ', $not_updated))), 'warning');
+  // }
+}
+
+/**
  * Implements hook_features_api_alter().
  *
  * Prevent exporting of some features API components.
@@ -24,8 +62,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     case 'dependencies':
       // Hide custom features from dependencies.
       $entries_list = array(
+        'ampcontentblock',
         'ampet_blog',
         'ampet_page',
+        'ampfileentity',
+        'amphomepage',
         'amppermissions',
         'ampsettings',
         'ampviewsettings',
@@ -68,6 +109,13 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     case 'variable':
       // Hide variables that should not be exported.
       $entries_list = array(
+        // Custom variables.
+        'contentblock_blockref_blog',
+        'contentblock_blockref_homepage',
+        'date_format_shortest',
+        'helpergeneric_cleanup_ui_force',
+
+        // Hide CORE variables.
         'additional_settings__active_tab_blog',
         'additional_settings__active_tab_page',
         'cache',
@@ -76,34 +124,17 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'cron_key',
         'cron_last',
         'css_js_query_string',
-        'ctools_last_cron',
-        'date_api_version',
-
         'date_default_timezone',
         'date_first_day',
         'date_format_long',
         'date_format_medium',
         'date_format_short',
-        'date_format_shortest',
-        'date_views_month_format_with_year',
-        'date_views_month_format_without_year',
-        'date_views_day_format_with_year',
-        'date_views_day_format_without_year',
-        'date_views_week_format_with_year',
-        'date_views_week_format_without_year',
-
         'dblog_row_limit',
         'drupal_private_key',
         'drupal_css_cache_files',
         'drupal_http_request_fails',
         'drupal_js_cache_files',
-        // 'entity_cache_tables_created',
-        // 'entityreference:base-tables',
         'error_level',
-        'features_codecache',
-        'features_default_export_path',
-        'features_ignored_orphans',
-        'features_semaphore',
         'file_temporary_path',
         'htmlpurifier_version_current',
         // 'image_toolkit',
@@ -111,30 +142,111 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'install_task',
         'install_time',
         // 'job_scheduler_rebuild_all',
-        // 'less_devel',
-        // 'less_dir',
-        // 'less_engine',
-        // 'less_watch',
         'menu_expanded',
         'menu_masks',
         'page_cache_maximum_age',
         'page_compression',
-        // 'path_alias_whitelist',
+        'path_alias_whitelist',
         'preprocess_css',
         'preprocess_js',
         'site_default_country',
         'site_mail',
         'site_name',
         'theme_default',
+
+        // Hide ctools.module variables.
+        'ctools_last_cron',
+
+        // Hide date.module variables.
+        'date_api_version',
+        'date_views_month_format_with_year',
+        'date_views_month_format_without_year',
+        'date_views_day_format_with_year',
+        'date_views_day_format_without_year',
+        'date_views_week_format_with_year',
+        'date_views_week_format_without_year',
+
+        // Hide entity.module variables.
+        'entity_cache_tables_created',
+
+        // Hide entityreference.module variables.
+        'entityreference:base-tables',
+
+        // Hide features.module variables.
+        'features_codecache',
+        'features_default_export_path',
+        'features_feature_locked',
+        'features_ignored_orphans',
+        'features_lock_mode',
+        'features_semaphore',
+
+        // Hide less.module variables.
+        'less_devel',
+        'less_dir',
+        'less_engine',
+        'less_watch',
+
+        // Hide media.module variables.
+        // Dialog options.
+        'media_dialogclass',
+        'media_modal',
+        'media_draggable',
+        'media_resizable',
+        'media_minwidth',
+        'media_width',
+        'media_height',
+        'media_position',
+        'media_zindex',
+        'media_backgroundcolor',
+        'media_opacity',
+
+        // Hide media_wysiwyg.module variables.
+        'media_wysiwyg_wysiwyg_allowed_attributes',
+        'media_wysiwyg_wysiwyg_allowed_types',
+        'media_wysiwyg_wysiwyg_browser_plugins',
+        'media_wysiwyg_wysiwyg_default_view_mode',
+        'media_wysiwyg_wysiwyg_icon_title',
+        'media_wysiwyg_wysiwyg_upload_directory',
+        'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_audio_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_audio_wysiwyg_restricted_view_modes_status',
+        'media_wysiwyg_view_mode_document_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_document_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_document_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_document_wysiwyg_restricted_view_modes_status',
+        'media_wysiwyg_view_mode_image_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_image_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_image_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_image_wysiwyg_restricted_view_modes_status',
+        'media_wysiwyg_view_mode_video_file_wysiwyg_view_mode',
+        'media_wysiwyg_view_mode_video_file_wysiwyg_view_mode_status',
+        'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes',
+        'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes_status',
+
+        // Hide update.module variables.
         'update_last_check',
+
+        // Hide update_scripts.module variables.
         'update_scripts_clear_cache',
         'update_scripts_directory',
         'update_scripts_revert_features',
+
+        // Hide views.module variables.
+        'views_show_additional_queries',
+
+        // Hide views_ui.module variables.
         'views_ui_always_live_preview',
+        'views_ui_custom_theme',
+        'views_ui_display_embed',
+        'views_ui_show_advanced_column',
         'views_ui_show_advanced_help_warning',
+        'views_ui_show_listing_filters',
         'views_ui_show_master_display',
         'views_ui_show_performance_statistics',
+        'views_ui_show_preview_information',
         'views_ui_show_sql_query',
+        'views_ui_show_sql_query_where',
       );
       break;
 
@@ -165,13 +277,54 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
     }
   }
 
-  if (!empty($removed_entries_list)) {
-    $message = 'The following are not listed in the <b>%name</b> components export list: @entries';
-    $t_args = array(
-      '%name' => $component_export['name'] . " (${component})",
-      '@entries' => implode(', ', $removed_entries_list),
+  // if (!empty($removed_entries_list)) {
+  //   $message = 'The following are not listed in the <b>%name</b> components export list: @entries';
+  //   $t_args = array(
+  //     '%name' => $component_export['name'] . " (${component})",
+  //     '@entries' => implode(', ', $removed_entries_list),
+  //   );
+  //   drupal_set_message(t($message, $t_args), 'warning');
+  // }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_login') {
+    drupal_set_title('Log in');
+    $form['actions']['cancel'] = array(
+      '#type' => 'link',
+      '#title' => t('Lost password?'),
+      '#href' => 'user/password',
+      '#weight' => 20,
     );
-    drupal_set_message(t($message, $t_args), 'warning');
+  }
+
+  if (!helpergeneric_cleanup_ui()) {
+    return;
+  }
+
+  if ($form_id == 'user_profile_form') {
+    _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'file_entity_add_upload') {
+    _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'file_entity_edit') {
+    _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'media_wysiwyg_format_form') {
+    _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for contentblock_form().
+ */
+function helpergeneric_form_contentblock_form_alter(&$form, &$form_state, $form_id) {
+  if (helpergeneric_cleanup_ui()) {
+    _helpergeneric_cleanup_contentblock_form($form, $form_state, $form_id);
   }
 }
 
@@ -179,8 +332,8 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
  * Implements hook_form_FORM_ID_alter() for node_form().
  */
 function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
-  if (!helpergeneric_is_user_one()) {
-    helpergeneric_cleanup_node_form($form, $form_state, $form_id);
+  if (helpergeneric_cleanup_ui()) {
+    _helpergeneric_cleanup_node_form($form, $form_state, $form_id);
   }
 
   // Control "Event Date" field visibility.
@@ -194,43 +347,6 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
     );
     // Remove event date value on submit if field_blog_entry_type is not an event.
     $form['#validate'][] = 'helpergeneric_node_form_event_date_validate';
-  }
-}
-
-/**
- * Helper function required by hook_form_FORM_ID_alter() for node_form().
- */
-function helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
-  // Do not display as vertical tabs.
-  $form['additional_settings'] = array();
-
-  if (isset($form['author'])) {
-    $form['author']['#access'] = FALSE;
-  }
-
-  // Hide "Comment settings" fieldset for all node types except "Blog entry".
-  if ($form['#node']->type != 'blog') {
-    $form['comment_settings']['#access'] = FALSE;
-  }
-
-  if (isset($form['menu'])) {
-    $form['menu']['#access'] = FALSE;
-  }
-
-  if (isset($form['redirect'])) {
-    $form['redirect']['#access'] = FALSE;
-  }
-
-  if (isset($form['revision_information'])) {
-    $form['revision_information']['#access'] = FALSE;
-  }
-
-  if (isset($form['options']['promote'])) {
-    $form['options']['promote']['#access'] = FALSE;
-  }
-
-  if (isset($form['options']['sticky'])) {
-    $form['options']['sticky']['#access'] = FALSE;
   }
 }
 
@@ -252,36 +368,28 @@ function helpergeneric_node_form_event_date_validate($form, &$form_state) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter() for user_profile_form().
+ * Helper function required by hook_form_FORM_ID_alter() for contentblock_form().
  */
-function helpergeneric_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  if (!helpergeneric_is_user_one()) {
-    helpergeneric_cleanup_user_form($form, $form_state, $form_id);
-  }
-}
+function _helpergeneric_cleanup_contentblock_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
 
-/**
- * Helper function required by hook_form_FORM_ID_alter() for user_profile_form().
- */
-function helpergeneric_cleanup_user_form(&$form, &$form_state, $form_id) {
   if (isset($form['redirect'])) {
     $form['redirect']['#access'] = FALSE;
   }
-}
 
-/**
- * Implements hook_form_FORM_ID_alter() for file_entity_edit().
- */
-function helpergeneric_form_file_entity_edit_alter(&$form, &$form_state, $form_id) {
-  if (!helpergeneric_is_user_one()) {
-    helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  if (isset($form['path'])) {
+    $form['path']['#access'] = FALSE;
   }
 }
 
 /**
  * Helper function required by hook_form_FORM_ID_alter() for file_entity_edit().
  */
-function helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
+function _helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
+
   if (isset($form['destination'])) {
     $form['destination']['#access'] = FALSE;
   }
@@ -293,6 +401,9 @@ function helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
   if (isset($form['redirect'])) {
     $form['redirect']['#access'] = FALSE;
   }
+  else if (isset($form['options']['fields']['redirect'])) {
+    $form['options']['fields']['redirect']['#access'] = FALSE;
+  }
 
   if (isset($form['user'])) {
     $form['user']['#access'] = FALSE;
@@ -300,16 +411,79 @@ function helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Implements hook_form_alter().
+ * Helper function required by hook_form_FORM_ID_alter() for node_form().
  */
-function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'user_login') {
-    drupal_set_title('Log in');
-    $form['actions']['cancel'] = array(
-      '#type' => 'link',
-      '#title' => t('Lost password?'),
-      '#href' => 'user/password',
-      '#weight' => 20,
-    );
+function _helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
+
+  if (isset($form['author'])) {
+    $form['author']['#access'] = FALSE;
+  }
+
+  // Hide "Comment settings" fieldset for all node types except "Blog entry".
+  if ($form['#node']->type != 'blog') {
+    $form['comment_settings']['#access'] = FALSE;
+  }
+
+  if (isset($form['menu'])) {
+    $form['menu']['#access'] = FALSE;
+  }
+
+  if (isset($form['redirect'])) {
+    $form['redirect']['#access'] = FALSE;
+  }
+
+  if (isset($form['path'])) {
+    $form['path']['#access'] = FALSE;
+  }
+
+  if (isset($form['revision_information'])) {
+    $form['revision_information']['#access'] = FALSE;
+  }
+
+  if (isset($form['options']['promote'])) {
+    $form['options']['promote']['#access'] = FALSE;
+  }
+
+  if (isset($form['options']['sticky'])) {
+    $form['options']['sticky']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Helper function required by hook_form_FORM_ID_alter() for user_profile_form().
+ */
+function _helpergeneric_cleanup_user_form(&$form, &$form_state, $form_id) {
+  // Replace vertical tabs with normal fieldsets.
+  _helpergeneric_alter_vertical_tabs($form);
+
+  if (isset($form['redirect'])) {
+    $form['redirect']['#access'] = FALSE;
+  }
+
+  if (isset($form['path'])) {
+    $form['path']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Replace vertical tabs with normal fieldsets.
+ */
+function _helpergeneric_alter_vertical_tabs(&$form) {
+  // Do not display as vertical tabs.
+  $form['additional_settings'] = array();
+  foreach (element_children($form) as $key) {
+    if (isset($form[$key]['#group']) && $form[$key]['#group'] == 'additional_settings') {
+      unset($form[$key]['#group']);
+      $form[$key]['#collapsed'] = FALSE;
+      $form[$key]['#collapsible'] = FALSE;
+    }
+  }
+
+  if (!empty($form['#groups'])) {
+    foreach (element_children($form['#groups']) as $key) {
+      $form['#groups'][$key]->format_type = 'fieldset';
+    }
   }
 }

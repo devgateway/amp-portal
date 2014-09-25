@@ -1,0 +1,62 @@
+
+@import './lib/custom-sprite.less';
+
+.header-links {
+  margin: 1em 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+  }
+
+  .link-toplevel {
+    display: inline-block;
+    padding: 0 0.5em;
+    text-decoration: none;
+    &.last {
+      padding-right: 0;
+    }
+    &:active,
+    &:hover {
+    }
+  }
+}
+
+.navigation-list-toplevel {
+  border-bottom: @border_width solid @clcontent__separator;
+  padding-left: 0;
+  .top-listitem {
+    list-style: none;
+  }
+}
+
+.main-navigation {
+  font-size: 0.875em;
+
+  svg {
+    fill: @clcontent__separator;
+    margin-right: 0.5em;
+  }
+
+  .top-listitem {
+    display: inline-block;
+  }
+
+  .top-link {
+    display: inline-block;
+    font-weight: bold;
+    padding: 1em;
+    line-height: 2em;
+    text-decoration: none;
+    text-transform: uppercase;
+    &.active,
+    &:active,
+    &:hover {
+      background-color: @cldetail;
+      color: white;
+    }
+  }
+  .navigation-sublevel {
+    margin-bottom: 0.5em;
+  }
+}

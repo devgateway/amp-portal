@@ -48,6 +48,24 @@ function amppermissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'access contextual links'.
+  $permissions['access contextual links'] = array(
+    'name' => 'access contextual links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'contextual',
+  );
+
+  // Exported permission: 'access media browser'.
+  $permissions['access media browser'] = array(
+    'name' => 'access media browser',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media',
+  );
+
   // Exported permission: 'access site in maintenance mode'.
   $permissions['access site in maintenance mode'] = array(
     'name' => 'access site in maintenance mode',
@@ -82,6 +100,15 @@ function amppermissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'system',
+  );
+
+  // Exported permission: 'administer advanced pane settings'.
+  $permissions['administer advanced pane settings'] = array(
+    'name' => 'administer advanced pane settings',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
   );
 
   // Exported permission: 'administer content types'.
@@ -156,6 +183,15 @@ function amppermissions_user_default_permissions() {
     'module' => 'media',
   );
 
+  // Exported permission: 'administer media wysiwyg view mode'.
+  $permissions['administer media wysiwyg view mode'] = array(
+    'name' => 'administer media wysiwyg view mode',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media_wysiwyg_view_mode',
+  );
+
   // Exported permission: 'administer menu'.
   $permissions['administer menu'] = array(
     'name' => 'administer menu',
@@ -190,6 +226,42 @@ function amppermissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'administer page manager'.
+  $permissions['administer page manager'] = array(
+    'name' => 'administer page manager',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'page_manager',
+  );
+
+  // Exported permission: 'administer pane access'.
+  $permissions['administer pane access'] = array(
+    'name' => 'administer pane access',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'administer panels layouts'.
+  $permissions['administer panels layouts'] = array(
+    'name' => 'administer panels layouts',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'administer panels styles'.
+  $permissions['administer panels styles'] = array(
+    'name' => 'administer panels styles',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
   );
 
   // Exported permission: 'administer pathauto'.
@@ -309,6 +381,15 @@ function amppermissions_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'change layouts in place editing'.
+  $permissions['change layouts in place editing'] = array(
+    'name' => 'change layouts in place editing',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
   // Exported permission: 'change own username'.
   $permissions['change own username'] = array(
     'name' => 'change own username',
@@ -352,15 +433,6 @@ function amppermissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'features',
-  );
-
-  // Exported permission: 'import media'.
-  $permissions['import media'] = array(
-    'name' => 'import media',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'media',
   );
 
   // Exported permission: 'manage features'.
@@ -435,6 +507,74 @@ function amppermissions_user_default_permissions() {
     'module' => 'update_scripts',
   );
 
+  // Exported permission: 'use ipe with page manager'.
+  $permissions['use ipe with page manager'] = array(
+    'name' => 'use ipe with page manager',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use page manager'.
+  $permissions['use page manager'] = array(
+    'name' => 'use page manager',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'page_manager',
+  );
+
+  // Exported permission: 'use panels caching features'.
+  $permissions['use panels caching features'] = array(
+    'name' => 'use panels caching features',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use panels dashboard'.
+  $permissions['use panels dashboard'] = array(
+    'name' => 'use panels dashboard',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use panels in place editing'.
+  $permissions['use panels in place editing'] = array(
+    'name' => 'use panels in place editing',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use panels locks'.
+  $permissions['use panels locks'] = array(
+    'name' => 'use panels locks',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
+  );
+
+  // Exported permission: 'use text format clean_summary'.
+  $permissions['use text format clean_summary'] = array(
+    'name' => 'use text format clean_summary',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
+  // Exported permission: 'use text format plain_text'.
+  $permissions['use text format plain_text'] = array(
+    'name' => 'use text format plain_text',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
   // Exported permission: 'view files'.
   $permissions['view files'] = array(
     'name' => 'view files',
@@ -471,6 +611,15 @@ function amppermissions_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: 'view pane admin links'.
+  $permissions['view pane admin links'] = array(
+    'name' => 'view pane admin links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'panels',
   );
 
   // Exported permission: 'view private files'.

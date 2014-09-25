@@ -8,7 +8,7 @@
  * Implements hook_ctools_plugin_api().
  */
 function ampviewsettings_ctools_plugin_api($module = NULL, $api = NULL) {
-  if ($module == "file_entity" && $api == "file_default_displays") {
+  if ($module == "ds" && $api == "ds") {
     return array("version" => "1");
   }
   if ($module == "strongarm" && $api == "strongarm") {

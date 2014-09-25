@@ -19,11 +19,11 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
+        'module' => 'ampviewsettings',
         'settings' => array(
           'trim_length' => 300,
         ),
-        'type' => 'text_summary_or_trimmed',
+        'type' => 'clean_text_summary_or_trimmed',
         'weight' => 2,
       ),
       'full' => array(
@@ -31,7 +31,7 @@ function ampet_blog_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -42,17 +42,37 @@ function ampet_blog_field_default_field_instances() {
         'type' => 'text_summary_or_trimmed',
         'weight' => 1,
       ),
+      'teaser_featured' => array(
+        'label' => 'hidden',
+        'module' => 'ampviewsettings',
+        'settings' => array(
+          'trim_length' => 300,
+        ),
+        'type' => 'clean_text_summary_or_trimmed',
+        'weight' => 2,
+      ),
+      'teaser_normal' => array(
+        'label' => 'hidden',
+        'module' => 'ampviewsettings',
+        'settings' => array(
+          'trim_length' => 300,
+        ),
+        'type' => 'clean_text_summary_or_trimmed',
+        'weight' => 2,
+      ),
     ),
+    'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'body',
     'label' => 'Body',
-    'required' => FALSE,
+    'required' => 0,
     'settings' => array(
-      'display_summary' => TRUE,
+      'display_summary' => 1,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'text',
       'settings' => array(
         'rows' => 20,
@@ -72,16 +92,27 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'full' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 11,
+      ),
+      'teaser_featured' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
+      'teaser_normal' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
       ),
     ),
     'ds_extras_field_template' => 'theme_ds_field_minimal',
@@ -109,22 +140,34 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'full' => array(
+        'label' => 'inline',
         'module' => 'date',
         'settings' => array(
-          'format_type' => 'long',
+          'format_type' => 'shortest',
           'fromto' => 'both',
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 4,
+        'weight' => 2,
       ),
-      'full' => array(
+      'teaser_featured' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 11,
+      ),
+      'teaser_normal' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
       ),
     ),
     'ds_extras_field_template' => '',
@@ -163,21 +206,38 @@ function ampet_blog_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
-        'settings' => array(
-          'image_link' => 'content',
-          'image_style' => 'thumbnail',
-        ),
-        'type' => 'image',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'full' => array(
         'label' => 'hidden',
-        'module' => 'file_entity',
+        'module' => 'image',
         'settings' => array(
-          'file_view_mode' => 'full',
+          'image_link' => '',
+          'image_style' => 'img-normal',
         ),
-        'type' => 'file_rendered',
+        'type' => 'image',
+        'weight' => 1,
+      ),
+      'teaser_featured' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => 'content',
+          'image_style' => 'img-tfeatured',
+        ),
+        'type' => 'image',
+        'weight' => 0,
+      ),
+      'teaser_normal' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => 'content',
+          'image_style' => 'img-tnormal',
+        ),
+        'type' => 'image',
         'weight' => 0,
       ),
     ),
@@ -211,7 +271,7 @@ function ampet_blog_field_default_field_instances() {
       ),
       'filefield_paths_enabled' => 1,
       'max_filesize' => '',
-      'max_resolution' => '1280x1280',
+      'max_resolution' => '2048x2048',
       'min_resolution' => '128x128',
       'title_field' => 0,
       'user_register_form' => FALSE,
@@ -224,14 +284,15 @@ function ampet_blog_field_default_field_instances() {
           'public' => 'public',
         ),
         'allowed_types' => array(
+          0 => 0,
           'audio' => 0,
           'document' => 0,
           'image' => 'image',
           'video' => 0,
         ),
         'browser_plugins' => array(
-          'media_default--media_browser_1' => 'media_default--media_browser_1',
-          'media_default--media_browser_my_files' => 0,
+          'media_library--image_library' => 'media_library--image_library',
+          'media_library--video_library' => 0,
           'upload' => 'upload',
         ),
         'progress_indicator' => 'throbber',
@@ -252,7 +313,7 @@ function ampet_blog_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'title',
         'settings' => array(
-          'title_class' => '',
+          'title_class' => 'title',
           'title_link' => 'content',
           'title_style' => 'h3',
         ),
@@ -261,9 +322,37 @@ function ampet_blog_field_default_field_instances() {
       ),
       'full' => array(
         'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
+        'module' => 'helpergeneric',
+        'settings' => array(
+          'show_actions' => 1,
+          'title_class' => 'page-title',
+          'title_link' => '',
+          'title_style' => 'h1',
+        ),
+        'type' => 'title_with_actions',
+        'weight' => 0,
+      ),
+      'teaser_featured' => array(
+        'label' => 'hidden',
+        'module' => 'title',
+        'settings' => array(
+          'title_class' => 'title',
+          'title_link' => 'content',
+          'title_style' => 'h3',
+        ),
+        'type' => 'title_linked',
+        'weight' => 1,
+      ),
+      'teaser_normal' => array(
+        'label' => 'hidden',
+        'module' => 'title',
+        'settings' => array(
+          'title_class' => 'title',
+          'title_link' => 'content',
+          'title_style' => 'h3',
+        ),
+        'type' => 'title_linked',
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',

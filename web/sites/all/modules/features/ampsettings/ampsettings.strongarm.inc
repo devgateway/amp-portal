@@ -21,15 +21,8 @@ function ampsettings_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'filter_fallback_format';
-  $strongarm->value = 'plain_text';
+  $strongarm->value = 'filtered_html';
   $export['filter_fallback_format'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'media__icon_base_directory';
-  $strongarm->value = 'public://media-icons';
-  $export['media__icon_base_directory'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -233,6 +226,13 @@ function ampsettings_strongarm() {
   $strongarm->name = 'user_register';
   $strongarm->value = 0;
   $export['user_register'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'views_exposed_filter_any_label';
+  $strongarm->value = 'new_any';
+  $export['views_exposed_filter_any_label'] = $strongarm;
 
   return $export;
 }

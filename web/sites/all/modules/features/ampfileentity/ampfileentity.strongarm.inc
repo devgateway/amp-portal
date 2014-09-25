@@ -131,13 +131,37 @@ function ampfileentity_strongarm() {
         'custom_settings' => FALSE,
       ),
       'full' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'rss' => array(
         'custom_settings' => FALSE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
+      ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'normal' => array(
+        'custom_settings' => TRUE,
+      ),
+      'narrow' => array(
+        'custom_settings' => TRUE,
+      ),
+      'narrow_linked' => array(
+        'custom_settings' => TRUE,
+      ),
+      'normal_linked' => array(
+        'custom_settings' => TRUE,
+      ),
+      'original' => array(
+        'custom_settings' => TRUE,
+      ),
+      'wide' => array(
+        'custom_settings' => TRUE,
+      ),
+      'wide_linked' => array(
+        'custom_settings' => TRUE,
       ),
     ),
     'extra_fields' => array(
@@ -163,6 +187,38 @@ function ampfileentity_strongarm() {
             'visible' => TRUE,
           ),
           'full' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'normal' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'narrow' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'narrow_linked' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'normal_linked' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'original' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'wide' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'wide_linked' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'wysiwyg' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),

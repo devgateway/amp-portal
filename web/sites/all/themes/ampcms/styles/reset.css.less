@@ -1,0 +1,64 @@
+
+img {
+  // Make sure images fit inside the container.
+  max-width: 100%;
+  height: auto;
+}
+
+img,
+svg {
+  // Reset the line-height.
+  line-height: 1;
+}
+
+img,
+svg,
+iframe {
+  // Make sure elements are vertically aligned. Solves some vertical alignment and spacing issues.
+  vertical-align: middle;
+}
+
+/**
+ * Define border style.
+ *
+ * @TODO: Cleanup
+ */
+hr {
+  border-top: 1px solid @clnormal__dark;
+  clear: both;
+  height: 1px;
+  margin-bottom: 13px;
+  margin-top: 13px;
+  width: 100%;
+  &.dotted {
+    border-style: dashed;
+  }
+}
+
+/**
+ * Style the browser warning messages.
+ *
+ */
+.browser-warnings-wrapper {
+  text-align: center;
+  position: relative;
+  p {
+    background: @clerror__light;
+    border: 1px solid @clerror__faded;
+    color: @clerror__dark;
+    margin-bottom: 1em;
+    margin-top: 0em;
+    padding: 1em 2em;
+  }
+  .ignore-link {
+    cursor: pointer;
+    padding: 0.5em;
+    position: absolute;
+    right: 0em;
+    top: 0em;
+    .no-js & {
+      display: none;
+    }
+  }
+}
+
