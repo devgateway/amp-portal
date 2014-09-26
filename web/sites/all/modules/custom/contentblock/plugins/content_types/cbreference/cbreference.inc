@@ -14,13 +14,10 @@ $plugin = array(
   'category' => t('Custom'),
   'title' => t('CB Reference'),
   'description' => t('Add a entity from your site as content stored in a variable.'),
-  'icon' => 'icon.png',
-  'single' => TRUE,
   'defaults' => array(
     'variable_name' => '',
     'template' => '',
   ),
-  'top level' => TRUE,
 );
 
 /**
@@ -39,10 +36,12 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
     return;
   }
 
-  $block->content['#contextual_links'] = array(
-    // 'menu' => array('admin/structure/menu/manage', array('navigation')),
-    'contentblock' => array('admin/settings/static-content', array('blog')),
-  );
+  if (strpos($conf['variable_name'], 'contentblock_blockref_') === 0) {
+    $name = substr($conf['variable_name'], strlen('contentblock_blockref_'));
+    $block->content['#contextual_links'] = array(
+      'contentblock' => array('admin/settings/static-content', array($name)),
+    );
+  }
 
   foreach ($contentblocks as $info) {
     if (empty($info['contentblock']) || !is_numeric($info['contentblock'])) {
