@@ -39,6 +39,11 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
     return;
   }
 
+  $block->content['#contextual_links'] = array(
+    // 'menu' => array('admin/structure/menu/manage', array('navigation')),
+    'contentblock' => array('admin/settings/static-content', array('blog')),
+  );
+
   foreach ($contentblocks as $info) {
     if (empty($info['contentblock']) || !is_numeric($info['contentblock'])) {
       continue;
