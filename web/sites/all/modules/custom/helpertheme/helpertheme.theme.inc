@@ -108,8 +108,17 @@ function theme_header_items() {
   // Get the menu links.
   $menu_name = 'user-menu';
   if ($links = helpertheme_menu_navigation_links($menu_name, 1)) {
-    $menu_elements['nav']['#prefix'] = '<nav role="navigation" id="user-navigation" class="user-navigation">';
+    // Mark this element as potentially having contextual links attached to it.
+    $menu_elements['nav']['#prefix'] = '<nav role="navigation" id="user-navigation" class="user-navigation contextual-links-region">';
     $menu_elements['nav']['#suffix'] = '</nav>';
+
+    // Initialize the template variable as a renderable array.
+    $menu_elements['nav']['contextual_links'] = array(
+      '#type' => 'contextual_links',
+      '#contextual_links' => array(
+        'menu' => array('admin/structure/menu/manage', array('user-menu')),
+      ),
+    );
 
     $menu_elements['nav']['links'] = array(
       '#theme' => 'links__enhanced',
@@ -136,7 +145,24 @@ function theme_header_items() {
  * Returns HTML for main navigation menu.
  */
 function theme_main_navigation() {
-  $menu_elements = array();
+  $menu_elements = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'navigation-toplevel',
+      ),
+    ),
+  );
+
+  // Initialize the template variable as a renderable array.
+  $menu_elements['contextual_links'] = array(
+    '#type' => 'contextual_links',
+    '#contextual_links' => array(
+      'menu' => array('admin/structure/menu/manage', array('main-menu')),
+    ),
+  );
+  // Mark this element as potentially having contextual links attached to it.
+  $menu_elements['#attributes']['class'][] = 'contextual-links-region';
 
   $menu_elements['header'] = array(
     '#type' => 'html_tag',
@@ -152,7 +178,7 @@ function theme_main_navigation() {
   $menu_elements['navigation']['#theme_wrappers'] = array('menu_tree__main_menu__toplevel');
 
   // Render the menu.
-  $output = render($menu_elements);
+  $output = drupal_render($menu_elements);
 
   // Remove whitespace between items. Helps with styling in-line elements.
   return preg_replace('/\>[\n\ ]+\</', '><', $output);
