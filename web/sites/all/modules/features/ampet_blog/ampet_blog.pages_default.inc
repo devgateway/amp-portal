@@ -353,6 +353,30 @@ function ampet_blog_default_page_manager_pages() {
     $pane->uuid = '393bf714-7fc9-4a31-af3f-e73b5471db64';
     $display->content['new-393bf714-7fc9-4a31-af3f-e73b5471db64'] = $pane;
     $display->panels['right'][0] = 'new-393bf714-7fc9-4a31-af3f-e73b5471db64';
+    $pane = new stdClass();
+    $pane->pid = 'new-0fc6d4c9-8743-4816-a2a3-57994f53d803';
+    $pane->panel = 'right';
+    $pane->type = 'linkedimage';
+    $pane->subtype = 'linkedimage';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'variable_name' => 'helpergeneric_map_widget_settings',
+      'style' => 'normal',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '0fc6d4c9-8743-4816-a2a3-57994f53d803';
+    $display->content['new-0fc6d4c9-8743-4816-a2a3-57994f53d803'] = $pane;
+    $display->panels['right'][1] = 'new-0fc6d4c9-8743-4816-a2a3-57994f53d803';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

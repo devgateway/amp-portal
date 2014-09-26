@@ -23,6 +23,10 @@ function helpertheme_color_pallete() {
     '#value' => '#f0f0f0',
     '#desc' => 'page background',
     '#variants' => array(
+      'clmain__alt' => array(
+        '#value' => '#eceaea',
+        '#desc' => 'alternative background color',
+      ),
     ),
   );
 
@@ -38,7 +42,7 @@ function helpertheme_color_pallete() {
   );
 
   $colors['primary']['clnormal'] = array(
-    '#value' => '#727272',
+    '#value' => '#555555',
     '#desc' => 'normal text',
     '#variants' => array(
       'clnormal__dark' => array(
@@ -67,8 +71,15 @@ function helpertheme_color_pallete() {
   );
 
   $colors['secondary']['clpassive'] = array(
-    '#value' => '#b5b5b5',
-    '#desc' => 'passive/disabled highlighted items',
+    '#value' => '#7c7c7c',
+    '#desc' => 'pasive items',
+    '#variants' => array(
+    ),
+  );
+
+  $colors['secondary']['clactive'] = array(
+    '#value' => '#4fa600',
+    '#desc' => 'highlighted items',
     '#variants' => array(
     ),
   );

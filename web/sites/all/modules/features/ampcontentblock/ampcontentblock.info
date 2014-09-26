@@ -50,4 +50,3 @@ features[variable][] = field_bundle_settings_contentblock__links
 features[variable][] = field_bundle_settings_contentblock__organization
 features[variable][] = field_bundle_settings_contentblock__predefined
 features[variable][] = field_bundle_settings_contentblock__text
-features_exclude[dependencies][ampviewsettings] = ampviewsettings

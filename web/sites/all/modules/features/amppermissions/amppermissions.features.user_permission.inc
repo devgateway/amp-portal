@@ -93,6 +93,15 @@ function amppermissions_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'admin_display_suite'.
+  $permissions['admin_display_suite'] = array(
+    'name' => 'admin_display_suite',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'ds',
+  );
+
   // Exported permission: 'administer actions'.
   $permissions['administer actions'] = array(
     'name' => 'administer actions',
@@ -435,6 +444,33 @@ function amppermissions_user_default_permissions() {
     'module' => 'features',
   );
 
+  // Exported permission: 'helpergeneric access taxonomy'.
+  $permissions['helpergeneric access taxonomy'] = array(
+    'name' => 'helpergeneric access taxonomy',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'helpergeneric',
+  );
+
+  // Exported permission: 'helpergeneric administer menus'.
+  $permissions['helpergeneric administer menus'] = array(
+    'name' => 'helpergeneric administer menus',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'helpergeneric',
+  );
+
+  // Exported permission: 'helpergeneric administer settings'.
+  $permissions['helpergeneric administer settings'] = array(
+    'name' => 'helpergeneric administer settings',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'helpergeneric',
+  );
+
   // Exported permission: 'manage features'.
   $permissions['manage features'] = array(
     'name' => 'manage features',
@@ -564,14 +600,18 @@ function amppermissions_user_default_permissions() {
   // Exported permission: 'use text format clean_summary'.
   $permissions['use text format clean_summary'] = array(
     'name' => 'use text format clean_summary',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'filter',
   );
 
   // Exported permission: 'use text format plain_text'.
   $permissions['use text format plain_text'] = array(
     'name' => 'use text format plain_text',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'filter',
   );
 

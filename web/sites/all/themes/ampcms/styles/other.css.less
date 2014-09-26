@@ -19,3 +19,42 @@
   margin-bottom: 1em;
   text-align: right;
 }
+
+.pane-linkedimage {
+  border: @border_width solid @clcontent__separator;
+  .pane-title {
+    float: left;
+    font-weight: bold;
+    margin: 0;
+    text-transform: uppercase;
+    width: 294px;
+    a {
+      color: @clactive;
+      text-decoration: none;
+    }
+    svg {
+      fill: @clactive;
+      margin-right: 0.5em;
+    }
+  }
+
+  &.linkedimage-wide {
+    background-color: @clmain__alt;
+    .pane-title {
+      text-align: center;
+      font-size: 1.2em;
+      line-height: 6em;
+    }
+  }
+  &.linkedimage-normal {
+    background-color: @clcontent;
+    .pane-title {
+      font-size: 1em;
+      line-height: 3em;
+      svg {
+        fill: @clactive;
+        margin-left: 0.5em;
+      }
+    }
+  }
+}
