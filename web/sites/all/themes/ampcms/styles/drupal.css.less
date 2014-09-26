@@ -509,3 +509,24 @@ html.js input.throbbing {
     margin-bottom: 1em;
   }
 }
+
+/**
+ * Collapsible fieldsets.
+ *
+ * @see collapse.js
+ */
+html.js fieldset.collapsed {
+  border-bottom-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  height: 1em;
+}
+html.js fieldset.collapsed .fieldset-wrapper {
+  display: none;
+}
+fieldset.collapsible {
+  position: relative;
+}
+fieldset.collapsible .fieldset-legend {
+  display: block;
+}
