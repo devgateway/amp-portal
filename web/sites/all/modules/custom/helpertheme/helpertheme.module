@@ -315,6 +315,7 @@ function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
     'reports',
     'sector',
 
+    'gear',
     'add',
     'view',
     'edit',
