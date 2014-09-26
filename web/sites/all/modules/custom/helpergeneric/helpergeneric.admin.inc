@@ -6,9 +6,9 @@
  */
 
 /**
- * Page callback for 'admin/settings/generic'.
+ * Page callback for 'admin/settings/ui'.
  */
-function helpergeneric_settings_form($form) {
+function helpergeneric_ui_settings_form($form) {
   $form = array();
 
   $cleanup_ui_force = TRUE;
@@ -20,8 +20,8 @@ function helpergeneric_settings_form($form) {
     '#type' => 'fieldset',
     '#title' => t('UI settings'),
     '#description' => '<p>' . t('By default the UI is cleaned, you can disable this behaviour and have access to more options. This is only as a UI cleanup functionality and not a security feature.') . '</p><p>' . t('<strong>DO NOT CLICK</strong> on these buttons unless you were told to!') . '</p>',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
   );
 
   $form['cleanup_ui']['enable'] = array(
@@ -40,7 +40,7 @@ function helpergeneric_settings_form($form) {
     '#executes_submit_callback' => TRUE,
   );
 
-  return system_settings_form($form);
+  return $form;
 }
 
 /**
@@ -55,6 +55,15 @@ function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
     // Disable UI cleanup.
     setcookie('helpergeneric_cleanup_ui_force', 0, NULL, base_path());
   }
+}
+
+/**
+ * Page callback for 'admin/settings/generic'.
+ */
+function helpergeneric_settings_form($form) {
+  $form = array();
+
+  return system_settings_form($form);
 }
 
 /**

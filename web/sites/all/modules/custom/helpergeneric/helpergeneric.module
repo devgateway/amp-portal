@@ -17,29 +17,40 @@ function helpergeneric_menu() {
     'title' => 'Settings',
     'description' => 'Administer Project settings.',
     'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('helpergeneric administer settings'),
     'weight' => 30,
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
   );
+
+  $items['admin/settings/ui'] = array(
+    'title' => 'UI Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_ui_settings_form'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'file' => 'helpergeneric.admin.inc',
+    'weight' => -32,
+    'type' => MENU_CALLBACK,
+  );
+
+  // $items['admin/settings/generic'] = array(
+  //   'title' => 'Generic settings',
+  //   'description' => 'Project generic settings.',
+  //   'page callback' => 'drupal_get_form',
+  //   'page arguments' => array('helpergeneric_settings_form'),
+  //   'access arguments' => array('helpergeneric administer settings'),
+  //   'file' => 'helpergeneric.admin.inc',
+  //   'weight' => -32,
+  // );
 
   $items['admin/settings/static-content'] = array(
     'title' => 'Static Content',
     'description' => 'Administer static page content for the homepage and other pages.',
     'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('helpergeneric administer settings'),
     'weight' => 30,
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
-  );
-
-  $items['admin/settings/static-content/homepage'] = array(
-    'title' => 'Homepage Content',
-    'description' => 'Configure homepage content.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('helpergeneric_homepage_content_settings_form'),
-    'access arguments' => array('administer nodes'),
-    'file' => 'helpergeneric.content.inc',
   );
 
   $items['admin/settings/static-content/blog'] = array(
@@ -47,18 +58,47 @@ function helpergeneric_menu() {
     'description' => 'Configure blog sidebar content.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('helpergeneric_blog_content_settings_form'),
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('helpergeneric administer settings'),
     'file' => 'helpergeneric.content.inc',
   );
+  // @TODO: Remove!!! It's required for contextual links.
+  $items['admin/settings/static-content/blog/edit'] = array(
+    'title' => 'Edit or Add blocks',
+    'weight' => -10,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
 
-  $items['admin/settings/generic'] = array(
-    'title' => 'Generic settings',
-    'description' => 'Project generic settings.',
+  $items['admin/settings/static-content/map'] = array(
+    'title' => 'Linked Map Image',
+    'description' => 'Configure linked map image.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('helpergeneric_settings_form'),
-    'access arguments' => array('administer nodes'),
-    'file' => 'helpergeneric.admin.inc',
-    'weight' => -32,
+    'page arguments' => array('helpergeneric_map_content_settings_form'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'file' => 'helpergeneric.content.inc',
+  );
+  // @TODO: Remove!!! It's required for contextual links.
+  $items['admin/settings/static-content/map/edit'] = array(
+    'title' => 'Edit',
+    'weight' => -10,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  $items['admin/settings/static-content/homepage'] = array(
+    'title' => 'Homepage Content',
+    'description' => 'Configure homepage content.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_homepage_content_settings_form'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'file' => 'helpergeneric.content.inc',
+  );
+  // @TODO: Remove!!! It's required for contextual links.
+  $items['admin/settings/static-content/homepage/edit'] = array(
+    'title' => 'Edit or Add blocks',
+    'weight' => -10,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
 
   $items['admin/settings/main-menu'] = array(
@@ -84,12 +124,46 @@ function helpergeneric_menu() {
     'title' => 'Autocomplete',
     'page callback' => 'helpergeneric_entity_autocomplete',
     'page arguments' => array('contentblock'),
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('helpergeneric administer settings'),
     'type' => MENU_CALLBACK,
     'file' => 'helpergeneric.admin.inc',
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function helpergeneric_menu_alter(&$items) {
+  // Change access argument in order to provide more granular permissions.
+  $items['admin/structure/menu']['access arguments'] = array('helpergeneric administer menus');
+  $items['admin/structure/menu/add']['access arguments'] = array('helpergeneric administer menus');
+  $items['admin/structure/menu/manage/%menu/edit']['access arguments'] = array('helpergeneric administer menus');
+  $items['admin/structure/menu/manage/%menu/delete']['access arguments'] = array('helpergeneric administer menus');
+  $items['admin/structure/menu/settings']['access arguments'] = array('helpergeneric administer menus');
+  $items['admin/structure/taxonomy']['access arguments'] = array('helpergeneric access taxonomy');
+  $items['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access arguments'] = array('helpergeneric access taxonomy');
+}
+
+/**
+ * Implements hook_permission().
+ */
+function helpergeneric_permission() {
+  return array(
+    'helpergeneric administer settings' => array(
+      'title' => t('Administer project settings'),
+      'description' => t('Allow users to change project specific settings.'),
+    ),
+    'helpergeneric administer menus' => array(
+      'title' => t('HelperGeneric: Administer menus only.'),
+      'description' => t('Allow users to change the menus. This overrides the "administer menu" permission to remove menu editing permission.'),
+    ),
+    'helpergeneric access taxonomy' => array(
+      'title' => t('HelperGeneric: Access vocabularies only.'),
+      'description' => t('Allow users to access the vocabularies.'),
+    ),
+  );
 }
 
 /**
@@ -113,6 +187,7 @@ function helpergeneric_htmlpurifier_info() {
       'Cache.DefinitionImpl',
       'Core.AggressivelyFixLt',
       'HTML.FlashAllowFullScreen',
+      'HTML.ForbiddenElements',
       'HTML.SafeEmbed',
       'HTML.SafeObject',
       'HTML.SafeIframe',
@@ -146,6 +221,10 @@ function helpergeneric_htmlpurifier_info() {
       // Allows flash applications to be viewed in full screen.
       'HTML.FlashAllowFullScreen' => TRUE,
 
+      // A list of tags to strip out from documents. User notification is recommended.
+      // @see helpergeneric_element_info_alter()
+      'HTML.ForbiddenElements' => array('img'),
+
       // Whether or not to permit embed tags in documents, with a number of
       // extra security features added to prevent script execution.
       'HTML.SafeEmbed' => TRUE,
@@ -161,7 +240,7 @@ function helpergeneric_htmlpurifier_info() {
 
       // A regex that will be matched against an iframe URI.
       // This directive only has an effect if %HTML.SafeIframe is enabled.
-      'URI.SafeIframeRegexp' => '%^http://(www.youtube.com/embed/|js.aiddata.org/|aiddata.org/|/player.vimeo.com/video/)%',
+      'URI.SafeIframeRegexp' => '%^http://(www.youtube.com/embed/|/player.vimeo.com/video/)%',
 
       // Disables the embedding of external resources.
       'URI.DisableExternalResources' => TRUE,
@@ -171,6 +250,27 @@ function helpergeneric_htmlpurifier_info() {
   );
 
   return $info;
+}
+
+/**
+ * Implements hook_element_info_alter()
+ */
+function helpergeneric_element_info_alter(&$type) {
+  if (isset($type['textarea'])) {
+    $type['textarea']['#element_validate'][] = 'helpergeneric_textarea_validate';
+  }
+}
+
+/**
+ * Validation callback for all 'textarea' form elements.
+ */
+function helpergeneric_textarea_validate($element, &$form_state, $form) {
+  if (!empty($element['#format']) && $element['#format'] == 'filtered_html') {
+    if (strpos($element['#value'], '<img') !== FALSE) {
+      // form_set_error($element['#field_name'], 'Image tags are not allowed. Please use the media WYSIWYG button to add inline multimedia.');
+      drupal_set_message(t('Looks like you tried to use image tags. For security reasons those will be removed. Please use the media WYSIWYG button for images.'), 'warning');
+    }
+  }
 }
 
 /**
@@ -402,5 +502,14 @@ function helpergeneric_entity_load($entities, $entity_type) {
     if (!empty($local_actions)) {
       $entity->action_links = drupal_render($local_actions);
     }
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function helpergeneric_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && $plugin == 'content_types') {
+    return 'plugins/' . $plugin;
   }
 }

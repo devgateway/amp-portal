@@ -259,6 +259,16 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
 
   }
 
+  // Remove SVG icon information.
+  if ($component == 'variable') {
+    foreach ($component_export['options']['sources'] as $name) {
+      if (strpos($name, HELPERTHEME_SVG_ICON_NAME_PREFIX) === 0) {
+        // Only remove the variable and do not display any message.
+        unset($component_export['options']['sources'][$name]);
+      }
+    }
+  }
+
   if (empty($entries_list)) {
     return;
   }
