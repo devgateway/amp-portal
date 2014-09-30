@@ -31,6 +31,9 @@ function contentblock_entity_info() {
     // 'extra fields controller class' => 'ContentBlockExtraFieldsController',
     // 'metadata controller class' => 'ContentBlockMetadataController',
     // 'i18n controller class' => 'EntityDefaultI18nStringController',
+    'inline entity form' => array(
+      'controller' => 'ContentBlockInlineEntityFormController',
+    ),
 
     // 'entity cache' => FALSE,
     // 'field cache' => FALSE,
