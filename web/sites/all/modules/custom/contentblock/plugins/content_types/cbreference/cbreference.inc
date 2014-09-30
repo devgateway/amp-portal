@@ -61,7 +61,7 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
 
   if (isset($block->delta)) {
     $block->content['#contextual_links'] = array(
-      'contentblock' => array('admin/settings/static-content', array($block->delta)),
+      'contentblock' => array('admin/settings/content-sections', array($block->delta)),
     );
   }
 

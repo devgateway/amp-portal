@@ -330,11 +330,12 @@ function contentblock_menu() {
     'file' => 'contentblock.admin_cbreference.inc',
   );
 
-  $items['admin/settings/static-content'] = array(
-    'title' => 'Static Content',
-    'description' => 'Administer static page content for the homepage and other pages.',
+  $items['admin/settings/content-sections'] = array(
+    'title' => 'Content Sections',
+    'description' => 'Administer content sections for the homepage and other pages.',
     'page callback' => 'system_admin_menu_block_page',
     'access arguments' => array('helpergeneric administer settings'),
+    'position' => 'right',
     'weight' => 30,
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
@@ -342,7 +343,7 @@ function contentblock_menu() {
 
   $weight = 0;
   foreach (contentblock_get_hidden_types() as $machine_name => $info) {
-    $items['admin/settings/static-content/' . $machine_name] = array(
+    $items['admin/settings/content-sections/' . $machine_name] = array(
       'title' => $info['title'],
       'description' => $info['description'],
       'page callback' => 'contentblock_cbreference_entity_form',
@@ -352,7 +353,7 @@ function contentblock_menu() {
       'weight' => $weight,
     );
     // @TODO: Remove!!! It's required for contextual links.
-    $items['admin/settings/static-content/' . $machine_name . '/edit'] = array(
+    $items['admin/settings/content-sections/' . $machine_name . '/edit'] = array(
       'title' => $info['action label'],
       'weight' => -10,
       'type' => MENU_DEFAULT_LOCAL_TASK,

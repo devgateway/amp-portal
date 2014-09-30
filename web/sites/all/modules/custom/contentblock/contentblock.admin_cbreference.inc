@@ -7,7 +7,7 @@
 module_load_include('inc', 'contentblock', 'contentblock.admin');
 
 /**
- * Page callback for 'admin/settings/static-content/*'.
+ * Page callback for 'admin/settings/content-sections/*'.
  */
 function contentblock_cbreference_entity_form($machine_name = NULL) {
   $entity_type = 'contentblock';
