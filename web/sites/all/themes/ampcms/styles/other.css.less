@@ -1,4 +1,6 @@
 
+@import './lib/helpers.less';
+
 .item-list .views-row {
   margin: 0 1em;
 }
@@ -13,6 +15,10 @@
 
 .field {
   margin: 1em 0;
+  &.field-name-blog-sidebar,
+  &.field-name-field-cbblocks {
+    margin: 0;
+  }
 }
 
 .more-link {
@@ -20,9 +26,11 @@
   text-align: right;
 }
 
-.pane-linkedimage {
+.cbreference-linkedmap {
   border: @border_width solid @clcontent__separator;
-  .pane-title {
+  margin-bottom: 1em;
+
+  .title-wrapper {
     float: left;
     font-weight: bold;
     margin: 0;
@@ -30,6 +38,7 @@
     width: 294px;
     a {
       color: @clactive;
+      display: block;
       text-decoration: none;
     }
     svg {
@@ -37,18 +46,21 @@
       margin-right: 0.5em;
     }
   }
+  .field-name-field-cbimage {
+    margin: 0;
+  }
 
-  &.linkedimage-wide {
+  &.cbreference-view-mode-wide {
     background-color: @clmain__alt;
-    .pane-title {
+    .title-wrapper {
       text-align: center;
       font-size: 1.2em;
       line-height: 6em;
     }
   }
-  &.linkedimage-normal {
+  &.cbreference-view-mode-normal {
     background-color: @clcontent;
-    .pane-title {
+    .title-wrapper {
       font-size: 1em;
       line-height: 3em;
       svg {
@@ -56,5 +68,23 @@
         margin-left: 0.5em;
       }
     }
+  }
+}
+
+.homepage-welcome-block {
+  background-color: @cldetail;
+  color: @clcontent;
+  padding: 1em;
+  .pane-content {
+    .clearfix-mixin();
+  }
+  .contentblock-title {
+    color: @cldetail__alt;
+    margin: 0;
+  }
+  .field-name-field-cbimage {
+    float: right;
+    margin: 0;
+    margin-left: 1em;
   }
 }

@@ -13,6 +13,7 @@ class ContentBlockEntity extends Entity {
   public $cbid = NULL;
   public $title = '';
   public $type = '';
+  public $machine_name = NULL;
   public $uid = NULL;
   public $status = FALSE;
   public $created = NULL;

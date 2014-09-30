@@ -195,15 +195,19 @@ function theme_cbstyle_style_render_pane($vars) {
   }
 
   $elements['pane_content'] = array(
-    '#tag' => 'div',
-    '#theme' => 'html_tag',
-    '#value' => $vars['content']->content,
+    '#type' => 'container',
     '#attributes' => array(
       'class' => array(
         'contentblock-pane-content',
       ),
     ),
   );
+  if (is_string($vars['content']->content)) {
+    $elements['pane_content']['content']['#markup'] = $vars['content']->content;
+  }
+  else if (is_array($vars['content']->content)) {
+    $elements['pane_content'] += $vars['content']->content;
+  }
 
   if (!empty($vars['content']->title)) {
     // Add the section content.

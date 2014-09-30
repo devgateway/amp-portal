@@ -56,6 +56,10 @@ function helpertheme_color_pallete() {
     '#value' => '#2e5983',
     '#desc' => 'links, highlighted items, page border',
     '#variants' => array(
+      'cldetail__alt' => array(
+        '#value' => '#ffca00',
+        '#desc' => 'alternative detail',
+      ),
       'cldetail__separator' => array(
         '#value' => 'lighten(@cldetail, 35%)',
         '#desc' => 'menu border?!?',

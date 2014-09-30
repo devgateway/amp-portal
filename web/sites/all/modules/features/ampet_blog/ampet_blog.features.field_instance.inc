@@ -100,7 +100,7 @@ function ampet_blog_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'teaser_featured' => array(
         'label' => 'above',
@@ -290,6 +290,8 @@ function ampet_blog_field_default_field_instances() {
           'video' => 0,
         ),
         'browser_plugins' => array(
+          'media_default--media_browser_1' => 0,
+          'media_default--media_browser_my_files' => 0,
           'media_library--audio_library' => 0,
           'media_library--document_library' => 0,
           'media_library--image_library' => 'media_library--image_library',

@@ -196,7 +196,7 @@ function ampet_blog_default_page_manager_pages() {
       'arguments' => array(
         'field_blog_entry_type_value' => 'news+events',
       ),
-      'override_title' => 0,
+      'override_title' => 1,
       'override_title_text' => '',
     );
     $pane->cache = array();
@@ -221,10 +221,12 @@ function ampet_blog_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => 'contentblock_blockref_blog',
+      'variable_name' => '',
       'template' => '',
       'override_title' => 0,
       'override_title_text' => '',
+      'machine_name' => 'blogsidebar',
+      'style' => 'normal',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -238,14 +240,15 @@ function ampet_blog_default_page_manager_pages() {
     $display->content['new-393bf714-7fc9-4a31-af3f-e73b5471db64'] = $pane;
     $display->panels['right'][0] = 'new-393bf714-7fc9-4a31-af3f-e73b5471db64';
     $pane = new stdClass();
-    $pane->pid = 'new-0fc6d4c9-8743-4816-a2a3-57994f53d803';
+    $pane->pid = 'new-37e37bc6-d4d2-4622-8786-a9d55cc86e51';
     $pane->panel = 'right';
-    $pane->type = 'linkedimage';
-    $pane->subtype = 'linkedimage';
+    $pane->type = 'cbreference';
+    $pane->subtype = 'cbreference';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => 'helpergeneric_map_widget_settings',
+      'variable_name' => '',
+      'machine_name' => 'linkedmap',
       'style' => 'normal',
       'override_title' => 0,
       'override_title_text' => '',
@@ -258,11 +261,11 @@ function ampet_blog_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '0fc6d4c9-8743-4816-a2a3-57994f53d803';
-    $display->content['new-0fc6d4c9-8743-4816-a2a3-57994f53d803'] = $pane;
-    $display->panels['right'][1] = 'new-0fc6d4c9-8743-4816-a2a3-57994f53d803';
+    $pane->uuid = '37e37bc6-d4d2-4622-8786-a9d55cc86e51';
+    $display->content['new-37e37bc6-d4d2-4622-8786-a9d55cc86e51'] = $pane;
+    $display->panels['right'][1] = 'new-37e37bc6-d4d2-4622-8786-a9d55cc86e51';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = '0';
+  $display->title_pane = 'new-55b153a5-5c99-47e0-b729-4310bc433690';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['blog_listing'] = $page;

@@ -110,8 +110,6 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
       // Hide variables that should not be exported.
       $entries_list = array(
         // Custom variables.
-        'contentblock_blockref_blog',
-        'contentblock_blockref_homepage',
         'date_format_shortest',
         'helpergeneric_cleanup_ui_force',
 
@@ -233,6 +231,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'update_scripts_revert_features',
 
         // Hide views.module variables.
+        'views_defaults',
         'views_show_additional_queries',
 
         // Hide views_ui.module variables.

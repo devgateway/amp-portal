@@ -15,7 +15,9 @@ function ampviewsettings_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'ds_classes_fields';
   $strongarm->value = 'clearfix|Clearfix
-layout-block|Layout Block';
+layout-block|Layout Block
+cbreference-linkedmap|CB Reference: linkedmap
+cbreference-view-mode-normal|CB Reference: view_mode normal';
   $export['ds_classes_fields'] = $strongarm;
 
   $strongarm = new stdClass();

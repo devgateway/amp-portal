@@ -43,64 +43,6 @@ function helpergeneric_menu() {
   //   'weight' => -32,
   // );
 
-  $items['admin/settings/static-content'] = array(
-    'title' => 'Static Content',
-    'description' => 'Administer static page content for the homepage and other pages.',
-    'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => array('helpergeneric administer settings'),
-    'weight' => 30,
-    'file' => 'system.admin.inc',
-    'file path' => drupal_get_path('module', 'system'),
-  );
-
-  $items['admin/settings/static-content/blog'] = array(
-    'title' => 'Blog Sidebar Content',
-    'description' => 'Configure blog sidebar content.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('helpergeneric_blog_content_settings_form'),
-    'access arguments' => array('helpergeneric administer settings'),
-    'file' => 'helpergeneric.content.inc',
-  );
-  // @TODO: Remove!!! It's required for contextual links.
-  $items['admin/settings/static-content/blog/edit'] = array(
-    'title' => 'Edit or Add blocks',
-    'weight' => -10,
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-  );
-
-  $items['admin/settings/static-content/map'] = array(
-    'title' => 'Linked Map Image',
-    'description' => 'Configure linked map image.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('helpergeneric_map_content_settings_form'),
-    'access arguments' => array('helpergeneric administer settings'),
-    'file' => 'helpergeneric.content.inc',
-  );
-  // @TODO: Remove!!! It's required for contextual links.
-  $items['admin/settings/static-content/map/edit'] = array(
-    'title' => 'Edit',
-    'weight' => -10,
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-  );
-
-  $items['admin/settings/static-content/homepage'] = array(
-    'title' => 'Homepage Content',
-    'description' => 'Configure homepage content.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('helpergeneric_homepage_content_settings_form'),
-    'access arguments' => array('helpergeneric administer settings'),
-    'file' => 'helpergeneric.content.inc',
-  );
-  // @TODO: Remove!!! It's required for contextual links.
-  $items['admin/settings/static-content/homepage/edit'] = array(
-    'title' => 'Edit or Add blocks',
-    'weight' => -10,
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-  );
-
   $items['admin/settings/main-menu'] = array(
     'title' => 'Edit Main menu',
     'description' => 'Edit the main menu links.',
@@ -117,16 +59,6 @@ function helpergeneric_menu() {
     'page arguments' => array('admin/structure/menu/manage/user-menu'),
     'access arguments' => array('administer menu'),
     'weight' => -18,
-  );
-
-  // Page callback that outputs JSON for project specific nodevar autocomplete suggestions.
-  $items['helpergeneric/contentblock/autocomplete'] = array(
-    'title' => 'Autocomplete',
-    'page callback' => 'helpergeneric_entity_autocomplete',
-    'page arguments' => array('contentblock'),
-    'access arguments' => array('helpergeneric administer settings'),
-    'type' => MENU_CALLBACK,
-    'file' => 'helpergeneric.admin.inc',
   );
 
   return $items;
@@ -468,25 +400,6 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
       );
     }
   }
-
-  // Attach "Add content block" link to "Page Content" settings page title.
-  if (strpos($root_path, 'admin/settings/static-content/') === 0) {
-    $action_router_item = menu_get_item('contentblock/add');
-
-    if ($action_router_item['access']) {
-      $action_router_item['localized_options']['attributes']['target'] = '_blank';
-      $action_router_item['localized_options']['theme extra'] = array(
-        'entity action' => TRUE,
-        'icon' => 'add',
-      );
-
-      $data['actions']['output'][] = array(
-        '#theme' => 'menu_local_action',
-        '#link' => $action_router_item,
-        '#weight' => 40,
-      );
-    }
-  }
 }
 
 /**
@@ -502,14 +415,5 @@ function helpergeneric_entity_load($entities, $entity_type) {
     if (!empty($local_actions)) {
       $entity->action_links = drupal_render($local_actions);
     }
-  }
-}
-
-/**
- * Implements hook_ctools_plugin_directory().
- */
-function helpergeneric_ctools_plugin_directory($module, $plugin) {
-  if ($module == 'ctools' && $plugin == 'content_types') {
-    return 'plugins/' . $plugin;
   }
 }

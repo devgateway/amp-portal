@@ -10,6 +10,57 @@
 function ampcontentblock_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_cbblocks'
+  $field_bases['field_cbblocks'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_cbblocks',
+    'foreign keys' => array(
+      'contentblock' => array(
+        'columns' => array(
+          'target_id' => 'cbid',
+        ),
+        'table' => 'contentblock',
+      ),
+    ),
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'entityqueue' => array(
+            'status' => 0,
+          ),
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'sort' => array(
+          'direction' => 'ASC',
+          'property' => 'title',
+          'type' => 'property',
+        ),
+        'target_bundles' => array(
+          'links' => 'links',
+          'organization' => 'organization',
+          'predefined' => 'predefined',
+          'text' => 'text',
+        ),
+      ),
+      'target_type' => 'contentblock',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
   // Exported field_base: 'field_cbbody'
   $field_bases['field_cbbody'] = array(
     'active' => 1,

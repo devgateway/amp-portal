@@ -11,10 +11,10 @@
  * @see contentblock_entity_info().
  */
 function contentblock_form($form, &$form_state, $entity) {
-  $entity_type = $entity->entityType();
+  $entity_type = 'contentblock';
   $entity_controller = entity_get_controller($entity_type);
 
-  if (isset($form_state['op'])) {
+  if (isset($form_state['op']) && arg(0) != 'admin') {
     drupal_set_title(contentblock_entity_ui_get_page_title($form_state['op'], $entity_type, $entity), PASS_THROUGH);
   }
 
@@ -40,7 +40,6 @@ function contentblock_form($form, &$form_state, $entity) {
   $form['title'] = array(
     '#type' => 'textfield',
     '#title' => t('Title'),
-    '#description' => t('Were you expecting a title?'),
     '#default_value' => $entity->title,
   );
 
@@ -67,6 +66,15 @@ function contentblock_form($form, &$form_state, $entity) {
       '#href' => $entity_uri['path'],
       '#weight' => 20,
     );
+  }
+
+  // Setup the destination and cancel link URL.
+  $destination = drupal_get_destination();
+  $form_state['destination'] = $destination;
+  if (!empty($destination['destination'])) {
+    $destination_parts = drupal_parse_url($destination['destination']);
+    $form['actions']['cancel']['#href'] = $destination_parts['path'];
+    $form['actions']['cancel']['#options']['query'] = $destination_parts['query'];
   }
 
   // Attach fields, if any, and allow DS to order form items.
@@ -204,4 +212,39 @@ function contentblock_entity_overview_types($entity_type) {
     '#empty' => t('No entity types available.'),
   );
   return $build;
+}
+
+/**
+ * Page callback: Outputs JSON for entity autocomplete suggestions.
+ */
+function contentblock_entity_autocomplete($entity_type, $string = '') {
+  $matches = array();
+
+  if (empty($string)) {
+    return drupal_json_output($matches);
+  }
+
+  // @TODO: Log error!
+  $entity_info = entity_get_info($entity_type);
+  if (empty($entity_info)) {
+    return drupal_json_output($matches);
+  }
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', $entity_type, '=')
+        ->entityCondition('bundle', 'hidden', '!=')
+        // ->fieldCondition('title_field', 'title_field_value', '%' . db_like($string) . '%', 'LIKE')
+        ->propertyCondition('title', '%' . db_like($string) . '%', 'LIKE')
+        ->propertyOrderBy('title')
+        ->range(0, 10);
+  $result = $query->execute();
+
+  foreach ($result[$entity_type] as $entity_id => $entity) {
+    // @TODO: Optimize!
+    $entity = entity_load_single($entity_type, $entity_id);
+    $return_value = check_plain($entity->label()) . ' (' . $entity->identifier() . ')';
+    $matches[$return_value] = $return_value;
+  }
+
+  drupal_json_output($matches);
 }

@@ -13,27 +13,33 @@ function contentblock_schema() {
     'description' => 'The base table for contentblocks.',
     'fields' => array(
       'cbid' => array(
-        'description' => 'The primary identifier for a contentblock.',
+        'description' => 'The contentblock primary identifier.',
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
       'title' => array(
-        'description' => 'The title of this contentblock.',
+        'description' => 'The contentblock title.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
         'default' => '',
       ),
+      'machine_name' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'default' => '',
+        'description' => 'The contentblock machine name, used only by "Hidden" contentblocks.',
+      ),
       'type' => array(
-        'description' => 'The type of this contentblock.',
+        'description' => 'The contentblock type.',
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
         'default' => '',
       ),
       // 'language' => array(
-      //   'description' => 'The {languages}.language of this contentblock.',
+      //   'description' => 'The contentblock {languages}.language.',
       //   'type' => 'varchar',
       //   'length' => 12,
       //   'not null' => TRUE,
@@ -67,6 +73,7 @@ function contentblock_schema() {
     'indexes' => array(
       'entity_status'    => array('status', 'cbid'),
       'entity_status_type'    => array('status', 'type', 'cbid'),
+      'entity_machine_name'    => array('machine_name'),
     ),
     'foreign keys' => array(
       'entity_author' => array(
@@ -78,4 +85,18 @@ function contentblock_schema() {
   );
 
   return $schema;
+}
+
+/**
+ * Add 'machine_name' column to the {contentblock} table.
+ */
+function contentblock_update_7001() {
+  // Create a language column.
+  db_add_field('contentblock', 'machine_name', array(
+    'type' => 'varchar',
+    'length' => 128,
+    'default' => '',
+    'description' => 'The contentblock machine name, used only by "Hidden" contentblocks.',
+  ));
+  db_add_index('contentblock', 'entity_machine_name', array('machine_name'));
 }

@@ -60,6 +60,8 @@ function ampcontentblock_user_default_permissions() {
     'name' => 'contentblock entity view',
     'roles' => array(
       'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'contentblock',
   );

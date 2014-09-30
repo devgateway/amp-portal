@@ -131,12 +131,79 @@ function contentblock_get_types() {
     'description' => t('Use "Predefined Widgets" for...'),
   );
 
+  $items['hidden'] = array(
+    'label' => t('Hidden'),
+    'description' => t('Hidden content blocks are regular blocks to be used by developers.'),
+  );
+
   $items['text'] = array(
     'label' => t('Text'),
     'description' => t('Use "Text" for...'),
   );
 
   return $items;
+}
+
+/**
+ * Returns a list of question types.
+ */
+function contentblock_get_hidden_types($type = NULL) {
+  $items = array();
+
+  $items['welcome'] = array(
+    'title' => t('Home Welcome Block'),
+    'description' => t('The home welcome block is displayed on the homepage next to the projects search form.'),
+    'action label' => t('Edit'),
+    'available_fields' => array(
+      'title_field',
+      'field_cbimage',
+      'field_cblinks',
+      'field_cbbody',
+    ),
+  );
+
+  $items['linkedmap'] = array(
+    'title' => t('Linked Map Block'),
+    'description' => t('The linked map block is displayed on the homepage and on the blog sidebar.'),
+    'action label' => t('Edit'),
+    'available_fields' => array(
+      'title_field',
+      'field_cbimage',
+      'field_cblinks',
+    ),
+  );
+
+  $items['homewidgets'] = array(
+    'title' => t('Home Widgets Section'),
+    'description' => t('The home widgets is a section of configurable content on the homepage.'),
+    'action label' => t('Edit or Add blocks'),
+    'is section' => TRUE,
+    'available_fields' => array(
+      'title_field',
+      'field_cbblocks',
+    ),
+  );
+
+  $items['blogsidebar'] = array(
+    'title' => t('Blog Sidebar Section'),
+    'description' => t('The blog sidebar is a section of configurable content on the blog pages sidebar.'),
+    'action label' => t('Edit or Add blocks'),
+    'is section' => TRUE,
+    'available_fields' => array(
+      'title_field',
+      'field_cbblocks',
+    ),
+  );
+
+  if (!isset($type)) {
+    return $items;
+  }
+
+  if (isset($items[$type])) {
+    return $items[$type];
+  }
+
+  return array();
 }
 
 /**
@@ -181,12 +248,23 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
     if (user_access("$entity_type entity administer") || user_access("$entity_type entity access overview")) {
       $allow = TRUE;
     }
-    else if ($entity->status && user_access("$entity_type entity $op")) {
+    else if (user_access("$entity_type entity $op")) {
+      // For now we ignore the status field.
       $allow = TRUE;
     }
 
     $rights[$account->uid][$cid][$op] = $allow;
     return $allow;
+  }
+
+  // Only allow UID1 to create or delete 'hidden' content blocks.
+  $bundle = is_object($entity) ? $entity->bundle() : NULL;
+  $restriected_operations = array('create', 'delete');
+  if ($account->uid != 1 && $bundle == 'hidden' && in_array($op, $restriected_operations)) {
+    if ($cid) {
+      $rights[$account->uid][$cid][$op] = FALSE;
+    }
+    return FALSE;
   }
 
   if (user_access("$entity_type entity $op")) {
@@ -231,6 +309,57 @@ function contentblock_permission() {
   }
 
   return $perms;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function contentblock_menu() {
+  $items = array();
+
+  // Page callback that outputs JSON for project specific nodevar autocomplete suggestions.
+  $items['contentblock/autocomplete'] = array(
+    'title' => 'Autocomplete',
+    'page callback' => 'contentblock_entity_autocomplete',
+    'page arguments' => array('contentblock'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'type' => MENU_CALLBACK,
+    'file' => 'contentblock.admin_cbreference.inc',
+  );
+
+  $items['admin/settings/static-content'] = array(
+    'title' => 'Static Content',
+    'description' => 'Administer static page content for the homepage and other pages.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('helpergeneric administer settings'),
+    'weight' => 30,
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
+  $weight = 0;
+  foreach (contentblock_get_hidden_types() as $machine_name => $info) {
+    $items['admin/settings/static-content/' . $machine_name] = array(
+      'title' => $info['title'],
+      'description' => $info['description'],
+      'page callback' => 'contentblock_cbreference_entity_form',
+      'page arguments' => array($machine_name),
+      'access arguments' => array('helpergeneric administer settings'),
+      'file' => 'contentblock.admin_cbreference.inc',
+      'weight' => $weight,
+    );
+    // @TODO: Remove!!! It's required for contextual links.
+    $items['admin/settings/static-content/' . $machine_name . '/edit'] = array(
+      'title' => $info['action label'],
+      'weight' => -10,
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    );
+
+    $weight++;
+  }
+
+  return $items;
 }
 
 /**
@@ -329,7 +458,6 @@ function contentblock_entity_ui_get_page_title($op, $entity_type, $entity = NULL
 function contentblock_field_extra_fields() {
   $extra = array();
 
-
   foreach (contentblock_get_types() as $bundle_type => $bundle_info) {
     $extra['contentblock'][$bundle_type] = array(
       'form' => array(
@@ -387,5 +515,55 @@ function contentblock_entity_view_alter(&$build, $entity_type) {
   // hook_node_view_alter().
   if (!empty($build['#entity']->cbid)) {
     $build['#contextual_links']['contentblock'] = array('contentblock', array($build['#entity']->cbid));
+  }
+}
+
+/**
+ * Implements hook_field_display_ENTITY_TYPE_alter().
+ * @see hook_field_display_alter()
+ */
+function contentblock_field_display_contentblock_alter(&$display, $context) {
+  if (isset($context['entity']->machine_name)) {
+    module_load_include('inc', 'contentblock', 'contentblock.cbreference');
+    contentblock_field_display_contentblock_alter__generic($display, $context);
+
+    $info = contentblock_get_hidden_types($context['entity']->machine_name);
+    if (!empty($info['is section'])) {
+      contentblock_field_display_contentblock_alter__section($display, $context);
+    }
+
+    $function = 'contentblock_field_display_contentblock_alter__' . $context['entity']->machine_name;
+    if (function_exists($function)) {
+      $function($display, $context);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for contentblock_form().
+ */
+function contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_id) {
+  // Do not allow redirects to be created from the entity edit forms.
+  $form['redirect']['#access'] = FALSE;
+
+  // From now on only alter forms for specific entities.
+  if (empty($form['#entity']->machine_name)) {
+    return;
+  }
+
+  foreach (contentblock_get_hidden_types() as $machine_name => $info) {
+    if ($form['#entity']->machine_name != $machine_name) {
+      continue;
+    }
+
+    foreach (element_children($form) as $element_child) {
+      if (substr($element_child, 0, 6) !== 'field_' && substr($element_child, -6) !== '_field') {
+        continue;
+      }
+
+      if (!in_array($element_child, $info['available_fields'])) {
+        $form[$element_child]['#access'] = FALSE;
+      }
+    }
   }
 }
