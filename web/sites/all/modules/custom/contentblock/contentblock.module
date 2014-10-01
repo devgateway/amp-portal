@@ -261,7 +261,7 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
     return $allow;
   }
 
-  // Only allow UID1 to create or delete 'hidden' content blocks.
+  // Only allow UID1 to create or delete 'hidden' contentblocks using the normal UI.
   $bundle = is_object($entity) ? $entity->bundle() : NULL;
   $restriected_operations = array('create', 'delete');
   if ($account->uid != 1 && $bundle == 'hidden' && in_array($op, $restriected_operations)) {
@@ -395,41 +395,6 @@ function contentblock_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       );
     }
   }
-}
-/**
- * Page callback to show links to add an entity of a specific bundle.
- *
- * Entity modules that provide a further description to their bundles may wish
- * to implement their own version of this to show these.
- *
- * @see entity_ui_bundle_add_page()
- */
-function contentblock_entity_ui_bundle_add_page($entity_type) {
-  // Set the title, as we're a MENU_LOCAL_ACTION and hence just get tab titles.
-  module_load_include('inc', 'entity', 'includes/entity.ui');
-  drupal_set_title(contentblock_entity_ui_get_page_title('add', $entity_type));
-
-  // Get entity info for our bundles.
-  $info = entity_get_info($entity_type);
-  $items = array();
-  foreach ($info['bundles'] as $bundle_name => $bundle_info) {
-    // Create an empty entity with just the bundle set to check for access.
-    $dummy_entity = entity_create($entity_type, array(
-      $info['entity keys']['bundle'] => $bundle_name,
-    ));
-    // If modules use a uid, they can default to the current-user
-    // in their create() method on the storage controller.
-    if (entity_access('create', $entity_type, $dummy_entity, $account = NULL)) {
-      if (isset($info['admin ui']['entity path'])) {
-        $add_path = $info['admin ui']['entity path'] . '/add/' . $bundle_name;
-      }
-      else {
-        $add_path = $info['admin ui']['path'] . '/add/' . $bundle_name;
-      }
-      $items[] = l(t('Add @label', array('@label' => $bundle_info['label'])), $add_path);
-    }
-  }
-  return theme('item_list', array('items' => $items));
 }
 
 /**

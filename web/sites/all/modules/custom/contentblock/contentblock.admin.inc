@@ -58,19 +58,23 @@ function contentblock_form($form, &$form_state, $entity) {
     );
   }
 
+  // Setup the destination and cancel link URL.
+  $destination = drupal_get_destination();
+  $form_state['destination'] = $destination;
   $entity_uri = $entity->uri();
-  if ($entity_uri) {
+  if ($entity_uri || $entity->machine_name) {
     $form['actions']['cancel'] = array(
       '#type' => 'link',
       '#title' => t('Cancel'),
       '#href' => $entity_uri['path'],
       '#weight' => 20,
     );
+
+    if ($entity->machine_name) {
+      $form['actions']['cancel']['#href'] = 'admin/settings/content-sections';
+    }
   }
 
-  // Setup the destination and cancel link URL.
-  $destination = drupal_get_destination();
-  $form_state['destination'] = $destination;
   if (!empty($destination['destination'])) {
     $destination_parts = drupal_parse_url($destination['destination']);
     $form['actions']['cancel']['#href'] = $destination_parts['path'];
@@ -139,7 +143,7 @@ function _contentblock_entity_form_submit($form, &$form_state) {
   $entity_uri = entity_uri($entity_type, $entity);
   $entity_link = l(t('view'), $entity_uri['path']);
 
-  if ($entity->identifier()) {
+  if ($entity->identifier() && empty($entity->machine_name)) {
     $form_state['redirect'] = entity_access('view', $entity_type, $entity) ? $entity_uri['path'] : '<front>';
   }
 

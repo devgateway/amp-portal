@@ -117,8 +117,12 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
      */
     if (isset($this->entityInfo['bundles callback']) && function_exists($this->entityInfo['bundles callback'])) {
       foreach ($this->entityInfo['bundles callback']() as $bundle_type => $bundle_info) {
-        $type_url_str = str_replace('_', '-', $bundle_type);
+        // Do not allow users to add new hidden contentblocks.
+        if ($bundle_type == 'hidden') {
+          continue;
+        }
 
+        $type_url_str = str_replace('_', '-', $bundle_type);
         $items[$this->entity_path . '/add/' . $type_url_str] = array(
           'title callback' => 'entity_ui_get_action_title',
           'title arguments' => array('add', $this->entityType, $bundle_type),
