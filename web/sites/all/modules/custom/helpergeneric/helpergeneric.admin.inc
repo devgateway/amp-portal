@@ -11,10 +11,7 @@
 function helpergeneric_ui_settings_form($form) {
   $form = array();
 
-  $cleanup_ui_force = TRUE;
-  if (isset($_COOKIE['helpergeneric_cleanup_ui_force'])) {
-    $cleanup_ui_force = (bool) $_COOKIE['helpergeneric_cleanup_ui_force'];
-  }
+  $cleanup_ui_force = helpergeneric_cleanup_ui();
 
   $form['cleanup_ui'] = array(
     '#type' => 'fieldset',

@@ -468,11 +468,11 @@ function ampcontentblock_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'ampcontentblock',
+        'module' => 'contentblock',
         'settings' => array(
           'callback' => '',
         ),
-        'type' => 'ampcontentblock_widget_callback',
+        'type' => 'contentblock_widget_callback',
         'weight' => 1,
       ),
     ),

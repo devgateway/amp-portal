@@ -83,8 +83,14 @@ function ampet_page_field_default_field_instances() {
       ),
       'full' => array(
         'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
+        'module' => 'helpergeneric',
+        'settings' => array(
+          'show_actions' => 1,
+          'title_class' => 'page-title',
+          'title_link' => '',
+          'title_style' => 'h1',
+        ),
+        'type' => 'title_with_actions',
         'weight' => 0,
       ),
     ),

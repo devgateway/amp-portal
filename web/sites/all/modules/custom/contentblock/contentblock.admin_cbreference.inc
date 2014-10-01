@@ -43,5 +43,20 @@ function contentblock_cbreference_entity_form($machine_name = NULL) {
   // which the module implementing the form constructor may safely ignore.
   // @see entity_forms()
   $form_state['build_info']['args'] = array($entity, $op, $entity_type);
-  return drupal_build_form($form_id, $form_state);
+
+  // We need to be able to update the title after building the form.
+  $form = drupal_build_form($form_id, $form_state);
+
+  // Get the predefined name.
+  $info = contentblock_get_hidden_types($entity->machine_name);
+  drupal_set_title($info['title']);
+
+  // Add the default title element.
+  if (!in_array('title_field', $info['available_fields'])) {
+    $title_element = &$form['title_field'][LANGUAGE_NONE][0];
+    $title_element['value']['#default_value'] = $info['title'];
+    $title_element['value']['#value'] = $info['title'];
+  }
+
+  return $form;
 }

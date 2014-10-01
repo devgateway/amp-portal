@@ -11,6 +11,9 @@ $modules = array(
 // Enable modules.
 _us_module__install($modules);
 
+// Clear system caches.
+drupal_flush_all_caches();
+
 // Disable the default view for the media browser library tab.
 _us_views__disable('media_default');
 

@@ -5,7 +5,7 @@
  */
 
 /**
- * Implements hook_field_formatter_view() for adcontentblock_widget_callback.
+ * Implements hook_field_formatter_view() for contentblock_widget_callback.
  */
 function ampcontentblock_render_news_events() {
   $view_name = 'homepage';

@@ -9,11 +9,11 @@
  */
 table[align="left"] {
   border: none;
-  margin-right: 1em;
+  margin-right: 0.5em;
   width: auto !important;
 }
 table[align="right"] {
   border: none;
-  margin-left: 1em;
+  margin-left: 0.5em;
   width: auto !important;
 }

@@ -4,6 +4,9 @@
  * Exposes Custom Content Blocks.
  */
 
+// Include formatter specific code.
+include_once 'contentblock.formatter.inc';
+
 /**
  * Define administrative URLs.
  */
@@ -182,7 +185,6 @@ function contentblock_get_hidden_types($type = NULL) {
     'action label' => t('Edit or Add blocks'),
     'is section' => TRUE,
     'available_fields' => array(
-      'title_field',
       'field_cbblocks',
     ),
   );
@@ -193,7 +195,6 @@ function contentblock_get_hidden_types($type = NULL) {
     'action label' => t('Edit or Add blocks'),
     'is section' => TRUE,
     'available_fields' => array(
-      'title_field',
       'field_cbblocks',
     ),
   );
@@ -264,6 +265,20 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
   $bundle = is_object($entity) ? $entity->bundle() : NULL;
   $restriected_operations = array('create', 'delete');
   if ($account->uid != 1 && $bundle == 'hidden' && in_array($op, $restriected_operations)) {
+    if ($cid) {
+      $rights[$account->uid][$cid][$op] = FALSE;
+    }
+    return FALSE;
+  }
+
+  // Only allow editing the content block from special forms.
+  if ($bundle == 'hidden' && $op == 'edit' && arg(0) == 'contentblock') {
+    $msg = 'This entity can only be edited on the %name admin interface. Click !here to go to that page.';
+    $t_args = array(
+      '%name' => 'Content Sections',
+      '!here' => l(t('here'), 'admin/settings/content-sections/' . $entity->machine_name),
+    );
+    drupal_set_message(t($msg, $t_args), 'warning');
     if ($cid) {
       $rights[$account->uid][$cid][$op] = FALSE;
     }
@@ -561,7 +576,7 @@ function contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_i
     }
 
     foreach (element_children($form) as $element_child) {
-      if (substr($element_child, 0, 6) !== 'field_' && substr($element_child, -6) !== '_field') {
+      if (substr($element_child, 0, 6) !== 'field_') {
         continue;
       }
 
