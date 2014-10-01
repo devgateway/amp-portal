@@ -180,8 +180,8 @@ function ampcontentblock_field_default_field_instances() {
     'ds_extras_field_template' => '',
     'entity_type' => 'contentblock',
     'field_name' => 'field_cblinks',
-    'label' => 'Links',
-    'required' => 0,
+    'label' => 'Link',
+    'required' => 1,
     'settings' => array(
       'attributes' => array(
         'class' => '',
@@ -223,96 +223,6 @@ function ampcontentblock_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'contentblock',
-    'field_name' => 'title_field',
-    'label' => 'Title',
-    'required' => TRUE,
-    'settings' => array(
-      'hide_label' => array(
-        'entity' => FALSE,
-        'page' => FALSE,
-      ),
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 0,
-    ),
-  );
-
-  // Exported field_instance: 'contentblock-links-field_cblinks'
-  $field_instances['contentblock-links-field_cblinks'] = array(
-    'bundle' => 'links',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'link',
-        'settings' => array(),
-        'type' => 'link_default',
-        'weight' => 1,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'contentblock',
-    'field_name' => 'field_cblinks',
-    'label' => 'Links',
-    'required' => 1,
-    'settings' => array(
-      'attributes' => array(
-        'class' => '',
-        'configurable_title' => 0,
-        'rel' => 'nofollow',
-        'target' => 'default',
-        'title' => '',
-      ),
-      'display' => array(
-        'url_cutoff' => 80,
-      ),
-      'enable_tokens' => 0,
-      'rel_remove' => 'rel_remove_internal',
-      'title' => 'optional',
-      'title_maxlength' => 128,
-      'title_value' => '',
-      'url' => 0,
-      'user_register_form' => FALSE,
-      'validate_url' => 1,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'link',
-      'settings' => array(),
-      'type' => 'link_field',
-      'weight' => 1,
-    ),
-  );
-
-  // Exported field_instance: 'contentblock-links-title_field'
-  $field_instances['contentblock-links-title_field'] = array(
-    'bundle' => 'links',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'title',
-        'settings' => array(
-          'title_class' => 'contentblock-title',
-          'title_link' => '',
-          'title_style' => 'h3',
-        ),
-        'type' => 'title_linked',
         'weight' => 0,
       ),
     ),
@@ -615,7 +525,7 @@ function ampcontentblock_field_default_field_instances() {
   t('Blocks');
   t('Body');
   t('Image');
-  t('Links');
+  t('Link');
   t('Logo');
   t('Title');
   t('Widget');

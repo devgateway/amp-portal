@@ -59,8 +59,7 @@ function contentblock_form($form, &$form_state, $entity) {
   }
 
   // Setup the destination and cancel link URL.
-  $destination = drupal_get_destination();
-  $form_state['destination'] = $destination;
+  $form_state['destination'] = drupal_get_destination();
   $entity_uri = $entity->uri();
   if ($entity_uri || $entity->machine_name) {
     $form['actions']['cancel'] = array(
@@ -70,13 +69,13 @@ function contentblock_form($form, &$form_state, $entity) {
       '#weight' => 20,
     );
 
-    if ($entity->machine_name) {
+    if (!empty($entity->machine_name)) {
       $form['actions']['cancel']['#href'] = 'admin/settings/content-sections';
     }
   }
 
-  if (!empty($destination['destination'])) {
-    $destination_parts = drupal_parse_url($destination['destination']);
+  if (!empty($_GET['destination'])) {
+    $destination_parts = drupal_parse_url($_GET['destination']);
     $form['actions']['cancel']['#href'] = $destination_parts['path'];
     $form['actions']['cancel']['#options']['query'] = $destination_parts['query'];
   }

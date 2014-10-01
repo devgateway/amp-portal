@@ -122,29 +122,24 @@ function contentblock_entity_info() {
 function contentblock_get_types() {
   $items = array();
 
-  $items['links'] = array(
-    'label' => t('Links List'),
-    'description' => t('Use "Links List" for...'),
-  );
-
-  $items['organization'] = array(
-    'label' => t('Organization'),
-    'description' => t('Use "Organizations" for...'),
-  );
-
-  $items['predefined'] = array(
-    'label' => t('Predefined Widget'),
-    'description' => t('Use "Predefined Widgets" for...'),
-  );
-
   $items['hidden'] = array(
     'label' => t('Hidden'),
     'description' => t('Hidden content blocks are regular blocks to be used by developers.'),
   );
 
+  $items['organization'] = array(
+    'label' => t('Organization'),
+    'description' => t('Can be used provide a logo and website for an organization that can later be used in various listings.'),
+  );
+
+  $items['predefined'] = array(
+    'label' => t('Predefined Widget'),
+    'description' => t('Can be used to create blocks of predefined widgets that can be added in various places.'),
+  );
+
   $items['text'] = array(
     'label' => t('Text'),
-    'description' => t('Use "Text" for...'),
+    'description' => t('Use text for static blocks of content to be used on various places.'),
   );
 
   return $items;
@@ -198,6 +193,16 @@ function contentblock_get_hidden_types($type = NULL) {
       'field_cbblocks',
     ),
   );
+
+  // $items['footerorgs'] = array(
+  //   'title' => t('Footer Organizations Section'),
+  //   'description' => t('The footer organizations is a section of linked logos in the page footer.'),
+  //   'action label' => t('Edit or Add blocks'),
+  //   'is section' => TRUE,
+  //   'available_fields' => array(
+  //     'field_cbblocks',
+  //   ),
+  // );
 
   if (!isset($type)) {
     return $items;

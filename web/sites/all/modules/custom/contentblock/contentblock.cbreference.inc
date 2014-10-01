@@ -164,7 +164,7 @@ function contentblock_cbreference_render__welcome($entity, $pane_conf) {
   $wrapper = entity_metadata_wrapper($entity->entityType(), $entity);
 
   // Get the link.
-  $link = $wrapper->field_cblinks->get(0)->value();
+  $link = $wrapper->field_cblinks->value();
   if (!empty($link['url'])) {
     $view['field_cbimage'][0]['#path']['path'] = $link['url'];
     $view['field_cbimage'][0]['#path']['options']['attributes'] = $link['attributes'];
@@ -191,7 +191,7 @@ function contentblock_cbreference_render__linkedmap($entity, $pane_conf) {
   $wrapper = entity_metadata_wrapper($entity->entityType(), $entity);
 
   // Get the link.
-  $link = $wrapper->field_cblinks->get(0)->value();
+  $link = $wrapper->field_cblinks->value();
   if (!empty($link['url'])) {
     $view['field_cbimage'][0]['#path']['path'] = $link['url'];
     $view['field_cbimage'][0]['#path']['options']['attributes'] = $link['attributes'];
