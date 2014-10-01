@@ -192,6 +192,84 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
   }
 
   /**
+   * Generates the render array for a overview table for arbitrary entities
+   * matching the given conditions.
+   *
+   * @param $conditions
+   *   An array of conditions as needed by entity_load().
+   *
+   * @return Array
+   *   A renderable array.
+   */
+  public function overviewTable($conditions = array()) {
+
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', $this->entityType);
+
+    // Do not show "Hidden" entities on the admin form.
+    $query->entityCondition('bundle', 'hidden', '!=');
+
+    // Add all conditions to query.
+    foreach ($conditions as $key => $value) {
+      $query->propertyCondition($key, $value);
+    }
+
+    if ($this->overviewPagerLimit) {
+      $query->pager($this->overviewPagerLimit);
+    }
+
+    $header = array(
+      array(
+        'data' => t('Label'),
+        'type' => 'property',
+        'specifier' => 'title',
+        'class' => array('contentblock-ui-title'),
+      ),
+      array(
+        'data' => t('Type'),
+        'type' => 'property',
+        'specifier' => 'type',
+        'class' => array('contentblock-ui-type'),
+      ),
+      array(
+        'data' => t('Last Updated'),
+        'type' => 'property',
+        'specifier' => 'changed',
+        'class' => array('contentblock-ui-changed'),
+        'sort' => 'desc',
+      ),
+      array(
+        'data' => t('Operations'),
+        'class' => array('contentblock-ui-operations'),
+        'colspan' => $this->operationCount(),
+      ),
+    );
+    $query->tableSort($header);
+
+    $results = $query->execute();
+
+    $ids = isset($results[$this->entityType]) ? array_keys($results[$this->entityType]) : array();
+    $entities = $ids ? entity_load($this->entityType, $ids) : array();
+
+    $rows = array();
+    foreach ($entities as $entity) {
+      $cols = array(
+        check_plain($this->entityInfo['bundles'][$entity->bundle()]['label']),
+        format_date(!empty($entity->changed) ? $entity->changed : $entity->created, 'short'),
+      );
+      $rows[] = $this->overviewTableRow($conditions, entity_id($this->entityType, $entity), $entity, $cols);
+    }
+
+    $render = array(
+      '#theme' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+      '#empty' => t('None.'),
+    );
+    return $render;
+  }
+
+  /**
    * Generates the row for the passed entity and may be overridden in order to
    * customize the rows.
    *
