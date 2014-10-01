@@ -16,6 +16,17 @@ include_once 'helpertheme.fields.inc';
 include_once 'helpertheme.theme.inc';
 include_once 'helpertheme.themeoverrides.inc';
 
+/**
+ * Implements hook_init().
+ *
+ * Disables the admin_menu.
+ */
+function helpertheme_init() {
+  // Disable the admin menu.
+  if (helpergeneric_cleanup_ui()) {
+    admin_menu_suppress();
+  }
+}
 
 /**
  * Implements hook_libraries_info().
@@ -213,11 +224,6 @@ function helpertheme_preprocess_page(&$variables) {
 
   // Load the " SVG for Everybody" JavaScript library.
   libraries_load('svg4everybody', 'minified');
-
-  // Disable the admin menu.
-  if (helpergeneric_cleanup_ui()) {
-    admin_menu_suppress();
-  }
 
   // Get path to the current module.
   $module_path = drupal_get_path('module', 'helpertheme');

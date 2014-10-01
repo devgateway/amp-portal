@@ -60,5 +60,41 @@ function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
 function helpergeneric_settings_form($form) {
   $form = array();
 
+  $form['site_information'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Site details'),
+  );
+  $form['site_information']['site_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Site name'),
+    '#default_value' => variable_get('site_name', 'Drupal'),
+    '#required' => TRUE
+  );
+  // $form['site_information']['site_slogan'] = array(
+  //   '#type' => 'textfield',
+  //   '#title' => t('Slogan'),
+  //   '#default_value' => variable_get('site_slogan', ''),
+  //   '#description' => t("How this is used depends on your site's theme."),
+  // );
+  $form['site_information']['site_mail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail address'),
+    '#default_value' => variable_get('site_mail', ini_get('sendmail_from')),
+    '#description' => t("The <em>From</em> address in automated e-mails sent during registration and new password requests, and other notifications. (Use an address ending in your site's domain to help prevent this e-mail being flagged as spam.)"),
+    '#required' => TRUE,
+  );
+
+  $form['#validate'][] = 'helpergeneric_settings_form_validate';
+
   return system_settings_form($form);
+}
+
+/**
+ * Validates the submitted site-information form.
+ */
+function helpergeneric_settings_form_validate($form, &$form_state) {
+  // Validate the e-mail address.
+  if ($error = user_validate_mail($form_state['values']['site_mail'])) {
+    form_set_error('site_mail', $error);
+  }
 }

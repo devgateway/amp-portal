@@ -33,15 +33,15 @@ function helpergeneric_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  // $items['admin/settings/generic'] = array(
-  //   'title' => 'Generic settings',
-  //   'description' => 'Project generic settings.',
-  //   'page callback' => 'drupal_get_form',
-  //   'page arguments' => array('helpergeneric_settings_form'),
-  //   'access arguments' => array('helpergeneric administer settings'),
-  //   'file' => 'helpergeneric.admin.inc',
-  //   'weight' => -32,
-  // );
+  $items['admin/settings/generic'] = array(
+    'title' => 'Generic settings',
+    'description' => 'Project generic settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_settings_form'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'file' => 'helpergeneric.admin.inc',
+    'weight' => -32,
+  );
 
   $items['admin/settings/main-menu'] = array(
     'title' => 'Edit Main menu',
