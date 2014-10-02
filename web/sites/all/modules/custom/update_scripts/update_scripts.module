@@ -24,7 +24,7 @@ define('UPDATE_SCRIPTS_ENVIRONMENT_PATTERN', '/setup\.[a-z]+\.php/');
 define('UPDATE_SCRIPTS_HELPER_PATTERN', '*.inc');
 define('UPDATE_SCRIPTS_SCRIPT_PATTERN', 'update.[0-9][0-9][0-9][0-9].php');
 define('UPDATE_SCRIPTS_TASKS_PATTERN', '/[a-z]+\.[a-z\.]+\.php/');
-define('UPDATE_SCRIPTS_TEMPORARY_PATTERN', '/[a-zA-Z0-9-]\.[0-9][0-9]\.php/');
+define('UPDATE_SCRIPTS_TEMPORARY_PATTERN', '/\d{8}\.\d+\.\d{2}.php/');
 
 /**
  * Script start and end strings.
