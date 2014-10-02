@@ -151,18 +151,6 @@ function contentblock_get_types() {
 function contentblock_get_hidden_types($type = NULL) {
   $items = array();
 
-  $items['welcome'] = array(
-    'title' => t('Home Welcome Block'),
-    'description' => t('The home welcome block is displayed on the homepage next to the projects search form.'),
-    'action label' => t('Edit'),
-    'available_fields' => array(
-      'title_field',
-      'field_cbimage',
-      'field_cblinks',
-      'field_cbbody',
-    ),
-  );
-
   $items['linkedmap'] = array(
     'title' => t('Linked Map Block'),
     'description' => t('The linked map block is displayed on the homepage and on the blog sidebar.'),
@@ -174,13 +162,15 @@ function contentblock_get_hidden_types($type = NULL) {
     ),
   );
 
-  $items['homewidgets'] = array(
-    'title' => t('Home Widgets Section'),
-    'description' => t('The home widgets is a section of configurable content on the homepage.'),
-    'action label' => t('Edit or Add blocks'),
-    'is section' => TRUE,
+  $items['welcome'] = array(
+    'title' => t('Home Welcome Block'),
+    'description' => t('The home welcome block is displayed on the homepage next to the projects search form.'),
+    'action label' => t('Edit'),
     'available_fields' => array(
-      'field_cbblocks',
+      'title_field',
+      'field_cbimage',
+      'field_cblinks',
+      'field_cbbody',
     ),
   );
 
@@ -194,15 +184,26 @@ function contentblock_get_hidden_types($type = NULL) {
     ),
   );
 
-  // $items['footerorgs'] = array(
-  //   'title' => t('Footer Organizations Section'),
-  //   'description' => t('The footer organizations is a section of linked logos in the page footer.'),
-  //   'action label' => t('Edit or Add blocks'),
-  //   'is section' => TRUE,
-  //   'available_fields' => array(
-  //     'field_cbblocks',
-  //   ),
-  // );
+  $items['footer'] = array(
+    'title' => t('Footer Section'),
+    'description' => t('The footer organizations is a section of linked logos in the page footer.'),
+    'action label' => t('Edit or Add organizations'),
+    'is section' => TRUE,
+    'available_fields' => array(
+      'field_cborgs',
+      'field_cbbody',
+    ),
+  );
+
+  $items['homewidgets'] = array(
+    'title' => t('Home Widgets Section'),
+    'description' => t('The home widgets is a section of configurable content on the homepage.'),
+    'action label' => t('Edit or Add blocks'),
+    'is section' => TRUE,
+    'available_fields' => array(
+      'field_cbblocks',
+    ),
+  );
 
   if (!isset($type)) {
     return $items;

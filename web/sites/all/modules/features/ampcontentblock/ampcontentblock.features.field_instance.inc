@@ -21,10 +21,10 @@ function ampcontentblock_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
-          'link' => 1,
+          'link' => 0,
         ),
         'type' => 'entityreference_label',
-        'weight' => 4,
+        'weight' => 3,
       ),
     ),
     'ds_extras_field_template' => '',
@@ -59,7 +59,7 @@ function ampcontentblock_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 3,
+        'weight' => 5,
       ),
     ),
     'ds_extras_field_template' => '',
@@ -68,7 +68,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Body',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 0,
+      'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -78,7 +78,7 @@ function ampcontentblock_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -211,6 +211,43 @@ function ampcontentblock_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'contentblock-hidden-field_cborgs'
+  $field_instances['contentblock-hidden-field_cborgs'] = array(
+    'bundle' => 'hidden',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 0,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 4,
+      ),
+    ),
+    'ds_extras_field_template' => '',
+    'entity_type' => 'contentblock',
+    'field_name' => 'field_cborgs',
+    'label' => 'Organization',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityqueue',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'size' => 60,
+      ),
+      'type' => 'entityqueue_dragtable',
+      'weight' => 4,
+    ),
+  );
+
   // Exported field_instance: 'contentblock-hidden-title_field'
   $field_instances['contentblock-hidden-title_field'] = array(
     'bundle' => 'hidden',
@@ -254,6 +291,16 @@ function ampcontentblock_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'alternative' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => 'thumbnail',
+        ),
+        'type' => 'image',
+        'weight' => 0,
+      ),
       'default' => array(
         'label' => 'hidden',
         'module' => 'image',
@@ -335,6 +382,12 @@ function ampcontentblock_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'alternative' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
       'default' => array(
         'label' => 'hidden',
         'module' => 'title',
@@ -527,6 +580,7 @@ function ampcontentblock_field_default_field_instances() {
   t('Image');
   t('Link');
   t('Logo');
+  t('Organization');
   t('Title');
   t('To create new content blocks you can go to "Content > Content Blocks > Add content block".');
   t('Widget');

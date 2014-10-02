@@ -22,7 +22,7 @@ function ampcontentblock_strongarm() {
           'weight' => '0',
         ),
         'redirect' => array(
-          'weight' => '5',
+          'weight' => '6',
         ),
       ),
       'display' => array(),
@@ -35,7 +35,11 @@ function ampcontentblock_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_contentblock__organization';
   $strongarm->value = array(
-    'view_modes' => array(),
+    'view_modes' => array(
+      'alternative' => array(
+        'custom_settings' => TRUE,
+      ),
+    ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
