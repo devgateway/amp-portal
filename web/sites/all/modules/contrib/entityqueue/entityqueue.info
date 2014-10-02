@@ -22,10 +22,3 @@ files[] = includes/entityqueue.controller.inc
 ; Views handlers.
 files[] = includes/views/entityqueue_handler_relationship_entityqueue.inc
 files[] = includes/views/entityqueue_handler_sort_position.inc
-
-; Information added by Drupal.org packaging script on 2014-07-12
-version = "7.x-1.0-alpha3"
-core = "7.x"
-project = "entityqueue"
-datestamp = "1405188828"
-
