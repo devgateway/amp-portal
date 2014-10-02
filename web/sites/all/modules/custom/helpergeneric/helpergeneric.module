@@ -229,6 +229,18 @@ function helpergeneric_cleanup_ui() {
  * Implements hook_menu_local_tasks_alter().
  */
 function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  global $theme;
+
+  // Attach icon to the "Add content" link on 'admin/content' page.
+  if ($root_path == 'admin/content' && isset($data['actions']['output'][0]['#link']['path'])) {
+    if ($theme != 'seven' && $data['actions']['output'][0]['#link']['path'] == 'node/add') {
+      $data['actions']['output'][0]['#link']['localized_options']['theme extra'] = array(
+        'entity action' => TRUE,
+        'icon' => 'add',
+      );
+    }
+  }
+
   // Attach "Edit" link to the user page.
   if ($router_item['path'] == 'user/%') {
     if (count($router_item['original_map']) == 2) {
@@ -253,7 +265,6 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
 
   // Attach "Cancel" link to the user edit page.
   if ($router_item['path'] == 'user/%/edit') {
-
     // Load the view menu router item.
     $action_router_path = implode('/', array_slice($router_item['original_map'], 0, -1));
     $action_router_item = menu_get_item($action_router_path);
@@ -329,7 +340,6 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
 
     // Attach "Cancel" link to the entity edit page title.
     if (count($router_item['original_map']) == 3 && $router_item['original_map'][2] == 'edit') {
-
       $alt_path= NULL;
       if (!empty($_GET['destination'])) {
         $url_options = drupal_parse_url($_GET['destination']);
