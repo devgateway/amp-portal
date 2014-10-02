@@ -524,21 +524,14 @@ function amppermissions_user_default_permissions() {
   // Exported permission: 'use text format clean_summary'.
   $permissions['use text format clean_summary'] = array(
     'name' => 'use text format clean_summary',
-    'roles' => array(
-      'admin user' => 'admin user',
-      'editor user' => 'editor user',
-    ),
+    'roles' => array(),
     'module' => 'filter',
   );
 
   // Exported permission: 'use text format plain_text'.
   $permissions['use text format plain_text'] = array(
     'name' => 'use text format plain_text',
-    'roles' => array(
-      'admin user' => 'admin user',
-      'authenticated user' => 'authenticated user',
-      'editor user' => 'editor user',
-    ),
+    'roles' => array(),
     'module' => 'filter',
   );
 
