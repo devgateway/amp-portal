@@ -216,7 +216,7 @@ function ampcontentblock_field_default_field_instances() {
     'bundle' => 'hidden',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'To create organizations you can go to "Content > Content Blocks > Add content block > Add organization content block".',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -231,7 +231,7 @@ function ampcontentblock_field_default_field_instances() {
     'ds_extras_field_template' => '',
     'entity_type' => 'contentblock',
     'field_name' => 'field_cborgs',
-    'label' => 'Organization',
+    'label' => 'Organizations',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -580,9 +580,10 @@ function ampcontentblock_field_default_field_instances() {
   t('Image');
   t('Link');
   t('Logo');
-  t('Organization');
+  t('Organizations');
   t('Title');
   t('To create new content blocks you can go to "Content > Content Blocks > Add content block".');
+  t('To create organizations you can go to "Content > Content Blocks > Add content block > Add organization content block".');
   t('Widget');
 
   return $field_instances;
