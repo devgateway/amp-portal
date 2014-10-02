@@ -14,7 +14,7 @@ function ampcontentblock_user_default_permissions() {
   $permissions['contentblock entity access overview'] = array(
     'name' => 'contentblock entity access overview',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
     ),
     'module' => 'contentblock',
   );
@@ -22,9 +22,7 @@ function ampcontentblock_user_default_permissions() {
   // Exported permission: 'contentblock entity administer'.
   $permissions['contentblock entity administer'] = array(
     'name' => 'contentblock entity administer',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
+    'roles' => array(),
     'module' => 'contentblock',
   );
 
@@ -32,7 +30,7 @@ function ampcontentblock_user_default_permissions() {
   $permissions['contentblock entity create'] = array(
     'name' => 'contentblock entity create',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
     ),
     'module' => 'contentblock',
   );
@@ -41,7 +39,7 @@ function ampcontentblock_user_default_permissions() {
   $permissions['contentblock entity delete'] = array(
     'name' => 'contentblock entity delete',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
     ),
     'module' => 'contentblock',
   );
@@ -50,7 +48,7 @@ function ampcontentblock_user_default_permissions() {
   $permissions['contentblock entity edit'] = array(
     'name' => 'contentblock entity edit',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
     ),
     'module' => 'contentblock',
   );
@@ -59,9 +57,9 @@ function ampcontentblock_user_default_permissions() {
   $permissions['contentblock entity view'] = array(
     'name' => 'contentblock entity view',
     'roles' => array(
-      'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
+      'editor user' => 'editor user',
     ),
     'module' => 'contentblock',
   );

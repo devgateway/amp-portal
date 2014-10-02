@@ -14,7 +14,8 @@ function ampet_page_user_default_permissions() {
   $permissions['create page content'] = array(
     'name' => 'create page content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -23,7 +24,8 @@ function ampet_page_user_default_permissions() {
   $permissions['delete any page content'] = array(
     'name' => 'delete any page content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -32,7 +34,8 @@ function ampet_page_user_default_permissions() {
   $permissions['delete own page content'] = array(
     'name' => 'delete own page content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -41,7 +44,8 @@ function ampet_page_user_default_permissions() {
   $permissions['edit any page content'] = array(
     'name' => 'edit any page content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -50,7 +54,8 @@ function ampet_page_user_default_permissions() {
   $permissions['edit own page content'] = array(
     'name' => 'edit own page content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );

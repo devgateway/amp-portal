@@ -14,7 +14,8 @@ function ampet_blog_user_default_permissions() {
   $permissions['create blog content'] = array(
     'name' => 'create blog content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -23,7 +24,8 @@ function ampet_blog_user_default_permissions() {
   $permissions['delete any blog content'] = array(
     'name' => 'delete any blog content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -32,7 +34,8 @@ function ampet_blog_user_default_permissions() {
   $permissions['delete own blog content'] = array(
     'name' => 'delete own blog content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -41,7 +44,8 @@ function ampet_blog_user_default_permissions() {
   $permissions['edit any blog content'] = array(
     'name' => 'edit any blog content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );
@@ -50,7 +54,8 @@ function ampet_blog_user_default_permissions() {
   $permissions['edit own blog content'] = array(
     'name' => 'edit own blog content',
     'roles' => array(
-      'administrator' => 'administrator',
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
     ),
     'module' => 'node',
   );

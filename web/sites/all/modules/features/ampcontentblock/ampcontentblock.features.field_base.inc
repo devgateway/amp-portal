@@ -49,7 +49,6 @@ function ampcontentblock_field_default_field_bases() {
           'type' => 'property',
         ),
         'target_bundles' => array(
-          'links' => 'links',
           'organization' => 'organization',
           'predefined' => 'predefined',
           'text' => 'text',

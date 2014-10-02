@@ -110,7 +110,7 @@ db_insert('users_roles')->fields(array('uid' => 1, 'rid' => $role->rid))->execut
 user_role_grant_permissions($role->rid, array_keys(module_invoke_all('permission')));
 
 // Set this as the administrator role.
-variable_set('user_admin_role', $role->rid);
+// variable_set('user_admin_role', $role->rid);
 
 // Set default export path for new features.
 variable_set('features_default_export_path', 'sites/all/modules/features');

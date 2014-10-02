@@ -15,7 +15,7 @@ function ampcontentblock_field_default_field_instances() {
     'bundle' => 'hidden',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'To create new content blocks you can go to "Content > Content Blocks > Add content block".',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -528,6 +528,7 @@ function ampcontentblock_field_default_field_instances() {
   t('Link');
   t('Logo');
   t('Title');
+  t('To create new content blocks you can go to "Content > Content Blocks > Add content block".');
   t('Widget');
 
   return $field_instances;
