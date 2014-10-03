@@ -207,6 +207,7 @@ function contentblock_cbreference_render__linkedmap($entity, $pane_conf) {
   // Get the link.
   $link = $wrapper->field_cblinks->value();
   if (!empty($link['url'])) {
+    $link['attributes']['target'] = '_blank';
     $view['field_cbimage'][0]['#path']['path'] = $link['url'];
     $view['field_cbimage'][0]['#path']['options']['attributes'] = $link['attributes'];
   }
@@ -219,7 +220,12 @@ function contentblock_cbreference_render__linkedmap($entity, $pane_conf) {
     $new_title = $svgicon;
     $new_title .= $view['title_field'][0]['#markup'];
 
-    $view['title_field'][0]['#markup'] = l($new_title, $link['url'], array('options' => $link, 'html' => TRUE));
+    if (empty($link['url'])) {
+      $view['title_field'][0]['#markup'] = $new_title;
+    }
+    else {
+      $view['title_field'][0]['#markup'] = l($new_title, $link['url'], array('html' => TRUE) + $link);
+    }
   }
 
   return $view;
