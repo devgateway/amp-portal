@@ -76,6 +76,60 @@ function helpergeneric_menu_alter(&$items) {
   $items['admin/structure/menu/settings']['access arguments'] = array('helpergeneric administer menus');
   $items['admin/structure/taxonomy']['access arguments'] = array('helpergeneric access taxonomy');
   $items['admin/structure/taxonomy/%taxonomy_vocabulary_machine_name']['access arguments'] = array('helpergeneric access taxonomy');
+
+  // Limit access on UID1 pages.
+  $items['user/%user']['access callback'] = 'helpergeneric_user_view_access';
+  $items['user/%user/cancel']['access callback'] = 'helpergeneric_user_cancel_access';
+  $items['user/%user/cancel/confirm/%/%']['access callback'] = 'helpergeneric_user_cancel_access';
+  $items['user/%user/edit']['access callback'] = 'helpergeneric_user_edit_access';
+}
+
+/**
+ * User view access callback.
+ *
+ * @see user_view_access()
+ */
+function helpergeneric_user_view_access($account) {
+  $uid = is_object($account) ? $account->uid : (int) $account;
+
+  // Only allow UID1 to view his account.
+  if ($uid == 1 && $GLOBALS['user']->uid !== $uid) {
+    return FALSE;
+  }
+
+  return user_view_access($account);
+}
+
+/**
+ * Menu access callback; limit access to account cancellation pages.
+ *
+ * @see user_cancel_access()
+ */
+function helpergeneric_user_cancel_access($account) {
+  $uid = is_object($account) ? $account->uid : (int) $account;
+
+  // Only allow UID1 to view his account.
+  if ($uid == 1 && $GLOBALS['user']->uid !== $uid) {
+    return FALSE;
+  }
+
+  return user_cancel_access($account);
+}
+
+/**
+ * Access callback for user account editing.
+ *
+ * @see user_edit_access()
+ */
+function helpergeneric_user_edit_access($account) {
+  $uid = is_object($account) ? $account->uid : (int) $account;
+
+  // Only allow UID1 to view his account.
+  if ($uid == 1 && $GLOBALS['user']->uid !== $uid) {
+    return FALSE;
+  }
+
+  return user_edit_access($account);
 }
 
 /**
