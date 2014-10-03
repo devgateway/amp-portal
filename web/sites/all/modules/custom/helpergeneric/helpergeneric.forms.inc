@@ -314,8 +314,8 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
     return;
   }
 
-  if ($form_id == 'user_profile_form') {
-    _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
+  if ($form_id == 'menu_edit_item') {
+    _helpergeneric_cleanup_menu_form($form, $form_state, $form_id);
   }
   if ($form_id == 'file_entity_add_upload') {
     _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
@@ -325,6 +325,9 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
   }
   if ($form_id == 'media_wysiwyg_format_form') {
     _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'user_profile_form') {
+    _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
   }
 }
 
@@ -416,6 +419,23 @@ function _helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
 
   if (isset($form['user'])) {
     $form['user']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Helper function required by hook_form_FORM_ID_alter() for menu_edit_item().
+ */
+function _helpergeneric_cleanup_menu_form(&$form, &$form_state, $form_id) {
+  if (isset($form['enabled'])) {
+    $form['enabled']['#access'] = FALSE;
+  }
+
+  if (isset($form['expanded'])) {
+    $form['expanded']['#access'] = FALSE;
+  }
+
+  if (isset($form['parent'])) {
+    $form['parent']['#access'] = FALSE;
   }
 }
 
