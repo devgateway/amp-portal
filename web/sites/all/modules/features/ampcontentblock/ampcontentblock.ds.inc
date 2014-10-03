@@ -72,6 +72,11 @@ function ampcontentblock_ds_field_settings_info() {
         ),
       ),
     ),
+    'field_cbimage' => array(
+      'formatter_settings' => array(
+        'ft' => array(),
+      ),
+    ),
   );
   $export['contentblock|organization|default'] = $ds_fieldsetting;
 
