@@ -91,7 +91,6 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
       'page callback' => 'drupal_get_form',
       'page arguments' => array($this->entityType . '_overview_form', $this->entityType),
       'description' => 'Manage ' . $plural_label . '.',
-      'access callback' => TRUE,
       'access callback' => 'entity_access',
       'access arguments' => array('access overview', $this->entityType),
       'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,

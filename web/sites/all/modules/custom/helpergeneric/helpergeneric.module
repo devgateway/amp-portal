@@ -82,6 +82,10 @@ function helpergeneric_menu_alter(&$items) {
   $items['user/%user/cancel']['access callback'] = 'helpergeneric_user_cancel_access';
   $items['user/%user/cancel/confirm/%/%']['access callback'] = 'helpergeneric_user_cancel_access';
   $items['user/%user/edit']['access callback'] = 'helpergeneric_user_edit_access';
+
+  // Limit access on user field and display settings.
+  $items['admin/config/people/accounts/fields']['access arguments'] = array('helpergeneric user fields');
+  $items['admin/config/people/accounts/display']['access arguments'] = array('helpergeneric user fields');
 }
 
 /**
@@ -147,6 +151,11 @@ function helpergeneric_permission() {
     ),
     'helpergeneric access taxonomy' => array(
       'title' => t('HelperGeneric: Access vocabularies only.'),
+      'description' => t('Allow users to access the vocabularies.'),
+    ),
+    'helpergeneric user fields' => array(
+      'title' => t('HelperGeneric: Administer user fields'),
+      'restrict access' => TRUE,
       'description' => t('Allow users to access the vocabularies.'),
     ),
   );

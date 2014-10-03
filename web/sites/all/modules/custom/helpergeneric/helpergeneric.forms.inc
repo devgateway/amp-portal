@@ -310,6 +310,15 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
     );
   }
 
+  if ($form_id == 'user_admin_settings') {
+    if (isset($form['admin_role'])) {
+      $form['admin_role']['#access'] = FALSE;
+    }
+    if (isset($form['personalization'])) {
+      $form['personalization']['#access'] = FALSE;
+    }
+  }
+
   if (!helpergeneric_cleanup_ui()) {
     return;
   }
