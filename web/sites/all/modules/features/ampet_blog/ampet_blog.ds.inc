@@ -34,20 +34,6 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
-    'linkedmap_block' => array(
-      'weight' => '5',
-      'label' => 'hidden',
-      'format' => 'default',
-      'formatter_settings' => array(
-        'show_title' => 0,
-        'title_wrapper' => '',
-        'ctools' => 'a:3:{s:4:"conf";a:5:{s:13:"variable_name";s:0:"";s:12:"machine_name";s:9:"linkedmap";s:5:"style";s:6:"normal";s:14:"override_title";i:0;s:19:"override_title_text";s:0:"";}s:4:"type";s:11:"cbreference";s:7:"subtype";s:11:"cbreference";}',
-        'load_terms' => 0,
-        'ft' => array(
-          'classes' => 'cbreference-linkedmap cbreference-view-mode-normal',
-        ),
-      ),
-    ),
     'blog_sidebar' => array(
       'weight' => '4',
       'label' => 'hidden',
@@ -59,6 +45,20 @@ function ampet_blog_ds_field_settings_info() {
         'load_terms' => 0,
         'ft' => array(
           'func' => 'theme_ds_field_reset',
+        ),
+      ),
+    ),
+    'linkedmap_block' => array(
+      'weight' => '5',
+      'label' => 'hidden',
+      'format' => 'default',
+      'formatter_settings' => array(
+        'show_title' => 0,
+        'title_wrapper' => '',
+        'ctools' => 'a:3:{s:4:"conf";a:5:{s:13:"variable_name";s:0:"";s:12:"machine_name";s:9:"linkedmap";s:5:"style";s:6:"normal";s:14:"override_title";i:0;s:19:"override_title_text";s:0:"";}s:4:"type";s:11:"cbreference";s:7:"subtype";s:11:"cbreference";}',
+        'load_terms' => 0,
+        'ft' => array(
+          'classes' => 'cbreference-block cbreference-linkedmap cbreference-view-mode-normal',
         ),
       ),
     ),
@@ -230,6 +230,10 @@ function ampet_blog_ds_layout_settings_info() {
       ),
       'left' => array(
         'layout-block' => 'layout-block',
+        'layout-separator' => 'layout-separator',
+      ),
+      'right' => array(
+        'layout-separator' => 'layout-separator',
       ),
     ),
     'wrappers' => array(

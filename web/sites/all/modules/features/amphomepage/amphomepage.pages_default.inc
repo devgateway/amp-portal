@@ -89,7 +89,7 @@ function amphomepage_default_page_manager_pages() {
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'homepage-welcome-block featured-dark-block',
+      'css_class' => 'homepage-welcome-block featured-dark-block clearfix',
     );
     $pane->extras = array();
     $pane->position = 0;

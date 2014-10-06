@@ -161,7 +161,9 @@ function ampet_blog_default_page_manager_pages() {
     $pane->cache = array();
     $pane->style = array(
       'settings' => array(
-        'pane_classes' => array(),
+        'pane_classes' => array(
+          'layout-separator' => 'layout-separator',
+        ),
       ),
       'style' => 'cbstyle',
     );
@@ -205,7 +207,9 @@ function ampet_blog_default_page_manager_pages() {
     $pane->cache = array();
     $pane->style = array(
       'settings' => array(
-        'pane_classes' => array(),
+        'pane_classes' => array(
+          'layout-separator' => 'layout-separator',
+        ),
       ),
       'style' => 'cbstyle',
     );

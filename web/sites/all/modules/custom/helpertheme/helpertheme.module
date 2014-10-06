@@ -272,7 +272,7 @@ function helpertheme_preprocess_page(&$variables) {
   );
 
   // Fix Admin UI style.
-  drupal_add_css($module_path . '/styles/helpertheme.admin.css', array('preprocess' => FALSE));
+  drupal_add_css($module_path . '/styles/helpertheme.admin.css', $css_options);
 
   /*
    * Project specific CSS on all pages (including admin pages).
