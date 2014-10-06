@@ -49,6 +49,9 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
   if (!empty($cbreference_info['is section'])) {
     $block_css_classes[] = 'cbreference-section';
   }
+  else {
+    $block_css_classes[] = 'cbreference-block';
+  }
 
   $entities = entity_load('contentblock', array(), array('machine_name' => $conf['machine_name']));
   $entity = reset($entities);

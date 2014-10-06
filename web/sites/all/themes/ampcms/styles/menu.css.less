@@ -1,6 +1,7 @@
 
-@import './lib/helpers.less';
+@import './lib/custom-responsive.less';
 @import './lib/custom-sprite.less';
+@import './lib/helpers.less';
 
 .header-links {
   margin: 0;
@@ -17,13 +18,21 @@
 
   .link-toplevel {
     display: inline-block;
-    padding: 0 0.5em;
+    padding: 0;
+    padding-right: 0.5em;
     text-decoration: none;
     &.last {
       padding-right: 0;
     }
     &:active,
     &:hover {
+    }
+  }
+}
+.xNormalAndUp() {
+  .header-links {
+    .link-toplevel {
+      padding: 0 0.5em;
     }
   }
 }
@@ -43,46 +52,52 @@
     display: inline-block;
   }
 
-  .top-link {
-    display: inline-block;
-    font-weight: bold;
-    line-height: 2em;
-    min-width: 7em;
-    padding: 0.6em;
-    padding-right: 2em;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    .link-color(@clpassive, @clcontent, @clpassive, @clcontent);
-
-    &.active,
-    &:focus,
-    &:hover {
-      color: @clcontent;
-      svg {
-        fill: @clcontent;
-      }
-    }
-
-    &.active {
-      background-color: @clpassive;
-    }
-    &:focus,
-    &:hover {
-      background-color: lighten(@clpassive, 10%);
-    }
-
-    border-right: @border_width solid transparent;
-    &.active {
-      border-right: @border_width solid @clcontent__separator;
-    }
+  .navigation-sublevel {
+    margin-bottom: 0.5em;
   }
+}
+
+.top-link {
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.6em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  .link-color(@clpassive, @clcontent, @clpassive, @clcontent);
+
   svg {
     fill: @clpassive;
     margin-right: 0.5em;
   }
 
-  .navigation-sublevel {
-    margin-bottom: 0.5em;
+  &.active,
+  &:focus,
+  &:hover {
+    color: @clcontent;
+    svg {
+      fill: @clcontent;
+    }
+  }
+
+  &.active {
+    background-color: @clpassive;
+  }
+  &:focus,
+  &:hover {
+    background-color: lighten(@clpassive, 10%);
+  }
+
+  border-right: @border_width solid transparent;
+  &.active {
+    border-right: @border_width solid @clcontent__separator;
+  }
+}
+
+.xNormalAndUp() {
+  .top-link {
+    line-height: 2em;
+    min-width: 7em;
+    padding-right: 2em;
   }
 }

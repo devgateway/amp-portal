@@ -1,5 +1,6 @@
 
 @print_text_color: #333333;
+@link_text_color: #333366;
 
 html,
 body {
@@ -68,7 +69,7 @@ td {
 
 a {
   text-decoration: none;
-  color: #000000;
+  color: @link_text_color !important;
 }
 
 a[href^="http://"]:after,
@@ -84,4 +85,23 @@ acronym[title]:after {
   content: " (" attr(title) ")";
   font-family: monospace, sans-serif;
   font-size: 0.9em;
+}
+
+.layout-block,
+.cbreference-block {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.cbreference-block {
+  border-bottom: none !important;
+  page-break-inside: avoid;
+}
+
+// Avoid page breaks straight after titles.
+.contentblock-title,
+.title-wrapper {
+  color: @link_text_color !important;
+  page-break-after: avoid;
 }

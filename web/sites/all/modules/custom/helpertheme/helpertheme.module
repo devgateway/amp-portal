@@ -327,6 +327,19 @@ function helpertheme_html_head_alter(&$head_elements) {
     );
   }
 
+  /*
+   * The viewport meta tag is needed to instruct the mobile devices to keep the viewport.
+   * @see: http://mobile.smashingmagazine.com/2013/03/18/retrofit-a-website-to-be-responsive-with-rwd-retrofit/
+   */
+  $head_elements['mobile_viewport'] = array(
+    '#tag' => 'meta',
+    '#type' => 'html_tag',
+    '#attributes' => array(
+      'name' => 'viewport',
+      'content' => 'initial-scale=1.0, width=device-width',
+    ),
+  );
+
   // Add favicon related header tags.
   module_load_include('inc', 'helpertheme', 'helpertheme.favicons');
   // $head_elements['favicons'] = _helpertheme_favicons();

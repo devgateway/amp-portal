@@ -19,9 +19,9 @@ stylesheets[all][] = styles/reset.css.less
 
 ; Stylesheets.
 stylesheets[all][] = styles/main.css.less
-stylesheets[all][] = styles/layout.css.less
 stylesheets[all][] = styles/menu.css.less
 stylesheets[all][] = styles/other.css.less
+stylesheets[all][] = styles/layout.css.less
 
 stylesheets[print][] = styles/print.css.less
 

@@ -1,0 +1,81 @@
+
+/**
+ * @file
+ * This file exposes responsive design mixins.
+ *
+ *@TODO: Allow nesting media queries in other blocks. For 'inline' object responsive behavior.
+ */
+
+/**
+ * Initialize placeholder mixins.
+ */
+
+// 'Smartphone' layout style rules.
+.xSmallOnly() {}
+
+// 'Smartphone' and 'Tablet' layout style rules.
+.xMediumAndDown() {}
+
+// 'Tablet' layout style rules.
+.xMediumOnly() {}
+
+// 'Tablet' and 'Normal Desktop' and 'Large Desktop' layout style rules.
+.xMediumAndUp() {}
+
+// 'Normal Desktop' and 'Large Desktop' layout style rules.
+.xNormalAndUp() {}
+
+// 'Normal Desktop' layout style rules.
+.xNormalOnly() {}
+
+// 'Smartphone' and 'Tablet' and 'Normal Desktop' layout style rules.
+.xNormalAndDown() {}
+
+// 'Large Desktop' layout style rules.
+.xLargeUp() {}
+
+
+/**
+ * Render/print the mixins for the current file. The current file is the file in
+ * which these responsive behavior mixins are included.
+ */
+
+// 'Smartphone' layout style rules.
+@media (max-width: 46em) {
+  .xSmallOnly;
+}
+
+// 'Tablet' and 'Normal Desktop' and 'Large Desktop' layout style rules.
+@media (min-width: 46em) {
+  .xMediumAndUp;
+}
+
+// 'Tablet' layout style rules.
+@media (min-width: 46em) and (max-width: 68em) {
+  .xMediumOnly;
+}
+
+// 'Smartphone' and 'Tablet' layout style rules.
+@media (max-width: 68em) {
+  .xMediumAndDown;
+}
+
+// 'Normal Desktop' and 'Large Desktop' layout style rules.
+@media (min-width: 68em) {
+  .xNormalAndUp;
+}
+
+// 'Normal Desktop' layout style rules.
+@media (min-width: 68em) and (max-width: 90em) {
+  .xNormalOnly;
+}
+
+// 'Smartphone' and 'Tablet' and 'Normal Desktop' layout style rules.
+@media (max-width: 90em) {
+  .xNormalAndDown;
+}
+
+// 'Large Desktop' layout style rules.
+@media (min-width: 90em) {
+  .xLargeUp;
+}

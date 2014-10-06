@@ -92,6 +92,8 @@ function theme_header_logo() {
 
   $items['logo_markup']['site_name'] = array(
     '#markup' => $site_name,
+    '#prefix' => '<span class="text">',
+    '#suffix' => "</span>",
   );
 
   // Render the HTML.

@@ -1,4 +1,6 @@
 
+@import './lib/custom-responsive.less';
+@import './lib/custom-sprite.less';
 @import './lib/helpers.less';
 
 .item-list .views-row {
@@ -41,6 +43,36 @@ ul.tips, div.description, .form-item div.description {
   margin: 1em 0;
 }
 
+.layout-block {
+  .box-sizing(border-box);
+  background-color: @clcontent;
+  border: @border_width solid @clcontent__separator;
+  padding-left: 1em;
+  padding-right: 1em;
+  position: relative;
+  .contentblock-title,
+  .pane-title {
+    border-bottom: @border_width solid @clcontent__separator;
+    font-weight: bold;
+    padding-bottom: 1em;
+    margin-bottom: 0;
+    text-transform: uppercase;
+  }
+  .more-link {
+    position: absolute;
+    right: 1.5em;
+    top: 2em;
+  }
+}
+
+.layout-inline {
+  display: inline-block;
+}
+
+.layout-separator {
+  margin-bottom: 1em;
+}
+
 .more-link {
   font-size: 0.75em;
   font-weight: bold;
@@ -77,22 +109,51 @@ ul.tips, div.description, .form-item div.description {
   &.cbreference-view-mode-wide {
     background-color: @clmain__alt;
     .title-wrapper {
-      float: left;
-      width: 294px;
       a {
         padding-left: 1em;
-        font-size: 1.25em;
-        line-height: 5.6em;
       }
     }
   }
   &.cbreference-view-mode-normal {
     background-color: @clcontent;
     .title-wrapper a {
-      line-height: 4em;
       padding-left: 1em;
       svg {
         fill: @clactive;
+      }
+    }
+  }
+}
+.xMediumAndDown() {
+  .cbreference-linkedmap {
+    &.cbreference-view-mode-wide {
+    }
+    &.cbreference-view-mode-normal {
+      .title-wrapper a {
+        line-height: 3em;
+      }
+    }
+    .field-name-field-cbimage {
+      text-align: center;
+    }
+  }
+}
+.xNormalAndUp() {
+  .cbreference-linkedmap {
+    &.cbreference-view-mode-wide {
+      .title-wrapper {
+        float: left;
+        width: 294px;
+        a {
+          font-size: 1.25em;
+          line-height: 5.6em;
+        }
+      }
+    }
+    &.cbreference-view-mode-normal {
+      .title-wrapper a {
+        line-height: 4em;
+        padding-left: 1em;
       }
     }
   }
@@ -108,21 +169,19 @@ ul.tips, div.description, .form-item div.description {
   }
   .contentblock-title {
     color: @cldetail__highlight;
-    margin: 0;
+  }
+}
+.xNormalAndUp() {
+  .featured-dark-block {
+    .contentblock-title {
+      margin: 0;
+    }
   }
 }
 
 .homepage-welcome-block {
-  .pane-content {
-    .clearfix-mixin();
-  }
   .welcome-content-wrapper {
     padding: 1em;
-  }
-  .field-name-field-cbimage {
-    float: right;
-    margin: 0;
-    margin-left: 1em;
   }
 
   // Style the read more link and related elements.
@@ -191,6 +250,15 @@ ul.tips, div.description, .form-item div.description {
       .title {
         font-size: 1em;
         margin: 1em 0;
+      }
+    }
+  }
+}
+.xMediumAndDown() {
+  .two-columns-grid {
+    .view-mode-teaser_normal {
+      .field-name-field-blog-image {
+        display: none;
       }
     }
   }
