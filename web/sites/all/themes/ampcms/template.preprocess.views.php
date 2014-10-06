@@ -44,7 +44,9 @@ function ampcms_preprocess_views_view_fields(&$variables) {
 function __ampcms_preprocess_views_view__homepage(&$vars) {
   switch ($vars['view']->current_display) {
     case 'news_events':
-      $vars['more'] = '<div class="more-link">' . l(t('see all'), 'blog/news-and-events') . '</div>';
+      if (!empty($vars['view']->result)) {
+        $vars['more'] = '<div class="more-link">' . l(t('see all'), 'blog/news-and-events') . '</div>';
+      }
       break;
   }
 }
