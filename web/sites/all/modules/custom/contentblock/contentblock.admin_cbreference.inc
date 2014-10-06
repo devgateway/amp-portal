@@ -48,16 +48,31 @@ function contentblock_cbreference_entity_form($machine_name = NULL) {
   $form = drupal_build_form($form_id, $form_state);
 
   // Get the predefined name.
-  $info = contentblock_get_hidden_types($entity->machine_name);
-  drupal_set_title($info['title']);
+  $cbreference_info = contentblock_get_hidden_types($entity->machine_name);
+  drupal_set_title($cbreference_info['title']);
 
-  // Hide the default title element.
-  if (!in_array('title_field', $info['available_fields'])) {
-    $form['title_field']['#attributes']['class'][] = 'element-hidden';
+  // Add a default title value for sections.
+  if (!empty($cbreference_info['is section'])) {
     $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
     $title_element = &$form['title_field'][$langcode][0];
-    $title_element['value']['#value'] = $info['title'];
+    if (empty($title_element['value']['#value'])) {
+      $title_element['value']['#value'] = $cbreference_info['title'];
+    }
   }
 
+  // Hide the default title element.
+  if (!in_array('title_field', $cbreference_info['available_fields'])) {
+    $form['title_field']['#attributes']['class'][] = 'element-hidden';
+  }
+
+  // Add a description on add form.
+  if ($op == 'add' && !empty($_GET['destination'])) {
+    $form['form_description'] = array(
+      '#markup' => t('If you only want to remove the instructions from this section you can just click "Save" without adding/configuring any content.'),
+      '#prefix' => '<div class="description">',
+      '#suffix' => '</div>',
+      '#weight' => 101,
+    );
+  }
   return $form;
 }
