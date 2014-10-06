@@ -53,6 +53,9 @@ variable_set('update_scripts_revert_features', 'no');
 // Fix isssue with "Temporary directory" when using a DB from a different OS.
 variable_del('file_temporary_path');
 
+// Disable the loading of external fonts.
+variable_set('helpertheme_load_external_fonts', FALSE);
+
 // Provide a list of modules to be disabled and uninstalled.
 $modules = array(
   // 'entitycache',
