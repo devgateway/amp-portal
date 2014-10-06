@@ -51,10 +51,11 @@ function contentblock_cbreference_entity_form($machine_name = NULL) {
   $info = contentblock_get_hidden_types($entity->machine_name);
   drupal_set_title($info['title']);
 
-  // Add the default title element.
+  // Hide the default title element.
   if (!in_array('title_field', $info['available_fields'])) {
-    $title_element = &$form['title_field'][LANGUAGE_NONE][0];
-    $title_element['value']['#default_value'] = $info['title'];
+    $form['title_field']['#attributes']['class'][] = 'element-hidden';
+    $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+    $title_element = &$form['title_field'][$langcode][0];
     $title_element['value']['#value'] = $info['title'];
   }
 
