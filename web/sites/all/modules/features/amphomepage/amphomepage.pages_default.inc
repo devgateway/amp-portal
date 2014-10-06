@@ -78,11 +78,10 @@ function amphomepage_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => '',
       'machine_name' => 'welcome',
-      'template' => '',
       'override_title' => 0,
       'override_title_text' => '',
+      'style' => 'normal',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -106,11 +105,10 @@ function amphomepage_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => '',
       'machine_name' => 'linkedmap',
-      'style' => 'wide',
       'override_title' => 0,
       'override_title_text' => '',
+      'style' => 'wide',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -131,11 +129,10 @@ function amphomepage_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => '',
       'machine_name' => 'homewidgets',
-      'style' => 'normal',
       'override_title' => 0,
       'override_title_text' => '',
+      'style' => 'normal',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -187,11 +184,10 @@ function amphomepage_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => '',
       'machine_name' => 'footer',
-      'style' => 'normal',
       'override_title' => 0,
       'override_title_text' => '',
+      'style' => 'normal',
     );
     $pane->cache = array();
     $pane->style = array(
