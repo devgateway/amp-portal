@@ -179,7 +179,7 @@ function contentblock_cbreference_render__welcome($entity, $pane_conf) {
     $view['field_cbimage'][0]['#path']['path'] = $link['url'];
     $view['field_cbimage'][0]['#path']['options']['attributes'] = $link['attributes'];
 
-    $svgicon = helpertheme_get_svg_icons('add', array('width' => '2em', 'height' => '2em')) . ' ';
+    $svgicon = helpertheme_get_svg_icons('add', array('width' => '3em', 'height' => '3em')) . ' ';
     $link_title = $svgicon . '<span class="text">' . t('read more') . '</span>';
 
     $view['view_link'] = array(

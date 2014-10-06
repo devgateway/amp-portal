@@ -79,16 +79,16 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'teaser_featured';
   $ds_fieldsetting->settings = array(
-    'field_blog_image' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
-      ),
-    ),
     'title_field' => array(
       'formatter_settings' => array(
         'ft' => array(
           'func' => 'theme_ds_field_reset',
         ),
+      ),
+    ),
+    'body' => array(
+      'formatter_settings' => array(
+        'ft' => array(),
       ),
     ),
   );
@@ -101,16 +101,16 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'teaser_normal';
   $ds_fieldsetting->settings = array(
-    'field_blog_image' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
-      ),
-    ),
     'title_field' => array(
       'formatter_settings' => array(
         'ft' => array(
           'func' => 'theme_ds_field_reset',
         ),
+      ),
+    ),
+    'body' => array(
+      'formatter_settings' => array(
+        'ft' => array(),
       ),
     ),
   );

@@ -46,7 +46,7 @@ function ampet_blog_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'ampviewsettings',
         'settings' => array(
-          'trim_length' => 300,
+          'trim_length' => 150,
         ),
         'type' => 'clean_text_summary_or_trimmed',
         'weight' => 2,
@@ -55,7 +55,7 @@ function ampet_blog_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'ampviewsettings',
         'settings' => array(
-          'trim_length' => 300,
+          'trim_length' => 150,
         ),
         'type' => 'clean_text_summary_or_trimmed',
         'weight' => 2,
