@@ -37,7 +37,7 @@ less[vars][@to_em] = 16
 less[vars][@sidebar_grid_count] = 3
 less[vars][@content_grid_count] = 9
 
-less[vars][@border_width] = 1/16em
+less[vars][@border_width] = 1px
 
 ; Font stacks
 less[vars][fstack_default] = "Open Sans", "sans-serif"

@@ -55,8 +55,19 @@ function theme_header_logo() {
   $site_link_title = t(variable_get('site_link_title', 'Visit the main page'));
   $site_name = filter_xss_admin(variable_get('site_name', 'Drupal'));
 
+  $items['#prefix'] = '<h1 class="site-name contextual-links-region">';
+  $items['#suffix'] = '</h1>';
+
+  // Initialize the template variable as a renderable array.
+  $items['contextual_links'] = array(
+    '#type' => 'contextual_links',
+    '#contextual_links' => array(
+      'menu' => array('admin/settings/generic', array('edit')),
+    ),
+  );
+
   $items['logo_markup'] = array(
-    '#prefix' => '<a href="' . url('<front>') . '" title="' . $site_link_title . '" rel="home">',
+    '#prefix' => '<a href="' . url('<front>') . '" title="' . $site_link_title . '" class="link" rel="home">',
     '#suffix' => "</a>",
   );
 
@@ -64,7 +75,7 @@ function theme_header_logo() {
   $items['logo_markup']['svg'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.svg'),
-    '#alt' => $site_name,
+    '#alt' => '',
     '#attributes' => array(
       'role' => 'presentation',
     ),
@@ -74,9 +85,13 @@ function theme_header_logo() {
   $items['logo_markup']['png'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.png'),
-    '#alt' => $site_name,
+    '#alt' => '',
     '#prefix' => "<!--[if lt IE 9 ]>",
     '#suffix' => "<![endif]-->",
+  );
+
+  $items['logo_markup']['site_name'] = array(
+    '#markup' => $site_name,
   );
 
   // Render the HTML.
@@ -113,12 +128,12 @@ function theme_header_items() {
     $menu_elements['nav']['#suffix'] = '</nav>';
 
     // Initialize the template variable as a renderable array.
-    $menu_elements['nav']['contextual_links'] = array(
-      '#type' => 'contextual_links',
-      '#contextual_links' => array(
-        'menu' => array('admin/structure/menu/manage', array('user-menu')),
-      ),
-    );
+    // $menu_elements['nav']['contextual_links'] = array(
+    //   '#type' => 'contextual_links',
+    //   '#contextual_links' => array(
+    //     'menu' => array('admin/structure/menu/manage', array('user-menu')),
+    //   ),
+    // );
 
     $menu_elements['nav']['links'] = array(
       '#theme' => 'links__enhanced',

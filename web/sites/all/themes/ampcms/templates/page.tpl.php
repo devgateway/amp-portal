@@ -12,9 +12,7 @@
 <div class="page-wrapper">
   <header role="banner" class="main-header">
     <div class="main-header-inner clearfix">
-      <h1 class="site-name">
-        <?php print theme('header_logo'); ?>
-      </h1>
+      <?php print theme('header_logo'); ?>
       <?php print theme('header_items'); ?>
     </div>
   </header>

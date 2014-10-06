@@ -67,6 +67,7 @@ function helpergeneric_settings_form($form) {
   $form['site_information']['site_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Site name'),
+    '#description' => t('The site name will be transformed to uppercase before displaying in the header.'),
     '#default_value' => variable_get('site_name', 'Drupal'),
     '#required' => TRUE
   );

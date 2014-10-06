@@ -56,8 +56,12 @@ function helpertheme_color_pallete() {
     '#value' => '#2e5983',
     '#desc' => 'links, highlighted items, page border',
     '#variants' => array(
-      'cldetail__alt' => array(
+      'cldetail__highlight' => array(
         '#value' => '#ffca00',
+        '#desc' => 'alternative highlight detail',
+      ),
+      'cldetail__alt' => array(
+        '#value' => '#108cd2',
         '#desc' => 'alternative detail',
       ),
       'cldetail__separator' => array(

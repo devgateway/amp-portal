@@ -3,6 +3,8 @@
  * Contains theme CSS declarations.
  */
 
+@import './lib/helpers.less';
+
 html {
   // Always show page scrollbar to prevent side-movement when hovering over
   // items that are extending their height.
@@ -22,28 +24,11 @@ html {
  * Set the base style for anchor tags.
  */
 a {
+  .link-color(@clanchor, @clanchor__active, @clanchor__visited, @clanchor__hover);
+
   text-decoration: none;
-
-  // Style links that have not been visited.
-  &:link {
-    color: @clanchor;
-  }
-
-  // Style links that are active.
-  &.active,
-  &:active {
-    color: @clanchor__active;
-  }
-
-  // Style links that have been visited.
-  &:visited {
-    color: @clanchor__visited;
-  }
-
-  // Style link hover and focus states.
   &:focus,
   &:hover {
-    color: @clanchor__hover;
     text-decoration: underline;
   }
 }

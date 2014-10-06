@@ -127,7 +127,7 @@ function ampet_blog_default_page_manager_pages() {
     ),
   );
   $display->cache = array();
-  $display->title = 'Blog';
+  $display->title = '';
   $display->uuid = '2068dfa4-d7f6-43c6-8236-99f8ec66dfeb';
   $display->content = array();
   $display->panels = array();
@@ -152,7 +152,7 @@ function ampet_blog_default_page_manager_pages() {
       ),
     );
     $pane->configuration = array(
-      'override_title' => 1,
+      'override_title' => 0,
       'override_title_text' => '',
       'arguments' => array(
         'field_blog_entry_type_value' => '',
@@ -160,7 +160,10 @@ function ampet_blog_default_page_manager_pages() {
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_classes' => array(),
+      ),
+      'style' => 'cbstyle',
     );
     $pane->css = array(
       'css_id' => '',
@@ -197,11 +200,14 @@ function ampet_blog_default_page_manager_pages() {
         'field_blog_entry_type_value' => 'news+events',
       ),
       'override_title' => 1,
-      'override_title_text' => '',
+      'override_title_text' => 'News And Events',
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => NULL,
+      'settings' => array(
+        'pane_classes' => array(),
+      ),
+      'style' => 'cbstyle',
     );
     $pane->css = array(
       'css_id' => '',
@@ -261,7 +267,7 @@ function ampet_blog_default_page_manager_pages() {
     $pane->uuid = '37e37bc6-d4d2-4622-8786-a9d55cc86e51';
     $display->content['new-37e37bc6-d4d2-4622-8786-a9d55cc86e51'] = $pane;
     $display->panels['right'][1] = 'new-37e37bc6-d4d2-4622-8786-a9d55cc86e51';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-55b153a5-5c99-47e0-b729-4310bc433690';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;

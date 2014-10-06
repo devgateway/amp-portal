@@ -42,6 +42,13 @@ function helpergeneric_menu() {
     'file' => 'helpergeneric.admin.inc',
     'weight' => -32,
   );
+  // @TODO: Remove!!! It's required for contextual links.
+  $items['admin/settings/generic/edit'] = array(
+    'title' => 'Configure',
+    'weight' => -10,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
 
   $items['admin/settings/main-menu'] = array(
     'title' => 'Edit Main menu',
@@ -50,15 +57,6 @@ function helpergeneric_menu() {
     'page arguments' => array('admin/structure/menu/manage/main-menu'),
     'access arguments' => array('administer menu'),
     'weight' => -19,
-  );
-
-  $items['admin/settings/user-menu'] = array(
-    'title' => 'Edit User menu',
-    'description' => 'Edit the top user menu links.',
-    'page callback' => 'drupal_goto',
-    'page arguments' => array('admin/structure/menu/manage/user-menu'),
-    'access arguments' => array('administer menu'),
-    'weight' => -18,
   );
 
   return $items;

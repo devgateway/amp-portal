@@ -1,8 +1,10 @@
 
+@print_text_color: #333333;
+
 html,
 body {
   background-color: transparent;
-  color: #333333;
+  color: @print_text_color;
   font-family: "Times New Roman", serif;
   font-size: 12pt;
   height: auto;
@@ -23,13 +25,13 @@ body {
 .header-items,
 .main-navigation,
 .tabs-wrapper {
-  display: none;
+  display: none !important;
 }
 
 .messages {
   background-color: transparent !important;
   border-radius: 0px;
-  color: #333333 !important;
+  color: @print_text_color !important;
 }
 
 /**
@@ -49,7 +51,6 @@ h1, h2, h3, h4, h5, h6 {
 table {
   page-break-inside: avoid;
 }
-
 th {
   text-align: left; /* LTR */
   color: #006;

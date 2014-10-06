@@ -9,6 +9,14 @@ html {
 .site-name {
   margin-bottom: 0;
   margin-top: 0;
+  .link {
+    .link-color(@clnormal);
+    text-transform: uppercase;
+    &:focus,
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 // Style local actions.

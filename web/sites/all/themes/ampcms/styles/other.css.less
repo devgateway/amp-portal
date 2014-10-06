@@ -42,8 +42,13 @@ ul.tips, div.description, .form-item div.description {
 }
 
 .more-link {
+  font-size: 0.75em;
+  font-weight: bold;
   margin-bottom: 1em;
   text-align: right;
+  a {
+    .link-color(@cldetail__alt);
+  }
 }
 
 .cbreference-linkedmap {
@@ -52,11 +57,9 @@ ul.tips, div.description, .form-item div.description {
 
   .title-wrapper {
     color: @clactive;
-    float: left;
     font-weight: bold;
     margin: 0;
     text-transform: uppercase;
-    width: 294px;
     a {
       color: @clactive;
       display: block;
@@ -74,39 +77,77 @@ ul.tips, div.description, .form-item div.description {
   &.cbreference-view-mode-wide {
     background-color: @clmain__alt;
     .title-wrapper {
-      text-align: center;
-      font-size: 1.2em;
-      line-height: 6em;
+      float: left;
+      width: 294px;
+      a {
+        padding-left: 1em;
+        font-size: 1.25em;
+        line-height: 5.6em;
+      }
     }
   }
   &.cbreference-view-mode-normal {
     background-color: @clcontent;
-    .title-wrapper {
-      font-size: 1em;
-      line-height: 3em;
+    .title-wrapper a {
+      line-height: 4em;
+      padding-left: 1em;
       svg {
         fill: @clactive;
-        margin-left: 0.5em;
       }
     }
   }
 }
 
-.homepage-welcome-block {
+// @TODO: Cleanup!
+.featured-dark-block {
   background-color: @cldetail;
   color: @clcontent;
-  padding: 1em;
+
+  a {
+    .link-color(@cldetail__highlight);
+  }
+  .contentblock-title {
+    color: @cldetail__highlight;
+    margin: 0;
+  }
+}
+
+.homepage-welcome-block {
   .pane-content {
     .clearfix-mixin();
   }
-  .contentblock-title {
-    color: @cldetail__alt;
-    margin: 0;
+  .welcome-content-wrapper {
+    padding: 1em;
   }
   .field-name-field-cbimage {
     float: right;
     margin: 0;
     margin-left: 1em;
+  }
+
+  // Style the read more link and related elements.
+  position: relative;
+  .more-link {
+    bottom: 1em;
+    left: 1em;
+    position: absolute;
+
+    .mdzr-inlinesvg & {
+      .text {
+        display: none;
+      }
+    }
+  }
+  svg {
+    fill: @cldetail__highlight;
+  }
+  .field-name-field-cbbody {
+    max-height: 1.25em * 7;
+    overflow: hidden;
+  }
+  p {
+    line-height: 1.25em;
+    margin-top: 0;
   }
 }
 
@@ -123,5 +164,40 @@ ul.tips, div.description, .form-item div.description {
 .cbreference-footer {
   .field-name-field-cborgs {
     text-align: center;
+  }
+}
+
+.two-columns-grid {
+  .title {
+    font-size: 0.875em;
+    font-weight: bold;
+  }
+
+  .view-mode-teaser_normal {
+    .title {
+      margin: 0;
+    }
+    .field-name-body {
+      margin-top: 0;
+    }
+    p {
+      margin-top: 0;
+    }
+  }
+
+  .views-first-page {
+    .views-row-1 {
+      .title {
+        font-size: 1em;
+        margin: 1em 0;
+      }
+    }
+  }
+}
+
+.layout-block {
+  .field-name-body,
+  .field-name-field-cbbody {
+    font-size: 0.875em;
   }
 }

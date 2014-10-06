@@ -1,9 +1,15 @@
 
+@import './lib/helpers.less';
 @import './lib/custom-sprite.less';
 
 .header-links {
-  margin: 1em 0;
+  margin: 0;
   padding: 0;
+  line-height: 3.75em;
+
+  a {
+    .link-color(@clpassive);
+  }
 
   li {
     display: inline-block;
@@ -11,7 +17,7 @@
 
   .link-toplevel {
     display: inline-block;
-    padding: 0.5em;
+    padding: 0 0.5em;
     text-decoration: none;
     &.last {
       padding-right: 0;
@@ -33,11 +39,6 @@
 .main-navigation {
   font-size: 0.875em;
 
-  svg {
-    fill: @clcontent__separator;
-    margin-right: 0.5em;
-  }
-
   .top-listitem {
     display: inline-block;
   }
@@ -45,17 +46,42 @@
   .top-link {
     display: inline-block;
     font-weight: bold;
-    padding: 1em;
     line-height: 2em;
+    min-width: 7em;
+    padding: 0.6em;
+    padding-right: 2em;
     text-decoration: none;
     text-transform: uppercase;
+
+    .link-color(@clpassive, @clcontent, @clpassive, @clcontent);
+
     &.active,
-    &:active,
+    &:focus,
     &:hover {
-      background-color: @cldetail;
-      color: white;
+      color: @clcontent;
+      svg {
+        fill: @clcontent;
+      }
+    }
+
+    &.active {
+      background-color: @clpassive;
+    }
+    &:focus,
+    &:hover {
+      background-color: lighten(@clpassive, 10%);
+    }
+
+    border-right: @border_width solid transparent;
+    &.active {
+      border-right: @border_width solid @clcontent__separator;
     }
   }
+  svg {
+    fill: @clpassive;
+    margin-right: 0.5em;
+  }
+
   .navigation-sublevel {
     margin-bottom: 0.5em;
   }
