@@ -111,10 +111,11 @@ function ampet_blog_default_page_manager_pages() {
       'default' => NULL,
       'sidebar' => NULL,
       'left' => array(
-        'css_id' => '',
         'region_classes' => array(
           'layout-block' => 'layout-block',
+          'layout-separator' => 'layout-separator',
         ),
+        'css_id' => '',
         'extra_classes' => '',
       ),
       'right' => NULL,
