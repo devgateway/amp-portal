@@ -221,11 +221,9 @@ function ampet_blog_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => '',
-      'template' => '',
+      'machine_name' => 'blogsidebar',
       'override_title' => 0,
       'override_title_text' => '',
-      'machine_name' => 'blogsidebar',
       'style' => 'normal',
     );
     $pane->cache = array();
@@ -247,11 +245,10 @@ function ampet_blog_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'variable_name' => '',
       'machine_name' => 'linkedmap',
-      'style' => 'normal',
       'override_title' => 0,
       'override_title_text' => '',
+      'style' => 'normal',
     );
     $pane->cache = array();
     $pane->style = array(
