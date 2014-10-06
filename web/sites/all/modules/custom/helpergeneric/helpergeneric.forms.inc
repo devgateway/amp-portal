@@ -360,10 +360,11 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
   // Control "Event Date" field visibility.
   if (isset($form['field_blog_entry_type'], $form['field_blog_event_date'])) {
     // Show the "Event Date" only if blog entry type is event.
-    // @todo Deal with language translations.
+    $entity = $form_state[$form['#entity_type']];
+    $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
     $form['field_blog_event_date']['#states'] = array(
       'visible' => array(
-        ':input[name="field_blog_entry_type[und][event]"]' => array('checked' => TRUE),
+        ':input[name="field_blog_entry_type[' . $langcode . '][event]"]' => array('checked' => TRUE),
       ),
     );
     // Remove event date value on submit if field_blog_entry_type is not an event.
@@ -375,14 +376,17 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
  * Form validation handler for node_form_alter().
  */
 function helpergeneric_node_form_event_date_validate($form, &$form_state) {
+  $entity = $form_state[$form['#entity_type']];
+  $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+
   // Get the submitted input values.
-  $blog_entry_type = $form_state['input']['field_blog_entry_type'][LANGUAGE_NONE];
+  $blog_entry_type = $form_state['input']['field_blog_entry_type'][$langcode];
 
   if (empty($blog_entry_type['event'])) {
     // Remove event date if the blog entry is not tagged as an event..
-    $form_state['values']['field_blog_event_date'][LANGUAGE_NONE] = array();
+    $form_state['values']['field_blog_event_date'][$langcode] = array();
   }
-  else if (empty($form_state['values']['field_blog_event_date'][LANGUAGE_NONE][0]['value'])) {
+  else if (empty($form_state['values']['field_blog_event_date'][$langcode][0]['value'])) {
     // Display an error if the user submitted an event blog but did not provide an event date.
     form_set_error('field_blog_event_date', t('The blog entry is tagged as an event, please provide a valid event date.'));
   }
