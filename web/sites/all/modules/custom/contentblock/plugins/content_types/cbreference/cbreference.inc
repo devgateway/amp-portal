@@ -64,7 +64,11 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
         '!here' => l(t('here'), 'admin/settings/content-sections/' . $conf['machine_name']),
       ));
 
-      if (!in_array($block->delta, array('welcome'))) {
+      if ($block->delta == 'welcome') {
+        $block->content['#prefix'] = '<div class="welcome-content-wrapper">';
+        $block->content['#suffix'] = '</div>';
+      }
+      else {
         $block->content['#prefix'] = '<div class="layout-block layout-separator">';
         $block->content['#suffix'] = '</div>';
       }
@@ -94,6 +98,10 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
   }
   if (function_exists($function)) {
     $return = $function($entity, $conf);
+    if (empty($return)) {
+      return;
+    }
+
     if (isset($return['#view_mode'])) {
       $block_css_classes[] = drupal_html_class('cbreference-view-mode-' . $return['#view_mode']);
     }

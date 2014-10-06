@@ -91,7 +91,6 @@ function contentblock_field_display_contentblock_alter__generic(&$display, $cont
       'weight' => 2,
     );
   }
-
 }
 
 /**
@@ -132,14 +131,6 @@ function contentblock_field_display_contentblock_alter__linkedmap(&$display, $co
       'type' => 'title_linked',
       'weight' => 0,
     );
-    // $display = array(
-    //   'label' => 'hidden',
-    //   'module' => 'text',
-    //   'settings' => array(
-    //   ),
-    //   'type' => ' text_default',
-    //   'weight' => 0,
-    // );
   }
 
   if ($context['field']['field_name'] == 'field_cbimage') {
@@ -174,6 +165,11 @@ function contentblock_cbreference_render__welcome($entity, $pane_conf) {
   field_attach_prepare_view($entity_type, array($entity->identifier() => $entity), $view_mode);
   $view = field_attach_view($entity_type, $entity, $view_mode);
 
+  // Wrap Title and body fields in a DIV.
+  // @TODO: Find a better way to do this.
+  $view['title_field'][0]['#prefix'] = '<div class="welcome-content-wrapper">';
+  $view['field_cbbody']['#suffix'] = '</div>';
+
   // Load the metadata wrapper.
   $wrapper = entity_metadata_wrapper($entity->entityType(), $entity);
 
@@ -182,6 +178,23 @@ function contentblock_cbreference_render__welcome($entity, $pane_conf) {
   if (!empty($link['url'])) {
     $view['field_cbimage'][0]['#path']['path'] = $link['url'];
     $view['field_cbimage'][0]['#path']['options']['attributes'] = $link['attributes'];
+
+    $svgicon = helpertheme_get_svg_icons('add', array('width' => '2em', 'height' => '2em')) . ' ';
+    $link_title = $svgicon . '<span class="text">' . t('read more') . '</span>';
+
+    $view['view_link'] = array(
+      '#theme' => 'link',
+      '#path' => $link['url'],
+      '#text' => $link_title,
+      '#options' => array(
+        'html' => TRUE,
+        'attributes' => array(
+          'class' => array('more-link'),
+          'title' => t('read more'),
+        ) + $link['attributes'],
+      ),
+      '#weight' => 50,
+    );
   }
 
   return $view;
@@ -201,16 +214,22 @@ function contentblock_cbreference_render__linkedmap($entity, $pane_conf) {
   $view = field_attach_view($entity_type, $entity, $view_mode);
   $view['#view_mode'] = $view_mode;
 
+  if (empty($view['title_field']) || empty($view['field_cbimage'])) {
+    return;
+  }
+
   // Load the metadata wrapper.
   $wrapper = entity_metadata_wrapper($entity->entityType(), $entity);
 
   // Get the link.
   $link = $wrapper->field_cblinks->value();
-  if (!empty($link['url'])) {
-    $link['attributes']['target'] = '_blank';
-    $view['field_cbimage'][0]['#path']['path'] = $link['url'];
-    $view['field_cbimage'][0]['#path']['options']['attributes'] = $link['attributes'];
+  if (empty($link['url'])) {
+    return;
   }
+
+  $link['attributes']['target'] = '_blank';
+  $view['field_cbimage'][0]['#path']['path'] = $link['url'];
+  $view['field_cbimage'][0]['#path']['options']['attributes'] = $link['attributes'];
 
   if (isset($view['title_field'][0]['#markup'])) {
     $svgicon = helpertheme_get_svg_icons('maps', array('width' => '2em', 'height' => '2em'));

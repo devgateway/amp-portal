@@ -74,5 +74,91 @@ function contentblock_cbreference_entity_form($machine_name = NULL) {
       '#weight' => 101,
     );
   }
+
   return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for contentblock_form().
+ */
+function _contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_id) {
+  foreach (contentblock_get_hidden_types() as $machine_name => $info) {
+    if ($form['#entity']->machine_name != $machine_name) {
+      continue;
+    }
+
+    foreach (element_children($form) as $element_child) {
+      if (substr($element_child, 0, 6) !== 'field_') {
+        continue;
+      }
+
+      if (!in_array($element_child, $info['available_fields'])) {
+        $form[$element_child]['#access'] = FALSE;
+      }
+    }
+  }
+
+  // Attach validate callbacks.
+  switch ($form['#entity']->machine_name) {
+    case 'linkedmap':
+      $form['#validate'][] = '_contentblock_cbreference_entity_form_linkedmap_validate';
+      break;
+    case 'footer':
+      $form['#validate'][] = '_contentblock_cbreference_entity_form_footer_validate';
+      break;
+    case 'welcome':
+      $form['#validate'][] = '_contentblock_cbreference_entity_form_welcome_validate';
+      break;
+  }
+}
+
+/**
+ * Form validation handler for contentblock_cbreference_entity_form() for linkedmap.
+ */
+function _contentblock_cbreference_entity_form_linkedmap_validate($form, &$form_state) {
+  $entity_type = $form_state['entity_type'];
+  $entity = $form_state[$entity_type];
+  $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+
+  if (!empty($form_state['values']['field_cblinks'][$langcode][0]['url']) && empty($form_state['values']['field_cbimage'][$langcode][0]['fid'])) {
+    form_set_error('field_cbimage', t('Field %name is required.', array('%name' => $form['field_cbimage'][$langcode][0]['#title'])));
+  }
+
+  if (!empty($form_state['values']['field_cbimage'][$langcode][0]['fid']) && empty($form_state['values']['field_cblinks'][$langcode][0]['url'])) {
+    form_set_error('field_cblinks', t('Field %name is required.', array('%name' => $form['field_cblinks'][$langcode][0]['#title'])));
+  }
+}
+
+/**
+ * Form validation handler for contentblock_cbreference_entity_form() for welcome.
+ */
+function _contentblock_cbreference_entity_form_welcome_validate($form, &$form_state) {
+  $entity_type = $form_state['entity_type'];
+  $entity = $form_state[$entity_type];
+  $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+
+  if (!empty($form_state['values']['field_cbbody'][$langcode][0]['value'])) {
+    $max_char_count = 640; // @TODO: reduce to 320 and count using strip_tags
+    $body_char_count = drupal_strlen(strip_tags($form_state['values']['field_cbbody'][$langcode][0]['value']));
+    if ($body_char_count > $max_char_count) {
+      form_set_error('field_cbbody', t('Field %name should not have more than %max characters, %count given.', array('%name' => $form['field_cbbody'][$langcode][0]['#title'], '%max' => $max_char_count, '%count' => $body_char_count)));
+    }
+  }
+}
+
+/**
+ * Form validation handler for contentblock_cbreference_entity_form() for footer.
+ */
+function _contentblock_cbreference_entity_form_footer_validate($form, &$form_state) {
+  $entity_type = $form_state['entity_type'];
+  $entity = $form_state[$entity_type];
+  $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+
+  if (!empty($form_state['values']['field_cbbody'][$langcode][0]['value'])) {
+    $max_char_count = 640;
+    $body_char_count = drupal_strlen($form_state['values']['field_cbbody'][$langcode][0]['value']);
+    if ($body_char_count > $max_char_count) {
+      form_set_error('field_cbbody', t('Field %name should not have more than %max characters, %count given.', array('%name' => $form['field_cbbody'][$langcode][0]['#title'], '%max' => $max_char_count, '%count' => $body_char_count)));
+    }
+  }
 }

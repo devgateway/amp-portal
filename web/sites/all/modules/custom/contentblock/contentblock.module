@@ -164,7 +164,7 @@ function contentblock_get_hidden_types($type = NULL) {
 
   $items['welcome'] = array(
     'title' => t('Home Welcome Block'),
-    'description' => t('The home welcome block is displayed on the homepage next to the projects search form.'),
+    'description' => t('The home welcome block is displayed on the top of the homepage next to the projects search form.'),
     'action label' => t('Edit'),
     'available_fields' => array(
       'title_field',
@@ -173,6 +173,14 @@ function contentblock_get_hidden_types($type = NULL) {
       'field_cbbody',
     ),
   );
+
+  // $items['projectsform'] = array(
+  //   'title' => t('Projects Search Form'),
+  //   'description' => t('The projects search form is displayed on the top of the homepage next to the welcome block.'),
+  //   'action label' => t('Edit'),
+  //   'available_fields' => array(
+  //   ),
+  // );
 
   $items['blogsidebar'] = array(
     'title' => t('Blog Sidebar Section'),
@@ -278,7 +286,7 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
   }
 
   // Only allow editing the content block from special forms.
-  if ($bundle == 'hidden' && $op == 'edit' && arg(0) == 'contentblock') {
+  if ($bundle == 'hidden' && $op == 'edit' && arg(0) == 'contentblock' && arg(2) == 'edit') {
     $msg = 'This entity can only be edited on the %name admin interface. Click !here to go to that page.';
     $t_args = array(
       '%name' => 'Content Sections',
@@ -536,24 +544,8 @@ function contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_i
   // Do not allow redirects to be created from the entity edit forms.
   $form['redirect']['#access'] = FALSE;
 
-  // From now on only alter forms for specific entities.
-  if (empty($form['#entity']->machine_name)) {
-    return;
-  }
-
-  foreach (contentblock_get_hidden_types() as $machine_name => $info) {
-    if ($form['#entity']->machine_name != $machine_name) {
-      continue;
-    }
-
-    foreach (element_children($form) as $element_child) {
-      if (substr($element_child, 0, 6) !== 'field_') {
-        continue;
-      }
-
-      if (!in_array($element_child, $info['available_fields'])) {
-        $form[$element_child]['#access'] = FALSE;
-      }
-    }
+  if (!empty($form['#entity']->machine_name)) {
+    module_load_include('inc', 'contentblock', 'contentblock.admin_cbreference');
+    _contentblock_form_contentblock_form_alter($form, $form_state, $form_id);
   }
 }
