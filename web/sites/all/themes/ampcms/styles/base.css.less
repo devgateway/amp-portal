@@ -3,8 +3,6 @@
  * Contains theme CSS declarations.
  */
 
-@import './lib/helpers.less';
-
 html {
   // Always show page scrollbar to prevent side-movement when hovering over
   // items that are extending their height.
@@ -53,6 +51,19 @@ h1, h2, h3 {
     width: 500em;
   }
 }
+.xSmallOnly() {
+  .mobject {
+    .group-side {
+      float: none;
+      margin-right: 0;
+      text-align: center;
+    }
+    .group-main {
+      display: block;
+      width: auto;
+    }
+  }
+}
 
 .form-mobject {
   display: table;
@@ -62,3 +73,6 @@ h1, h2, h3 {
     width: 500em;
   }
 }
+
+@import './lib/helpers.less';
+@import './lib/custom-responsive.less';

@@ -1,8 +1,4 @@
 
-@import './lib/custom-responsive.less';
-@import './lib/custom-sprite.less';
-@import './lib/helpers.less';
-
 .header-links {
   margin: 0;
   padding: 0;
@@ -38,10 +34,14 @@
 }
 
 .navigation-list-toplevel {
-  border-bottom: @border_width solid @clcontent__separator;
   padding-left: 0;
   .top-listitem {
     list-style: none;
+  }
+}
+.xNormalAndUp() {
+  .navigation-list-toplevel {
+    border-bottom: @border_width solid @clcontent__separator;
   }
 }
 
@@ -74,6 +74,7 @@
   &.active,
   &:focus,
   &:hover {
+    text-decoration: none;
     color: @clcontent;
     svg {
       fill: @clcontent;
@@ -88,12 +89,23 @@
     background-color: lighten(@clpassive, 10%);
   }
 
+  border-left: @border_width solid transparent;
   border-right: @border_width solid transparent;
   &.active {
+    border-left: @border_width solid @clcontent__separator;
     border-right: @border_width solid @clcontent__separator;
   }
 }
 
+.xMediumAndDown() {
+  .top-link {
+    line-height: 1.142em;
+    svg {
+      width: 1em !important;
+      height: 1em !important;
+    }
+  }
+}
 .xNormalAndUp() {
   .top-link {
     line-height: 2em;
@@ -101,3 +113,7 @@
     padding-right: 2em;
   }
 }
+
+@import './lib/custom-responsive.less';
+@import './lib/custom-sprite.less';
+@import './lib/helpers.less';
