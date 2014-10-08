@@ -20,6 +20,7 @@ define('CONTENTBLOCK_BUNDLE_ADMIN_UI_PATH', 'admin/structure/contentblock');
 function contentblock_entity_info() {
   $entity_info = array();
 
+  $menu_wildcard = '%contentblock';
   $entity_info['contentblock'] = array(
     'label' => t('Content Block'),
     'plural label' => t('Content Blocks'),
@@ -46,8 +47,6 @@ function contentblock_entity_info() {
 
     'access callback' => 'contentblock_access',
     'uri callback' => 'entity_class_uri',
-
-    'menu wildcard' => 'contentblock',
 
     'entity keys' => array(
       'id' => 'cbid',
@@ -93,6 +92,7 @@ function contentblock_entity_info() {
       'entity path' => CONTENTBLOCK_UI_PATH,
       'bundle path' => CONTENTBLOCK_BUNDLE_ADMIN_UI_PATH,
       'controller class' => 'ContentBlockEntityUIController',
+      'menu wildcard' => $menu_wildcard,
       'file' => 'contentblock.admin.inc',
     ),
 
@@ -101,6 +101,21 @@ function contentblock_entity_info() {
       //   'label' => t('Full content block'),
       //   'custom settings' => FALSE,
       // ),
+    ),
+
+    'translation' => array(
+      'locale' => TRUE,
+      'entity_translation' => array(
+        'base path' => CONTENTBLOCK_UI_PATH . '/' . $menu_wildcard,
+        'class' => 'EntityTranslationContentBlockHandler',
+        'access callback' => 'entity_translation_tab_access',
+        'access arguments' => array('contentblock', 1),
+        'admin theme' => variable_get('node_admin_theme'),
+        'default settings' => array(
+          'default_language' => LANGUAGE_NONE,
+          'hide_language_selector' => FALSE,
+        ),
+      ),
     ),
   );
 
@@ -235,7 +250,7 @@ function contentblock_type_get_name($bundle) {
 /**
  * Access callback for custom survey entities.
  */
-function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type) {
+function contentblock_access($op, $entity = NULL, $account = NULL) {
   $rights = &drupal_static(__FUNCTION__, array());
 
   $operations = array('administer', 'access overview', 'create', 'view', 'edit', 'delete');
@@ -250,7 +265,7 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
   }
 
 
-  $cid = is_object($entity) ? $entity_type . ':' . $entity->identifier() : FALSE;
+  $cid = is_object($entity) ? 'contentblock:' . $entity->identifier() : FALSE;
 
   // If we've already checked access for this node, user and op, return from cache.
   if ($cid && isset($rights[$account->uid][$cid][$op])) {
@@ -263,10 +278,10 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
     }
 
     $allow = FALSE;
-    if (user_access("$entity_type entity administer") || user_access("$entity_type entity access overview")) {
+    if (user_access("contentblock entity administer") || user_access("contentblock entity access overview")) {
       $allow = TRUE;
     }
-    else if (user_access("$entity_type entity $op")) {
+    else if (user_access("contentblock entity $op")) {
       // For now we ignore the status field.
       $allow = TRUE;
     }
@@ -299,7 +314,7 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
     return FALSE;
   }
 
-  if (user_access("$entity_type entity $op")) {
+  if (user_access("contentblock entity $op")) {
     if ($cid) {
       $rights[$account->uid][$cid][$op] = TRUE;
     }
@@ -310,6 +325,15 @@ function contentblock_access($op, $entity = NULL, $account = NULL, $entity_type)
     $rights[$account->uid][$cid][$op] = FALSE;
   }
   return FALSE;
+}
+
+/**
+ * Menu loader function: load a contentblock from its path.
+ *
+ * @see entity_object_load()
+ */
+function contentblock_load($entity_id, $entity_type) {
+  return entity_object_load($entity_id, $entity_type);
 }
 
 /**

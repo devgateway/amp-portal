@@ -353,7 +353,7 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
     $attach_entity_actions = FALSE;
   }
   else {
-    if (!in_array($router_item['load_functions'][$position], array('entity_object_load', 'node_load'))) {
+    if (!in_array($router_item['load_functions'][$position], array('contentblock_load', 'node_load'))) {
       $attach_entity_actions = FALSE;
     }
   }
@@ -379,6 +379,26 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
       }
     }
 
+    // Attach "Translate" link to the entity view page title.
+    if (drupal_multilingual() && count($router_item['original_map']) == 2) {
+      // Load the translate menu router item.
+      $action_router_path = implode('/', $router_item['original_map']) . '/translate';
+      $action_router_item = menu_get_item($action_router_path);
+
+      if ($action_router_item['access']) {
+        $action_router_item['localized_options']['theme extra'] = array(
+          'entity action' => TRUE,
+          'icon' => 'translate',
+        );
+
+        $data['actions']['output'][] = array(
+          '#theme' => 'menu_local_action',
+          '#link' => $action_router_item,
+          '#weight' => 50,
+        );
+      }
+    }
+
     // Attach "Delete" link to the entity view page title.
     if (count($router_item['original_map']) == 2) {
       // Load the edit menu router item.
@@ -399,8 +419,8 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
       }
     }
 
-    // Attach "Cancel" link to the entity edit page title.
-    if (count($router_item['original_map']) == 3 && $router_item['original_map'][2] == 'edit') {
+    // Attach "Cancel" link to the entity edit and translate page title.
+    if (count($router_item['original_map']) >= 3 && in_array($router_item['original_map'][2], array('edit', 'translate'))) {
       $alt_path= NULL;
       if (!empty($_GET['destination'])) {
         $url_options = drupal_parse_url($_GET['destination']);
@@ -481,6 +501,7 @@ function helpergeneric_entity_load($entities, $entity_type) {
     return;
   }
 
+  // @TODO: Optimize!
   foreach ($entities as $id => $entity) {
     $local_actions = menu_local_actions();
     if (!empty($local_actions)) {

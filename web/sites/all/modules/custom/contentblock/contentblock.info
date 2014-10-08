@@ -10,3 +10,4 @@ files[] = includes/ContentBlockEntity.inc
 files[] = includes/ContentBlockEntityController.inc
 files[] = includes/ContentBlockEntityUIController.inc
 files[] = includes/ContentBlockInlineEntityFormController.inc
+files[] = includes/EntityTranslationContentBlockHandler.inc

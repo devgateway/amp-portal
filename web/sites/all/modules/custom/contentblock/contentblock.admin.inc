@@ -66,7 +66,7 @@ function contentblock_form($form, &$form_state, $entity) {
       '#type' => 'link',
       '#title' => t('Cancel'),
       '#href' => $entity_uri['path'],
-      '#weight' => 20,
+      '#weight' => 100,
     );
 
     if (!empty($entity->machine_name)) {
