@@ -353,7 +353,6 @@ function helpertheme_html_head_alter(&$head_elements) {
 function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
   $available_icons = array(
     'home',
-    'arrow',
 
     // fill="#4B4A4A"
     'dashboard',
@@ -369,16 +368,22 @@ function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
     'organization',
     'reports',
     'sector',
+  );
 
+  // These can only be used in the code.
+  $extra_icons = array(
+    'arrow',
     'gear',
+
     'add',
-    'view',
-    'edit',
     'delete',
+    'edit',
+    'translate',
+    'view',
   );
 
   if (isset($icon)) {
-    if (!in_array($icon, $available_icons)) {
+    if (!in_array($icon, array_merge($available_icons, $extra_icons))) {
       return '';
     }
 
