@@ -305,6 +305,7 @@ function helpertheme_less_variables_alter(&$less_variables, $system_name) {
 
   // Add drupal base bath to use with absolute paths for images.
   $less_variables['@base_path'] = '"' . base_path() . '"';
+  $less_variables['@contentblock_section_title'] = '"' . t('edit section content') . '"';
 }
 
 /**
