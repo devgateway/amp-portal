@@ -155,6 +155,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'site_default_country',
         'site_mail',
         'site_name',
+        'teaser_length',
         'theme_default',
 
         // Hide ctools.module variables.
@@ -194,6 +195,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'language_default',
 
         // Hide media.module variables.
+        'media_icon_base_directory',
         // Dialog options.
         'media_dialogclass',
         'media_modal',

@@ -16,6 +16,7 @@ features[language][] = en
 features[language][] = es
 features[language][] = fr
 features[language][] = ro
+features[language][] = ru
 features[user_permission][] = administer entity translation
 features[user_permission][] = administer languages
 features[user_permission][] = toggle field translatability
