@@ -3,6 +3,8 @@
 /**
  * @file
  * ContentBlock translation handler for the entity translation module.
+ *
+ * @TODO: Add translation status support.
  */
 
 
@@ -15,13 +17,6 @@ class EntityTranslationContentBlockHandler extends EntityTranslationDefaultHandl
   public function __construct($entity_type, $entity_info, $entity) {
     parent::__construct('contentblock', $entity_info, $entity);
   }
-
-  // /**
-  //  * @see EntityTranslationDefaultHandler::isRevision()
-  //  */
-  // public function isRevision() {
-  //   return !empty($this->entity->revision);
-  // }
 
   /**
    * @see EntityTranslationDefaultHandler::getAccess()
@@ -48,33 +43,11 @@ class EntityTranslationContentBlockHandler extends EntityTranslationDefaultHandl
 
     // Move the translation fieldset to a vertical tab.
     if (isset($form['translation'])) {
-    //   $form['translation'] += array(
-    //     '#group' => 'additional_settings',
-    //     '#weight' => 100,
-    //     '#attached' => array(
-    //       'js' => array(drupal_get_path('module', 'entity_translation') . '/entity_translation.node-form.js'),
-    //     ),
-    //   );
-
-      // dpm($this->isTranslationForm(), '$this->isTranslationForm()');
-      if (!$this->isTranslationForm()) {
-        $form['translation']['name']['#access'] = FALSE;
-        $form['translation']['created']['#access'] = FALSE;
-      }
+      $form['translation']['status']['#access'] = FALSE;
+      $form['translation']['name']['#access'] = FALSE;
+      $form['translation']['created']['#access'] = FALSE;
     }
-
-    // // Path aliases natively support multilingual values.
-    // if (isset($form['path'])) {
-    //   $form['path']['#multilingual'] = TRUE;
-    // }
   }
-
-  // /**
-  //  * @see EntityTranslationDefaultHandler::menuForm()
-  //  */
-  // protected function menuForm(&$form, &$form_state) {
-  //   entity_translation_i18n_menu_form($form, $form_state);
-  // }
 
   // /**
   //  * @see EntityTranslationDefaultHandler::entityFormLanguageWidgetSubmit()
@@ -104,19 +77,11 @@ class EntityTranslationContentBlockHandler extends EntityTranslationDefaultHandl
   //   parent::entityFormSubmit($form, $form_state);
   // }
 
-  // /**
-  //  * @see EntityTranslationDefaultHandler::entityFormTitle()
-  //  */
-  // protected function entityFormTitle() {
-  //   $type_name = node_type_get_name($this->entity);
-  //   return t('<em>Edit @type</em> @title', array('@type' => $type_name, '@title' => $this->getLabel()));
-  // }
-
   /**
    * @see EntityTranslationDefaultHandler::getStatus()
    */
   protected function getStatus() {
+    // return (boolean) $this->entity->status;
     return TRUE;
-    return (boolean) $this->entity->status;
   }
 }
