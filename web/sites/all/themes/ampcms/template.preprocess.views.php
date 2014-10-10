@@ -53,6 +53,9 @@ function __ampcms_preprocess_views_view__homepage(&$vars) {
 
         $vars['more'] = '<div class="more-link">' . l(t('see all'), 'blog/news-and-events') . '</div>';
       }
+
+      // @HACK: Change the title, This is a way to avoid needing panels translation.
+      $vars['view']->set_title(t('News And Events'));
       break;
   }
 }
