@@ -43,23 +43,26 @@ function ampet_page_field_default_field_instances() {
         'weight' => 1,
       ),
     ),
+    'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'body',
     'label' => 'Body',
-    'required' => FALSE,
+    'required' => 0,
     'settings' => array(
-      'display_summary' => TRUE,
+      'display_summary' => 1,
+      'entity_translation_sync' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'text',
       'settings' => array(
         'rows' => 20,
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -99,6 +102,7 @@ function ampet_page_field_default_field_instances() {
     'label' => 'Title',
     'required' => TRUE,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'hide_label' => array(
         'entity' => 'entity',
         'page' => 0,
