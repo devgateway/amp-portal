@@ -78,7 +78,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
       // Hide menus.
       $entries_list = array(
         'devel',
-        'main-menu',
+        // 'main-menu',
         'management',
         'navigation',
         'user-menu',
