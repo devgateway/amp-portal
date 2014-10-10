@@ -74,6 +74,8 @@ function update_scripts_schema() {
  * Implements hook_install().
  */
 function update_scripts_install() {
+  return;
+
   $scripts_directory = update_scripts_get_directory();
   if (update_scripts_check_directory($scripts_directory, TRUE)) {
     $t = get_t();
