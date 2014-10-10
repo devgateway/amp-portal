@@ -381,6 +381,30 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Remove event date value on submit if field_blog_entry_type is not an event.
     $form['#validate'][] = 'helpergeneric_node_form_event_date_validate';
   }
+
+  // Restrict summary length.
+  $form['#validate'][] = 'helpergeneric_node_form_summary_validate';
+}
+
+/**
+ * Form validation handler for node_form_alter().
+ */
+function helpergeneric_node_form_summary_validate($form, &$form_state) {
+  $entity_type = $form['#entity_type'];
+  $entity = $form_state[$entity_type];
+
+  // Find out the field language.
+  $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+  $body_langcode = field_language($entity_type, $entity, 'body', $langcode);
+  if (empty($form_state['values']['body'][$body_langcode][0]['summary'])) {
+    return;
+  }
+
+  $teaser_length = variable_get('teaser_length', 600);
+  $summary_length = drupal_strlen(trim($form_state['values']['body'][$body_langcode][0]['summary']));
+  if ($summary_length > $teaser_length) {
+    form_set_error('body][und][0][summary', t('The Summary must be less than %max characters, you provided %count characters.', array('%max' => $teaser_length, '%count' => $summary_length)));
+  }
 }
 
 /**

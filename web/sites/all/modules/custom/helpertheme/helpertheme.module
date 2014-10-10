@@ -145,6 +145,9 @@ function helpertheme_admin_paths_alter(&$paths) {
   $paths['contentblock/*/*'] = FALSE;
   $paths['node/*/*'] = FALSE;
   $paths['user/*/*'] = FALSE;
+
+  $paths['node/add'] = FALSE;
+  // $paths['admin/people'] = FALSE;
 }
 
 /**

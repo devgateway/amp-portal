@@ -145,7 +145,7 @@ function helpergeneric_language_settings_form() {
   $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Save configuration'));
   $form['#theme'] = 'helpergeneric_language_settings_form';
 
-  drupal_set_message('Changing default language will cause existing inbound links to stop working.', 'warning');
+  drupal_set_message('Changing default language might cause existing inbound links to stop working.', 'warning');
   return $form;
 }
 
