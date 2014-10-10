@@ -147,7 +147,8 @@ function helpertheme_admin_paths_alter(&$paths) {
   $paths['user/*/*'] = FALSE;
 
   $paths['node/add'] = FALSE;
-  // $paths['admin/people'] = FALSE;
+  $paths['admin/content*'] = FALSE;
+  $paths['admin/people'] = FALSE;
 }
 
 /**

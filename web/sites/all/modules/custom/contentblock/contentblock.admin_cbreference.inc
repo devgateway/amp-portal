@@ -28,9 +28,8 @@ function _contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_
   if ($form_state['op'] == 'add' || !in_array('field_title', $cbreference_info['available_fields'])) {
     $title_suffix = '';
     if (!empty($form['#entity']->language)) {
-      dpm($form['#entity']->language, '$form[#entity]->language');
       $languages = language_list();
-      // t($languages[$form['#entity']->language]->name)
+      $title_suffix = ' [' . t($languages[$form['#entity']->language]->name) . ']';
     }
     drupal_set_title($cbreference_info['title'] . $title_suffix);
   }
