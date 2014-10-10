@@ -33,6 +33,9 @@ _us_views__disable('media_default');
 // Set the fallback format to plain text.
 variable_set('filter_fallback_format', 'filtered_html');
 
+// Limit the teaser length.
+variable_set('teaser_length', 360);
+
 // Set the "Add media" wysiwyg button title.
 variable_set('media_wysiwyg_wysiwyg_icon_title', 'Add/Update media');
 

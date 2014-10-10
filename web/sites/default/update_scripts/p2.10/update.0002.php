@@ -124,5 +124,27 @@ variable_set('title_taxonomy_term', $title_settings);
 // Set this as the administrator role.
 // variable_set('user_admin_role', $role->rid);
 
+// Create some default users.
+// $accounts = array(
+//   '2' => 'admin',
+//   '3' => 'editor',
+//   '100' => 'system',
+// );
+// foreach ($accounts as $account_id => $account_name) {
+//   $account = user_load($account_id);
+//   if (empty($account)) {
+//     db_insert('users')
+//       ->fields(array(
+//         'uid' => $account_id,
+//         'name' => $account_name,
+//         'mail' => $account_name . '@example.org',
+//         'created' => REQUEST_TIME,
+//         'status' => ($account_id == 100) ? 0 : 1,
+//         'data' => NULL,
+//       ))
+//       ->execute();
+//   }
+// }
+
 // Set default export path for new features.
 variable_set('features_default_export_path', 'sites/all/modules/features');
