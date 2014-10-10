@@ -158,6 +158,9 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'teaser_length',
         'theme_default',
 
+        // Hide admin_menu.module variables.
+        'admin_menu_devel_modules_enabled',
+
         // Hide ctools.module variables.
         'ctools_last_cron',
 

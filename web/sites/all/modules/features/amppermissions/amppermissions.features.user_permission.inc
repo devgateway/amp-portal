@@ -121,6 +121,13 @@ function amppermissions_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'administer entityqueue'.
+  $permissions['administer entityqueue'] = array(
+    'name' => 'administer entityqueue',
+    'roles' => array(),
+    'module' => 'entityqueue',
+  );
+
   // Exported permission: 'administer features'.
   $permissions['administer features'] = array(
     'name' => 'administer features',
@@ -435,6 +442,20 @@ function amppermissions_user_default_permissions() {
     'name' => 'manage features',
     'roles' => array(),
     'module' => 'features',
+  );
+
+  // Exported permission: 'manipulate all entityqueues'.
+  $permissions['manipulate all entityqueues'] = array(
+    'name' => 'manipulate all entityqueues',
+    'roles' => array(),
+    'module' => 'entityqueue',
+  );
+
+  // Exported permission: 'manipulate entityqueues'.
+  $permissions['manipulate entityqueues'] = array(
+    'name' => 'manipulate entityqueues',
+    'roles' => array(),
+    'module' => 'entityqueue',
   );
 
   // Exported permission: 'notify of path changes'.
