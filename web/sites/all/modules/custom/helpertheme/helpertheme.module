@@ -45,15 +45,15 @@ function helpertheme_init() {
   if (variable_get('helpertheme_load_external_fonts', TRUE)) {
     $font_variants = array(
       '400',
-      '700',
       '400italic',
+      '700',
       '700italic',
     );
     $options = array(
       'external' => TRUE,
       'query' => array(
         'family' => 'Open Sans' . ':' . implode(',', $font_variants),
-        'subset' => 'latin,latin-ext',
+        'subset' => 'latin,latin-ext,cyrillic,cyrillic-ext',
       ),
     );
     $font_url = url('http://fonts.googleapis.com/css', $options);
