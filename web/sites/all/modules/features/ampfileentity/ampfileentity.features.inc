@@ -457,7 +457,7 @@ function ampfileentity_image_default_styles() {
     'name' => 'thumbfh',
     'label' => 'Thumbnail: Fixed height',
     'effects' => array(
-      5 => array(
+      15 => array(
         'label' => 'Scale',
         'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
         'effect callback' => 'image_scale_effect',
@@ -468,12 +468,12 @@ function ampfileentity_image_default_styles() {
         'name' => 'image_scale',
         'data' => array(
           'width' => '',
-          'height' => 100,
+          'height' => 64,
           'upscale' => 0,
         ),
         'weight' => 1,
       ),
-      6 => array(
+      16 => array(
         'label' => 'Define canvas',
         'help' => 'Define the size of the working canvas and background color, this controls the dimensions of the output image.',
         'effect callback' => 'canvasactions_definecanvas_effect',
@@ -489,7 +489,7 @@ function ampfileentity_image_default_styles() {
           'under' => 1,
           'exact' => array(
             'width' => '',
-            'height' => 100,
+            'height' => 64,
             'xpos' => 'center',
             'ypos' => 'center',
           ),
