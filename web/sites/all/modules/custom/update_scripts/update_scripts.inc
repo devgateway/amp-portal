@@ -416,6 +416,9 @@ function update_scripts_run_script($hash) {
  * Save the log object.
  */
 function update_scripts_log_save(&$log) {
+  // Update path to a proper format on Windows servers.
+  $log['path'] = str_replace('\\', '/', $log['path']);
+
   if (!isset($log['lid'])) {
     // Insert new log.
     drupal_write_record('update_scripts', $log);
