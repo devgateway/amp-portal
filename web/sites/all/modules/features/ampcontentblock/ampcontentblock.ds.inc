@@ -36,45 +36,6 @@ function ampcontentblock_ds_field_settings_info() {
 
   $ds_fieldsetting = new stdClass();
   $ds_fieldsetting->api_version = 1;
-  $ds_fieldsetting->id = 'contentblock|organization|alternative';
-  $ds_fieldsetting->entity_type = 'contentblock';
-  $ds_fieldsetting->bundle = 'organization';
-  $ds_fieldsetting->view_mode = 'alternative';
-  $ds_fieldsetting->settings = array(
-    'field_cbimage' => array(
-      'formatter_settings' => array(
-        'ft' => array(
-          'func' => 'theme_ds_field_reset',
-        ),
-      ),
-    ),
-  );
-  $export['contentblock|organization|alternative'] = $ds_fieldsetting;
-
-  $ds_fieldsetting = new stdClass();
-  $ds_fieldsetting->api_version = 1;
-  $ds_fieldsetting->id = 'contentblock|organization|default';
-  $ds_fieldsetting->entity_type = 'contentblock';
-  $ds_fieldsetting->bundle = 'organization';
-  $ds_fieldsetting->view_mode = 'default';
-  $ds_fieldsetting->settings = array(
-    'title_field' => array(
-      'formatter_settings' => array(
-        'ft' => array(
-          'func' => 'theme_ds_field_reset',
-        ),
-      ),
-    ),
-    'field_cbimage' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
-      ),
-    ),
-  );
-  $export['contentblock|organization|default'] = $ds_fieldsetting;
-
-  $ds_fieldsetting = new stdClass();
-  $ds_fieldsetting->api_version = 1;
   $ds_fieldsetting->id = 'contentblock|predefined|default';
   $ds_fieldsetting->entity_type = 'contentblock';
   $ds_fieldsetting->bundle = 'predefined';
@@ -156,75 +117,6 @@ function ampcontentblock_ds_layout_settings_info() {
     'layout_link_custom' => '',
   );
   $export['contentblock|hidden|default'] = $ds_layout;
-
-  $ds_layout = new stdClass();
-  $ds_layout->api_version = 1;
-  $ds_layout->id = 'contentblock|organization|alternative';
-  $ds_layout->entity_type = 'contentblock';
-  $ds_layout->bundle = 'organization';
-  $ds_layout->view_mode = 'alternative';
-  $ds_layout->layout = 'simplelayout';
-  $ds_layout->settings = array(
-    'regions' => array(
-      'main' => array(
-        0 => 'field_cbimage',
-      ),
-    ),
-    'fields' => array(
-      'field_cbimage' => 'main',
-    ),
-    'classes' => array(
-      'layout_class' => array(
-        'layout-inline' => 'layout-inline',
-      ),
-    ),
-    'wrappers' => array(
-      'main' => 'span',
-      'ds_hidden' => 'div',
-    ),
-    'layout_wrapper' => 'div',
-    'layout_attributes' => '',
-    'layout_attributes_merge' => 1,
-    'layout_link_attribute' => '',
-    'layout_link_custom' => '',
-  );
-  $export['contentblock|organization|alternative'] = $ds_layout;
-
-  $ds_layout = new stdClass();
-  $ds_layout->api_version = 1;
-  $ds_layout->id = 'contentblock|organization|default';
-  $ds_layout->entity_type = 'contentblock';
-  $ds_layout->bundle = 'organization';
-  $ds_layout->view_mode = 'default';
-  $ds_layout->layout = 'simplelayout';
-  $ds_layout->settings = array(
-    'regions' => array(
-      'main' => array(
-        0 => 'title_field',
-        1 => 'field_cbimage',
-      ),
-    ),
-    'fields' => array(
-      'title_field' => 'main',
-      'field_cbimage' => 'main',
-    ),
-    'classes' => array(
-      'layout_class' => array(
-        'layout-block' => 'layout-block',
-        'layout-separator' => 'layout-separator',
-      ),
-    ),
-    'wrappers' => array(
-      'main' => 'div',
-      'ds_hidden' => 'div',
-    ),
-    'layout_wrapper' => 'div',
-    'layout_attributes' => '',
-    'layout_attributes_merge' => 1,
-    'layout_link_attribute' => '',
-    'layout_link_custom' => '',
-  );
-  $export['contentblock|organization|default'] = $ds_layout;
 
   $ds_layout = new stdClass();
   $ds_layout->api_version = 1;

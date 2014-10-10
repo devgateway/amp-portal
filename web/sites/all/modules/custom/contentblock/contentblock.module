@@ -144,11 +144,6 @@ function contentblock_get_types() {
     'description' => t('Hidden content blocks are regular blocks to be used by developers.'),
   );
 
-  $items['organization'] = array(
-    'label' => t('Organization'),
-    'description' => t('Can be used provide a logo and website for an organization that can later be used in various listings.'),
-  );
-
   $items['predefined'] = array(
     'label' => t('Predefined Widget'),
     'description' => t('Can be used to create blocks of predefined widgets that can be added in various places.'),
@@ -211,7 +206,7 @@ function contentblock_get_hidden_types($type = NULL) {
 
   $items['footer'] = array(
     'title' => t('Footer Section'),
-    'description' => t('The footer organizations is a section of linked logos in the page footer.'),
+    'description' => t('The footer is a section of free text in the page footer.'),
     'action label' => t('Configure'),
     'is section' => TRUE,
     'available_fields' => array(

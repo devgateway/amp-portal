@@ -50,7 +50,6 @@ function ampcontentblock_field_default_field_bases() {
           'type' => 'property',
         ),
         'target_bundles' => array(
-          'organization' => 'organization',
           'predefined' => 'predefined',
           'text' => 'text',
         ),
@@ -170,9 +169,7 @@ function ampcontentblock_field_default_field_bases() {
     'locked' => 0,
     'module' => 'list',
     'settings' => array(
-      'allowed_values' => array(
-        'ampcontentblock_render_news_events' => 'News and Events',
-      ),
+      'allowed_values' => array(),
       'allowed_values_function' => '',
       'entity_translation_sync' => FALSE,
     ),
