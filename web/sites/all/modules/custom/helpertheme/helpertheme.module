@@ -39,24 +39,21 @@ function helpertheme_init() {
 
   /*
    * Load font Using Google Fonts API.
+   *
+   * @see http://www.google.com/fonts/specimen/Open+Sans
    */
   if (variable_get('helpertheme_load_external_fonts', TRUE)) {
     $font_variants = array(
-      '300italic',
-      '400italic',
-      '600italic',
-      '700italic',
-      '800italic',
       '400',
-      '300',
-      '600',
       '700',
-      '800',
+      '400italic',
+      '700italic',
     );
     $options = array(
       'external' => TRUE,
       'query' => array(
         'family' => 'Open Sans' . ':' . implode(',', $font_variants),
+        'subset' => 'latin,latin-ext',
       ),
     );
     $font_url = url('http://fonts.googleapis.com/css', $options);
