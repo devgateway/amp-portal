@@ -33,6 +33,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Blocks',
     'required' => 0,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -43,7 +44,7 @@ function ampcontentblock_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityqueue_dragtable',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -68,6 +69,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Body',
     'required' => 0,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -107,6 +109,7 @@ function ampcontentblock_field_default_field_instances() {
     'settings' => array(
       'alt_field' => 0,
       'default_image' => 0,
+      'entity_translation_sync' => FALSE,
       'file_directory' => '',
       'file_extensions' => 'png jpg jpeg',
       'filefield_paths' => array(
@@ -158,7 +161,7 @@ function ampcontentblock_field_default_field_instances() {
         ),
       ),
       'type' => 'media_generic',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -194,6 +197,7 @@ function ampcontentblock_field_default_field_instances() {
         'url_cutoff' => 80,
       ),
       'enable_tokens' => 0,
+      'entity_translation_sync' => FALSE,
       'rel_remove' => 'default',
       'title' => 'none',
       'title_maxlength' => 128,
@@ -207,44 +211,7 @@ function ampcontentblock_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 2,
-    ),
-  );
-
-  // Exported field_instance: 'contentblock-hidden-field_cborgs'
-  $field_instances['contentblock-hidden-field_cborgs'] = array(
-    'bundle' => 'hidden',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'To create organizations you can go to "Content > Content Blocks > Add content block > Add organization content block".',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => 0,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 4,
-      ),
-    ),
-    'ds_extras_field_template' => '',
-    'entity_type' => 'contentblock',
-    'field_name' => 'field_cborgs',
-    'label' => 'Organizations',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'entityqueue',
-      'settings' => array(
-        'match_operator' => 'CONTAINS',
-        'size' => 60,
-      ),
-      'type' => 'entityqueue_dragtable',
-      'weight' => 4,
+      'weight' => 3,
     ),
   );
 
@@ -269,6 +236,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Title',
     'required' => 0,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'hide_label' => array(
         'entity' => 0,
         'page' => 0,
@@ -322,6 +290,7 @@ function ampcontentblock_field_default_field_instances() {
     'settings' => array(
       'alt_field' => 0,
       'default_image' => 0,
+      'entity_translation_sync' => FALSE,
       'file_directory' => '',
       'file_extensions' => 'png jpg jpeg',
       'filefield_paths' => array(
@@ -373,7 +342,7 @@ function ampcontentblock_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -407,6 +376,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Title',
     'required' => TRUE,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'hide_label' => array(
         'entity' => FALSE,
         'page' => FALSE,
@@ -447,6 +417,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Widget',
     'required' => 1,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -454,7 +425,7 @@ function ampcontentblock_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -482,6 +453,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Title',
     'required' => TRUE,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'hide_label' => array(
         'entity' => FALSE,
         'page' => FALSE,
@@ -520,6 +492,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Body',
     'required' => 1,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
@@ -530,7 +503,7 @@ function ampcontentblock_field_default_field_instances() {
         'rows' => 10,
       ),
       'type' => 'text_textarea',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -558,6 +531,7 @@ function ampcontentblock_field_default_field_instances() {
     'label' => 'Title',
     'required' => TRUE,
     'settings' => array(
+      'entity_translation_sync' => FALSE,
       'hide_label' => array(
         'entity' => FALSE,
         'page' => FALSE,
@@ -582,10 +556,8 @@ function ampcontentblock_field_default_field_instances() {
   t('Image');
   t('Link');
   t('Logo');
-  t('Organizations');
   t('Title');
   t('To create new content blocks you can go to "Content > Content Blocks > Add content block".');
-  t('To create organizations you can go to "Content > Content Blocks > Add content block > Add organization content block".');
   t('Widget');
 
   return $field_instances;

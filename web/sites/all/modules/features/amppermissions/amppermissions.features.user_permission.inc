@@ -332,10 +332,7 @@ function amppermissions_user_default_permissions() {
   // Exported permission: 'cancel account'.
   $permissions['cancel account'] = array(
     'name' => 'cancel account',
-    'roles' => array(
-      'admin user' => 'admin user',
-      'editor user' => 'editor user',
-    ),
+    'roles' => array(),
     'module' => 'user',
   );
 
@@ -393,6 +390,16 @@ function amppermissions_user_default_permissions() {
     'module' => 'features',
   );
 
+  // Exported permission: 'helpergeneric access info'.
+  $permissions['helpergeneric access info'] = array(
+    'name' => 'helpergeneric access info',
+    'roles' => array(
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
+    ),
+    'module' => 'helpergeneric',
+  );
+
   // Exported permission: 'helpergeneric access taxonomy'.
   $permissions['helpergeneric access taxonomy'] = array(
     'name' => 'helpergeneric access taxonomy',
@@ -413,6 +420,13 @@ function amppermissions_user_default_permissions() {
     'roles' => array(
       'admin user' => 'admin user',
     ),
+    'module' => 'helpergeneric',
+  );
+
+  // Exported permission: 'helpergeneric user fields'.
+  $permissions['helpergeneric user fields'] = array(
+    'name' => 'helpergeneric user fields',
+    'roles' => array(),
     'module' => 'helpergeneric',
   );
 

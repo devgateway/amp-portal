@@ -17,6 +17,7 @@
   }
   .fieldset-wrapper {
     display: block;
+    padding: 1em;
   }
 }
 
@@ -302,6 +303,12 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
+// @HACK: Hide buggy real selector form element.
+.helpergeneric-settings-form {
+  #edit-variable-realm-selector-language {
+    display: none !important;
+  }
+}
 
 @import './lib/custom-responsive.less';
 @import './lib/custom-sprite.less';

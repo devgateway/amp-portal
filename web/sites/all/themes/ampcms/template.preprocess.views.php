@@ -53,6 +53,9 @@ function __ampcms_preprocess_views_view__homepage(&$vars) {
 
         $vars['more'] = '<div class="more-link">' . l(t('see all'), 'blog/news-and-events') . '</div>';
       }
+
+      // @HACK: Change the title, This is a way to avoid needing panels translation.
+      $vars['view']->set_title(t('News And Events'));
       break;
   }
 }
@@ -66,6 +69,15 @@ function __ampcms_preprocess_views_view__blog_listing(&$vars) {
       if ($vars['view']->query->pager->current_page == 0) {
         $vars['classes_array'][] = 'views-first-page';
       }
+
+      // @HACK: Change the title, This is a way to avoid needing panels translation.
+      if (!empty($vars['view']->args) && reset($vars['view']->args) == 'news+events') {
+        $vars['view']->set_title(t('News And Events'));
+      }
+      else {
+        $vars['view']->set_title(t('Blog'));
+      }
+
       break;
   }
 }

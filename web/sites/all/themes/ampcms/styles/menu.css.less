@@ -2,7 +2,6 @@
 .header-links {
   margin: 0;
   padding: 0;
-  line-height: 3.75em;
 
   a {
     .link-color(@clpassive);
@@ -10,26 +9,20 @@
 
   li {
     display: inline-block;
-  }
-
-  .link-toplevel {
-    display: inline-block;
-    padding: 0;
-    padding-right: 0.5em;
-    text-decoration: none;
+    margin-right: 0.5em;
     &.last {
       padding-right: 0;
     }
-    &:active,
-    &:hover {
-    }
+  }
+
+  a {
+    display: inline-block;
+    text-decoration: none;
   }
 }
 .xNormalAndUp() {
-  .header-links {
-    .link-toplevel {
-      padding: 0 0.5em;
-    }
+  .header-items {
+    padding-top: 1em;
   }
 }
 

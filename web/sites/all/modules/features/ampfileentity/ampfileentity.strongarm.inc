@@ -38,10 +38,10 @@ function ampfileentity_strongarm() {
           'weight' => '-10',
         ),
         'preview' => array(
-          'weight' => '-5',
+          'weight' => '1',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '2',
         ),
       ),
       'display' => array(
@@ -92,10 +92,10 @@ function ampfileentity_strongarm() {
           'weight' => '-10',
         ),
         'preview' => array(
-          'weight' => '-5',
+          'weight' => '1',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '2',
         ),
       ),
       'display' => array(
@@ -163,6 +163,9 @@ function ampfileentity_strongarm() {
       'wide_linked' => array(
         'custom_settings' => TRUE,
       ),
+      'thumbnail' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -170,10 +173,10 @@ function ampfileentity_strongarm() {
           'weight' => '-10',
         ),
         'preview' => array(
-          'weight' => '-5',
+          'weight' => '1',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '4',
         ),
       ),
       'display' => array(
@@ -222,6 +225,10 @@ function ampfileentity_strongarm() {
             'weight' => '0',
             'visible' => TRUE,
           ),
+          'thumbnail' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
         ),
       ),
     ),
@@ -256,10 +263,10 @@ function ampfileentity_strongarm() {
           'weight' => '-10',
         ),
         'preview' => array(
-          'weight' => '-5',
+          'weight' => '1',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '2',
         ),
       ),
       'display' => array(
@@ -281,6 +288,21 @@ function ampfileentity_strongarm() {
     ),
   );
   $export['field_bundle_settings_file__video'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'title_file';
+  $strongarm->value = array(
+    'auto_attach' => array(
+      'filename' => 'filename',
+    ),
+    'hide_label' => array(
+      'entity' => 'entity',
+      'page' => 0,
+    ),
+  );
+  $export['title_file'] = $strongarm;
 
   return $export;
 }

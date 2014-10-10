@@ -1,41 +1,73 @@
 <?php
 
-/**
- * Reserve a set of IDs for "system" users.
- */
+// Provide a list of modules to be installed.
+$modules = array(
+  'locale',
+  // 'translation', // REPALCED BY 'entity_translation'
 
-// We need to rollback in case of erros (ex: nextval/setval exist only on PostgreSQL).
-$transaction = db_transaction();
+  'i18n',
+    // 'i18n_block',
+    // 'i18n_contact',
+    // 'i18n_field',
+    // 'i18n_forum',
+    'i18n_menu',
+    // 'i18n_node',
+    // 'i18n_panels', // We try to avoid using this for only a few strings.
+    // 'i18n_path',
+    // 'i18n_redirect',
+    // 'i18n_select',
+    'i18n_string',
+    // 'i18n_sync',
+    // 'i18n_taxonomy',
+    'i18n_translation',
+    // 'i18n_user',
+    'i18n_variable',
 
-try {
-  $table = 'users';
-  $column = 'uid';
+    'entity_translation',
+      'entity_translation_i18n_menu',
+      // 'entity_translation_upgrade',
 
-  // Create the primary key.
-  $field_def = array(
-    'type' => 'serial',
-    'unsigned' => TRUE,
-    'not null' => TRUE,
-    'description' => 'Primary Key: Unique user ID.',
-  );
-  db_change_field($table, $column, $column, $field_def);
+    // 'l10n_client',
+    'l10n_update',
+    // 'potx',
+    'title',
+    // 'translation_overview',
+    // 'translation_table',
 
-  // Get the connection object for the default database.
-  $dbconnection = Database::getConnection();
+  'variable',
+    // 'variable_admin',
+    // 'variable_example',
+    'variable_realm',
+    'variable_store',
+    // 'variable_views',
+);
+// Install modules
+_us_module__install($modules);
 
-  // Get the sequence name (including table prefix if any)
-  $table = 'users';
-  $column = 'uid';
-  $sequence_name = $dbconnection->makeSequenceName($table, $column);
+// Clear system caches.
+drupal_flush_all_caches();
 
-  // Get the next id for users.uid.
-  $next_id = $dbconnection->query("SELECT nextval('" . $sequence_name . "')")->fetchField();
+// Prepare a list of features to be installed.
+$feature_names = array(
+  'ampi18n',
+);
+_us_features__install($feature_names);
 
-  // Make sure we don't break the next insert.
-  if ($next_id < 100) {
-    $next_id = $dbconnection->query("SELECT setval('" . $sequence_name . "', 100)")->fetchField();
+
+// Revert all features and clear system caches.
+_us_features__revert_all();
+drupal_flush_all_caches();
+
+
+// The translation system only translates strings in the i18n_string_allowed_formats variable.
+$translatable_formats = array();
+foreach (filter_formats() as $key => $format_info) {
+  if (in_array($key, array('plain_text'))) {
+    $translatable_formats[$key] = $key;
   }
 }
-catch (Exception $e) {
-  $transaction->rollback();
-}
+variable_set('i18n_string_allowed_formats', $translatable_formats);
+
+// Make sure only enabled languages are displayed.
+variable_set('entity_translation_languages_enabled', TRUE);
+variable_set('i18n_language_list', I18N_LANGUAGE_ENABLED);

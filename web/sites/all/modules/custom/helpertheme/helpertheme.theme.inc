@@ -115,12 +115,42 @@ function theme_header_items() {
     ),
   );
 
-  $menu_elements['header'] = array(
-    '#type' => 'html_tag',
-    '#tag' => 'h2',
-    '#value' => 'User Menu',
-    '#attributes' => array('class' => array('element-invisible')),
-  );
+  // Add the language switcher links.
+  if (drupal_multilingual()) {
+    $path = drupal_is_front_page() ? '<front>' : $_GET['q'];
+    $lang_links = language_negotiation_get_switch_links('language', $path);
+    if (isset($lang_links->links)) {
+      $menu_elements['lang']['#prefix'] = '<nav role="navigation" id="language-switcher" class="language-switcher">';
+      $menu_elements['lang']['#suffix'] = '</nav>';
+
+      $menu_elements['lang']['subject'] = array(
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => 'Languages',
+        '#attributes' => array('class' => array('element-invisible')),
+      );
+
+      // Add language info to all links.
+      $languages = language_list();
+      foreach ($lang_links->links as &$link) {
+        if (isset($link['attributes']['lang']) && isset($languages[$link['attributes']['lang']])) {
+          $link['language'] = $languages[$link['attributes']['lang']];
+        }
+      }
+
+      $menu_elements['lang']['links'] = array(
+        '#theme' => 'links__language_switcher',
+        '#links' => $lang_links->links,
+        '#attributes' => array(
+          'class' => array(
+            'language-switcher-' . $lang_links->provider,
+            'header-links',
+            'clearfix',
+          )
+        ),
+      );
+    }
+  }
 
   // Get the menu links.
   $menu_name = 'user-menu';
@@ -128,6 +158,13 @@ function theme_header_items() {
     // Mark this element as potentially having contextual links attached to it.
     $menu_elements['nav']['#prefix'] = '<nav role="navigation" id="user-navigation" class="user-navigation contextual-links-region">';
     $menu_elements['nav']['#suffix'] = '</nav>';
+
+    $menu_elements['nav']['subject'] = array(
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => 'User Menu',
+      '#attributes' => array('class' => array('element-invisible')),
+    );
 
     // Initialize the template variable as a renderable array.
     // $menu_elements['nav']['contextual_links'] = array(

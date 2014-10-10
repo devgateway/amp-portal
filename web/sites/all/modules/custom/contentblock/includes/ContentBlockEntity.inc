@@ -12,6 +12,7 @@ class ContentBlockEntity extends Entity {
   // Define some default values.
   public $cbid = NULL;
   public $title = '';
+  public $language = '';
   public $type = '';
   public $machine_name = NULL;
   public $uid = NULL;

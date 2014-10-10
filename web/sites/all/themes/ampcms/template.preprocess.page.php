@@ -126,6 +126,7 @@ function ampcms_css_alter(&$css) {
     'sites/all/modules/contrib/admin_menu',
     'sites/all/modules/contrib/ctools',
     'sites/all/modules/contrib/date',
+    'sites/all/modules/contrib/l10n_client',
     'sites/all/modules/contrib/media',
   );
 

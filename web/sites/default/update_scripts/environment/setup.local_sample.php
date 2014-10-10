@@ -82,6 +82,7 @@ $modules = array(
   'field_ui',
   'feeds_ui',
   'feeds_tamper_ui',
+  // 'l10n_client',
   // 'menu',
   'module_filter',
   // 'og_ui',
@@ -89,7 +90,7 @@ $modules = array(
   // 'panels_ipe',
   // 'schema',
   // 'stage_file_proxy',
-  // 'variable_admin',
+  'variable_admin',
   'views_ui',
 );
 // Install modules

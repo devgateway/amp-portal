@@ -279,6 +279,31 @@ function ampfileentity_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'video' => 'video',
   );
+  $translatables['media_library'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No files to display!'),
+    t('Upload date'),
+    t('Use count'),
+    t('File name'),
+    t('Name'),
+    t('Audio Library'),
+    t('Document Library'),
+    t('Image Library'),
+    t('Video Library'),
+  );
   $export['media_library'] = $view;
 
   return $export;

@@ -39,24 +39,21 @@ function helpertheme_init() {
 
   /*
    * Load font Using Google Fonts API.
+   *
+   * @see http://www.google.com/fonts/specimen/Open+Sans
    */
   if (variable_get('helpertheme_load_external_fonts', TRUE)) {
     $font_variants = array(
-      '300italic',
-      '400italic',
-      '600italic',
-      '700italic',
-      '800italic',
       '400',
-      '300',
-      '600',
       '700',
-      '800',
+      '400italic',
+      '700italic',
     );
     $options = array(
       'external' => TRUE,
       'query' => array(
         'family' => 'Open Sans' . ':' . implode(',', $font_variants),
+        'subset' => 'latin,latin-ext',
       ),
     );
     $font_url = url('http://fonts.googleapis.com/css', $options);
@@ -148,7 +145,9 @@ function helpertheme_admin_paths_alter(&$paths) {
   $paths['contentblock/*/*'] = FALSE;
   $paths['node/*/*'] = FALSE;
   $paths['user/*/*'] = FALSE;
-  $paths['admin/settings*'] = FALSE;
+
+  $paths['node/add'] = FALSE;
+  // $paths['admin/people'] = FALSE;
 }
 
 /**
@@ -305,6 +304,7 @@ function helpertheme_less_variables_alter(&$less_variables, $system_name) {
 
   // Add drupal base bath to use with absolute paths for images.
   $less_variables['@base_path'] = '"' . base_path() . '"';
+  $less_variables['@contentblock_section_title'] = '"' . t('edit section content') . '"';
 }
 
 /**
@@ -353,7 +353,6 @@ function helpertheme_html_head_alter(&$head_elements) {
 function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
   $available_icons = array(
     'home',
-    'arrow',
 
     // fill="#4B4A4A"
     'dashboard',
@@ -369,16 +368,22 @@ function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
     'organization',
     'reports',
     'sector',
+  );
 
+  // These can only be used in the code.
+  $extra_icons = array(
+    'arrow',
     'gear',
+
     'add',
-    'view',
-    'edit',
     'delete',
+    'edit',
+    'translate',
+    'view',
   );
 
   if (isset($icon)) {
-    if (!in_array($icon, $available_icons)) {
+    if (!in_array($icon, array_merge($available_icons, $extra_icons))) {
       return '';
     }
 

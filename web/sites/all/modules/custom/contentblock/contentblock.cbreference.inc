@@ -69,19 +69,6 @@ function contentblock_field_display_contentblock_alter__generic(&$display, $cont
     );
   }
 
-  if ($context['field']['field_name'] == 'field_cborgs') {
-    $display = array(
-      'label' => 'hidden',
-      'type' => 'entityreference_entity_view',
-      'module' => 'entityreference',
-      'settings' => array(
-        'view_mode' => 'alternative',
-        'links' => 0,
-      ),
-      'weight' => 0,
-    );
-  }
-
   if ($context['field']['field_name'] == 'field_cbbody') {
     $display = array(
       'label' => 'hidden',

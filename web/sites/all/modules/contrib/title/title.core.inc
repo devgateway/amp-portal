@@ -134,7 +134,9 @@ function title_field_text_sync_get($entity_type, $entity, $legacy_field, $info, 
  * Sync back callback for the text field type.
  */
 function title_field_text_sync_set($entity_type, $entity, $legacy_field, $info, $langcode) {
-  $entity->{$info['field']['field_name']}[$langcode][0]['value'] = $entity->{$legacy_field};
+  if (!module_exists('entity_translation')) {
+    $entity->{$info['field']['field_name']}[$langcode][0]['value'] = $entity->{$legacy_field};
+  }
 }
 
 /**

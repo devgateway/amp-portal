@@ -31,13 +31,6 @@ function ampcontentblock_ds_field_settings_info() {
         ),
       ),
     ),
-    'field_cborgs' => array(
-      'formatter_settings' => array(
-        'ft' => array(
-          'func' => 'theme_ds_field_helpertheme_block',
-        ),
-      ),
-    ),
   );
   $export['contentblock|hidden|default'] = $ds_fieldsetting;
 
@@ -137,8 +130,7 @@ function ampcontentblock_ds_layout_settings_info() {
         1 => 'field_cbimage',
         2 => 'field_cblinks',
         3 => 'field_cbblocks',
-        4 => 'field_cborgs',
-        5 => 'field_cbbody',
+        4 => 'field_cbbody',
       ),
     ),
     'fields' => array(
@@ -146,7 +138,6 @@ function ampcontentblock_ds_layout_settings_info() {
       'field_cbimage' => 'main',
       'field_cblinks' => 'main',
       'field_cbblocks' => 'main',
-      'field_cborgs' => 'main',
       'field_cbbody' => 'main',
     ),
     'classes' => array(
