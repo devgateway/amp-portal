@@ -83,6 +83,7 @@ $modules = array(
   'feeds_ui',
   'feeds_tamper_ui',
   // 'l10n_client',
+  // 'l10n_update',
   // 'menu',
   'module_filter',
   // 'og_ui',
@@ -90,6 +91,7 @@ $modules = array(
   // 'panels_ipe',
   // 'schema',
   // 'stage_file_proxy',
+  // 'update',
   'variable_admin',
   'views_ui',
 );

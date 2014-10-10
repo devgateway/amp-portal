@@ -42,6 +42,7 @@ $modules = array(
   'feeds_ui',
   'feeds_tamper_ui',
   // 'l10n_client',
+  'l10n_update',
   'menu',
   // 'memcache_admin',
   'module_filter',
