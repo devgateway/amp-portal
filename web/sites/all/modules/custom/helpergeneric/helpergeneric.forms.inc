@@ -374,6 +374,11 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
     _helpergeneric_cleanup_node_form($form, $form_state, $form_id);
   }
 
+  // Allways hide menu setings on node form. Helps prevent issues with i18n_menu
+  if (isset($form['menu'])) {
+    $form['menu']['#access'] = FALSE;
+  }
+
   // Control "Event Date" field visibility.
   if (isset($form['field_blog_entry_type'], $form['field_blog_event_date'])) {
     // Show the "Event Date" only if blog entry type is event.
@@ -515,10 +520,6 @@ function _helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
   // Hide "Comment settings" fieldset for all node types except "Blog entry".
   if ($form['#node']->type != 'blog') {
     $form['comment_settings']['#access'] = FALSE;
-  }
-
-  if (isset($form['menu'])) {
-    $form['menu']['#access'] = FALSE;
   }
 
   if (isset($form['redirect'])) {
