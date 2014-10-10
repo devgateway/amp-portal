@@ -148,7 +148,6 @@ function helpertheme_admin_paths_alter(&$paths) {
   $paths['contentblock/*/*'] = FALSE;
   $paths['node/*/*'] = FALSE;
   $paths['user/*/*'] = FALSE;
-  $paths['admin/settings*'] = FALSE;
 }
 
 /**

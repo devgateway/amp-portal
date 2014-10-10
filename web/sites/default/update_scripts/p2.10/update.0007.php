@@ -63,6 +63,13 @@ $link = array(
 );
 _us_menu__create_link($link, 'user-menu');
 
+$link = array(
+  'link_path' => 'admin/info',
+  'link_title' => 'Info',
+  'weight' => -42,
+);
+_us_menu__create_link($link, 'user-menu');
+
 
 // Delete all links from menu.
 _us_menu__delete_links('main-menu');

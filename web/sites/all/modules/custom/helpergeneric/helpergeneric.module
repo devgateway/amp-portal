@@ -13,6 +13,16 @@ module_load_include('inc', 'helpergeneric', 'helpergeneric.forms');
 function helpergeneric_menu() {
   $items = array();
 
+  $items['admin/info'] = array(
+    'title' => 'Information',
+    'description' => 'Information for editors and admins.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('helpergeneric access info'),
+    'weight' => 30,
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
   $items['admin/settings'] = array(
     'title' => 'Settings',
     'description' => 'Administer Project settings.',
@@ -29,7 +39,6 @@ function helpergeneric_menu() {
     'page arguments' => array('helpergeneric_ui_settings_form'),
     'access arguments' => array('helpergeneric administer settings'),
     'file' => 'helpergeneric.admin.inc',
-    'weight' => -32,
     'type' => MENU_CALLBACK,
   );
 
@@ -48,6 +57,16 @@ function helpergeneric_menu() {
     'weight' => -10,
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  $items['admin/settings/language'] = array(
+    'title' => 'Language settings',
+    'description' => 'Configure languages for content and the user interface.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_language_settings_form'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'file' => 'helpergeneric.admin.inc',
+    'weight' => -40,
   );
 
   $items['admin/settings/main-menu'] = array(
@@ -84,6 +103,14 @@ function helpergeneric_menu_alter(&$items) {
   // Limit access on user field and display settings.
   $items['admin/config/people/accounts/fields']['access arguments'] = array('helpergeneric user fields');
   $items['admin/config/people/accounts/display']['access arguments'] = array('helpergeneric user fields');
+}
+
+/**
+ * Implements hook_admin_paths_alter().
+ */
+function helpergeneric_admin_paths_alter(&$paths) {
+  $paths['admin/info*'] = FALSE;
+  $paths['admin/settings*'] = FALSE;
 }
 
 /**
@@ -139,20 +166,24 @@ function helpergeneric_user_edit_access($account) {
  */
 function helpergeneric_permission() {
   return array(
+    'helpergeneric access info' => array(
+      'title' => t('Access Information Area'),
+      'description' => t('Allow users to access the information for editors and admins.'),
+    ),
     'helpergeneric administer settings' => array(
       'title' => t('Administer project settings'),
       'description' => t('Allow users to change project specific settings.'),
     ),
     'helpergeneric administer menus' => array(
-      'title' => t('HelperGeneric: Administer menus only.'),
+      'title' => t('Administer menus only.'),
       'description' => t('Allow users to change the menus. This overrides the "administer menu" permission to remove menu editing permission.'),
     ),
     'helpergeneric access taxonomy' => array(
-      'title' => t('HelperGeneric: Access vocabularies only.'),
+      'title' => t('Access vocabularies only.'),
       'description' => t('Allow users to access the vocabularies.'),
     ),
     'helpergeneric user fields' => array(
-      'title' => t('HelperGeneric: Administer user fields'),
+      'title' => t('Administer user fields'),
       'restrict access' => TRUE,
       'description' => t('Allow users to access the vocabularies.'),
     ),
@@ -508,4 +539,49 @@ function helpergeneric_entity_load($entities, $entity_type) {
       $entity->action_links = drupal_render($local_actions);
     }
   }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helpergeneric_theme() {
+  return array(
+    'helpergeneric_language_settings_form' => array(
+      'render element' => 'form',
+    ),
+  );
+}
+
+/**
+ * Implements hook_locale_default_languages_alter().
+ *
+ * This is used to controle the enabled languages. By default in code all
+ * languages should be enabled.
+ */
+function helpergeneric_locale_default_languages_alter(&$languages) {
+  $default_langcode = language_default('language');
+  $disabled_languages = variable_get('helpergeneric_disabled_languages', array());
+
+  $enabled_count = 0;
+  foreach ($languages as $langcode => &$language) {
+    if ($langcode != $default_langcode && in_array($langcode, $disabled_languages)) {
+      $language['enabled'] = 0;
+    }
+    else {
+      $language['enabled'] = 1;
+      $enabled_count++;
+    }
+
+    // Always remove prefix for the default language.
+    // This will cause features.module to go crazy :D
+    if (PROJECT_ENVIRONMENT != 'local') {
+      if ($langcode == $default_langcode) {
+        $language['prefix'] = '';
+      }
+    }
+  }
+
+  // Manually update the language_count variable, features will take care of
+  // the language settings.
+  variable_set('language_count', $enabled_count);
 }

@@ -50,6 +50,7 @@ function helpergeneric_update_projects_alter(&$projects) {
 function helpergeneric_features_api_alter(&$components) {
   // We manage menu_links manually or via update scripts.
   unset($components['menu_links']);
+  unset($components['variable_realm']);
 }
 
 /**
@@ -112,6 +113,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         // Custom variables.
         'date_format_shortest',
         'helpergeneric_cleanup_ui_force',
+        'helpergeneric_disabled_languages',
 
         // Hide CORE variables.
         'additional_settings__active_tab_blog',
@@ -187,6 +189,10 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'less_engine',
         'less_watch',
 
+        // Hide locale.module variables.
+        'language_count',
+        'language_default',
+
         // Hide media.module variables.
         // Dialog options.
         'media_dialogclass',
@@ -232,6 +238,9 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'update_scripts_clear_cache',
         'update_scripts_directory',
         'update_scripts_revert_features',
+
+        // Hide variable.module variables.
+        'variable_module_list',
 
         // Hide views.module variables.
         'views_defaults',
@@ -363,11 +372,10 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
   // Control "Event Date" field visibility.
   if (isset($form['field_blog_entry_type'], $form['field_blog_event_date'])) {
     // Show the "Event Date" only if blog entry type is event.
-    $entity = $form_state[$form['#entity_type']];
-    $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+    $type_langcode = $form['field_blog_entry_type']['#language'];
     $form['field_blog_event_date']['#states'] = array(
       'visible' => array(
-        ':input[name="field_blog_entry_type[' . $langcode . '][event]"]' => array('checked' => TRUE),
+        ':input[name="field_blog_entry_type[' . $type_langcode . '][event]"]' => array('checked' => TRUE),
       ),
     );
     // Remove event date value on submit if field_blog_entry_type is not an event.
@@ -379,19 +387,28 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
  * Form validation handler for node_form_alter().
  */
 function helpergeneric_node_form_event_date_validate($form, &$form_state) {
-  $entity = $form_state[$form['#entity_type']];
+  $entity_type = $form['#entity_type'];
+  $entity = $form_state[$entity_type];
+
+  // Find out the entity language.
   $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
 
   // Get the submitted input values.
-  $blog_entry_type = $form_state['input']['field_blog_entry_type'][$langcode];
+  if (isset($form_state['input']['field_blog_entry_type']) && isset($form_state['values']['field_blog_event_date'])) {
+    // Find out the actual language to use (field might be untranslatable).
+    $type_langcode = field_language($entity_type, $entity, 'field_blog_event_date', $langcode);
+    $blog_entry_type = $form_state['input']['field_blog_entry_type'][$type_langcode];
 
-  if (empty($blog_entry_type['event'])) {
-    // Remove event date if the blog entry is not tagged as an event..
-    $form_state['values']['field_blog_event_date'][$langcode] = array();
-  }
-  else if (empty($form_state['values']['field_blog_event_date'][$langcode][0]['value'])) {
-    // Display an error if the user submitted an event blog but did not provide an event date.
-    form_set_error('field_blog_event_date', t('The blog entry is tagged as an event, please provide a valid event date.'));
+    // Find out the actual language to use (field might be untranslatable).
+    $date_langcode = field_language($entity_type, $entity, 'field_blog_event_date', $langcode);
+    if (empty($blog_entry_type['event'])) {
+      // Remove event date if the blog entry is not tagged as an event..
+      $form_state['values']['field_blog_event_date'][$date_langcode] = array();
+    }
+    else if (empty($form_state['values']['field_blog_event_date'][$date_langcode][0]['value'])) {
+      // Display an error if the user submitted an event blog but did not provide an event date.
+      form_set_error('field_blog_event_date', t('The blog entry is tagged as an event, please provide a valid event date.'));
+    }
   }
 }
 
@@ -494,6 +511,13 @@ function _helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
   if (isset($form['options']['sticky'])) {
     $form['options']['sticky']['#access'] = FALSE;
   }
+
+  // Move the translation fieldset to a vertical tab.
+  if (isset($form['translation'])) {
+    $form['translation']['status']['#access'] = FALSE;
+    $form['translation']['name']['#access'] = FALSE;
+    $form['translation']['created']['#access'] = FALSE;
+  }
 }
 
 /**
@@ -519,10 +543,16 @@ function _helpergeneric_alter_vertical_tabs(&$form) {
   // Do not display as vertical tabs.
   $form['additional_settings'] = array();
   foreach (element_children($form) as $key) {
-    if (isset($form[$key]['#group']) && $form[$key]['#group'] == 'additional_settings') {
-      unset($form[$key]['#group']);
-      $form[$key]['#collapsed'] = FALSE;
-      $form[$key]['#collapsible'] = FALSE;
+    if (!isset($form[$key]['#group']) || $form[$key]['#group'] != 'additional_settings') {
+      continue;
+    }
+
+    unset($form[$key]['#group']);
+    switch ($key) {
+      default:
+        $form[$key]['#collapsed'] = FALSE;
+        $form[$key]['#collapsible'] = FALSE;
+        break;
     }
   }
 
