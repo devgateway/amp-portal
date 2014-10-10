@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file: Setup internationalization.
- */
-
 // Provide a list of modules to be installed.
 $modules = array(
   'locale',

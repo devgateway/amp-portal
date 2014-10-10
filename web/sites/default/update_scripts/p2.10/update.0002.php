@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Enable generic modules.
- */
-
 // Provide a list of modules to be installed.
 $modules = array(
   // 'admin',
