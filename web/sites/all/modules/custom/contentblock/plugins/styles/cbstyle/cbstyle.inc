@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @file
  * Definition of the 'CB Style' region and page style.

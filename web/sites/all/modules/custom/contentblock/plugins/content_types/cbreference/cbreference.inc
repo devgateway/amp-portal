@@ -40,10 +40,6 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
   $block->delta = $conf['machine_name'];
   $block->subtype = 'cbreference_machine_name';
 
-  $block->content['#contextual_links'] = array(
-    'contentblock' => array('admin/settings/content-sections', array($conf['machine_name'])),
-  );
-
   $block_css_classes = array();
   $block_css_classes[] = drupal_html_class('cbreference-' . $conf['machine_name']);
   if (!empty($cbreference_info['is section'])) {
@@ -57,6 +53,10 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
   $entity = reset($entities);
 
   if (empty($entity)) {
+    $block->content['#contextual_links'] = array(
+      'contentblock' => array('admin/settings/content-sections', array($conf['machine_name'])),
+    );
+
     if (!empty($cbreference_info['is section'])) {
       $message = t('You have not configured this section. Click !here to go to the section settings page to add content and/or remove this message and title.', array(
         '!here' => l(t('here'), 'admin/settings/content-sections/' . $conf['machine_name']),
@@ -87,14 +87,16 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
     return $block;
   }
 
-  // @TODO: Add language support.
-  module_load_include('inc', 'contentblock', 'contentblock.cbreference');
+  $block->content['#contextual_links'] = array(
+    'contentblock' => array('contentblock', array($entity->identifier())),
+  );
 
   $view_mode = 'default';
   if (!entity_access('view', 'contentblock', $entity)) {
     return;
   }
 
+  module_load_include('inc', 'contentblock', 'contentblock.cbreference');
   $function = 'contentblock_cbreference_render__' . $entity->machine_name;
   if (!empty($cbreference_info['is section'])) {
    $function = 'contentblock_cbreference_render__section';
