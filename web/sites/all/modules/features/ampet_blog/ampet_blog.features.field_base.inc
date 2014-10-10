@@ -31,6 +31,7 @@ function ampet_blog_field_default_field_bases() {
         'event' => 'Event, contains information about an event: detailed accounts of meetings and conferences, links to powerpoint presentations, videos, podcasts and related websites',
       ),
       'allowed_values_function' => '',
+      'entity_translation_sync' => FALSE,
     ),
     'translatable' => 0,
     'type' => 'list_text',
@@ -50,6 +51,7 @@ function ampet_blog_field_default_field_bases() {
     'settings' => array(
       'cache_count' => 4,
       'cache_enabled' => 0,
+      'entity_translation_sync' => FALSE,
       'granularity' => array(
         'day' => 'day',
         'hour' => 'hour',
@@ -90,6 +92,9 @@ function ampet_blog_field_default_field_bases() {
     'module' => 'image',
     'settings' => array(
       'default_image' => 0,
+      'entity_translation_sync' => array(
+        0 => 'fid',
+      ),
       'uri_scheme' => 'public',
     ),
     'translatable' => 0,

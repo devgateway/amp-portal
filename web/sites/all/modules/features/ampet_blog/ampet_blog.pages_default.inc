@@ -202,8 +202,8 @@ function ampet_blog_default_page_manager_pages() {
       'arguments' => array(
         'field_blog_entry_type_value' => 'news+events',
       ),
-      'override_title' => 1,
-      'override_title_text' => 'News And Events',
+      'override_title' => 0,
+      'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
