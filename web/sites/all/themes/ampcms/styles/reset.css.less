@@ -18,12 +18,17 @@ iframe {
   vertical-align: middle;
 }
 
-.xSmallOnly() {
-  /**
-   * Make the element resizable but keep the aspect ratio using a box-model feature.
-   *
-   * @see http://www.w3.org/TR/CSS2/box.html#padding-properties
-   */
+/**
+ * Make the element resizable but keep the aspect ratio using a box-model feature.
+ * We use 33em instead of .xSmallOnly() media query for a smoth transition between
+ * the normal state and the 'resiazable' state.
+ *   480/16 = 30em for video size.
+ *   0.5*2 + 1*2 = 3em layout spacig.
+ *
+ * @see http://www.w3.org/TR/CSS2/box.html#padding-properties
+ */
+// .xSmallOnly() {}
+@media (max-width: 33em) {
   .media-resizable-wrapper {
     @aspect_ratio: (9 / 16) * 100%;
     display: block; // We need a block element for this to work.
@@ -38,49 +43,10 @@ iframe {
       top: 0;
       width: 100%;
     }
-  }
-}
 
-/**
- * Define border style.
- *
- * @TODO: Cleanup
- */
-hr {
-  border-top: 1px solid @clnormal__dark;
-  clear: both;
-  height: 1px;
-  margin-bottom: 13px;
-  margin-top: 13px;
-  width: 100%;
-  &.dotted {
-    border-style: dashed;
-  }
-}
-
-/**
- * Style the browser warning messages.
- *
- */
-.browser-warnings-wrapper {
-  text-align: center;
-  position: relative;
-  p {
-    background: @clerror__light;
-    border: 1px solid @clerror__faded;
-    color: @clerror__dark;
-    margin-bottom: 1em;
-    margin-top: 0em;
-    padding: 1em 2em;
-  }
-  .ignore-link {
-    cursor: pointer;
-    padding: 0.5em;
-    position: absolute;
-    right: 0em;
-    top: 0em;
-    .no-js & {
-      display: none;
+    &.aspect-3-4 {
+      @aspect_ratio: (3 / 4) * 100%;
+      padding-top: @aspect_ratio;
     }
   }
 }

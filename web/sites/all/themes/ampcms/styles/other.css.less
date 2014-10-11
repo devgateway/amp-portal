@@ -40,6 +40,36 @@ ul.tips, div.description, .form-item div.description {
   margin: 1em 0;
 }
 
+.xMediumAndDown() {
+  .homepage-welcome-block {
+    .field-name-field-cbimage {
+      display: none;
+    }
+    .welcome-content-wrapper {
+      padding: 0;
+      margin: 1em;
+    }
+    a.more-link {
+      display: block;
+      margin: 1em 0;
+      position: static;
+      text-align: right;
+    }
+  }
+}
+.xNormalAndUp() {
+  .homepage-welcome-block {
+    .pane-content {
+      .clearfix-mixin();
+    }
+    .field-name-field-cbimage {
+      float: right;
+      margin: 0;
+      margin-left: 1em;
+    }
+  }
+}
+
 .layout-block {
   .box-sizing(border-box);
   background-color: @clcontent;
@@ -242,43 +272,7 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
-.two-columns-grid {
-  .title {
-    font-size: 0.875em;
-    font-weight: bold;
-  }
-
-  .view-mode-teaser_normal {
-    .title {
-      margin: 0;
-    }
-    .field-name-body {
-      margin-top: 0;
-    }
-    p {
-      margin-top: 0;
-    }
-  }
-
-  .views-first-page {
-    .views-row-1 {
-      .title {
-        font-size: 1em;
-        margin: 1em 0;
-      }
-    }
-  }
-}
-.xMediumAndDown() {
-  .two-columns-grid {
-    .view-mode-teaser_normal {
-      .field-name-field-blog-image {
-        display: none;
-      }
-    }
-  }
-}
-
+// @TODO: use a more generic selector!
 .layout-block {
   .field-name-body,
   .field-name-field-cbbody {
@@ -290,6 +284,8 @@ ul.tips, div.description, .form-item div.description {
   .page-title {
     margin-bottom: 0;
   }
+
+  // Fix wysiwyg image table align hack on mobile browsers.
   table[align="left"],
   table[align="right"] {
     float: none;

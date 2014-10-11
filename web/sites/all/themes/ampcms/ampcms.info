@@ -13,7 +13,10 @@ regions[content] = Content
 stylesheets[all][] = styles/lib/normalize.css
 stylesheets[all][] = styles/base.css.less
 stylesheets[all][] = styles/drupal.css.less
+stylesheets[all][] = styles/drupal/actions.css.less
 stylesheets[all][] = styles/drupal/contextual.css.less
+stylesheets[all][] = styles/drupal/forms.css.less
+stylesheets[all][] = styles/drupal/messages.css.less
 stylesheets[all][] = styles/forms.css.less
 stylesheets[all][] = styles/reset.css.less
 
@@ -21,6 +24,7 @@ stylesheets[all][] = styles/reset.css.less
 stylesheets[all][] = styles/main.css.less
 stylesheets[all][] = styles/menu.css.less
 stylesheets[all][] = styles/other.css.less
+stylesheets[all][] = styles/listings.css.less
 stylesheets[all][] = styles/layout.css.less
 
 stylesheets[print][] = styles/print.css.less
@@ -41,4 +45,4 @@ less[vars][@border_width] = 1px
 
 ; Font stacks
 less[vars][fstack_default] = "Open Sans", "sans-serif"
-; less[vars][fstack_alt] = "Arial", "Helvetica", "sans-serif"
+less[vars][fstack_alt] = "Arial", "Helvetica", "sans-serif"
