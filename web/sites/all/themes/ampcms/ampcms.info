@@ -10,6 +10,8 @@ regions[help] = Help
 regions[content] = Content
 
 ; Libraries and basic styles.
+; @NOTE: If two .less files have the same name only the last one is visible,
+; even from different folders.
 stylesheets[all][] = styles/lib/normalize.css
 stylesheets[all][] = styles/base.css.less
 stylesheets[all][] = styles/drupal.css.less
@@ -17,7 +19,6 @@ stylesheets[all][] = styles/drupal/actions.css.less
 stylesheets[all][] = styles/drupal/contextual.css.less
 stylesheets[all][] = styles/drupal/forms.css.less
 stylesheets[all][] = styles/drupal/messages.css.less
-stylesheets[all][] = styles/forms.css.less
 stylesheets[all][] = styles/reset.css.less
 
 ; Stylesheets.
