@@ -93,6 +93,16 @@ function amppermissions_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'add media from remote sources'.
+  $permissions['add media from remote sources'] = array(
+    'name' => 'add media from remote sources',
+    'roles' => array(
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
+    ),
+    'module' => 'media_internet',
+  );
+
   // Exported permission: 'admin_display_suite'.
   $permissions['admin_display_suite'] = array(
     'name' => 'admin_display_suite',
