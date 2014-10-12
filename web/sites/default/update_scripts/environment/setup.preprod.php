@@ -32,4 +32,4 @@ variable_set('less_watch', 0);
 variable_set('error_level', ERROR_REPORTING_DISPLAY_ALL);
 
 // Include the production setup script.
-include variable_get('update_scripts_directory', '') . '/environment/setup.production.php';
+include variable_get('update_scripts_directory', '') . '/setup.production.php';
