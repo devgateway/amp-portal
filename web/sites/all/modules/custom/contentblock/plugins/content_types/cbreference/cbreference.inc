@@ -63,15 +63,19 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
       ));
     }
     else {
-      $message = t('You have not configured this block. Click !here to go to the block settings page to edit content and/or remove this message and title.', array(
-        '!here' => l(t('here'), 'admin/settings/content-sections/' . $conf['machine_name']),
-      ));
-
       if ($block->delta == 'welcome') {
+        $message = t('You have not configured this block. Click !here to go to the block settings page to edit content.', array(
+          '!here' => l(t('here'), 'admin/settings/content-sections/' . $conf['machine_name']),
+        ));
+
         $block->content['#prefix'] = '<div class="welcome-content-wrapper">';
         $block->content['#suffix'] = '</div>';
       }
       else {
+        $message = t('You have not configured this block. Click !here to go to the block settings page to edit content and/or remove this message and title.', array(
+          '!here' => l(t('here'), 'admin/settings/content-sections/' . $conf['machine_name']),
+        ));
+
         $block->content['#prefix'] = '<div class="layout-block layout-separator">';
         $block->content['#suffix'] = '</div>';
       }
