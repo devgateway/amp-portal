@@ -78,7 +78,7 @@ function contentblock_cbreference_content_type_render($subtype, $conf, $panel_ar
     }
 
     $block->content['title'] = array(
-      '#markup' => '<h2 class="contentblock-title">' . $cbreference_info['title'] . '</h2>',
+      '#markup' => '<h3 class="contentblock-title">' . $cbreference_info['title'] . '</h3>',
     );
     $block->content['content'] = array(
       '#markup' => '<p>' . $message . '</p>',
