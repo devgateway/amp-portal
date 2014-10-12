@@ -51,7 +51,7 @@ function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
   }
   else {
     // Disable UI cleanup.
-    setcookie('helpergeneric_cleanup_ui_force', 0, REQUEST_TIME - (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+    setcookie('helpergeneric_cleanup_ui_force', 0, REQUEST_TIME + (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
   }
 }
 
