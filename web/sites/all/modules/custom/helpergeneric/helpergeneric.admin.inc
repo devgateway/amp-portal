@@ -44,13 +44,14 @@ function helpergeneric_ui_settings_form($form) {
  * Submit handler for helpergeneric_ui_settings_form().
  */
 function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
+  $params = session_get_cookie_params();
   if ($form_state['triggering_element']['#value'] == t('Enable')) {
     // Enable UI cleanup.
-    setcookie('helpergeneric_cleanup_ui_force', 1, REQUEST_TIME + (60 * 60 * 12), base_path());
+    setcookie('helpergeneric_cleanup_ui_force', 1, REQUEST_TIME + (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
   }
   else {
     // Disable UI cleanup.
-    setcookie('helpergeneric_cleanup_ui_force', 0, REQUEST_TIME - (60 * 60 * 12), base_path());
+    setcookie('helpergeneric_cleanup_ui_force', 0, REQUEST_TIME - (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
   }
 }
 
