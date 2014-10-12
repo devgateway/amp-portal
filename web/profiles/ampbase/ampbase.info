@@ -1,4 +1,4 @@
-name = Minimal AMP CMS
+name = AMP CMS
 description = Minimal AMP CMS with only a few modules enabled.
 version = 2.10.x
 core = 7.x

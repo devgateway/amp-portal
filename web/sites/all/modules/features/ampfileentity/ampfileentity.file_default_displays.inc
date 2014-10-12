@@ -1039,6 +1039,26 @@ function ampfileentity_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'video__default__media_vimeo_video';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'width' => '480',
+    'height' => '270',
+    'color' => '',
+    'protocol_specify' => 0,
+    'protocol' => 'https://',
+    'autoplay' => 0,
+    'loop' => 0,
+    'title' => 1,
+    'byline' => 1,
+    'portrait' => 1,
+    'api' => 0,
+  );
+  $export['video__default__media_vimeo_video'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'video__default__media_youtube_image';
   $file_display->weight = 0;
   $file_display->status = FALSE;

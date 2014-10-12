@@ -50,7 +50,7 @@ $wysiwyg_allowed_types = array(
   // 'audio',
   'document',
   'image',
-  // 'video',
+  'video',
 );
 variable_set('media_wysiwyg_wysiwyg_allowed_types', $wysiwyg_allowed_types);
 
@@ -81,6 +81,8 @@ $wysiwyg_browser_plugins = array(
   'media_library--document_library',
   'media_library--image_library',
   // 'media_library--video_library',
+  // 'media_library--video_library',
+  'media_internet',
 );
 variable_set('media_wysiwyg_wysiwyg_browser_plugins', $wysiwyg_browser_plugins);
 

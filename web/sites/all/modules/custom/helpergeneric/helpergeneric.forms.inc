@@ -213,12 +213,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'media_opacity',
 
         // Hide media_wysiwyg.module variables.
-        'media_wysiwyg_wysiwyg_allowed_attributes',
-        'media_wysiwyg_wysiwyg_allowed_types',
-        'media_wysiwyg_wysiwyg_browser_plugins',
-        'media_wysiwyg_wysiwyg_default_view_mode',
-        'media_wysiwyg_wysiwyg_icon_title',
-        'media_wysiwyg_wysiwyg_upload_directory',
+        // 'media_wysiwyg_wysiwyg_allowed_attributes',
+        // 'media_wysiwyg_wysiwyg_allowed_types',
+        // 'media_wysiwyg_wysiwyg_browser_plugins',
+        // 'media_wysiwyg_wysiwyg_default_view_mode',
+        // 'media_wysiwyg_wysiwyg_icon_title',
+        // 'media_wysiwyg_wysiwyg_upload_directory',
         'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode',
         'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode_status',
         'media_wysiwyg_view_mode_audio_wysiwyg_restricted_view_modes',

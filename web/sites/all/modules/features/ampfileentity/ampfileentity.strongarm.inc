@@ -292,6 +292,71 @@ function ampfileentity_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'media_wysiwyg_wysiwyg_allowed_attributes';
+  $strongarm->value = array(
+    0 => 'alt',
+    1 => 'title',
+    2 => 'hspace',
+    3 => 'vspace',
+    4 => 'border',
+    5 => 'align',
+    6 => 'style',
+    7 => 'class',
+    8 => 'id',
+    9 => 'usemap',
+    10 => 'data-picture-group',
+    11 => 'data-picture-align',
+    12 => 'data-picture-mapping',
+  );
+  $export['media_wysiwyg_wysiwyg_allowed_attributes'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'media_wysiwyg_wysiwyg_allowed_types';
+  $strongarm->value = array(
+    0 => 'image',
+    1 => 'video',
+    2 => 'document',
+  );
+  $export['media_wysiwyg_wysiwyg_allowed_types'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'media_wysiwyg_wysiwyg_browser_plugins';
+  $strongarm->value = array(
+    0 => 'upload',
+    1 => 'media_library--document_library',
+    2 => 'media_library--image_library',
+    3 => 'media_internet',
+  );
+  $export['media_wysiwyg_wysiwyg_browser_plugins'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'media_wysiwyg_wysiwyg_default_view_mode';
+  $strongarm->value = 'normal';
+  $export['media_wysiwyg_wysiwyg_default_view_mode'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'media_wysiwyg_wysiwyg_icon_title';
+  $strongarm->value = 'Add/Update media';
+  $export['media_wysiwyg_wysiwyg_icon_title'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'media_wysiwyg_wysiwyg_upload_directory';
+  $strongarm->value = 'inline';
+  $export['media_wysiwyg_wysiwyg_upload_directory'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'title_file';
   $strongarm->value = array(
     'auto_attach' => array(
