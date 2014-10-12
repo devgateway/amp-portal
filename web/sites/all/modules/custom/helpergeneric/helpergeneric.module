@@ -350,6 +350,10 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
       'title' => 'Content: Files Thumbnails',
       'url' => 'file/add',
     ),
+    'admin/people' => array(
+      'title' => 'People Overview',
+      'url' => 'admin/people/create',
+    ),
   );
   foreach ($pages as $page_root_url => $info) {
     if ($root_path == $page_root_url && isset($data['actions']['output'][0]['#link']['path'])) {
