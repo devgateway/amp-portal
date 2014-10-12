@@ -158,7 +158,8 @@ function _update_scripts_load_script($script_path = NULL) {
 
   // Create a function that holds the update script code.
   // This is primarily used for checking for php syntax errors.
-  $function = create_function('', $script_code);
+  $args = '$script_directory = \'' . dirname($script_info['full_path']) . '\'';
+  $function = create_function($args, $script_code);
   if (!empty($function)) {
     $script_info['function'] = $function;
   }
