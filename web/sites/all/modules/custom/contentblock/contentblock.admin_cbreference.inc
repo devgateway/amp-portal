@@ -49,12 +49,8 @@ function _contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_
   }
 
   if ($form_state['op'] == 'add' && !empty($_GET['destination'])) {
-    $form['form_description'] = array(
-      '#markup' => t('If you only want to remove the instructions from this section you can just click "Save" without adding/configuring any content.'),
-      '#prefix' => '<div class="description">',
-      '#suffix' => '</div>',
-      '#weight' => 101,
-    );
+    drupal_set_message(t('If you only want to remove the instructions for this block/section you can just click "Save" without adding/configuring any content.'));
+    drupal_set_message(t('You can later configure this block/section from the "Settings > Content Sections" page.'));
   }
 
   // Attach validate callbacks.

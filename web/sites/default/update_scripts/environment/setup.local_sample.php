@@ -54,7 +54,10 @@ variable_set('update_scripts_revert_features', 'no');
 variable_del('file_temporary_path');
 
 // Disable the loading of external fonts.
-variable_set('helpertheme_load_external_fonts', FALSE);
+// variable_set('helpertheme_load_external_fonts', FALSE);
+
+// Disable the ui cleanup.
+variable_set('helpergeneric_cleanup_ui_force', FALSE);
 
 // Provide a list of modules to be disabled and uninstalled.
 $modules = array(

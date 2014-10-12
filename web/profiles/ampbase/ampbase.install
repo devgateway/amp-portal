@@ -51,9 +51,9 @@ function ampbase_install() {
 
   // Create some default users.
   $accounts = array(
-    '2' => 'admin',
-    '3' => 'editor',
-    '100' => 'system',
+    '2' => 'admin_user',
+    '3' => 'editor_user',
+    '100' => 'system_user',
   );
   foreach ($accounts as $account_id => $account_name) {
     db_insert('users')

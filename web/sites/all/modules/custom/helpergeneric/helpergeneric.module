@@ -78,6 +78,15 @@ function helpergeneric_menu() {
     'weight' => -19,
   );
 
+  $items['admin/settings/translate'] = array(
+    'title' => 'Translate interface',
+    'description' => 'Translate the built in interface and other text like language independent menu items.',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/config/regional/translate/translate'),
+    'access arguments' => array('administer menu'),
+    'weight' => -18,
+  );
+
   return $items;
 }
 

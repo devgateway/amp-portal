@@ -1,5 +1,11 @@
 <?php
 
+// Update the site name.
+$site_name = variable_get('site_name', '');
+if (empty($site_name) || $site_name == 'Site-Install') {
+  variable_set('site_name', 'Aid Management Platform');
+}
+
 // Provide a list of modules to be installed.
 $modules = array(
   // 'admin',
@@ -122,9 +128,9 @@ variable_set('title_taxonomy_term', $title_settings);
 
 // Create some default users.
 // $accounts = array(
-//   '2' => 'admin',
-//   '3' => 'editor',
-//   '100' => 'system',
+//   '2' => 'admin_user',
+//   '3' => 'editor_user',
+//   '100' => 'system_user',
 // );
 // foreach ($accounts as $account_id => $account_name) {
 //   $account = user_load($account_id);
