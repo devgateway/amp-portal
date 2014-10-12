@@ -107,7 +107,7 @@ function helpergeneric_settings_form_validate($form, &$form_state) {
  */
 function helpergeneric_language_settings_form() {
   drupal_static_reset('language');
-  $languages = language_list('language');
+  $languages = language_list();
 
   $options = array();
   $form['weight'] = array('#tree' => TRUE);
@@ -141,6 +141,13 @@ function helpergeneric_language_settings_form() {
     '#options' => $options,
     '#default_value' => language_default('language'),
   );
+
+  $form['form_description'] = array(
+    '#markup' => t('Language specific character sets are only loaded when the language is enable, that is why certain characters might have a different font style.'),
+    '#prefix' => '<div class="description">',
+    '#suffix' => '</div>',
+  );
+
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Save configuration'));
   $form['#theme'] = 'helpergeneric_language_settings_form';

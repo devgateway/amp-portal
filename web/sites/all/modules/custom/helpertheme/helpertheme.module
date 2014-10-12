@@ -27,38 +27,6 @@ function helpertheme_init() {
     admin_menu_suppress();
   }
 
-  // Get path to the current module.
-  $module_path = drupal_get_path('module', 'helpertheme');
-
-  // Set the default css options.
-  $css_options = array(
-    'group' => CSS_SYSTEM,
-    'every_page' => TRUE,
-    'media' => 'all',
-  );
-
-  /*
-   * Load font Using Google Fonts API.
-   *
-   * @see http://www.google.com/fonts/specimen/Open+Sans
-   */
-  if (variable_get('helpertheme_load_external_fonts', TRUE)) {
-    $font_variants = array(
-      '400',
-      '400italic',
-      '700',
-      '700italic',
-    );
-    $options = array(
-      'external' => TRUE,
-      'query' => array(
-        'family' => 'Open Sans' . ':' . implode(',', $font_variants),
-        'subset' => 'latin,latin-ext,cyrillic,cyrillic-ext',
-      ),
-    );
-    $font_url = url('http://fonts.googleapis.com/css', $options);
-    drupal_add_css($font_url, $css_options);
-  }
 }
 
 /**
@@ -278,6 +246,46 @@ function helpertheme_preprocess_page(&$variables) {
    * Project specific CSS on all pages (including admin pages).
    */
   drupal_add_css($module_path . '/styles/helpertheme.wysiwyg.css', $css_options);
+
+  /*
+   * Load font Using Google Fonts API.
+   *
+   * @see http://www.google.com/fonts/specimen/Open+Sans
+   */
+  if (variable_get('helpertheme_load_external_fonts', TRUE)) {
+    $font_variants = array(
+      '400',
+      '400italic',
+      '700',
+      '700italic',
+    );
+    $options = array(
+      'external' => TRUE,
+      'query' => array(
+        'family' => 'Open Sans' . ':' . implode(',', $font_variants),
+        'subset' => array('latin'),
+      ),
+    );
+
+    // Get a list of enabled languages.
+    $languages = language_list('enabled');
+    $enabled_languages = $languages[1];
+
+    // Only load cyrillic and cyrillic extended character sets if the Russian language is enabled.
+    if (array_key_exists('ro', $enabled_languages)) {
+      $options['query']['subset'][] = 'latin-ext';
+    }
+
+    // Only load cyrillic and cyrillic extended character sets if the Russian language is enabled.
+    if (array_key_exists('ru', $enabled_languages)) {
+      $options['query']['subset'][] = 'cyrillic';
+      $options['query']['subset'][] = 'cyrillic-ext';
+    }
+
+    $options['query']['subset'] = implode(',', $options['query']['subset']);
+    $font_url = url('http://fonts.googleapis.com/css', $options);
+    drupal_add_css($font_url, $css_options);
+  }
 }
 
 /**
