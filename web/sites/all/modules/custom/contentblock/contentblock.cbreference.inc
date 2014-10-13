@@ -152,6 +152,11 @@ function contentblock_cbreference_render__welcome($entity, $pane_conf) {
   field_attach_prepare_view($entity_type, array($entity->identifier() => $entity), $view_mode);
   $view = field_attach_view($entity_type, $entity, $view_mode);
 
+  $children_keys = element_children($view);
+  if (empty($children_keys)) {
+    return;
+  }
+
   // Wrap Title and body fields in a DIV.
   // @TODO: Find a better way to do this.
   $view['title_field'][0]['#prefix'] = '<div class="welcome-content-wrapper">';
