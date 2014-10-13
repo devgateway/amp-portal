@@ -137,13 +137,25 @@ function _contentblock_entity_form_submit($form, &$form_state) {
   entity_save($entity_type, $entity);
 
   // Prepare the messages.
-  $watchdog_args = array('@type' => $entity->entityType(), '%title' => $entity->label());
-  $t_args = array('@type' => contentblock_type_get_name($entity_type), '%title' => $entity->label());
+  $entity_label = $entity->label();
+  if (empty($entity_label) && !empty($entity->machine_name)) {
+    $info = contentblock_get_hidden_types($entity->machine_name);
+    if (!empty($info['title'])) {
+      $entity_label = $info['title'];
+    }
+  }
+  $watchdog_args = array('@type' => $entity->entityType(), '%title' => $entity_label);
+  $t_args = array('@type' => contentblock_type_get_name($entity_type), '%title' => $entity_label);
   $entity_uri = entity_uri($entity_type, $entity);
   $entity_link = l(t('view'), $entity_uri['path']);
 
-  if ($entity->identifier() && empty($entity->machine_name)) {
-    $form_state['redirect'] = entity_access('view', $entity_type, $entity) ? $entity_uri['path'] : '<front>';
+  if ($entity->identifier()) {
+    if (empty($entity->machine_name)) {
+      $form_state['redirect'] = entity_access('view', $entity_type, $entity) ? $entity_uri['path'] : '<front>';
+    }
+    else {
+      $form_state['redirect'] = '<front>';
+    }
   }
 
   if (empty($entity->is_new)) {
