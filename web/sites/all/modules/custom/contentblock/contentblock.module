@@ -394,16 +394,6 @@ function contentblock_permission() {
 function contentblock_menu() {
   $items = array();
 
-  // Page callback that outputs JSON for project specific nodevar autocomplete suggestions.
-  $items['contentblock/autocomplete'] = array(
-    'title' => 'Autocomplete',
-    'page callback' => 'contentblock_entity_autocomplete',
-    'page arguments' => array('contentblock'),
-    'access arguments' => array('helpergeneric administer settings'),
-    'type' => MENU_CALLBACK,
-    'file' => 'contentblock.admin_cbreference.inc',
-  );
-
   $items['admin/settings/content-sections'] = array(
     'title' => 'Content Sections',
     'description' => 'Administer content sections for the homepage and other pages.',
