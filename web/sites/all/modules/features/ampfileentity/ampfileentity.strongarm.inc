@@ -337,7 +337,7 @@ function ampfileentity_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'media_wysiwyg_wysiwyg_default_view_mode';
-  $strongarm->value = 'normal';
+  $strongarm->value = 'narrow';
   $export['media_wysiwyg_wysiwyg_default_view_mode'] = $strongarm;
 
   $strongarm = new stdClass();
