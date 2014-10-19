@@ -465,6 +465,9 @@ function update_scripts_get_logs($lid = NULL) {
  * Returns the last log if the script has previously ran.
  */
 function _update_scripts_get_last_log_id($path) {
+  // Update path to a proper format on Windows servers.
+  $path = str_replace('\\', '/', $path);
+
   $sql = "SELECT lid, with_errors, finished FROM {update_scripts} WHERE path = :path ORDER BY lid DESC";
   $log = db_query($sql, array(':path' => $path))->fetchAssoc();
   return $log;
