@@ -1,11 +1,5 @@
 <?php
 
-// Update the site name.
-$site_name = variable_get('site_name', '');
-if (empty($site_name) || $site_name == 'Site-Install') {
-  variable_set('site_name', 'Aid Management Platform');
-}
-
 // Provide a list of modules to be installed.
 $modules = array(
   // 'admin',
