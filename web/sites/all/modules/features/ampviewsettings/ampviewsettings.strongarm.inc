@@ -15,7 +15,10 @@ function ampviewsettings_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'ds_classes_fields';
   $strongarm->value = 'clearfix|Clearfix
-layout-block|Layout Block';
+layout-block|Layout Block
+cbreference-block|CB Reference: block
+cbreference-linkedmap|CB Reference: linkedmap
+cbreference-view-mode-normal|CB Reference: view_mode normal';
   $export['ds_classes_fields'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -24,6 +27,7 @@ layout-block|Layout Block';
   $strongarm->name = 'ds_classes_regions';
   $strongarm->value = 'clearfix|Clearfix
 layout-block|Layout: Block
+layout-inline|Layout: Inline
 layout-separator|Layout: Separator
 layout-right-sidebar|Layout: Right Sidebar';
   $export['ds_classes_regions'] = $strongarm;

@@ -12,4 +12,4 @@
 watchdog('us-environment', 'Setup STAGING Environment');
 
 // Include the preprod setup script.
-include variable_get('update_scripts_directory', '') . '/environment/setup.preprod.php';
+include $script_directory . '/setup.preprod.php';

@@ -53,6 +53,12 @@ variable_set('update_scripts_revert_features', 'no');
 // Fix isssue with "Temporary directory" when using a DB from a different OS.
 variable_del('file_temporary_path');
 
+// Disable the loading of external fonts.
+// variable_set('helpertheme_load_external_fonts', FALSE);
+
+// Disable the ui cleanup.
+variable_set('helpergeneric_cleanup_ui_force', FALSE);
+
 // Provide a list of modules to be disabled and uninstalled.
 $modules = array(
   // 'entitycache',
@@ -79,6 +85,8 @@ $modules = array(
   'field_ui',
   'feeds_ui',
   'feeds_tamper_ui',
+  // 'l10n_client',
+  // 'l10n_update',
   // 'menu',
   'module_filter',
   // 'og_ui',
@@ -86,7 +94,8 @@ $modules = array(
   // 'panels_ipe',
   // 'schema',
   // 'stage_file_proxy',
-  // 'variable_admin',
+  // 'update',
+  'variable_admin',
   'views_ui',
 );
 // Install modules

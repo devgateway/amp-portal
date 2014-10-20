@@ -1,62 +1,111 @@
 
-@import './lib/custom-sprite.less';
-
 .header-links {
-  margin: 1em 0;
+  margin: 0;
   padding: 0;
+
+  a {
+    .link-color(@clpassive);
+  }
 
   li {
     display: inline-block;
-  }
-
-  .link-toplevel {
-    display: inline-block;
-    padding: 0 0.5em;
-    text-decoration: none;
+    margin-right: 0.5em;
     &.last {
       padding-right: 0;
     }
-    &:active,
-    &:hover {
-    }
+  }
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+  }
+}
+.xNormalAndUp() {
+  .header-items {
+    padding-top: 1em;
   }
 }
 
 .navigation-list-toplevel {
-  border-bottom: @border_width solid @clcontent__separator;
   padding-left: 0;
   .top-listitem {
     list-style: none;
+  }
+}
+.xNormalAndUp() {
+  .navigation-list-toplevel {
+    border-bottom: @border_width solid @clcontent__separator;
   }
 }
 
 .main-navigation {
   font-size: 0.875em;
 
-  svg {
-    fill: @clcontent__separator;
-    margin-right: 0.5em;
-  }
-
   .top-listitem {
     display: inline-block;
   }
 
-  .top-link {
-    display: inline-block;
-    font-weight: bold;
-    padding: 1em;
-    line-height: 2em;
-    text-decoration: none;
-    text-transform: uppercase;
-    &.active,
-    &:active,
-    &:hover {
-      background-color: @cldetail;
-      color: white;
-    }
-  }
   .navigation-sublevel {
     margin-bottom: 0.5em;
   }
 }
+
+.top-link {
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.6em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  .link-color(@clpassive, @clcontent, @clpassive, @clcontent);
+
+  svg {
+    fill: @clpassive;
+    margin-right: 0.5em;
+  }
+
+  &.active,
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    color: @clcontent;
+    svg {
+      fill: @clcontent;
+    }
+  }
+
+  &.active {
+    background-color: @clpassive;
+  }
+  &:focus,
+  &:hover {
+    background-color: lighten(@clpassive, 10%);
+  }
+
+  border-left: @border_width solid transparent;
+  border-right: @border_width solid transparent;
+  &.active {
+    border-left: @border_width solid @clcontent__separator;
+    border-right: @border_width solid @clcontent__separator;
+  }
+}
+
+.xMediumAndDown() {
+  .top-link {
+    line-height: 1.142em;
+    svg {
+      width: 1em !important;
+      height: 1em !important;
+    }
+  }
+}
+.xNormalAndUp() {
+  .top-link {
+    line-height: 2em;
+    min-width: 7em;
+    padding-right: 2em;
+  }
+}
+
+@import './lib/custom-responsive.less';
+@import './lib/helpers.less';

@@ -32,7 +32,7 @@
       <?php print $messages; ?>
     </div>
 
-    <div id="main-content" class="main-content clearfix">
+    <div id="main-content" class="main-content">
       <div class="main-header">
         <div class="main-header-inner clearfix">
           <?php if ($logo && $site_name): ?>

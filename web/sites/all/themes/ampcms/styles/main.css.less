@@ -1,7 +1,4 @@
 
-@import './lib/custom-grid.less';
-@import './lib/helpers.less';
-
 html {
   background-color: @clmain;
 }
@@ -9,6 +6,19 @@ html {
 .site-name {
   margin-bottom: 0;
   margin-top: 0;
+  .link {
+    .link-color(@clnormal);
+    text-transform: uppercase;
+    &:focus,
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+.xMediumAndDown() {
+  .site-name {
+    font-size: 1em;
+  }
 }
 
 // Style local actions.
@@ -56,3 +66,6 @@ html {
     width: auto;
   }
 }
+
+@import './lib/custom-responsive.less';
+@import './lib/helpers.less';

@@ -7,7 +7,8 @@
 /**
  * Preprocess variables for page.tpl.php
  */
-function ampcms_preprocess_page(&$variables) {// For now hide breadcrumb.
+function ampcms_preprocess_page(&$variables) {
+  // For now hide breadcrumb.
   $variables['display_breadcrumb'] = FALSE;
 
   // Hide tabs on various pages and for anonymous users.
@@ -126,6 +127,7 @@ function ampcms_css_alter(&$css) {
     'sites/all/modules/contrib/admin_menu',
     'sites/all/modules/contrib/ctools',
     'sites/all/modules/contrib/date',
+    'sites/all/modules/contrib/l10n_client',
     'sites/all/modules/contrib/media',
   );
 

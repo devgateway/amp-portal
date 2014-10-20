@@ -39,7 +39,6 @@ function _helpertheme_color_palette_demo_page() {
     }
   }
 
-
   $items['overview'] = array(
     '#type' => 'fieldset',
     '#title' => t('Overview'),
@@ -117,7 +116,6 @@ function _helpertheme_color_palette_demo_page() {
 
   return drupal_render($items);
 }
-
 
 /**
  * Returns a html for a "color block".

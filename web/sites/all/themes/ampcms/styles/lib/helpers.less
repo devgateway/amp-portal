@@ -112,3 +112,33 @@
     width: auto;
   }
 }
+
+/*
+ * Apply single color to anchor tags.
+ */
+// .link-color(@normalcolor, @actcolor, @viscolor, @hovcolor) when not (iscolor(@actcolor)) and not (iscolor(@viscolor)) and not (iscolor(@hovcolor))) {
+.link-color(
+  @normalcolor,
+  @actcolor: darken(@normalcolor, 10%),
+  @viscolor: lighten(@normalcolor, 10%),
+  @hovcolor: darken(@normalcolor, 15%),
+) {
+  // Style links that have not been visited.
+  &:link {
+    color: @normalcolor;
+  }
+  // Style links that are active.
+  &.active,
+  &:active {
+    color: @actcolor;
+  }
+  // Style links that have been visited.
+  &:visited {
+    color: @viscolor;
+  }
+  // Style link hover and focus states.
+  &:focus,
+  &:hover {
+    color: @hovcolor;
+  }
+}

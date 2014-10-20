@@ -32,9 +32,9 @@ $modules = array(
     // 'imagecache_customactions',
 
   'media',
-    // 'media_internet',
-  // 'media_vimeo',
-  // 'media_youtube',
+    'media_internet',
+  'media_vimeo',
+  'media_youtube',
   'file_entity',
 
   'panels',

@@ -41,6 +41,8 @@ $modules = array(
   'field_ui',
   'feeds_ui',
   'feeds_tamper_ui',
+  // 'l10n_client',
+  'l10n_update',
   'menu',
   // 'memcache_admin',
   'module_filter',
@@ -48,7 +50,7 @@ $modules = array(
   'page_manager',
   // 'panels_ipe',
   'stage_file_proxy',
-  // 'variable_admin',
+  'variable_admin',
   'views_ui',
 );
 // Uninstall modules

@@ -35,16 +35,30 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
     'blog_sidebar' => array(
-      'weight' => '0',
+      'weight' => '4',
       'label' => 'hidden',
       'format' => 'default',
       'formatter_settings' => array(
         'show_title' => 0,
         'title_wrapper' => '',
-        'ctools' => 'a:3:{s:4:"conf";a:8:{s:13:"variable_name";s:26:"contentblock_blockref_blog";s:10:"identifier";s:0:"";s:10:"build_mode";s:7:"default";s:5:"links";N;s:12:"remove_title";N;s:12:"linked_title";N;s:14:"override_title";i:1;s:19:"override_title_text";s:0:"";}s:4:"type";s:11:"cbreference";s:7:"subtype";s:11:"cbreference";}',
+        'ctools' => 'a:3:{s:4:"conf";a:10:{s:13:"variable_name";s:0:"";s:10:"identifier";s:0:"";s:10:"build_mode";s:7:"default";s:5:"links";N;s:12:"remove_title";N;s:12:"linked_title";N;s:14:"override_title";i:1;s:19:"override_title_text";s:0:"";s:12:"machine_name";s:11:"blogsidebar";s:5:"style";s:6:"normal";}s:4:"type";s:11:"cbreference";s:7:"subtype";s:11:"cbreference";}',
         'load_terms' => 0,
         'ft' => array(
           'func' => 'theme_ds_field_reset',
+        ),
+      ),
+    ),
+    'linkedmap_block' => array(
+      'weight' => '5',
+      'label' => 'hidden',
+      'format' => 'default',
+      'formatter_settings' => array(
+        'show_title' => 0,
+        'title_wrapper' => '',
+        'ctools' => 'a:3:{s:4:"conf";a:5:{s:13:"variable_name";s:0:"";s:12:"machine_name";s:9:"linkedmap";s:5:"style";s:6:"normal";s:14:"override_title";i:0;s:19:"override_title_text";s:0:"";}s:4:"type";s:11:"cbreference";s:7:"subtype";s:11:"cbreference";}',
+        'load_terms' => 0,
+        'ft' => array(
+          'classes' => 'cbreference-block cbreference-linkedmap cbreference-view-mode-normal',
         ),
       ),
     ),
@@ -53,11 +67,6 @@ function ampet_blog_ds_field_settings_info() {
         'ft' => array(
           'func' => 'theme_ds_field_reset',
         ),
-      ),
-    ),
-    'field_blog_image' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
       ),
     ),
   );
@@ -70,16 +79,16 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'teaser_featured';
   $ds_fieldsetting->settings = array(
-    'field_blog_image' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
-      ),
-    ),
     'title_field' => array(
       'formatter_settings' => array(
         'ft' => array(
           'func' => 'theme_ds_field_reset',
         ),
+      ),
+    ),
+    'body' => array(
+      'formatter_settings' => array(
+        'ft' => array(),
       ),
     ),
   );
@@ -92,16 +101,16 @@ function ampet_blog_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'blog';
   $ds_fieldsetting->view_mode = 'teaser_normal';
   $ds_fieldsetting->settings = array(
-    'field_blog_image' => array(
-      'formatter_settings' => array(
-        'ft' => array(),
-      ),
-    ),
     'title_field' => array(
       'formatter_settings' => array(
         'ft' => array(
           'func' => 'theme_ds_field_reset',
         ),
+      ),
+    ),
+    'body' => array(
+      'formatter_settings' => array(
+        'ft' => array(),
       ),
     ),
   );
@@ -197,20 +206,22 @@ function ampet_blog_ds_layout_settings_info() {
     'regions' => array(
       'left' => array(
         0 => 'title_field',
-        2 => 'field_blog_image',
-        3 => 'field_blog_event_date',
-        4 => 'body',
+        1 => 'field_blog_image',
+        2 => 'field_blog_event_date',
+        3 => 'body',
       ),
       'right' => array(
-        1 => 'blog_sidebar',
+        4 => 'blog_sidebar',
+        5 => 'linkedmap_block',
       ),
     ),
     'fields' => array(
       'title_field' => 'left',
-      'blog_sidebar' => 'right',
       'field_blog_image' => 'left',
       'field_blog_event_date' => 'left',
       'body' => 'left',
+      'blog_sidebar' => 'right',
+      'linkedmap_block' => 'right',
     ),
     'classes' => array(
       'layout_class' => array(
@@ -219,6 +230,10 @@ function ampet_blog_ds_layout_settings_info() {
       ),
       'left' => array(
         'layout-block' => 'layout-block',
+        'layout-separator' => 'layout-separator',
+      ),
+      'right' => array(
+        'layout-separator' => 'layout-separator',
       ),
     ),
     'wrappers' => array(

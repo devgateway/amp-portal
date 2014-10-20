@@ -1,8 +1,11 @@
 
+@print_text_color: #333333;
+@link_text_color: #333366;
+
 html,
 body {
   background-color: transparent;
-  color: #333333;
+  color: @print_text_color;
   font-family: "Times New Roman", serif;
   font-size: 12pt;
   height: auto;
@@ -10,26 +13,23 @@ body {
 
 .page-wrapper {
   margin: 1em 0;
-  padding: 0;
   width: auto;
 }
 
 .main-content {
-  margin: 1em 0;
-  padding: 0;
-  width: auto;
+  margin: 0;
 }
 
 .header-items,
 .main-navigation,
 .tabs-wrapper {
-  display: none;
+  display: none !important;
 }
 
 .messages {
   background-color: transparent !important;
   border-radius: 0px;
-  color: #333333 !important;
+  color: @print_text_color !important;
 }
 
 /**
@@ -49,7 +49,6 @@ h1, h2, h3, h4, h5, h6 {
 table {
   page-break-inside: avoid;
 }
-
 th {
   text-align: left; /* LTR */
   color: #006;
@@ -67,7 +66,7 @@ td {
 
 a {
   text-decoration: none;
-  color: #000000;
+  color: @link_text_color !important;
 }
 
 a[href^="http://"]:after,
@@ -83,4 +82,26 @@ acronym[title]:after {
   content: " (" attr(title) ")";
   font-family: monospace, sans-serif;
   font-size: 0.9em;
+}
+
+/**
+ * Cleanup project specific styles.
+ */
+.layout-block,
+.cbreference-block {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.cbreference-block {
+  border-bottom: none !important;
+  page-break-inside: avoid;
+}
+
+// Avoid page breaks straight after titles.
+.contentblock-title,
+.title-wrapper {
+  color: @link_text_color !important;
+  page-break-after: avoid;
 }

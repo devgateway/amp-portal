@@ -12,20 +12,16 @@
 <div class="page-wrapper">
   <header role="banner" class="main-header">
     <div class="main-header-inner clearfix">
-      <h1 class="site-name">
-        <?php print theme('header_logo'); ?>
-      </h1>
+      <?php print theme('header_logo'); ?>
       <?php print theme('header_items'); ?>
     </div>
   </header>
 
   <nav role="navigation" class="main-navigation">
-    <div class="navigation-toplevel">
-      <?php print theme('main_navigation'); ?>
-    </div>
+    <?php print theme('main_navigation'); ?>
   </nav>
 
-  <section role="main" id="main-content" class="main-content clearfix<?php print $main_content_classes; ?>">
+  <section role="main" id="main-content" class="main-content<?php print $main_content_classes; ?>">
     <div class="main-content-inner">
       <?php print render($browser_warnings); ?>
 

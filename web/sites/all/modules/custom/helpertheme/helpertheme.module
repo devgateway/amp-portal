@@ -16,6 +16,18 @@ include_once 'helpertheme.fields.inc';
 include_once 'helpertheme.theme.inc';
 include_once 'helpertheme.themeoverrides.inc';
 
+/**
+ * Implements hook_init().
+ *
+ * Disables the admin_menu.
+ */
+function helpertheme_init() {
+  // Disable the admin menu.
+  if (helpergeneric_cleanup_ui()) {
+    admin_menu_suppress();
+  }
+
+}
 
 /**
  * Implements hook_libraries_info().
@@ -101,7 +113,10 @@ function helpertheme_admin_paths_alter(&$paths) {
   $paths['contentblock/*/*'] = FALSE;
   $paths['node/*/*'] = FALSE;
   $paths['user/*/*'] = FALSE;
-  $paths['admin/settings*'] = FALSE;
+
+  $paths['node/add'] = FALSE;
+  $paths['admin/content*'] = FALSE;
+  $paths['admin/people'] = FALSE;
 }
 
 /**
@@ -214,11 +229,6 @@ function helpertheme_preprocess_page(&$variables) {
   // Load the " SVG for Everybody" JavaScript library.
   libraries_load('svg4everybody', 'minified');
 
-  // Disable the admin menu.
-  if (helpergeneric_cleanup_ui()) {
-    admin_menu_suppress();
-  }
-
   // Get path to the current module.
   $module_path = drupal_get_path('module', 'helpertheme');
 
@@ -230,12 +240,52 @@ function helpertheme_preprocess_page(&$variables) {
   );
 
   // Fix Admin UI style.
-  drupal_add_css($module_path . '/styles/helpertheme.admin.css', array('preprocess' => FALSE));
+  drupal_add_css($module_path . '/styles/helpertheme.admin.css', $css_options);
 
   /*
    * Project specific CSS on all pages (including admin pages).
    */
   drupal_add_css($module_path . '/styles/helpertheme.wysiwyg.css', $css_options);
+
+  /*
+   * Load font Using Google Fonts API.
+   *
+   * @see http://www.google.com/fonts/specimen/Open+Sans
+   */
+  if (variable_get('helpertheme_load_external_fonts', TRUE)) {
+    $font_variants = array(
+      '400',
+      '400italic',
+      '700',
+      '700italic',
+    );
+    $options = array(
+      'external' => TRUE,
+      'query' => array(
+        'family' => 'Open Sans' . ':' . implode(',', $font_variants),
+        'subset' => array('latin'),
+      ),
+    );
+
+    // Get a list of enabled languages.
+    $languages = language_list('enabled');
+    $enabled_languages = $languages[1];
+
+    // Only load cyrillic and cyrillic extended character sets if the Russian language is enabled.
+    if (array_key_exists('ro', $enabled_languages)) {
+      $options['query']['subset'][] = 'latin-ext';
+    }
+
+    // Only load cyrillic and cyrillic extended character sets if the Russian language is enabled.
+    if (array_key_exists('ru', $enabled_languages)) {
+      $options['query']['subset'][] = 'cyrillic';
+      $options['query']['subset'][] = 'cyrillic-ext';
+    }
+
+    $options['query']['subset'] = implode(',', $options['query']['subset']);
+    $font_url = url('http://fonts.googleapis.com/css', $options);
+    drupal_add_css($font_url, $css_options);
+  }
 }
 
 /**
@@ -261,8 +311,10 @@ function helpertheme_less_variables_alter(&$less_variables, $system_name) {
     }
   }
 
-  // Add drupal base bath to use with absolute paths for images.
+  // Add absolute paths for images; including the trailing slash.
   $less_variables['@base_path'] = '"' . base_path() . '"';
+  $less_variables['@theme_path'] = '"' . base_path() . $GLOBALS['theme_path'] . '/"';
+  $less_variables['@contentblock_section_title'] = '"' . t('edit section content') . '"';
 }
 
 /**
@@ -285,6 +337,19 @@ function helpertheme_html_head_alter(&$head_elements) {
     );
   }
 
+  /*
+   * The viewport meta tag is needed to instruct the mobile devices to keep the viewport.
+   * @see: http://mobile.smashingmagazine.com/2013/03/18/retrofit-a-website-to-be-responsive-with-rwd-retrofit/
+   */
+  $head_elements['mobile_viewport'] = array(
+    '#tag' => 'meta',
+    '#type' => 'html_tag',
+    '#attributes' => array(
+      'name' => 'viewport',
+      'content' => 'initial-scale=1.0, width=device-width',
+    ),
+  );
+
   // Add favicon related header tags.
   module_load_include('inc', 'helpertheme', 'helpertheme.favicons');
   // $head_elements['favicons'] = _helpertheme_favicons();
@@ -298,7 +363,6 @@ function helpertheme_html_head_alter(&$head_elements) {
 function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
   $available_icons = array(
     'home',
-    'arrow',
 
     // fill="#4B4A4A"
     'dashboard',
@@ -314,15 +378,22 @@ function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
     'organization',
     'reports',
     'sector',
+  );
+
+  // These can only be used in the code.
+  $extra_icons = array(
+    'arrow',
+    'gear',
 
     'add',
-    'view',
-    'edit',
     'delete',
+    'edit',
+    'translate',
+    'view',
   );
 
   if (isset($icon)) {
-    if (!in_array($icon, $available_icons)) {
+    if (!in_array($icon, array_merge($available_icons, $extra_icons))) {
       return '';
     }
 

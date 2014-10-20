@@ -10,9 +10,15 @@
 function amppermissions_user_default_roles() {
   $roles = array();
 
-  // Exported role: administrator.
-  $roles['administrator'] = array(
-    'name' => 'administrator',
+  // Exported role: admin user.
+  $roles['admin user'] = array(
+    'name' => 'admin user',
+    'weight' => 3,
+  );
+
+  // Exported role: editor user.
+  $roles['editor user'] = array(
+    'name' => 'editor user',
     'weight' => 2,
   );
 

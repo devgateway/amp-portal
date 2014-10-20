@@ -91,7 +91,6 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
       'page callback' => 'drupal_get_form',
       'page arguments' => array($this->entityType . '_overview_form', $this->entityType),
       'description' => 'Manage ' . $plural_label . '.',
-      'access callback' => TRUE,
       'access callback' => 'entity_access',
       'access arguments' => array('access overview', $this->entityType),
       'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
@@ -118,14 +117,13 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
     if (isset($this->entityInfo['bundles callback']) && function_exists($this->entityInfo['bundles callback'])) {
       foreach ($this->entityInfo['bundles callback']() as $bundle_type => $bundle_info) {
         $type_url_str = str_replace('_', '-', $bundle_type);
-
         $items[$this->entity_path . '/add/' . $type_url_str] = array(
           'title callback' => 'entity_ui_get_action_title',
           'title arguments' => array('add', $this->entityType, $bundle_type),
           'description' => $bundle_info['description'],
           'page callback' => 'entity_ui_get_bundle_add_form',
           'page arguments' => array($this->entityType, $bundle_type),
-          'access callback' => 'entity_access',
+          'access callback' => ($bundle_type == 'hidden') ? 'contentblock_create_hidden_access' : 'entity_access',
           'access arguments' => array('create', $this->entityType),
           'weight' => isset($bundle_info['weight']) ? $bundle_info['weight'] : 0,
         ) + $defaults;
@@ -189,6 +187,84 @@ class ContentBlockEntityUIController extends EntityBundleableUIController {
     $count = 3;
     $count += !empty($this->entityInfo['i18n controller class']) ? 1 : 0;
     return $count;
+  }
+
+  /**
+   * Generates the render array for a overview table for arbitrary entities
+   * matching the given conditions.
+   *
+   * @param $conditions
+   *   An array of conditions as needed by entity_load().
+   *
+   * @return Array
+   *   A renderable array.
+   */
+  public function overviewTable($conditions = array()) {
+
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', $this->entityType);
+
+    // Do not show "Hidden" entities on the admin form.
+    $query->entityCondition('bundle', 'hidden', '!=');
+
+    // Add all conditions to query.
+    foreach ($conditions as $key => $value) {
+      $query->propertyCondition($key, $value);
+    }
+
+    if ($this->overviewPagerLimit) {
+      $query->pager($this->overviewPagerLimit);
+    }
+
+    $header = array(
+      array(
+        'data' => t('Label'),
+        'type' => 'property',
+        'specifier' => 'title',
+        'class' => array('contentblock-ui-title'),
+      ),
+      array(
+        'data' => t('Type'),
+        'type' => 'property',
+        'specifier' => 'type',
+        'class' => array('contentblock-ui-type'),
+      ),
+      array(
+        'data' => t('Last Updated'),
+        'type' => 'property',
+        'specifier' => 'changed',
+        'class' => array('contentblock-ui-changed'),
+        'sort' => 'desc',
+      ),
+      array(
+        'data' => t('Operations'),
+        'class' => array('contentblock-ui-operations'),
+        'colspan' => $this->operationCount(),
+      ),
+    );
+    $query->tableSort($header);
+
+    $results = $query->execute();
+
+    $ids = isset($results[$this->entityType]) ? array_keys($results[$this->entityType]) : array();
+    $entities = $ids ? entity_load($this->entityType, $ids) : array();
+
+    $rows = array();
+    foreach ($entities as $entity) {
+      $cols = array(
+        check_plain($this->entityInfo['bundles'][$entity->bundle()]['label']),
+        format_date(!empty($entity->changed) ? $entity->changed : $entity->created, 'short'),
+      );
+      $rows[] = $this->overviewTableRow($conditions, entity_id($this->entityType, $entity), $entity, $cols);
+    }
+
+    $render = array(
+      '#theme' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+      '#empty' => t('None.'),
+    );
+    return $render;
   }
 
   /**

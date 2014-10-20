@@ -9,6 +9,7 @@ $modules = array(
   // 'dashboard',  // It isn't really helping anyone.
   // 'overlay',    // Is really not helpful for developers.
   // 'toolbar',    // Replaced by the more accessible admin_menu_toolbar.
+  'update',        // It's simply annoying to see this on all environments.
 );
 // Uninstall modules
 _us_module__uninstall($modules);

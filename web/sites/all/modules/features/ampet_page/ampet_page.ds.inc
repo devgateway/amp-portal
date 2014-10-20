@@ -32,9 +32,11 @@ function ampet_page_ds_field_settings_info() {
   $ds_fieldsetting->bundle = 'page';
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
-    'body' => array(
+    'title_field' => array(
       'formatter_settings' => array(
-        'ft' => array(),
+        'ft' => array(
+          'func' => 'theme_ds_field_reset',
+        ),
       ),
     ),
   );
@@ -91,13 +93,20 @@ function ampet_page_ds_layout_settings_info() {
   $ds_layout->settings = array(
     'regions' => array(
       'main' => array(
-        0 => 'body',
+        0 => 'title_field',
+        1 => 'body',
       ),
     ),
     'fields' => array(
+      'title_field' => 'main',
       'body' => 'main',
     ),
-    'classes' => array(),
+    'classes' => array(
+      'layout_class' => array(
+        'clearfix' => 'clearfix',
+        'layout-block' => 'layout-block',
+      ),
+    ),
     'wrappers' => array(
       'main' => 'div',
       'ds_hidden' => 'div',
@@ -107,7 +116,7 @@ function ampet_page_ds_layout_settings_info() {
     'layout_attributes_merge' => 1,
     'layout_link_attribute' => '',
     'layout_link_custom' => '',
-    'hide_page_title' => '0',
+    'hide_page_title' => '1',
     'page_option_title' => '',
   );
   $export['node|page|full'] = $ds_layout;

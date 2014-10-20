@@ -50,6 +50,7 @@ function helpergeneric_update_projects_alter(&$projects) {
 function helpergeneric_features_api_alter(&$components) {
   // We manage menu_links manually or via update scripts.
   unset($components['menu_links']);
+  unset($components['variable_realm']);
 }
 
 /**
@@ -77,7 +78,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
       // Hide menus.
       $entries_list = array(
         'devel',
-        'main-menu',
+        // 'main-menu',
         'management',
         'navigation',
         'user-menu',
@@ -110,10 +111,9 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
       // Hide variables that should not be exported.
       $entries_list = array(
         // Custom variables.
-        'contentblock_blockref_blog',
-        'contentblock_blockref_homepage',
         'date_format_shortest',
         'helpergeneric_cleanup_ui_force',
+        'helpergeneric_disabled_languages',
 
         // Hide CORE variables.
         'additional_settings__active_tab_blog',
@@ -123,6 +123,7 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'clean_url',
         'cron_key',
         'cron_last',
+        'cron_semaphore',
         'css_js_query_string',
         'date_default_timezone',
         'date_first_day',
@@ -141,9 +142,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'install_profile',
         'install_task',
         'install_time',
+        'javascript_parsed',
         // 'job_scheduler_rebuild_all',
         'menu_expanded',
         'menu_masks',
+        'menu_rebuild_needed',
         'page_cache_maximum_age',
         'page_compression',
         'path_alias_whitelist',
@@ -152,7 +155,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'site_default_country',
         'site_mail',
         'site_name',
+        'teaser_length',
         'theme_default',
+
+        // Hide admin_menu.module variables.
+        'admin_menu_devel_modules_enabled',
 
         // Hide ctools.module variables.
         'ctools_last_cron',
@@ -186,7 +193,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'less_engine',
         'less_watch',
 
+        // Hide locale.module variables.
+        'language_count',
+        'language_default',
+
         // Hide media.module variables.
+        'media_icon_base_directory',
         // Dialog options.
         'media_dialogclass',
         'media_modal',
@@ -201,12 +213,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'media_opacity',
 
         // Hide media_wysiwyg.module variables.
-        'media_wysiwyg_wysiwyg_allowed_attributes',
-        'media_wysiwyg_wysiwyg_allowed_types',
-        'media_wysiwyg_wysiwyg_browser_plugins',
-        'media_wysiwyg_wysiwyg_default_view_mode',
-        'media_wysiwyg_wysiwyg_icon_title',
-        'media_wysiwyg_wysiwyg_upload_directory',
+        // 'media_wysiwyg_wysiwyg_allowed_attributes',
+        // 'media_wysiwyg_wysiwyg_allowed_types',
+        // 'media_wysiwyg_wysiwyg_browser_plugins',
+        // 'media_wysiwyg_wysiwyg_default_view_mode',
+        // 'media_wysiwyg_wysiwyg_icon_title',
+        // 'media_wysiwyg_wysiwyg_upload_directory',
         'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode',
         'media_wysiwyg_view_mode_audio_file_wysiwyg_view_mode_status',
         'media_wysiwyg_view_mode_audio_wysiwyg_restricted_view_modes',
@@ -232,7 +244,11 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'update_scripts_directory',
         'update_scripts_revert_features',
 
+        // Hide variable.module variables.
+        'variable_module_list',
+
         // Hide views.module variables.
+        'views_defaults',
         'views_show_additional_queries',
 
         // Hide views_ui.module variables.
@@ -257,6 +273,16 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
       );
       break;
 
+  }
+
+  // Remove SVG icon information.
+  if ($component == 'variable') {
+    foreach ($component_export['options']['sources'] as $name) {
+      if (strpos($name, HELPERTHEME_SVG_ICON_NAME_PREFIX) === 0) {
+        // Only remove the variable and do not display any message.
+        unset($component_export['options']['sources'][$name]);
+      }
+    }
   }
 
   if (empty($entries_list)) {
@@ -301,12 +327,21 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
     );
   }
 
+  if ($form_id == 'user_admin_settings') {
+    if (isset($form['admin_role'])) {
+      $form['admin_role']['#access'] = FALSE;
+    }
+    if (isset($form['personalization'])) {
+      $form['personalization']['#access'] = FALSE;
+    }
+  }
+
   if (!helpergeneric_cleanup_ui()) {
     return;
   }
 
-  if ($form_id == 'user_profile_form') {
-    _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
+  if ($form_id == 'menu_edit_item') {
+    _helpergeneric_cleanup_menu_form($form, $form_state, $form_id);
   }
   if ($form_id == 'file_entity_add_upload') {
     _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
@@ -316,6 +351,9 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
   }
   if ($form_id == 'media_wysiwyg_format_form') {
     _helpergeneric_cleanup_file_form($form, $form_state, $form_id);
+  }
+  if ($form_id == 'user_profile_form') {
+    _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
   }
 }
 
@@ -336,17 +374,46 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
     _helpergeneric_cleanup_node_form($form, $form_state, $form_id);
   }
 
+  // Allways hide menu setings on node form. Helps prevent issues with i18n_menu
+  if (isset($form['menu'])) {
+    $form['menu']['#access'] = FALSE;
+  }
+
   // Control "Event Date" field visibility.
   if (isset($form['field_blog_entry_type'], $form['field_blog_event_date'])) {
     // Show the "Event Date" only if blog entry type is event.
-    // @todo Deal with language translations.
+    $type_langcode = $form['field_blog_entry_type']['#language'];
     $form['field_blog_event_date']['#states'] = array(
       'visible' => array(
-        ':input[name="field_blog_entry_type[und][event]"]' => array('checked' => TRUE),
+        ':input[name="field_blog_entry_type[' . $type_langcode . '][event]"]' => array('checked' => TRUE),
       ),
     );
     // Remove event date value on submit if field_blog_entry_type is not an event.
     $form['#validate'][] = 'helpergeneric_node_form_event_date_validate';
+  }
+
+  // Restrict summary length.
+  $form['#validate'][] = 'helpergeneric_node_form_summary_validate';
+}
+
+/**
+ * Form validation handler for node_form_alter().
+ */
+function helpergeneric_node_form_summary_validate($form, &$form_state) {
+  $entity_type = $form['#entity_type'];
+  $entity = $form_state[$entity_type];
+
+  // Find out the field language.
+  $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+  $body_langcode = field_language($entity_type, $entity, 'body', $langcode);
+  if (empty($form_state['values']['body'][$body_langcode][0]['summary'])) {
+    return;
+  }
+
+  $teaser_length = variable_get('teaser_length', 600);
+  $summary_length = drupal_strlen(trim($form_state['values']['body'][$body_langcode][0]['summary']));
+  if ($summary_length > $teaser_length) {
+    form_set_error('body][und][0][summary', t('The Summary must be less than %max characters, you provided %count characters.', array('%max' => $teaser_length, '%count' => $summary_length)));
   }
 }
 
@@ -354,16 +421,28 @@ function helpergeneric_form_node_form_alter(&$form, &$form_state, $form_id) {
  * Form validation handler for node_form_alter().
  */
 function helpergeneric_node_form_event_date_validate($form, &$form_state) {
-  // Get the submitted input values.
-  $blog_entry_type = $form_state['input']['field_blog_entry_type'][LANGUAGE_NONE];
+  $entity_type = $form['#entity_type'];
+  $entity = $form_state[$entity_type];
 
-  if (empty($blog_entry_type['event'])) {
-    // Remove event date if the blog entry is not tagged as an event..
-    $form_state['values']['field_blog_event_date'][LANGUAGE_NONE] = array();
-  }
-  else if (empty($form_state['values']['field_blog_event_date'][LANGUAGE_NONE][0]['value'])) {
-    // Display an error if the user submitted an event blog but did not provide an event date.
-    form_set_error('field_blog_event_date', t('The blog entry is tagged as an event, please provide a valid event date.'));
+  // Find out the entity language.
+  $langcode = isset($entity->language) ? $entity->language : LANGUAGE_NONE;
+
+  // Get the submitted input values.
+  if (isset($form_state['input']['field_blog_entry_type']) && isset($form_state['values']['field_blog_event_date'])) {
+    // Find out the actual language to use (field might be untranslatable).
+    $type_langcode = field_language($entity_type, $entity, 'field_blog_event_date', $langcode);
+    $blog_entry_type = $form_state['input']['field_blog_entry_type'][$type_langcode];
+
+    // Find out the actual language to use (field might be untranslatable).
+    $date_langcode = field_language($entity_type, $entity, 'field_blog_event_date', $langcode);
+    if (empty($blog_entry_type['event'])) {
+      // Remove event date if the blog entry is not tagged as an event..
+      $form_state['values']['field_blog_event_date'][$date_langcode] = array();
+    }
+    else if (empty($form_state['values']['field_blog_event_date'][$date_langcode][0]['value'])) {
+      // Display an error if the user submitted an event blog but did not provide an event date.
+      form_set_error('field_blog_event_date', t('The blog entry is tagged as an event, please provide a valid event date.'));
+    }
   }
 }
 
@@ -411,6 +490,23 @@ function _helpergeneric_cleanup_file_form(&$form, &$form_state, $form_id) {
 }
 
 /**
+ * Helper function required by hook_form_FORM_ID_alter() for menu_edit_item().
+ */
+function _helpergeneric_cleanup_menu_form(&$form, &$form_state, $form_id) {
+  if (isset($form['enabled'])) {
+    $form['enabled']['#access'] = FALSE;
+  }
+
+  if (isset($form['expanded'])) {
+    $form['expanded']['#access'] = FALSE;
+  }
+
+  if (isset($form['parent'])) {
+    $form['parent']['#access'] = FALSE;
+  }
+}
+
+/**
  * Helper function required by hook_form_FORM_ID_alter() for node_form().
  */
 function _helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
@@ -424,10 +520,6 @@ function _helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
   // Hide "Comment settings" fieldset for all node types except "Blog entry".
   if ($form['#node']->type != 'blog') {
     $form['comment_settings']['#access'] = FALSE;
-  }
-
-  if (isset($form['menu'])) {
-    $form['menu']['#access'] = FALSE;
   }
 
   if (isset($form['redirect'])) {
@@ -448,6 +540,13 @@ function _helpergeneric_cleanup_node_form(&$form, &$form_state, $form_id) {
 
   if (isset($form['options']['sticky'])) {
     $form['options']['sticky']['#access'] = FALSE;
+  }
+
+  // Move the translation fieldset to a vertical tab.
+  if (isset($form['translation'])) {
+    $form['translation']['status']['#access'] = FALSE;
+    $form['translation']['name']['#access'] = FALSE;
+    $form['translation']['created']['#access'] = FALSE;
   }
 }
 
@@ -474,10 +573,16 @@ function _helpergeneric_alter_vertical_tabs(&$form) {
   // Do not display as vertical tabs.
   $form['additional_settings'] = array();
   foreach (element_children($form) as $key) {
-    if (isset($form[$key]['#group']) && $form[$key]['#group'] == 'additional_settings') {
-      unset($form[$key]['#group']);
-      $form[$key]['#collapsed'] = FALSE;
-      $form[$key]['#collapsible'] = FALSE;
+    if (!isset($form[$key]['#group']) || $form[$key]['#group'] != 'additional_settings') {
+      continue;
+    }
+
+    unset($form[$key]['#group']);
+    switch ($key) {
+      default:
+        $form[$key]['#collapsed'] = FALSE;
+        $form[$key]['#collapsible'] = FALSE;
+        break;
     }
   }
 

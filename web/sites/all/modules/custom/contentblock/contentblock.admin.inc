@@ -11,10 +11,10 @@
  * @see contentblock_entity_info().
  */
 function contentblock_form($form, &$form_state, $entity) {
-  $entity_type = $entity->entityType();
+  $entity_type = 'contentblock';
   $entity_controller = entity_get_controller($entity_type);
 
-  if (isset($form_state['op'])) {
+  if (isset($form_state['op']) && arg(0) != 'admin') {
     drupal_set_title(contentblock_entity_ui_get_page_title($form_state['op'], $entity_type, $entity), PASS_THROUGH);
   }
 
@@ -40,7 +40,6 @@ function contentblock_form($form, &$form_state, $entity) {
   $form['title'] = array(
     '#type' => 'textfield',
     '#title' => t('Title'),
-    '#description' => t('Were you expecting a title?'),
     '#default_value' => $entity->title,
   );
 
@@ -59,14 +58,26 @@ function contentblock_form($form, &$form_state, $entity) {
     );
   }
 
+  // Setup the destination and cancel link URL.
+  $form_state['destination'] = drupal_get_destination();
   $entity_uri = $entity->uri();
-  if ($entity_uri) {
+  if ($entity_uri || $entity->machine_name) {
     $form['actions']['cancel'] = array(
       '#type' => 'link',
       '#title' => t('Cancel'),
       '#href' => $entity_uri['path'],
-      '#weight' => 20,
+      '#weight' => 100,
     );
+
+    if (!empty($entity->machine_name)) {
+      $form['actions']['cancel']['#href'] = 'admin/settings/content-sections';
+    }
+  }
+
+  if (!empty($_GET['destination'])) {
+    $destination_parts = drupal_parse_url($_GET['destination']);
+    $form['actions']['cancel']['#href'] = $destination_parts['path'];
+    $form['actions']['cancel']['#options']['query'] = $destination_parts['query'];
   }
 
   // Attach fields, if any, and allow DS to order form items.
@@ -126,13 +137,25 @@ function _contentblock_entity_form_submit($form, &$form_state) {
   entity_save($entity_type, $entity);
 
   // Prepare the messages.
-  $watchdog_args = array('@type' => $entity->entityType(), '%title' => $entity->label());
-  $t_args = array('@type' => contentblock_type_get_name($entity_type), '%title' => $entity->label());
+  $entity_label = $entity->label();
+  if (empty($entity_label) && !empty($entity->machine_name)) {
+    $info = contentblock_get_hidden_types($entity->machine_name);
+    if (!empty($info['title'])) {
+      $entity_label = $info['title'];
+    }
+  }
+  $watchdog_args = array('@type' => $entity->entityType(), '%title' => $entity_label);
+  $t_args = array('@type' => contentblock_type_get_name($entity_type), '%title' => $entity_label);
   $entity_uri = entity_uri($entity_type, $entity);
   $entity_link = l(t('view'), $entity_uri['path']);
 
   if ($entity->identifier()) {
-    $form_state['redirect'] = entity_access('view', $entity_type, $entity) ? $entity_uri['path'] : '<front>';
+    if (empty($entity->machine_name)) {
+      $form_state['redirect'] = entity_access('view', $entity_type, $entity) ? $entity_uri['path'] : '<front>';
+    }
+    else {
+      $form_state['redirect'] = '<front>';
+    }
   }
 
   if (empty($entity->is_new)) {

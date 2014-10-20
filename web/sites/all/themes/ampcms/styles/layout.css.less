@@ -5,100 +5,103 @@
  * @TODO: Cleanup and convert to LESS.
  */
 
-@import './lib/custom-grid.less';
-@import './lib/helpers.less';
-
-html, body {
-  height: 100%;
-  position: relative;
-}
-
-.page-wrapper {
-  .row-wrapper();
-  position: relative;
-}
-
-.main-header {
-  .main-header-inner {
-    .row-wrapper();
-  }
-  .site-name {
-    font-size: 1em;
-    .column(5);
-  }
-  .header-items {
-    .column(7);
-    float: right;
-    text-align: right;
+// Limit the minimum size of the body in order to prevent issues on smaller devices.
+.xSmallOnly() {
+  body {
+    min-width: 20rem; // 20*16px = 320px
   }
 }
 
+// Add some spacing around main wrapper elements.
 .main-header,
 .main-navigation,
 .main-content {
   .single-fluid-column();
 }
 
-.layout-right-sidebar {
-  .group-left {
+.xMediumOnly() {
+  // Restrict the width of the content on medium sized displays.
+  .page-wrapper {
+    .row-wrapper(8);
+    position: relative;
+  }
+}
+
+// @TODO: Define styles for large displays.
+// .xNormalOnly() {}
+.xNormalAndUp() {
+  .page-wrapper {
+    .row-wrapper();
+    position: relative;
+  }
+
+  .main-header {
+    .site-name {
+      font-size: 1em;
+      width: 40%;
+      float: left;
+    }
+    .header-items {
+      width: 60%;
+      float: right;
+      text-align: right;
+    }
+  }
+
+  .layout-right-sidebar {
+    .group-left {
+      .column(8);
+      .first-child-column();
+    }
+    .group-right {
+      .column(4);
+      .last-child-column();
+    }
+  }
+
+  .homepage-welcome-block {
     .column(8);
-    .first-child-column();
-  }
-  .group-right {
-    .column(4);
-    .last-child-column();
+    margin: 0;
   }
 }
 
-.layout-block {
-  .box-sizing(border-box);
-  background-color: @clcontent;
-  border: @border_width solid @clcontent__separator;
-  padding: 0 1em;
-  .contentblock-title,
-  .pane-title {
-    border-bottom: @border_width solid @clcontent__separator;
-    padding-bottom: 1em;
-    margin-bottom: 0;
-  }
-}
+// @TODO: Define styles for large displays.
+// .xLargeUp() {
+//   .page-wrapper {
+//     .row-wrapper(16);
+//     position: relative;
+//   }
 
-.layout-separator {
-  margin-bottom: 1em;
-}
+//   .main-header {
+//     .site-name {
+//       font-size: 1em;
+//       width: 40%;
+//       float: left;
+//     }
+//     .header-items {
+//       width: 60%;
+//       float: right;
+//       text-align: right;
+//     }
+//   }
 
+//   .layout-right-sidebar {
+//     .group-left {
+//       .column(10);
+//       .first-child-column();
+//     }
+//     .group-right {
+//       .column(6);
+//       .last-child-column();
+//     }
+//   }
 
-.two-columns-grid {
-  .view-content {
-    .clearfix-mixin();
-  }
-  .views-row {
-    float: left;
-    .box-sizing(border-box);
-    width: 50%;
-  }
-  .views-row-odd {
-    clear: left;
-    padding-right: 0.5em;
-  }
-  .views-row-even {
-    padding-left: 0.5em;
-  }
+//   .homepage-welcome-block {
+//     .column(10);
+//     margin: 0;
+//   }
+// }
 
-  .views-first-page {
-    .views-row-odd {
-      clear: none;
-      padding-left: 0.5em;
-      padding-right: 0;
-    }
-    .views-row-even {
-      clear: left;
-      padding-left: 0;
-      padding-right: 0.5em;
-    }
-    .views-row-1 {
-      width: 100%;
-      padding-left: 0;
-    }
-  }
-}
+@import './lib/custom-grid.less';
+@import './lib/custom-responsive.less';
+@import './lib/helpers.less';

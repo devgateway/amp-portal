@@ -308,7 +308,9 @@ function ctools_content_render($type, $subtype, $conf, $keywords = array(), $arg
       }
 
       // Sterilize the title
-      $content->title = filter_xss_admin($content->title);
+      if (empty($content->title_is_xss_free)) {
+        $content->title = filter_xss_admin($content->title);
+      }
 
       // If a link is specified, populate.
       if (!empty($content->title_link)) {

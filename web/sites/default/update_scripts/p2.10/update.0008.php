@@ -11,6 +11,9 @@ $modules = array(
 // Enable modules.
 _us_module__install($modules);
 
+// Clear system caches.
+drupal_flush_all_caches();
+
 // Disable the default view for the media browser library tab.
 _us_views__disable('media_default');
 
@@ -30,6 +33,9 @@ _us_views__disable('media_default');
 // Set the fallback format to plain text.
 variable_set('filter_fallback_format', 'filtered_html');
 
+// Limit the teaser length.
+variable_set('teaser_length', 360);
+
 // Set the "Add media" wysiwyg button title.
 variable_set('media_wysiwyg_wysiwyg_icon_title', 'Add/Update media');
 
@@ -44,7 +50,7 @@ $wysiwyg_allowed_types = array(
   // 'audio',
   'document',
   'image',
-  // 'video',
+  'video',
 );
 variable_set('media_wysiwyg_wysiwyg_allowed_types', $wysiwyg_allowed_types);
 
@@ -75,6 +81,8 @@ $wysiwyg_browser_plugins = array(
   'media_library--document_library',
   'media_library--image_library',
   // 'media_library--video_library',
+  // 'media_library--video_library',
+  'media_internet',
 );
 variable_set('media_wysiwyg_wysiwyg_browser_plugins', $wysiwyg_browser_plugins);
 

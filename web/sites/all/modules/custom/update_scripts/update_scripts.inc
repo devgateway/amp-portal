@@ -158,7 +158,8 @@ function _update_scripts_load_script($script_path = NULL) {
 
   // Create a function that holds the update script code.
   // This is primarily used for checking for php syntax errors.
-  $function = create_function('', $script_code);
+  $args = '$script_directory = \'' . dirname($script_info['full_path']) . '\'';
+  $function = create_function($args, $script_code);
   if (!empty($function)) {
     $script_info['function'] = $function;
   }
@@ -416,6 +417,9 @@ function update_scripts_run_script($hash) {
  * Save the log object.
  */
 function update_scripts_log_save(&$log) {
+  // Update path to a proper format on Windows servers.
+  $log['path'] = str_replace('\\', '/', $log['path']);
+
   if (!isset($log['lid'])) {
     // Insert new log.
     drupal_write_record('update_scripts', $log);
@@ -461,6 +465,9 @@ function update_scripts_get_logs($lid = NULL) {
  * Returns the last log if the script has previously ran.
  */
 function _update_scripts_get_last_log_id($path) {
+  // Update path to a proper format on Windows servers.
+  $path = str_replace('\\', '/', $path);
+
   $sql = "SELECT lid, with_errors, finished FROM {update_scripts} WHERE path = :path ORDER BY lid DESC";
   $log = db_query($sql, array(':path' => $path))->fetchAssoc();
   return $log;

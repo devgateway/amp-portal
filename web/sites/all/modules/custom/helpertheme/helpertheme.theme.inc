@@ -55,8 +55,19 @@ function theme_header_logo() {
   $site_link_title = t(variable_get('site_link_title', 'Visit the main page'));
   $site_name = filter_xss_admin(variable_get('site_name', 'Drupal'));
 
+  $items['#prefix'] = '<h1 class="site-name contextual-links-region">';
+  $items['#suffix'] = '</h1>';
+
+  // Initialize the template variable as a renderable array.
+  $items['contextual_links'] = array(
+    '#type' => 'contextual_links',
+    '#contextual_links' => array(
+      'menu' => array('admin/settings/generic', array('edit')),
+    ),
+  );
+
   $items['logo_markup'] = array(
-    '#prefix' => '<a href="' . url('<front>') . '" title="' . $site_link_title . '" rel="home">',
+    '#prefix' => '<a href="' . url('<front>') . '" title="' . $site_link_title . '" class="link" rel="home">',
     '#suffix' => "</a>",
   );
 
@@ -64,7 +75,7 @@ function theme_header_logo() {
   $items['logo_markup']['svg'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.svg'),
-    '#alt' => $site_name,
+    '#alt' => '',
     '#attributes' => array(
       'role' => 'presentation',
     ),
@@ -74,9 +85,15 @@ function theme_header_logo() {
   $items['logo_markup']['png'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.png'),
-    '#alt' => $site_name,
+    '#alt' => '',
     '#prefix' => "<!--[if lt IE 9 ]>",
     '#suffix' => "<![endif]-->",
+  );
+
+  $items['logo_markup']['site_name'] = array(
+    '#markup' => $site_name,
+    '#prefix' => '<span class="text">',
+    '#suffix' => "</span>",
   );
 
   // Render the HTML.
@@ -98,18 +115,64 @@ function theme_header_items() {
     ),
   );
 
-  $menu_elements['header'] = array(
-    '#type' => 'html_tag',
-    '#tag' => 'h2',
-    '#value' => 'User Menu',
-    '#attributes' => array('class' => array('element-invisible')),
-  );
+  // Add the language switcher links.
+  if (drupal_multilingual()) {
+    $path = drupal_is_front_page() ? '<front>' : $_GET['q'];
+    $lang_links = language_negotiation_get_switch_links('language', $path);
+    if (isset($lang_links->links)) {
+      $menu_elements['lang']['#prefix'] = '<nav role="navigation" id="language-switcher" class="language-switcher">';
+      $menu_elements['lang']['#suffix'] = '</nav>';
+
+      $menu_elements['lang']['subject'] = array(
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => 'Languages',
+        '#attributes' => array('class' => array('element-invisible')),
+      );
+
+      // Add language info to all links.
+      $languages = language_list();
+      foreach ($lang_links->links as &$link) {
+        if (isset($link['attributes']['lang']) && isset($languages[$link['attributes']['lang']])) {
+          $link['language'] = $languages[$link['attributes']['lang']];
+        }
+      }
+
+      $menu_elements['lang']['links'] = array(
+        '#theme' => 'links__language_switcher',
+        '#links' => $lang_links->links,
+        '#attributes' => array(
+          'class' => array(
+            'language-switcher-' . $lang_links->provider,
+            'header-links',
+            'clearfix',
+          )
+        ),
+      );
+    }
+  }
 
   // Get the menu links.
   $menu_name = 'user-menu';
   if ($links = helpertheme_menu_navigation_links($menu_name, 1)) {
-    $menu_elements['nav']['#prefix'] = '<nav role="navigation" id="user-navigation" class="user-navigation">';
+    // Mark this element as potentially having contextual links attached to it.
+    $menu_elements['nav']['#prefix'] = '<nav role="navigation" id="user-navigation" class="user-navigation contextual-links-region">';
     $menu_elements['nav']['#suffix'] = '</nav>';
+
+    $menu_elements['nav']['subject'] = array(
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => 'User Menu',
+      '#attributes' => array('class' => array('element-invisible')),
+    );
+
+    // Initialize the template variable as a renderable array.
+    // $menu_elements['nav']['contextual_links'] = array(
+    //   '#type' => 'contextual_links',
+    //   '#contextual_links' => array(
+    //     'menu' => array('admin/structure/menu/manage', array('user-menu')),
+    //   ),
+    // );
 
     $menu_elements['nav']['links'] = array(
       '#theme' => 'links__enhanced',
@@ -136,7 +199,24 @@ function theme_header_items() {
  * Returns HTML for main navigation menu.
  */
 function theme_main_navigation() {
-  $menu_elements = array();
+  $menu_elements = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'navigation-toplevel',
+      ),
+    ),
+  );
+
+  // Initialize the template variable as a renderable array.
+  $menu_elements['contextual_links'] = array(
+    '#type' => 'contextual_links',
+    '#contextual_links' => array(
+      'menu' => array('admin/structure/menu/manage', array('main-menu')),
+    ),
+  );
+  // Mark this element as potentially having contextual links attached to it.
+  $menu_elements['#attributes']['class'][] = 'contextual-links-region';
 
   $menu_elements['header'] = array(
     '#type' => 'html_tag',
@@ -152,7 +232,7 @@ function theme_main_navigation() {
   $menu_elements['navigation']['#theme_wrappers'] = array('menu_tree__main_menu__toplevel');
 
   // Render the menu.
-  $output = render($menu_elements);
+  $output = drupal_render($menu_elements);
 
   // Remove whitespace between items. Helps with styling in-line elements.
   return preg_replace('/\>[\n\ ]+\</', '><', $output);
