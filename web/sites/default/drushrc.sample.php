@@ -43,12 +43,14 @@ $options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 's
  */
 $options['shell-aliases']['pull'] = '!git pull'; // We've all done it.
 $options['shell-aliases']['pulldb'] = '!git pull && drush updatedb';
-$options['shell-aliases']['build'] = '!drush updatedb && drush usr all --yes';
+$options['shell-aliases']['setup'] = '!drush updatedb && drush usr all --yes';
+
 $options['shell-aliases']['wipe'] = 'cache-clear all';
+
 $options['shell-aliases']['offline'] = 'variable-set -y --always-set maintenance_mode 1';
 $options['shell-aliases']['online'] = 'variable-set -y --always-set maintenance_mode 0';
-$options['shell-aliases']['self-alias'] = 'site-alias @self --with-db --alias-name=new';
-$options['shell-aliases']['site-get'] = '@none php-eval "return drush_sitealias_site_get();"';
+// $options['shell-aliases']['self-alias'] = 'site-alias @self --with-db --alias-name=new';
+// $options['shell-aliases']['site-get'] = '@none php-eval "return drush_sitealias_site_get();"';
 
 // Create a custom sql-dump command.
 $drupal_root = drush_get_context('DRUSH_SELECTED_DRUPAL_ROOT');
