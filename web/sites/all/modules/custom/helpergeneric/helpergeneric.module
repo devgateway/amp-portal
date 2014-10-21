@@ -42,6 +42,15 @@ function helpergeneric_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/settings/api'] = array(
+    'title' => 'API Settings',
+    'description' => 'AMP API settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_api_settings_form'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'file' => 'helpergeneric.admin.inc',
+  );
+
   $items['admin/settings/generic'] = array(
     'title' => 'Generic settings',
     'description' => 'Project generic settings.',
@@ -621,4 +630,21 @@ function helpergeneric_locale_default_languages_alter(&$languages) {
   // Manually update the language_count variable, features will take care of
   // the language settings.
   variable_set('language_count', $enabled_count);
+}
+
+/**
+ * Tries to detect the AMP base URL using the PHP $_SERVER variables.
+ * @see drupal_detect_baseurl()
+ *
+ * @return
+ *   The auto-detected $base_url that should be configured in 'admin/settings/api'.
+ */
+function helpergeneric_detect_amp_baseurl() {
+  $proto = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+  $host = $_SERVER['SERVER_NAME'];
+  $port = ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']);
+  $dir = base_path();
+
+  // Trim the trailing slash.
+  return rtrim("$proto$host$port$dir", '/');
 }
