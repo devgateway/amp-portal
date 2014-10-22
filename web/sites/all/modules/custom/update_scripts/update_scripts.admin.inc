@@ -123,7 +123,7 @@ function update_scripts_setup() {
       $htaccess_path = $path . DIRECTORY_SEPARATOR . '.htaccess';
       if (is_dir($path) && !is_file($htaccess_path)) {
         // Try to create .htaccess file and warn if errors occured.
-        file_create_htaccess($path);
+        file_create_htaccess($path, TRUE, TRUE);
 
         // Check if .htaccess file was successfully created.
         if (is_file($htaccess_path)) {
