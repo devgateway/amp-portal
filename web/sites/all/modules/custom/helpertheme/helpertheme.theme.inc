@@ -40,6 +40,16 @@ function theme_svg_sprite($elements) {
       'fragment' => $elements['symbol'],
     );
   }
+
+  // A dummy query-string is added to filenames, to gain control over
+  // browser-caching. The string changes on every update or full cache
+  // flush, forcing browsers to load a new copy of the files, as the
+  // URL changed. Files that should not be cached (see drupal_add_js())
+  // get REQUEST_TIME as query-string instead, to enforce reload on every
+  // page request.
+  $default_query_string = variable_get('css_js_query_string', '0');
+  $args['query'][$default_query_string] = NULL;
+
   $elements['#use']['xlink:href'] = url($elements['path'], $args);
 
   return '<svg' . drupal_attributes($elements['#attributes']) . '><use'. drupal_attributes($elements['#use']) . '/></svg>';
