@@ -5,7 +5,7 @@
  */
 
 // Include formatter specific code.
-module_load_include('inc', 'contentblock', 'contentblock.formatter');
+module_load_include('inc', 'contentblock', 'contentblock.field');
 module_load_include('inc', 'contentblock', 'contentblock.admin_cbreference');
 
 /**
@@ -554,6 +554,9 @@ function contentblock_ctools_plugin_directory($module, $plugin) {
   if ($module == 'ctools' && $plugin == 'content_types') {
     return 'plugins/' . $plugin;
   }
+  if ($module == 'contentblock' && $plugin == 'predefined_widgets') {
+    return 'plugins/' . $plugin;
+  }
 }
 
 /**
@@ -612,4 +615,42 @@ function contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_i
       _contentblock_form_contentblock_form_alter($form, $form_state, $form_id);
     }
   }
+}
+
+/**
+ * Implements hook_ctools_plugin_type() to inform CTools about the predefined_widgets plugin.
+ */
+function contentblock_ctools_plugin_type() {
+  $plugins['predefined_widgets'] = array(
+    'cache' => TRUE,
+  );
+
+  return $plugins;
+}
+
+/**
+ * Fetch metadata for all predefined_widget plugins.
+ *
+ * @return
+ *   An array of arrays with information about all available panel content types.
+ */
+function contentblock_get_predefined_widgets() {
+  ctools_include('context');
+  ctools_include('plugins');
+  return ctools_get_plugins('contentblock', 'predefined_widgets');
+}
+
+/**
+ * Fetch metadata on a specific predefined_widget plugin.
+ *
+ * @param $content type
+ *   Name of a panel content type.
+ *
+ * @return
+ *   An array with information about the requested panel content type.
+ */
+function contentblock_get_predefined_widget($predefined_widget) {
+  ctools_include('context');
+  ctools_include('plugins');
+  return ctools_get_plugins('contentblock', 'predefined_widgets', $predefined_widget);
 }

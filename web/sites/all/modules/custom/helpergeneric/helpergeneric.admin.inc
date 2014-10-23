@@ -39,6 +39,21 @@ function helpergeneric_ui_settings_form($form, &$form_state) {
 }
 
 /**
+ * Submit handler for helpergeneric_ui_settings_form().
+ */
+function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
+  $params = session_get_cookie_params();
+  if ($form_state['triggering_element']['#value'] == t('Enable')) {
+    // Enable UI cleanup.
+    setcookie('helpergeneric_cleanup_ui_force', 1, REQUEST_TIME + (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+  }
+  else {
+    // Disable UI cleanup.
+    setcookie('helpergeneric_cleanup_ui_force', 0, REQUEST_TIME + (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+  }
+}
+
+/**
  * Page callback for 'admin/settings/api'.
  */
 function helpergeneric_api_settings_form($form, &$form_state) {
@@ -53,31 +68,29 @@ function helpergeneric_api_settings_form($form, &$form_state) {
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
   );
+
+  $example_url = helpergeneric_detect_amp_baseurl() . ':80/rest';
   $form['location']['restclient_hostname'] = array(
     '#type' => 'textfield',
     '#title' => t('Hostname'),
-    '#description' => t('The hostname for the server with no trailing slash. Ex: http://localhost:8080/rest'),
+    '#description' => t('The hostname for the server with no trailing slash. Ex: ') . $example_url,
     '#size' => 40,
     '#maxlength' => 255,
-    '#default_value' => variable_get('restclient_hostname', helpergeneric_detect_amp_baseurl() . '/rest'),
+    '#default_value' => variable_get('restclient_hostname', 'http://localhost:80/rest'),
   );
+
+  $form['#submit'][] = 'helpergeneric_api_settings_form_submit';
 
   return system_settings_form($form);
 }
 
 /**
- * Submit handler for helpergeneric_ui_settings_form().
+ * Submit callback for helpergeneric_api_settings_form().
  */
-function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
-  $params = session_get_cookie_params();
-  if ($form_state['triggering_element']['#value'] == t('Enable')) {
-    // Enable UI cleanup.
-    setcookie('helpergeneric_cleanup_ui_force', 1, REQUEST_TIME + (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-  }
-  else {
-    // Disable UI cleanup.
-    setcookie('helpergeneric_cleanup_ui_force', 0, REQUEST_TIME + (60 * 60 * 12), $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-  }
+function helpergeneric_api_settings_form_submit($form, &$form_state) {
+  // Clear widget cache.
+  $cache_id = 'contentblock:widget:';
+  cache_clear_all($cache_id, 'cache', TRUE);
 }
 
 /**
