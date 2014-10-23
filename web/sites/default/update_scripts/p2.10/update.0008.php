@@ -8,7 +8,6 @@ $modules = array(
     'media_wysiwyg',
     'media_wysiwyg_view_mode',
 );
-// Enable modules.
 _us_module__install($modules);
 
 // Clear system caches.

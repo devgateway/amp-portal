@@ -11,7 +11,6 @@ $modules = array(
   // 'toolbar',    // Replaced by the more accessible admin_menu_toolbar.
   'update',        // It's simply annoying to see this on all environments.
 );
-// Uninstall modules
 _us_module__uninstall($modules);
 
 // Provide a list of modules to be installed.
@@ -31,5 +30,4 @@ $modules = array(
   // 'syslog',
   // 'taxonomy',
 );
-// Install modules
 _us_module__install($modules);

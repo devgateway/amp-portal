@@ -21,7 +21,6 @@ $modules = array(
   'transliteration',
 
 );
-// Install modules
 _us_module__install($modules);
 
 // Update site date settings.

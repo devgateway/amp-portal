@@ -114,6 +114,8 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'date_format_shortest',
         'helpergeneric_cleanup_ui_force',
         'helpergeneric_disabled_languages',
+        // 'helpertheme_load_external_fonts',
+        'update_scripts_user_one_updated',
 
         // Hide CORE variables.
         'additional_settings__active_tab_blog',
@@ -235,6 +237,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'media_wysiwyg_view_mode_video_file_wysiwyg_view_mode_status',
         'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes',
         'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes_status',
+
+        // Hide restclient.module variables.
+        'restclient_caching',
+        'restclient_filepath',
+        'restclient_hostname',
+        'restclient_testing',
 
         // Hide update.module variables.
         'update_last_check',
