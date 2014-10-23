@@ -146,37 +146,6 @@ function amphomepage_default_page_manager_pages() {
     $display->content['new-1c8790d9-6462-463f-bad4-a6b334250708'] = $pane;
     $display->panels['col_b1'][1] = 'new-1c8790d9-6462-463f-bad4-a6b334250708';
     $pane = new stdClass();
-    $pane->pid = 'new-d07c4bc0-ca31-41ee-88ef-befce66b63d9';
-    $pane->panel = 'col_b1';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'homepage-news_events';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'style' => 'cbstyle',
-      'settings' => array(
-        'pane_classes' => array(
-          'layout-block' => 'layout-block',
-          'layout-separator' => 'layout-separator',
-        ),
-      ),
-    );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'homepage-news-events-block two-columns-grid',
-    );
-    $pane->extras = array();
-    $pane->position = 2;
-    $pane->locks = array();
-    $pane->uuid = 'd07c4bc0-ca31-41ee-88ef-befce66b63d9';
-    $display->content['new-d07c4bc0-ca31-41ee-88ef-befce66b63d9'] = $pane;
-    $display->panels['col_b1'][2] = 'new-d07c4bc0-ca31-41ee-88ef-befce66b63d9';
-    $pane = new stdClass();
     $pane->pid = 'new-bdd26f7f-5602-4e80-b37d-a0cd543343f0';
     $pane->panel = 'col_b1';
     $pane->type = 'cbreference';
@@ -195,11 +164,11 @@ function amphomepage_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 3;
+    $pane->position = 2;
     $pane->locks = array();
     $pane->uuid = 'bdd26f7f-5602-4e80-b37d-a0cd543343f0';
     $display->content['new-bdd26f7f-5602-4e80-b37d-a0cd543343f0'] = $pane;
-    $display->panels['col_b1'][3] = 'new-bdd26f7f-5602-4e80-b37d-a0cd543343f0';
+    $display->panels['col_b1'][2] = 'new-bdd26f7f-5602-4e80-b37d-a0cd543343f0';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
