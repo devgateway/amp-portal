@@ -45,7 +45,8 @@ function __ampcms_preprocess_views_view__homepage(&$vars) {
   switch ($vars['view']->current_display) {
     case 'news_events':
       if (!empty($vars['view']->result)) {
-        // @HACK: needed for more-link next to pane header. Breaks views contextual links.
+        // @HACK: Remove views contextual links, needed for more-link next to contentblock header.
+        $vars['title_suffix']['contextual_links'] = array();
         if (in_array('contextual-links-region', $vars['classes_array'])) {
           $key = array_search('contextual-links-region', $vars['classes_array']);
           unset($vars['classes_array'][$key]);
