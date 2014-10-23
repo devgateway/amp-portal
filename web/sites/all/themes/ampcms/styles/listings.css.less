@@ -88,7 +88,7 @@
 }
 
 // @TODO: Cleanup!
- table.styled-lightblue-table {
+.styled-lightblue-table {
   @header_color: #ebf5fd;
   @border_color: #d2e1f0;
   @even_color: #f8f8f8;
@@ -121,6 +121,15 @@
   }
   th {
     background-color: @header_color;
+    text-align: left;
+  }
+
+  .col-actual-start-date {
+    text-align: center;
+  }
+  .col-actual-commitments,
+  .col-actual-disbursements {
+    text-align: right;
   }
 }
 // @HACK: We don't have responsive tables, so we overflow the content and display a scrollbar.

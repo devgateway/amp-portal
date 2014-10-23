@@ -93,7 +93,7 @@ function contentblock_topprojects_widget_render($widget_settings, $entity, $lang
   $header = array();
   if (!empty($data)) {
     if (empty($data->headers)) {
-      drupal_set_message(t('Headers information missing from the API.', 'error'));
+      drupal_set_message(t('Headers information missing from the API.'), 'error');
       return NULL;
     }
 
@@ -107,8 +107,11 @@ function contentblock_topprojects_widget_render($widget_settings, $entity, $lang
         continue;
       }
 
-      $header[check_plain($key)] = array(
+      $header[$key] = array(
         'data' => check_plain($data->headers->$key),
+        'class' => array(
+          drupal_html_class('col-' . $key)
+        ),
       );
     }
   }
@@ -254,7 +257,12 @@ function _contentblock_topprojects_get_data_rows($visible_columns, $items) {
       }
 
       $row_value = check_plain($values->$key);
-      $row[$key] = '<span class="col-' . drupal_html_class($key) . '">' . $row_value . '</span>';
+      $row[$key] = array(
+        'data' => $row_value,
+        'class' => array(
+          drupal_html_class('col-' . $key)
+        ),
+      );
     }
 
     if (!empty($row)) {
