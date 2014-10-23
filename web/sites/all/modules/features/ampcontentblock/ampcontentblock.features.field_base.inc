@@ -162,19 +162,17 @@ function ampcontentblock_field_default_field_bases() {
     'field_name' => 'field_cbwidget',
     'foreign keys' => array(),
     'indexes' => array(
-      'value' => array(
-        0 => 'value',
+      'widget' => array(
+        0 => 'widget',
       ),
     ),
     'locked' => 0,
-    'module' => 'list',
+    'module' => 'contentblock',
     'settings' => array(
-      'allowed_values' => array(),
-      'allowed_values_function' => '',
       'entity_translation_sync' => FALSE,
     ),
     'translatable' => 0,
-    'type' => 'list_text',
+    'type' => 'contentblock_widget',
   );
 
   return $field_bases;

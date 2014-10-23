@@ -87,5 +87,41 @@
   }
 }
 
+// @TODO: Cleanup!
+ table.styled-lightblue-table {
+  @header_color: #ebf5fd;
+  @border_color: #d2e1f0;
+  @even_color: #f8f8f8;
+
+  border-color: @border_color;
+  border-style: solid none;
+  border-width: 1px;
+  margin: 1em 0;
+
+  tr {
+    font-size: 0.75em;
+    &.even {
+      background-color: @even_color;
+    }
+  }
+
+  th,
+  td {
+    padding: 0.5em 1em;
+    border-color: @border_color;
+    border-style: none solid;
+    border-width: 1px;
+    // &:first-child {
+    //   border-left: 0;
+    // }
+    // &:last-child {
+    //   border-right: 0;
+    // }
+  }
+  th {
+    background-color: @header_color;
+  }
+}
+
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';

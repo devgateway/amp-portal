@@ -77,7 +77,11 @@ function ampcontentblock_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_contentblock__predefined';
   $strongarm->value = array(
-    'view_modes' => array(),
+    'view_modes' => array(
+      'alternative' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
     'extra_fields' => array(
       'form' => array(
         'redirect' => array(
