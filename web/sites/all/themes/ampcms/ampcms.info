@@ -19,6 +19,7 @@ stylesheets[all][] = styles/drupal/actions.css.less
 stylesheets[all][] = styles/drupal/contextual.css.less
 stylesheets[all][] = styles/drupal/forms.css.less
 stylesheets[all][] = styles/drupal/messages.css.less
+stylesheets[all][] = styles/drupal/generic.css.less
 stylesheets[all][] = styles/reset.css.less
 
 ; Stylesheets.

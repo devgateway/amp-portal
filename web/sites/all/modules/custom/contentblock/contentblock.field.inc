@@ -102,7 +102,9 @@ function contentblock_field_formatter_view($entity_type, $entity, $field, $insta
 
       $plugin = contentblock_get_predefined_widget($widget_name);
       if ($function = ctools_plugin_get_function($plugin, 'render callback')) {
-        $result[] = $function($widget_settings, $entity, $langcode);
+        // Because of entity_translation, the provided $langcode is the original entity language.
+        $entity_langcode = entity_translation_get_existing_language($entity_type, $entity);
+        $result[] = $function($widget_settings, $entity, $entity_langcode);
       }
       break;
   }
@@ -195,9 +197,7 @@ function contentblock_field_widget_validate($element, &$form_state) {
     $values = &$form_state['values'][$element['#field_name']][$element['#language']];
   }
 
-  // Clear widget cache.
-  // $cache_id = 'contentblock:widget:' . $values['widget'];
-  // cache_clear_all($cache_id, 'cache', TRUE);
+  // Clear all cache.
   cache_clear_all();
 
   // Prepare the data for storage.

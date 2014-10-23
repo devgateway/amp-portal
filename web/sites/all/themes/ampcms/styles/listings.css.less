@@ -97,6 +97,7 @@
   border-style: solid none;
   border-width: 1px;
   margin: 1em 0;
+  width: 100%;
 
   tr {
     font-size: 0.75em;
@@ -120,6 +121,12 @@
   }
   th {
     background-color: @header_color;
+  }
+}
+// @HACK: We don't have responsive tables, so we overflow the content and display a scrollbar.
+.xSmallOnly() {
+  .large-table-wrapper {
+    overflow-y: auto;
   }
 }
 

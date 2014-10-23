@@ -24,29 +24,43 @@ $plugin = array(
   ),
 );
 
-function contentblock_topprojects_widget_retrieve_data($widget_settings) {
+function contentblock_topprojects_widget_retrieve_data($widget_settings, $langcode = NULL) {
   $data = array();
 
+  $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
+  $cache_id = "contentblock:widget:{$langcode}:topprojects:" . md5(serialize($widget_settings));
+
   // Try to get the response from cache.
-  $cache_id = 'contentblock:widget:topprojects:' . md5(serialize($widget_settings));
   if ($cached = cache_get($cache_id, 'cache')) {
    $response = $cached->data;
   }
   else {
     // Prepare a list of parameters for the request.
     $parameters = array();
+
     if (!empty($widget_settings['period'])) {
       $parameters['months'] = $widget_settings['period'];
     }
     if (!empty($widget_settings['count'])) {
       $parameters['count'] = $widget_settings['count'];
     }
+    if ($langcode != LANGUAGE_NONE) {
+      $parameters['language'] = $langcode;
+    }
+
+    $variables = array();
+    $variables['headers'] = array(
+      'Accept' => 'application/json',
+      'Content-Type' => 'application/json',
+    );
+    // Required, even though we pass the parameters in the URL like for GET requests.
+    $variables['body'] = '{}';
 
     // Set the API Resource Endpoint.
     $resource_path = 'public/topprojects';
 
     // Make a GET request.
-    $response = restclient_get($resource_path . '?' . drupal_http_build_query($parameters));
+    $response = restclient_post($resource_path . '?' . drupal_http_build_query($parameters), $variables);
   }
 
   // @TODO: Add support for more response codes.
@@ -72,7 +86,7 @@ function contentblock_topprojects_widget_retrieve_data($widget_settings) {
  * Render callback for the 'Top Projects' predefined widget.
  */
 function contentblock_topprojects_widget_render($widget_settings, $entity, $langcode) {
-  $data = contentblock_topprojects_widget_retrieve_data($widget_settings);
+  $data = contentblock_topprojects_widget_retrieve_data($widget_settings, $langcode);
 
   // @TODO: Deal with missing headers.
 
@@ -84,17 +98,17 @@ function contentblock_topprojects_widget_render($widget_settings, $entity, $lang
     }
 
     if (empty($widget_settings['visible_columns'])) {
-      $widget_settings['visible_columns'] = array_keys($data->headers);
+      $widget_settings['visible_columns'] = array_keys((array) $data->headers);
     }
 
     // Create the table headers.
     foreach ($widget_settings['visible_columns'] as $key) {
-      if (!isset($data->headers[$key])) {
+      if (!isset($data->headers->$key)) {
         continue;
       }
 
-      $header[$key] = array(
-        'data' => check_plain($data->headers[$key]),
+      $header[check_plain($key)] = array(
+        'data' => check_plain($data->headers->$key),
       );
     }
   }
@@ -116,8 +130,10 @@ function contentblock_topprojects_widget_render($widget_settings, $entity, $lang
         'styled-lightblue-table',
       ),
     ),
-    '#empty' => t('No project data available.'),
+    '#empty' => t('No data available.'),
     '#sticky' => FALSE,
+    '#prefix' => '<div class="large-table-wrapper">',
+    '#suffix' => '</div>',
   );
 
   // @TODO: Point to the projects listing page when one exits.
@@ -148,19 +164,17 @@ function contentblock_topprojects_widget_settings(&$element, &$form_state, $plug
   $settings_form['period'] = array(
     '#type' => 'select',
     '#title' => t('Period'),
-    '#description' => t('Displays the top projects during the selected time period.') .  ' <b>(not implemented yet!)</b>',
+    '#description' => t('Displays the top projects during the selected time period.'),
     '#default_value' => $widget_settings['period'],
     '#options' => $period_options,
-    '#disabled' => TRUE,
   );
 
   $settings_form['count'] = array(
     '#type' => 'select',
     '#title' => t('Projects Count'),
-    '#description' => t('The number of projects to display in the widget.') .  ' <b>(not implemented yet!)</b>',
+    '#description' => t('The number of projects to display in the widget.'),
     '#default_value' => $widget_settings['count'],
     '#options' => drupal_map_assoc(array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)),
-    '#disabled' => TRUE,
   );
 
   $settings_form['sort'] = array(
@@ -235,11 +249,11 @@ function _contentblock_topprojects_get_data_rows($visible_columns, $items) {
   foreach ($items as $delta => $values) {
     $row = array();
     foreach ($visible_columns as $key) {
-      if (!isset($values[$key])) {
+      if (!isset($values->$key)) {
         continue;
       }
 
-      $row_value = check_plain($values[$key]);
+      $row_value = check_plain($values->$key);
       $row[$key] = '<span class="col-' . drupal_html_class($key) . '">' . $row_value . '</span>';
     }
 

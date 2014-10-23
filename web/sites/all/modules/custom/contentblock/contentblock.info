@@ -4,6 +4,7 @@ core = 7.x
 package = Custom
 
 dependencies[] = entity
+dependencies[] = entity_translation
 dependencies[] = restclient
 
 ; Entity handlers.
