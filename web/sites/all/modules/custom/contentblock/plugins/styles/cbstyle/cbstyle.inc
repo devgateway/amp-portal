@@ -81,7 +81,7 @@ function theme_cbstyle_style_render_region($vars) {
     $contentblock_attributes['id'] = drupal_html_id($vars['settings']['css_id']);
   }
   else {
-    // Create a unique ID for the contentblock widget.
+    // Create a unique ID for the ContentBlock Widget.
     $contentblock_attributes['id'] = drupal_html_id('contentblock-' . $vars['region_id']);
   }
 
@@ -155,7 +155,7 @@ function theme_cbstyle_style_render_pane($vars) {
     $contentblock_attributes['id'] = drupal_html_id($vars['pane']->css['css_id']);
   }
   else {
-    // Create a unique ID for the contentblock widget.
+    // Create a unique ID for the ContentBlock Widget.
     $contentblock_attributes['id'] = drupal_html_id('contentblock-' . $vars['pane']->pid);
   }
 

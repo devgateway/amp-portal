@@ -8,9 +8,7 @@
 /**
  * Page callback for 'admin/settings/ui'.
  */
-function helpergeneric_ui_settings_form($form) {
-  $form = array();
-
+function helpergeneric_ui_settings_form($form, &$form_state) {
   $cleanup_ui_force = helpergeneric_cleanup_ui();
 
   $form['cleanup_ui'] = array(
@@ -56,11 +54,49 @@ function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
 }
 
 /**
+ * Page callback for 'admin/settings/api'.
+ */
+function helpergeneric_api_settings_form($form, &$form_state) {
+  $settings = variable_get('helpergeneric_api_settings', array(
+    'restclient_hostname' => 'http://localhost:80/rest',
+  ));
+
+  $form['location'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Location'),
+    '#description' => t('Enter the location of the server.'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+
+  $example_url = helpergeneric_detect_amp_baseurl() . ':80/rest';
+  $form['location']['restclient_hostname'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hostname'),
+    '#description' => t('The hostname for the server with no trailing slash. Ex: ') . $example_url,
+    '#size' => 40,
+    '#maxlength' => 255,
+    '#default_value' => variable_get('restclient_hostname', 'http://localhost:80/rest'),
+  );
+
+  $form['#submit'][] = 'helpergeneric_api_settings_form_submit';
+
+  return system_settings_form($form);
+}
+
+/**
+ * Submit callback for helpergeneric_api_settings_form().
+ */
+function helpergeneric_api_settings_form_submit($form, &$form_state) {
+  // Clear widget cache.
+  $cache_id = 'contentblock:widget:';
+  cache_clear_all($cache_id, 'cache', TRUE);
+}
+
+/**
  * Page callback for 'admin/settings/generic'.
  */
-function helpergeneric_settings_form($form) {
-  $form = array();
-
+function helpergeneric_settings_form($form, &$form_state) {
   $form['site_information'] = array(
     '#type' => 'fieldset',
     '#title' => t('Site details'),
@@ -106,7 +142,7 @@ function helpergeneric_settings_form_validate($form, &$form_state) {
  *
  * @see locale_languages_overview_form()
  */
-function helpergeneric_language_settings_form() {
+function helpergeneric_language_settings_form($form, &$form_state) {
   drupal_static_reset('language');
   $languages = language_list();
 

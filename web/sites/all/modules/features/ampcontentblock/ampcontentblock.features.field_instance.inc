@@ -258,17 +258,14 @@ function ampcontentblock_field_default_field_instances() {
   // Exported field_instance: 'contentblock-predefined-field_cbwidget'
   $field_instances['contentblock-predefined-field_cbwidget'] = array(
     'bundle' => 'predefined',
-    'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
         'module' => 'contentblock',
-        'settings' => array(
-          'callback' => '',
-        ),
-        'type' => 'contentblock_widget_callback',
+        'settings' => array(),
+        'type' => 'rendered_widget',
         'weight' => 1,
       ),
     ),
@@ -283,9 +280,9 @@ function ampcontentblock_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'options',
+      'module' => 'contentblock',
       'settings' => array(),
-      'type' => 'options_buttons',
+      'type' => 'widgets_settings',
       'weight' => 2,
     ),
   );

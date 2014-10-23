@@ -48,6 +48,13 @@ function ampcontentblock_ds_field_settings_info() {
         ),
       ),
     ),
+    'field_cbwidget' => array(
+      'formatter_settings' => array(
+        'ft' => array(
+          'func' => 'theme_ds_field_reset',
+        ),
+      ),
+    ),
   );
   $export['contentblock|predefined|default'] = $ds_fieldsetting;
 
