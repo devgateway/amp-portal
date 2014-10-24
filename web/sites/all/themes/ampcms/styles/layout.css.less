@@ -27,6 +27,23 @@
   }
 }
 
+.site-name {
+  // font-size: 1em;
+  // display: block;
+  .link {
+    display: table-row;
+  }
+  .text {
+    display: table-cell;
+    height: 60px;
+    vertical-align: middle;
+  }
+  img {
+    display: table-cell;
+    max-width: initial;
+  }
+}
+
 // @TODO: Define styles for large displays.
 // .xNormalOnly() {
 .xNormalAndUp() {
@@ -34,7 +51,6 @@
     .row-wrapper();
     position: relative;
   }
-
   .main-header {
     .site-name-wrapper {
       width: 40%;
@@ -42,6 +58,7 @@
     }
     .site-name {
       font-size: 1em;
+      display: block;
     }
     .header-items {
       width: 60%;
