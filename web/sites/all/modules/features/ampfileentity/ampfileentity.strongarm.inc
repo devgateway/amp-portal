@@ -315,9 +315,9 @@ function ampfileentity_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'media_wysiwyg_wysiwyg_allowed_types';
   $strongarm->value = array(
-    0 => 'image',
-    1 => 'video',
-    2 => 'document',
+    0 => 'document',
+    1 => 'image',
+    2 => 'video',
   );
   $export['media_wysiwyg_wysiwyg_allowed_types'] = $strongarm;
 

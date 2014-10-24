@@ -38,8 +38,8 @@ variable_set('teaser_length', 360);
 // Set the "Add media" wysiwyg button title.
 variable_set('media_wysiwyg_wysiwyg_icon_title', 'Add/Update media');
 
-// Set the default view mode to normal.
-variable_set('media_wysiwyg_wysiwyg_default_view_mode', 'normal');
+// Set the default view mode to narrow.
+variable_set('media_wysiwyg_wysiwyg_default_view_mode', 'narrow');
 
 // File directory for media uploaded via the WYSIWYG editor.
 variable_set('media_wysiwyg_wysiwyg_upload_directory', 'inline');

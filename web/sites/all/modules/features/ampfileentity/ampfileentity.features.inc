@@ -300,7 +300,7 @@ function ampfileentity_image_default_styles() {
     'name' => 'lirblock',
     'label' => 'LinkedImage: Rectangle Block (302px wide)',
     'effects' => array(
-      15 => array(
+      5 => array(
         'label' => 'Scale',
         'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
         'effect callback' => 'image_scale_effect',
@@ -316,7 +316,7 @@ function ampfileentity_image_default_styles() {
         ),
         'weight' => 1,
       ),
-      16 => array(
+      6 => array(
         'label' => 'Define canvas',
         'help' => 'Define the size of the working canvas and background color, this controls the dimensions of the output image.',
         'effect callback' => 'canvasactions_definecanvas_effect',
@@ -351,9 +351,9 @@ function ampfileentity_image_default_styles() {
   // Exported image style: lisblock.
   $styles['lisblock'] = array(
     'name' => 'lisblock',
-    'label' => 'LinkedImage: Square Block (302x302)',
+    'label' => 'LinkedImage: Square Block',
     'effects' => array(
-      13 => array(
+      3 => array(
         'label' => 'Scale and crop',
         'help' => 'Scale and crop will maintain the aspect-ratio of the original image, then crop the larger dimension. This is most useful for creating perfectly square thumbnails without stretching the image.',
         'effect callback' => 'image_scale_and_crop_effect',
@@ -368,7 +368,7 @@ function ampfileentity_image_default_styles() {
         ),
         'weight' => 1,
       ),
-      14 => array(
+      4 => array(
         'label' => 'Define canvas',
         'help' => 'Define the size of the working canvas and background color, this controls the dimensions of the output image.',
         'effect callback' => 'canvasactions_definecanvas_effect',
@@ -403,9 +403,9 @@ function ampfileentity_image_default_styles() {
   // Exported image style: liwblock.
   $styles['liwblock'] = array(
     'name' => 'liwblock',
-    'label' => 'LinkedImage: Wide Block (648x112)',
+    'label' => 'LinkedImage: Wide Block',
     'effects' => array(
-      11 => array(
+      1 => array(
         'label' => 'Scale and crop',
         'help' => 'Scale and crop will maintain the aspect-ratio of the original image, then crop the larger dimension. This is most useful for creating perfectly square thumbnails without stretching the image.',
         'effect callback' => 'image_scale_and_crop_effect',
@@ -415,12 +415,12 @@ function ampfileentity_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => 648,
+          'width' => 560,
           'height' => 112,
         ),
         'weight' => 1,
       ),
-      12 => array(
+      2 => array(
         'label' => 'Define canvas',
         'help' => 'Define the size of the working canvas and background color, this controls the dimensions of the output image.',
         'effect callback' => 'canvasactions_definecanvas_effect',
@@ -435,7 +435,7 @@ function ampfileentity_image_default_styles() {
           ),
           'under' => 1,
           'exact' => array(
-            'width' => 648,
+            'width' => 560,
             'height' => 112,
             'xpos' => 'center',
             'ypos' => 'center',

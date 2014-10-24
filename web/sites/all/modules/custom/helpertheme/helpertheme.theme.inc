@@ -65,8 +65,8 @@ function theme_header_logo() {
   $site_link_title = t(variable_get('site_link_title', 'Visit the main page'));
   $site_name = filter_xss_admin(variable_get('site_name', 'Drupal'));
 
-  $items['#prefix'] = '<h1 class="site-name contextual-links-region">';
-  $items['#suffix'] = '</h1>';
+  $items['#prefix'] = '<div class="site-name-wrapper contextual-links-region">';
+  $items['#suffix'] = '</div>';
 
   // Initialize the template variable as a renderable array.
   $items['contextual_links'] = array(
@@ -76,13 +76,16 @@ function theme_header_logo() {
     ),
   );
 
-  $items['logo_markup'] = array(
+  $items['header']['#prefix'] = '<h1 class="site-name">';
+  $items['header']['#suffix'] = '</h1>';
+
+  $items['header']['logo_markup'] = array(
     '#prefix' => '<a href="' . url('<front>') . '" title="' . $site_link_title . '" class="link" rel="home">',
     '#suffix' => "</a>",
   );
 
   // Replace the PNG logo with a SVG one.
-  $items['logo_markup']['svg'] = array(
+  $items['header']['logo_markup']['svg'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.svg'),
     '#alt' => '',
@@ -92,7 +95,7 @@ function theme_header_logo() {
     '#prefix' => "<!--[if (gte IE 9)|!(IE)]><!-->",
     '#suffix' => "<!--<![endif]-->",
   );
-  $items['logo_markup']['png'] = array(
+  $items['header']['logo_markup']['png'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.png'),
     '#alt' => '',
@@ -100,7 +103,7 @@ function theme_header_logo() {
     '#suffix' => "<![endif]-->",
   );
 
-  $items['logo_markup']['site_name'] = array(
+  $items['header']['logo_markup']['site_name'] = array(
     '#markup' => $site_name,
     '#prefix' => '<span class="text">',
     '#suffix' => "</span>",
