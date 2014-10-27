@@ -61,6 +61,11 @@ function helpergeneric_api_settings_form($form, &$form_state) {
     'restclient_hostname' => 'http://localhost:80/rest',
   ));
 
+  $api_status = helpergeneric_check_api_status(FALSE);
+  if (!$api_status['online']) {
+    drupal_set_message($api_status['message'], 'warning');
+  }
+
   $form['location'] = array(
     '#type' => 'fieldset',
     '#title' => t('Location'),

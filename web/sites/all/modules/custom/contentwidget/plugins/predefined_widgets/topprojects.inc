@@ -27,6 +27,12 @@ $plugin = array(
 function contentwidget_topprojects_widget_retrieve_data($widget_settings, $langcode = NULL) {
   $data = array();
 
+  $api_status = helpergeneric_check_api_status();
+  if (!$api_status['online']) {
+    drupal_set_message($api_status['message'], 'warning');
+    return $data;
+  }
+
   $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
   $cache_id = "contentblock:widget:{$langcode}:topprojects:" . md5(serialize($widget_settings));
 
@@ -72,11 +78,11 @@ function contentwidget_topprojects_widget_retrieve_data($widget_settings, $langc
       $data = json_decode($response->data);
     }
     else {
-      drupal_set_message(t('No data retrieved from the API. Please try again later!'), 'error');
+      drupal_set_message(t('No data retrieved from the API. Please try again later or check the API Settings.'), 'error');
     }
   }
   else {
-    drupal_set_message(t('Could not retrieve data from the API. Please try again later!'), 'error');
+    drupal_set_message(t('Could not retrieve data from the API. Please try again later or check the API Settings.'), 'error');
   }
 
   return $data;
@@ -192,8 +198,8 @@ function contentwidget_topprojects_widget_settings(&$element, &$form_state, $plu
     '#disabled' => TRUE,
   );
 
-  if (isset($form_state['input'][$element['#field_name']][$element['#language']]['settings']['topprojects'])) {
-    $display_all_columns = (bool) $form_state['input'][$element['#field_name']][$element['#language']]['settings']['topprojects']['display_all_columns'];
+  if (isset($form_state['input'][$element['#field_name']][$element['#language']][0]['settings']['topprojects'])) {
+    $display_all_columns = (bool) $form_state['input'][$element['#field_name']][$element['#language']][0]['settings']['topprojects']['display_all_columns'];
   }
   else {
     $display_all_columns = empty($widget_settings['visible_columns']) ? TRUE : FALSE;
@@ -220,24 +226,26 @@ function contentwidget_topprojects_widget_settings(&$element, &$form_state, $plu
   if (empty($display_all_columns)) {
     $data = contentwidget_topprojects_widget_retrieve_data($widget_settings);
 
-    $available_columns = array();
-    foreach ($data->headers as $key => $value) {
-      $available_columns[check_plain($key)] = check_plain($value);
-    }
+    if (!empty($data->headers)) {
+      $available_columns = array();
+      foreach ($data->headers as $key => $value) {
+        $available_columns[check_plain($key)] = check_plain($value);
+      }
 
-    $settings_form['visible_columns'] += array(
-      '#type' => 'checkboxes',
-      '#title' => t('Visible Columns'),
-      '#default_value' => $widget_settings['visible_columns'],
-      '#description' => t('Select columns to display in the table.'),
-      '#options' => $available_columns,
-      '#multiple' => TRUE,
-      '#states' => array(
-        'visible' => array(
-          ':input[name="' . $form_state['topprojects']['input_name_prefix'] . '[display_all_columns]"]' => array('checked' => FALSE),
+      $settings_form['visible_columns'] += array(
+        '#type' => 'checkboxes',
+        '#title' => t('Visible Columns'),
+        '#default_value' => $widget_settings['visible_columns'],
+        '#description' => t('Select columns to display in the table.'),
+        '#options' => $available_columns,
+        '#multiple' => TRUE,
+        '#states' => array(
+          'visible' => array(
+            ':input[name="' . $form_state['topprojects']['input_name_prefix'] . '[display_all_columns]"]' => array('checked' => FALSE),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   return $settings_form;
@@ -282,9 +290,9 @@ function contentwidget_widget_ajax_callback($form, $form_state) {
   // Update the form elements via ajax.
   $field_name = $form_state['topprojects']['field_name'];
   $language = $form_state['topprojects']['language'];
-  if (!empty($form_state['values'][$field_name][$language]['settings']['topprojects'])) {
+  if (!empty($form_state['values'][$field_name][$language][0]['settings']['topprojects'])) {
     // Prepend messages to the form elements.
-    $widget_settings_form = $form[$field_name][$language]['settings']['topprojects'];
+    $widget_settings_form = $form[$field_name][$language][0]['settings']['topprojects'];
     $widget_settings_form['visible_columns']['#prefix'] .= theme('status_messages');
     $markup = drupal_render($widget_settings_form['visible_columns']);
 

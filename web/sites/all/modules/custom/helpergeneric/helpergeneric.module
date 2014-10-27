@@ -648,3 +648,34 @@ function helpergeneric_detect_amp_baseurl() {
   // Trim the trailing slash.
   return rtrim("$proto$host$port$dir", '/');
 }
+
+/**
+ * Tries to determine if the API is online or not.
+ */
+function helpergeneric_check_api_status($link = TRUE) {
+  $status = array(
+    'online' => FALSE,
+    'message' => '',
+  );
+
+  $response = restclient_get('test', array('reset' => TRUE, 'error_handling' => TRUE));
+  if (empty($response)) {
+    $status['online'] = FALSE;
+    $status['message'] = t('The API server seems to be offline.');
+    if ($link) {
+      $t_args = array('!settings' => l(t('API Settings'), 'admin/settings/api'));
+      $status['message'] .= ' ' . t('Please check the !settings page.', $t_args);
+    }
+    return $status;
+  }
+
+  // @TODO: Add support for more response codes.
+  if (restclient_response_code($response) == RESTCLIENT_RESPONSE_SUCCESS) {
+    $status['online'] = TRUE;
+  }
+  else {
+    $status['message'] = t('The API returned the following status message: %message', array('%message' => $response->status_message));
+  }
+
+  return $status;
+}
