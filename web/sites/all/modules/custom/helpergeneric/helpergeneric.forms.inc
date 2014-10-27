@@ -160,6 +160,24 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'teaser_length',
         'theme_default',
 
+        // Cache specific variables.
+        'cache_flush_cache',
+        'cache_flush_cache_field',
+        'cache_flush_cache_filter',
+        'cache_flush_cache_form',
+        'cache_flush_cache_htmlpurifier',
+        'cache_flush_cache_image',
+        'cache_flush_cache_libraries',
+        'cache_flush_cache_menu',
+        'cache_flush_cache_page',
+        'cache_flush_cache_panels',
+        'cache_flush_cache_path',
+        'cache_flush_cache_restclient',
+        'cache_flush_cache_token',
+        'cache_flush_cache_variable',
+        'cache_flush_cache_views',
+        'cache_flush_cache_views_data',
+
         // Hide admin_menu.module variables.
         'admin_menu_devel_modules_enabled',
 
