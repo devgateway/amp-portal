@@ -56,7 +56,7 @@ function ampcontentblock_field_default_field_bases() {
       ),
       'target_type' => 'contentblock',
     ),
-    'translatable' => 1,
+    'translatable' => 0,
     'type' => 'entityreference',
   );
 
