@@ -204,7 +204,7 @@ function contentblock_get_hidden_types($type = NULL) {
   );
 
   $items['footer'] = array(
-    'title' => t('Footer Section'),
+    'title' => t('Footer'),
     'description' => t('The footer is a section of free text in the page footer.'),
     'action label' => t('Configure'),
     'is section' => TRUE,

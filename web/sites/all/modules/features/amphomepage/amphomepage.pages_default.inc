@@ -138,10 +138,7 @@ function amphomepage_default_page_manager_pages() {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'clearfix',
-    );
+    $pane->css = array();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
@@ -165,10 +162,7 @@ function amphomepage_default_page_manager_pages() {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'clearfix',
-    );
+    $pane->css = array();
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
