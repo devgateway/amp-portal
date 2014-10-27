@@ -23,10 +23,10 @@
 # Ignore development specific files.
 /sites/all/libraries/FirePHPCore
 /sites/default/update_scripts/environment/setup.local.php
-/.buildpath
-/.idea
-/.project
-/.settings
+.buildpath
+.idea
+.project
+.settings
 /.vagrant
 /Docker*
 /Vagrant*
