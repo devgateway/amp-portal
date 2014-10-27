@@ -263,9 +263,9 @@ function ampcontentblock_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'contentblock',
+        'module' => 'contentwidget',
         'settings' => array(),
-        'type' => 'rendered_widget',
+        'type' => 'cwrendered',
         'weight' => 1,
       ),
     ),
@@ -280,9 +280,9 @@ function ampcontentblock_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'contentblock',
+      'module' => 'contentwidget',
       'settings' => array(),
-      'type' => 'widgets_settings',
+      'type' => 'cwsettings',
       'weight' => 2,
     ),
   );

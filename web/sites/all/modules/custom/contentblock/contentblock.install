@@ -6,36 +6,6 @@
  */
 
 /**
- * Implements hook_field_schema().
- */
-function contentblock_field_schema($field) {
-  switch ($field['type']) {
-    case 'contentblock_widget':
-      $columns = array(
-        'widget' => array(
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => FALSE,
-        ),
-        'settings' => array(
-          'type' => 'blob',
-          'not null' => FALSE,
-          'size' => 'big',
-          'serialize' => TRUE,
-          'description' => 'A serialized array of widget settings for the widget.',
-        ),
-      );
-      break;
-  }
-  return array(
-    'columns' => $columns,
-    'indexes' => array(
-      'widget' => array('widget'),
-    ),
-  );
-}
-
-/**
  * Implements hook_schema().
  */
 function contentblock_schema() {

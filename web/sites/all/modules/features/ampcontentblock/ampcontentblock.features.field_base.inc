@@ -167,12 +167,12 @@ function ampcontentblock_field_default_field_bases() {
       ),
     ),
     'locked' => 0,
-    'module' => 'contentblock',
+    'module' => 'contentwidget',
     'settings' => array(
       'entity_translation_sync' => FALSE,
     ),
     'translatable' => 0,
-    'type' => 'contentblock_widget',
+    'type' => 'contentwidget',
   );
 
   return $field_bases;

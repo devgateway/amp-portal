@@ -12,10 +12,10 @@
 $plugin = array(
   'title' => 'Top Projects',
   'description' => 'Will a list of top projects (by commitment size) during a selected time period.',
-  'render callback' => 'contentblock_topprojects_widget_render',
-  'settings form' => 'contentblock_topprojects_widget_settings',
-  'settings storage' => 'contentblock_topprojects_widget_settings_storage',
-  'retrieve data' => 'contentblock_topprojects_widget_retrieve_data',
+  'render callback' => 'contentwidget_topprojects_widget_render',
+  'settings form' => 'contentwidget_topprojects_widget_settings',
+  'settings storage' => 'contentwidget_topprojects_widget_settings_storage',
+  'retrieve data' => 'contentwidget_topprojects_widget_retrieve_data',
   'defaults' => array(
     'period' => '12',
     'count' => '20',
@@ -24,7 +24,7 @@ $plugin = array(
   ),
 );
 
-function contentblock_topprojects_widget_retrieve_data($widget_settings, $langcode = NULL) {
+function contentwidget_topprojects_widget_retrieve_data($widget_settings, $langcode = NULL) {
   $data = array();
 
   $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
@@ -85,8 +85,8 @@ function contentblock_topprojects_widget_retrieve_data($widget_settings, $langco
 /**
  * Render callback for the 'Top Projects' predefined widget.
  */
-function contentblock_topprojects_widget_render($widget_settings, $entity, $langcode) {
-  $data = contentblock_topprojects_widget_retrieve_data($widget_settings, $langcode);
+function contentwidget_topprojects_widget_render($widget_settings, $entity, $langcode) {
+  $data = contentwidget_topprojects_widget_retrieve_data($widget_settings, $langcode);
 
   // @TODO: Deal with missing headers.
 
@@ -118,7 +118,7 @@ function contentblock_topprojects_widget_render($widget_settings, $entity, $lang
 
   $rows = array();
   if (isset($data->topprojects)) {
-    $rows = _contentblock_topprojects_get_data_rows($widget_settings['visible_columns'], $data->topprojects);
+    $rows = _contentwidget_topprojects_get_data_rows($widget_settings['visible_columns'], $data->topprojects);
   }
 
   $build = array();
@@ -148,7 +148,7 @@ function contentblock_topprojects_widget_render($widget_settings, $entity, $lang
 /**
  * Settings form for the 'Top Projects' predefined widget.
  */
-function contentblock_topprojects_widget_settings(&$element, &$form_state, $plugin, $widget_settings) {
+function contentwidget_topprojects_widget_settings(&$element, &$form_state, $plugin, $widget_settings) {
   $settings_form = array();
 
   // Provide some default values.
@@ -206,7 +206,7 @@ function contentblock_topprojects_widget_settings(&$element, &$form_state, $plug
 
     '#ajax' => array(
       'event' => 'click',
-      'callback' => 'contentblock_widget_ajax_callback',
+      'callback' => 'contentwidget_widget_ajax_callback',
       'wrapper' => $form_state['topprojects']['wrapper_id'],
       'progress' => 'throbber',
     ),
@@ -218,7 +218,7 @@ function contentblock_topprojects_widget_settings(&$element, &$form_state, $plug
   );
 
   if (empty($display_all_columns)) {
-    $data = contentblock_topprojects_widget_retrieve_data($widget_settings);
+    $data = contentwidget_topprojects_widget_retrieve_data($widget_settings);
 
     $available_columns = array();
     foreach ($data->headers as $key => $value) {
@@ -246,7 +246,7 @@ function contentblock_topprojects_widget_settings(&$element, &$form_state, $plug
 /**
  * Returns a list of rows for theme_table().
  */
-function _contentblock_topprojects_get_data_rows($visible_columns, $items) {
+function _contentwidget_topprojects_get_data_rows($visible_columns, $items) {
   $rows = array();
 
   foreach ($items as $delta => $values) {
@@ -276,7 +276,7 @@ function _contentblock_topprojects_get_data_rows($visible_columns, $items) {
 /**
  * Ajax callback: Displays the options contents of the selected radioblock.
  */
-function contentblock_widget_ajax_callback($form, $form_state) {
+function contentwidget_widget_ajax_callback($form, $form_state) {
   $commands = array();
 
   // Update the form elements via ajax.
@@ -298,7 +298,7 @@ function contentblock_widget_ajax_callback($form, $form_state) {
 /**
  * Returns an serialized string for storing the widget settings in the database.
  */
-function contentblock_topprojects_widget_settings_storage($widget_name, $form_values) {
+function contentwidget_topprojects_widget_settings_storage($widget_name, $form_values) {
   $settings = array();
 
   if (isset($form_values[$widget_name]) && is_array($form_values[$widget_name])) {

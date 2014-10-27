@@ -4,5 +4,7 @@
 $modules = array(
   'chr',
   'restclient',
+
+  'contentwidget',
 );
 _us_module__install($modules);
