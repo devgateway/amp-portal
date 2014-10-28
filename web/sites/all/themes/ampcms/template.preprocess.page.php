@@ -200,8 +200,11 @@ function ampcms_preprocess_entity(&$variables, $hook) {
     // widget fields are not translatable.
     if (isset($variables['contentblock']->field_cbwidget[LANGUAGE_NONE][0]['widget'])) {
       $widget = $variables['contentblock']->field_cbwidget[LANGUAGE_NONE][0]['widget'];
-      $variables['classes_array'][] = 'contentwidget-fullwidth';
       $variables['classes_array'][] = drupal_clean_css_identifier('contentwidget-' . $widget);
+
+      if (in_array($widget, array('topdonors', 'topprojects'))) {
+        $variables['classes_array'][] = 'contentwidget-fullwidth';
+      }
     }
   }
 }
