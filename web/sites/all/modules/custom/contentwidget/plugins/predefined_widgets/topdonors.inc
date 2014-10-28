@@ -11,7 +11,7 @@
  */
 $plugin = array(
   'title' => 'Top Donors',
-  'description' => 'Will a list of top donors by commitment or disbursements size during a selected time period.',
+  'description' => 'Will a list of top donors by commitments or disbursements size during a selected time period.',
   'render callback' => 'contentwidget_topdonors_widget_render',
   'settings form' => 'contentwidget_topdonors_widget_settings',
   'settings storage' => 'contentwidget_topdonors_widget_settings_storage',
@@ -19,7 +19,7 @@ $plugin = array(
   'defaults' => array(
     'period' => '12',
     'count' => '10',
-    'fundingType' => '1',
+    'type' => 'commitments',
   ),
 );
 
@@ -51,6 +51,20 @@ function contentwidget_topdonors_widget_retrieve_data($widget_settings, $langcod
     }
     if ($langcode != LANGUAGE_NONE) {
       $parameters['language'] = $langcode;
+    }
+
+    if (!empty($widget_settings['type'])) {
+      // @TODO: Request and API Endpoint for this.
+      switch ($widget_settings['type']) {
+        case 'disbursements':
+          $parameters['fundingType'] = 2;
+          break;
+
+        case 'commitments':
+        default:
+          $parameters['fundingType'] = 1;
+          break;
+      }
     }
 
     $variables = array();
@@ -169,6 +183,18 @@ function contentwidget_topdonors_widget_settings(&$element, &$form_state, $plugi
     '#description' => t('The number of donors to display in the widget.'),
     '#default_value' => $widget_settings['count'],
     '#options' => drupal_map_assoc(array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)),
+  );
+
+  // @TODO: Request for an API Endpoint that returns the values for this filter.
+  $settings_form['type'] = array(
+    '#type' => 'select',
+    '#title' => t('Funding Type'),
+    '#description' => t('The type of funding.'),
+    '#default_value' => $widget_settings['type'],
+    '#options' => array(
+      'commitments' => 'Commitments',
+      'disbursements' => 'Disbursements',
+    ),
   );
 
   return $settings_form;
