@@ -20,7 +20,10 @@ $plugin = array(
 /**
  * Render callback for the 'Top Projects' predefined widget.
  */
-function contentblock_newsevents_widget_render($widget_settings, $entity, $langcode) {
+function contentblock_newsevents_widget_render($plugin, $widget_settings, $entity, $langcode) {
+  // Provide some default values.
+  $widget_settings += $plugin['defaults'];
+
   $view_name = 'homepage';
   $view_display_id = 'news_events';
 

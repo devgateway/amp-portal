@@ -91,10 +91,11 @@ function contentwidget_topprojects_widget_retrieve_data($widget_settings, $langc
 /**
  * Render callback for the 'Top Projects' predefined widget.
  */
-function contentwidget_topprojects_widget_render($widget_settings, $entity, $langcode) {
-  $data = contentwidget_topprojects_widget_retrieve_data($widget_settings, $langcode);
+function contentwidget_topprojects_widget_render($plugin, $widget_settings, $entity, $langcode) {
+  // Provide some default values.
+  $widget_settings += $plugin['defaults'];
 
-  // @TODO: Deal with missing headers.
+  $data = contentwidget_topprojects_widget_retrieve_data($widget_settings, $langcode);
 
   $header = array();
   if (!empty($data)) {

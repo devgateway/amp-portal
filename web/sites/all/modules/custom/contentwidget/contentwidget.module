@@ -230,7 +230,7 @@ function contentwidget_field_formatter_view($entity_type, $entity, $field, $inst
       if ($function = ctools_plugin_get_function($plugin, 'render callback')) {
         // Because of entity_translation, the provided $langcode is the original entity language.
         $entity_langcode = entity_translation_get_existing_language($entity_type, $entity);
-        $result[] = $function($widget_settings, $entity, $entity_langcode);
+        $result[] = $function($plugin, $widget_settings, $entity, $entity_langcode);
       }
       break;
   }

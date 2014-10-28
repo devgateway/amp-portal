@@ -104,10 +104,11 @@ function contentwidget_topdonors_widget_retrieve_data($widget_settings, $langcod
 /**
  * Render callback for the 'Top Donors' predefined widget.
  */
-function contentwidget_topdonors_widget_render($widget_settings, $entity, $langcode) {
-  $data = contentwidget_topdonors_widget_retrieve_data($widget_settings, $langcode);
+function contentwidget_topdonors_widget_render($plugin, $widget_settings, $entity, $langcode) {
+  // Provide some default values.
+  $widget_settings += $plugin['defaults'];
 
-  // @TODO: Deal with missing headers.
+  $data = contentwidget_topdonors_widget_retrieve_data($widget_settings, $langcode);
 
   $header = array();
   if (!empty($data)) {
