@@ -18,7 +18,7 @@ $plugin = array(
   'retrieve data' => 'contentwidget_topprojects_widget_retrieve_data',
   'defaults' => array(
     'period' => '12',
-    'count' => '20',
+    'count' => '10',
     'sort' => 'default',
     'visible_columns' => array(),
   ),
