@@ -133,5 +133,32 @@ table {
   }
 }
 
+// Extends table contentwidget blocks to fill the wrapper.
+.contentwidget-fullwidth {
+  padding: 0;
+  table {
+    margin-bottom: 2em;
+    margin-top: 0;
+    border: 0;
+  }
+  .contentblock-title {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  td, th {
+    &:first-child {
+      border-left: 0;
+      padding-left: 2em;
+    }
+    &:last-child {
+      border-right: 0;
+      padding-right: 2em;
+    }
+  }
+  .more-link {
+    right: 2em;
+  }
+}
+
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';
