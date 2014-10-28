@@ -224,7 +224,7 @@ function contentwidget_field_formatter_view($entity_type, $entity, $field, $inst
     case 'cwrendered':
       $widget_info = array_shift($items);
       $widget_name = isset($widget_info['widget']) ? $widget_info['widget'] : NULL;
-      $widget_settings = isset($widget_info['settings']) ? unserialize($widget_info['settings']) : array();
+      $widget_settings = !empty($widget_info['settings']) ? unserialize($widget_info['settings']) : array();
 
       $plugin = contentwidget_get_predefined_widget($widget_name);
       if ($function = ctools_plugin_get_function($plugin, 'render callback')) {
