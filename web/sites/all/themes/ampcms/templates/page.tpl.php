@@ -51,4 +51,12 @@
       <?php // print $feed_icons; ?>
     </div>
   </section>
+
+  <?php if (arg(0) != 'admin'): ?>
+    <footer role="banner" class="main-footer">
+      <div class="main-footer-inner clearfix">
+        <?php print theme('footer_items'); ?>
+      </div>
+    </footer>
+  <?php endif; ?>
 </div>

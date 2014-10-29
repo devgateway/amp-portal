@@ -184,6 +184,9 @@ function helpertheme_theme() {
     'main_navigation' => array(
       'file' => 'helpertheme.theme.inc',
     ),
+    'footer_items' => array(
+      'file' => 'helpertheme.theme.inc',
+    ),
   );
 }
 

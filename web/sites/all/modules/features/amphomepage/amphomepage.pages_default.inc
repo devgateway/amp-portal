@@ -145,30 +145,6 @@ function amphomepage_default_page_manager_pages() {
     $pane->uuid = '1c8790d9-6462-463f-bad4-a6b334250708';
     $display->content['new-1c8790d9-6462-463f-bad4-a6b334250708'] = $pane;
     $display->panels['col_b1'][1] = 'new-1c8790d9-6462-463f-bad4-a6b334250708';
-    $pane = new stdClass();
-    $pane->pid = 'new-bdd26f7f-5602-4e80-b37d-a0cd543343f0';
-    $pane->panel = 'col_b1';
-    $pane->type = 'cbreference';
-    $pane->subtype = 'cbreference';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'machine_name' => 'footer',
-      'override_title' => 0,
-      'override_title_text' => '',
-      'style' => 'normal',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 2;
-    $pane->locks = array();
-    $pane->uuid = 'bdd26f7f-5602-4e80-b37d-a0cd543343f0';
-    $display->content['new-bdd26f7f-5602-4e80-b37d-a0cd543343f0'] = $pane;
-    $display->panels['col_b1'][2] = 'new-bdd26f7f-5602-4e80-b37d-a0cd543343f0';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
