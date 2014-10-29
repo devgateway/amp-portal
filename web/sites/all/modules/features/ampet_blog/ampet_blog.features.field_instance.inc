@@ -31,7 +31,7 @@ function ampet_blog_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 3,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -101,7 +101,7 @@ function ampet_blog_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 0,
       ),
       'teaser_featured' => array(
         'label' => 'above',
@@ -157,7 +157,7 @@ function ampet_blog_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'teaser_featured' => array(
         'label' => 'above',
@@ -205,7 +205,7 @@ function ampet_blog_field_default_field_instances() {
   $field_instances['node-blog-field_blog_image'] = array(
     'bundle' => 'blog',
     'deleted' => 0,
-    'description' => '',
+    'description' => 'The image is displayed in some listings where this content is visible.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -215,13 +215,9 @@ function ampet_blog_field_default_field_instances() {
       ),
       'full' => array(
         'label' => 'hidden',
-        'module' => 'image',
-        'settings' => array(
-          'image_link' => '',
-          'image_style' => 'img-normal',
-        ),
-        'type' => 'image',
-        'weight' => 1,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser_featured' => array(
         'label' => 'hidden',
