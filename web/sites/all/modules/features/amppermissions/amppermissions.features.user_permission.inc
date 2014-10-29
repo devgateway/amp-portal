@@ -88,7 +88,6 @@ function amppermissions_user_default_permissions() {
     'name' => 'access user profiles',
     'roles' => array(
       'admin user' => 'admin user',
-      'editor user' => 'editor user',
     ),
     'module' => 'user',
   );
@@ -313,7 +312,6 @@ function amppermissions_user_default_permissions() {
     'name' => 'administer users',
     'roles' => array(
       'admin user' => 'admin user',
-      'editor user' => 'editor user',
     ),
     'module' => 'user',
   );
@@ -365,7 +363,6 @@ function amppermissions_user_default_permissions() {
     'name' => 'change own username',
     'roles' => array(
       'admin user' => 'admin user',
-      'editor user' => 'editor user',
     ),
     'module' => 'user',
   );
