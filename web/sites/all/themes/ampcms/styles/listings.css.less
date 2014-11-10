@@ -96,13 +96,16 @@ table {
   border-color: @border_color;
   border-style: solid none;
   border-width: 1px;
+  font-size: 0.625em;
   margin: 1em 0;
   width: 100%;
 
   tr {
-    font-size: 0.75em;
     &.even {
       background-color: @even_color;
+    }
+    &.odd {
+      background-color: #ffffff;
     }
   }
 
@@ -156,5 +159,28 @@ table {
   }
 }
 
+.activities-search-results {
+  form {
+    margin: 1em 0;
+  }
+
+  .views-field-external-url {
+    text-align: center;
+    a {
+      display: block;
+      &.active,
+      &:focus,
+      &:hover {
+        text-decoration: none;
+        svg {
+          fill: @clanchor;
+        }
+      }
+    }
+    svg {
+      fill: @clpassive;
+    }
+  }
+}
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';

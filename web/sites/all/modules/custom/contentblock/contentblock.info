@@ -1,4 +1,4 @@
-name = Custom Content Blocks
+name = Custom ContentBlock
 description = Exposes Custom Content Blocks.
 core = 7.x
 package = Custom

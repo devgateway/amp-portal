@@ -26,7 +26,6 @@ function contentblock_entity_info() {
     'plural label' => t('Content Blocks'),
     'description' => t('A custom content block.'),
 
-    // We don't have a base table, entities are stored in MongoDB.
     'base table' => 'contentblock',
     'module' => 'contentblock',
 
