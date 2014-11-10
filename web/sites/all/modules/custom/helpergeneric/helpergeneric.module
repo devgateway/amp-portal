@@ -681,6 +681,12 @@ function helpergeneric_unparse_url($parsed_url) {
  * Tries to determine if the API is online or not.
  */
 function helpergeneric_check_api_status($link = TRUE) {
+  static $status;
+
+  if (!empty($status)) {
+    return $status;
+  }
+
   $status = array(
     'online' => FALSE,
     'message' => '',

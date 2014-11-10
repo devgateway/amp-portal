@@ -134,11 +134,6 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
-  /* Field: Activity: Primary Program */
-  $handler->display->display_options['fields']['primary_program']['id'] = 'primary_program';
-  $handler->display->display_options['fields']['primary_program']['table'] = 'efq_activity';
-  $handler->display->display_options['fields']['primary_program']['field'] = 'primary_program';
-  $handler->display->display_options['fields']['primary_program']['link_to_entity'] = 0;
   /* Field: Activity: Beneficiary Agency */
   $handler->display->display_options['fields']['beneficiary_agency']['id'] = 'beneficiary_agency';
   $handler->display->display_options['fields']['beneficiary_agency']['table'] = 'efq_activity';
@@ -176,22 +171,6 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['actual_disbursements']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Activity: Activity Title */
-  $handler->display->display_options['filters']['title']['id'] = 'title';
-  $handler->display->display_options['filters']['title']['table'] = 'efq_activity';
-  $handler->display->display_options['filters']['title']['field'] = 'title';
-  $handler->display->display_options['filters']['title']['group'] = 1;
-  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['label'] = 'Search';
-  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['identifier'] = 's';
-  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    4 => 0,
-    3 => 0,
-  );
   $handler->display->display_options['path'] = 'activities';
   $translatables['activities'] = array(
     t('Master'),
@@ -213,13 +192,11 @@ function ampactivities_views_default_views() {
     t('Actual Commitments'),
     t('Actual Disbursements'),
     t('Search Page'),
-    t('Primary Program'),
     t('Beneficiary Agency'),
     t('Donor Agency'),
     t('Primary Sector'),
     t('Actual Start Date'),
     t('Actual Completion Date'),
-    t('Search'),
   );
   $export['activities'] = $view;
 
