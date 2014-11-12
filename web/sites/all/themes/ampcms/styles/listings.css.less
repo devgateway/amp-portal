@@ -96,11 +96,11 @@ table {
   border-color: @border_color;
   border-style: solid none;
   border-width: 1px;
-  font-size: 0.625em;
   margin: 1em 0;
   width: 100%;
 
   tr {
+    font-size: 0.75em;
     &.even {
       background-color: @even_color;
     }
@@ -147,21 +147,31 @@ table {
   td, th {
     &:first-child {
       border-left: 0;
-      padding-left: 2em;
+      padding-left: 1.5em;
     }
     &:last-child {
       border-right: 0;
-      padding-right: 2em;
+      padding-right: 1.5em;
     }
   }
   .more-link {
-    right: 2em;
+    right: 1.5em;
   }
 }
 
 .activities-search-results {
   form {
     margin: 1em 0;
+  }
+
+  table {
+    // @TODO: Remove! temporarily override the default table size.
+    tr {
+      font-size: 1em;
+    }
+    th, td {
+      font-size: 0.625em;
+    }
   }
 
   .views-field-external-url {
@@ -181,6 +191,26 @@ table {
       fill: @clpassive;
     }
   }
+
+  .views-field-actual-commitments,
+  .views-field-actual-disbursements {
+    text-align: right;
+  }
 }
+
+.activity-search-totals {
+  .totals-table {
+    text-align: right;
+  }
+}
+.xMediumAndUp() {
+  .activity-search-totals {
+    .totals-table {
+      float: right;
+      width: auto;
+    }
+  }
+}
+
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';

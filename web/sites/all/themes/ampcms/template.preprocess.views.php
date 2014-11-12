@@ -82,3 +82,18 @@ function __ampcms_preprocess_views_view__blog_listing(&$vars) {
       break;
   }
 }
+
+/**
+ * Implements ampcms_preprocess_views_view() for activities view.
+ */
+function __ampcms_preprocess_views_view__activities(&$vars) {
+  switch ($vars['view']->current_display) {
+    case 'search_page':
+      if (!empty($vars['view']->query->query->metaData['report_totals'])) {
+        $report_totals = $vars['view']->query->query->metaData['report_totals'];
+        $vars['attachment_after'] .= theme('amp_report_totals', $report_totals);
+      }
+
+      break;
+  }
+}

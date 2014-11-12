@@ -61,6 +61,18 @@ class ampAPIEntityQueryHelper {
   function executeQuery(EntityFieldQuery $query) {
     global $language_content;
 
+    static $api_status;
+    if (!isset($api_status)) {
+      $api_status = helpergeneric_check_api_status(FALSE);
+
+      if (!$api_status['online']) {
+        drupal_set_message($api_status['message'], 'warning');
+      }
+    }
+    if (empty($api_status['online'])) {
+      return ($query->count) ? 0 : array();
+    }
+
     $api_parameters = array(
       'error_handling' => TRUE,
       'reset' => TRUE,
@@ -150,6 +162,11 @@ class ampAPIEntityQueryHelper {
       $request_body['recordsPerPage'] = 10;
     }
 
+    // Tell efq_views that the entities are already loaded.
+    if (!empty($query->metaData['view'])) {
+      $request_body['rowTotals'] = TRUE;
+    }
+
     // @TODO: Deal with multiple sorts and maping of special properties.
     // @TODO: Request API support for count queries, for now we don't include order options.
     if ($query->order && !$query->count) {
@@ -219,6 +236,23 @@ class ampAPIEntityQueryHelper {
     // Tell efq_views that the entities are already loaded.
     if (!empty($query->metaData['view'])) {
       $query->addMetaData('entities_preloaded', TRUE);
+
+      if (!empty($response_data->page->pageArea->contents)) {
+        $response_totals = $response_data->page->pageArea->contents;
+
+        $report_totals = array();
+        foreach ($response_data->headers as $h_info) {
+          if (!isset($response_totals->{$h_info->hierarchicalName})) {
+            continue;
+          }
+
+          $report_totals[$h_info->originalColumnName] = array(
+            'header' => $h_info->columnName,
+            'values' => $response_totals->{$h_info->hierarchicalName},
+          );
+        }
+        $query->addMetaData('report_totals', $report_totals);
+      }
     }
 
     return array($this->entityType => $entities);
@@ -236,7 +270,6 @@ class ampAPIEntityQueryHelper {
       }
       $values = array();
 
-      // dpm($row->contents, "\$row $delta contents");
       foreach ($mappers as $plugin) {
         if (empty($plugin['property name'])) {
           continue;
@@ -261,7 +294,6 @@ class ampAPIEntityQueryHelper {
       }
 
       // Create an entity.
-      // dpm($values, "\$row $delta values");
       $entities[$delta] = entity_create('activity', $values);
     }
   }

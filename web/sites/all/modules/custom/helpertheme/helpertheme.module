@@ -187,6 +187,9 @@ function helpertheme_theme() {
     'footer_items' => array(
       'file' => 'helpertheme.theme.inc',
     ),
+    'amp_report_totals' => array(
+      'file' => 'helpertheme.theme.inc',
+    ),
   );
 }
 

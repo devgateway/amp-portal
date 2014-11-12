@@ -291,3 +291,30 @@ function theme_footer_items() {
   // Remove whitespace between items. Helps with styling in-line elements.
   return preg_replace('/\>\s+\</', '><', $output);
 }
+
+/**
+ * Returns HTML for the activities search footer totals.
+ */
+function theme_amp_report_totals($totals) {
+  $elements = array();
+
+  $elements['#prefix'] = '<div class="activity-search-totals clearfix">';
+  $elements['#suffix'] = '</div>';
+
+  $header = array('');
+  $data = array(t('Totals'));
+  foreach (array('Actual Commitments', 'Actual Disbursements') as $key) {
+    $header[] = $totals[$key]['header'];
+    $data[] = $totals[$key]['values']->displayedValue;
+  }
+
+  $elements['totals'] = array(
+    '#theme' => 'table',
+    '#sticky' => FALSE,
+    '#header' => $header,
+    '#rows' => array($data),
+    '#attributes' => array('class' => array('totals-table')),
+  );
+
+  return drupal_render($elements);
+}
