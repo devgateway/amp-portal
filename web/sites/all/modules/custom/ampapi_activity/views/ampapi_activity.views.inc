@@ -37,6 +37,10 @@ function ampapi_activity_views_data_alter(&$data) {
         $data[$efq_data_key][$property_name]['filter']['options arguments'] = array($plugin['name']);
       }
 
+      if (isset($plugin['report filter endpoint'])) {
+        $data[$efq_data_key][$property_name]['filter']['handler'] = 'ampapi_activity_views_handler_filter_in_operator';
+      }
+
       // Remove sort from fields that do not support it.
       // if (isset($plugin['property sort callback'])) {
       //   continue;

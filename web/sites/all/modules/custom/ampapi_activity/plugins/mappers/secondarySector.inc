@@ -15,9 +15,13 @@ $plugin = array(
 
   'report field group' => 'columns',
   'report field key' => 'Secondary Sector',
+  'report filter key' => 'Secondary Sector Id',
+
+  'report filter endpoint' => 'filters/sectors',
+  'filter sector type' => 'Secondary',
 
   'handler' => 'secondarySectorMapper',
 );
 
-class secondarySectorMapper extends activityMapperBase {
+class secondarySectorMapper extends activityMapperSectorAutocomplete {
 }

@@ -160,3 +160,41 @@ function ampapi_entity_access($op, $entity = NULL, $account = NULL, $entity_type
   }
   return FALSE;
 }
+
+
+function ampapi_request($type, $endpoint, $options = array()) {
+  $options += array('reset' => TRUE, 'error_handling' => TRUE);
+
+  if ($type == 'get') {
+    $response = restclient_get($endpoint, $options);
+  }
+  else if ($type == 'post') {
+    $response = restclient_post($endpoint, $options);
+  }
+
+  // @TODO: Add support for more 200 class response codes.
+  if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
+    $t_args = array(
+      '%message' => check_plain($response->status_message),
+    );
+    drupal_set_message(t('The API returned the following status message: %message', $t_args), 'error');
+    return array();
+  }
+  if (empty($response) || empty($response->data)) {
+    drupal_set_message(t('The API returned an empty response, please try again later.'), 'error');
+    return array();
+  }
+
+  $response_data = json_decode($response->data);
+  if (!empty($response_data->error)) {
+    foreach ($response_data->error as $error_message) {
+      $t_args = array(
+        '%message' => check_plain($error_message),
+      );
+      drupal_set_message(t('The API returned the following error message: %message', $t_args), 'error');
+    }
+    return array();
+  }
+
+  return $response_data;
+}

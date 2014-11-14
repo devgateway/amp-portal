@@ -16,3 +16,4 @@ files[] = views/ampapi_activity_views_handler_filter_in_operator.inc
 
 ; Custom handlers.
 files[] = includes/activityMapper.inc
+files[] = includes/activityMapperAutocomplete.inc

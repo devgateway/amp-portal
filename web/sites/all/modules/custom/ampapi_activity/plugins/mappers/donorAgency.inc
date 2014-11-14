@@ -16,18 +16,13 @@ $plugin = array(
   'report field group' => 'columns',
   'report field key' => 'Donor Agency',
   // 'report filter key' => 'Donor Agency Id',
-  'report filter key' => 'Donor Id',
+  'report filter key' => 'Donor Id', // No need for consistency.
+
+  'report filter endpoint' => 'filters/orgs',
+  'report filter endpoint extra' => 'filters/org-roles',
 
   'handler' => 'donorAgencyMapper',
 );
 
-class donorAgencyMapper extends activityMapperBase {
-  /**
-   * Filter handler.
-   */
-  public static function filter($plugin, &$api_parameters, &$request_body, $condition) {
-    $condition['value'] = array(intval($condition['value']));
-    $condition['operator'] = 'IN';
-    parent::filter($plugin, $api_parameters, $request_body, $condition);
-  }
+class donorAgencyMapper extends activityMapperRoleAutocomplete {
 }

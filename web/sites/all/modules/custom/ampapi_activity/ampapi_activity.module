@@ -97,6 +97,9 @@ function ampapi_activity_entity_query_alter($query) {
  *  Implements hook_ctools_plugin_directory().
  */
 function ampapi_activity_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/content_types';
+  }
   if ($owner == 'ampapi' && $plugin_type == 'mapper') {
     return 'plugins/mappers';
   }
@@ -110,4 +113,56 @@ function ampapi_activity_views_api() {
     'api' => 3,
     'path' => drupal_get_path('module', 'ampapi_activity') . '/views',
   );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function ampapi_activity_menu() {
+  $items = array();
+
+
+  $mappers = ampapi_get_mappers();
+  foreach ($mappers as $key => $plugin) {
+    if (empty($plugin['property name'])) {
+      continue;
+    }
+
+    $items['ampapi/autocomplete/' . $plugin['property name']] = array(
+      'title' => $plugin['title'] . ' Autocomplete',
+      'page callback' => 'ampapi_activity_autocomplete',
+      'page arguments' => array(2),
+      'access arguments' => array('survey entity edit'),
+      'type' => MENU_CALLBACK,
+      'file' => 'ampapi_activity.pages.inc',
+    );
+  }
+
+  return $items;
+}
+
+function ampapi_activity_homepage_search_form($form, &$form_state) {
+  $search_page_url = 'activities';
+  $form = array(
+    '#action' => $search_page_url,
+  );
+
+  $form['search'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Enter search terms'),
+    '#default_value' => '',
+  );
+
+  $form['actions'] = array('#tree' => FALSE, '#type' => 'actions');
+  $form['actions']['more'] = array(
+    '#type' => 'link',
+    '#title' => t('More filters'),
+    '#href' => $search_page_url,
+  );
+  $form['actions']['explore'] = array(
+    '#type' => 'submit',
+    '#value' => t('Explore'),
+  );
+
+  return $form;
 }

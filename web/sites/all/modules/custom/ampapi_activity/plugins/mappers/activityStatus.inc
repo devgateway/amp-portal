@@ -22,7 +22,7 @@ $plugin = array(
   'handler' => 'activityStatusMapper',
 );
 
-class activityStatusMapper extends activityMapperExtendedBase {
+class activityStatusMapper extends activityMapperBase {
   public static function optionsList($plugin) {
     $options = array();
     $langcode = $GLOBALS['language_content']->language;
@@ -60,7 +60,7 @@ class activityStatusMapper extends activityMapperExtendedBase {
     }
 
     foreach ($response_data->values as $value) {
-      $options[$value->id] = check_plain($value->name);
+      $options[check_plain($value->id)] = check_plain($value->name);
     }
 
     if (!empty($options)) {

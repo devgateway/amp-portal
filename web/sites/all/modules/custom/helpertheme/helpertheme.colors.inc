@@ -38,6 +38,10 @@ function helpertheme_color_pallete() {
         '#value' => '#d5d5d5',
         '#desc' => 'border header and content',
       ),
+      'clcontent__featured' => array(
+        '#value' => '#c4c4c4',
+        '#desc' => 'featured blocks',
+      ),
     ),
   );
 

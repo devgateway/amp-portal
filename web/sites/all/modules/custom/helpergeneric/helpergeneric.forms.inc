@@ -366,11 +366,15 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'views_exposed_form') {
     $form['actions'] = array('#type' => 'actions');
 
-    $form['actions']['submit'] = $form['submit'];
-    unset($form['submit']);
+    if (isset($form['submit'])) {
+      $form['actions']['submit'] = $form['submit'];
+      unset($form['submit']);
+    }
 
-    $form['actions']['reset'] = $form['reset'];
-    unset($form['reset']);
+    if (isset($form['reset'])) {
+      $form['actions']['reset'] = $form['reset'];
+      unset($form['reset']);
+    }
   }
 
   if (!helpergeneric_cleanup_ui()) {

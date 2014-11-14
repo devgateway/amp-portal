@@ -7,25 +7,20 @@
 
 /**
  * Defines the common interface for all API mapper classes.
+ *
+ * @TODO: Document!
  */
 interface activityMapperInterface {
   public static function propertyInfo($plugin);
-
-  /**
-   * Determines if the filter has a predefined list of values.
-   *
-   * @return bool
-   *   TRUE if filter has a predefined list of options, FALSE otherwise.
-   */
-  // public static function hasOptions();
-
   public static function filter($plugin, &$api_parameters, &$request_body, $condition);
-
   public static function sort($plugin, &$api_parameters, &$request_body, $order);
-
   public static function getValue($plugin, $column);
 }
 
+interface activityMapperAutocompleteInterface {
+  public static function autocomplete($plugin, $string);
+  public static function getAutocompleteValue($plugin, $string);
+}
 
 /**
  * Defines the base implementation for all API mappers.
@@ -96,10 +91,4 @@ class activityMapperBase implements activityMapperInterface {
   public static function getValue($plugin, $column) {
     return filter_xss($column->displayedValue, array());
   }
-}
-
-/**
- * Defines the base implementation for all API mappers.
- */
-class activityMapperExtendedBase extends activityMapperBase {
 }

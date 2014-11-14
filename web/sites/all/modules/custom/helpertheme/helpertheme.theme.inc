@@ -293,6 +293,33 @@ function theme_footer_items() {
 }
 
 /**
+ * Returns HTML containing information about the report.
+ */
+function theme_amp_report_info($variables) {
+  $elements = array();
+  $elements['#prefix'] = '<div class="activity-search-info">';
+  $elements['#suffix'] = '</div>';
+
+  // The number of the first item on the page.
+  $start_item = ($variables['current_page'] * $variables['items_per_page']) + 1;
+
+  // The number of the last item on the page.
+  $end_item_on_page = $variables['current_page'] * $variables['items_per_page'] + $variables['items_per_page'];
+  $end_item = min($end_item_on_page, $variables['total_items']);
+
+  $t_args= array(
+    '@total' => $variables['total_items'],
+    '@start' => $start_item,
+    '@end' => $end_item,
+  );
+  $elements['totals'] = array(
+    '#markup' => t('Displaying activities @start-@end of @total', $t_args),
+  );
+
+  return drupal_render($elements);
+}
+
+/**
  * Returns HTML for the activities search footer totals.
  */
 function theme_amp_report_totals($totals) {
@@ -304,6 +331,9 @@ function theme_amp_report_totals($totals) {
   $header = array('');
   $data = array(t('Totals'));
   foreach (array('Actual Commitments', 'Actual Disbursements') as $key) {
+    if (!isset($totals[$key]['values'])) {
+      continue;
+    }
     $header[] = $totals[$key]['header'];
     $data[] = $totals[$key]['values']->displayedValue;
   }

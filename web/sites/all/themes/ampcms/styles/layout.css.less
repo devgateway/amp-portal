@@ -80,7 +80,11 @@
 
   .homepage-welcome-block {
     .column(8);
-    margin: 0;
+    .first-child-column();
+  }
+  .homepage-form-block {
+    .column(4);
+    .last-child-column();
   }
 }
 
@@ -186,3 +190,25 @@
 @import './lib/custom-grid.less';
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';
+
+
+
+.ampapi-activity-homepage-search-form {
+  margin-right: 1em;
+  .form-text {
+    .box-sizing(border-box);
+    padding: 0.5em;
+    width: 100%;
+  }
+  .form-actions {
+    text-align: right;
+  }
+  input.form-submit, a.button {
+    margin-right: 0;
+    margin-left: 0.6em;
+  }
+}
+
+.homepage-featured-block {
+  background-color: @clcontent__featured;
+}

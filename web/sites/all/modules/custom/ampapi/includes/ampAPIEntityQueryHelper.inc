@@ -125,10 +125,6 @@ class ampAPIEntityQueryHelper {
 
     // Build an array of parameters for the API.
     foreach ($query->propertyConditions as $condition) {
-      if ($condition['column'] == 'entity_id') {
-        $condition['column'] = 'id';
-      }
-
       $plugin = ampapi_get_mapper_by_property_name($condition['column']);
       if ($class_name = ctools_plugin_get_class($plugin, 'handler')) {
         $class_name::filter($plugin, $api_parameters, $request_body, $condition);

@@ -115,14 +115,7 @@ function theme_cbstyle_style_render_region($vars) {
 
     // Add the section content.
     $elements[$pane_id . '_content'] = array(
-      '#tag' => 'div',
-      '#theme' => 'html_tag',
-      '#value' => $pane_html_content,
-      '#attributes' => array(
-        'class' => array(
-          'contentblock-section-content',
-        ),
-      ),
+      '#markup' => $pane_html_content,
       '#weight' => 2 * $delta + 2,
     );
 
