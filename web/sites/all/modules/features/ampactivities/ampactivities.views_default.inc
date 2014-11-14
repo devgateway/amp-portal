@@ -174,11 +174,6 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Secondary Sector */
-  $handler->display->display_options['fields']['secondary_sector']['id'] = 'secondary_sector';
-  $handler->display->display_options['fields']['secondary_sector']['table'] = 'efq_activity';
-  $handler->display->display_options['fields']['secondary_sector']['field'] = 'secondary_sector';
-  $handler->display->display_options['fields']['secondary_sector']['link_to_entity'] = 0;
   /* Field: Activity: Actual Start Date */
   $handler->display->display_options['fields']['actual_start_date']['id'] = 'actual_start_date';
   $handler->display->display_options['fields']['actual_start_date']['table'] = 'efq_activity';
@@ -270,23 +265,6 @@ function ampactivities_views_default_views() {
     3 => 0,
   );
   $handler->display->display_options['filters']['primary_sector']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Secondary Sector */
-  $handler->display->display_options['filters']['secondary_sector']['id'] = 'secondary_sector';
-  $handler->display->display_options['filters']['secondary_sector']['table'] = 'efq_activity';
-  $handler->display->display_options['filters']['secondary_sector']['field'] = 'secondary_sector';
-  $handler->display->display_options['filters']['secondary_sector']['value'] = '';
-  $handler->display->display_options['filters']['secondary_sector']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['secondary_sector']['expose']['operator_id'] = 'secondary_sector_op';
-  $handler->display->display_options['filters']['secondary_sector']['expose']['label'] = 'Secondary Sector';
-  $handler->display->display_options['filters']['secondary_sector']['expose']['operator'] = 'secondary_sector_op';
-  $handler->display->display_options['filters']['secondary_sector']['expose']['identifier'] = 'ssec';
-  $handler->display->display_options['filters']['secondary_sector']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    4 => 0,
-    3 => 0,
-  );
-  $handler->display->display_options['filters']['secondary_sector']['type'] = 'tokeninput';
   $handler->display->display_options['path'] = 'activities';
   $translatables['activities'] = array(
     t('Master'),
@@ -312,7 +290,6 @@ function ampactivities_views_default_views() {
     t('Beneficiary Agency'),
     t('Donor Agency'),
     t('Primary Sector'),
-    t('Secondary Sector'),
     t('Actual Start Date'),
     t('Actual Completion Date'),
     t('Search Terms'),
