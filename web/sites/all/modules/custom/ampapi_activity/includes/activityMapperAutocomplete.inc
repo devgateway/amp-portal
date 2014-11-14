@@ -5,13 +5,23 @@
  * Shared classes and interfaces for the API mapper system.
  */
 
+interface activityMapperAutocompleteInterface {
+  public function autocomplete($plugin, $string);
+  public function getAutocompleteValue($plugin, $data, $type);
+}
+
 class activityMapperRoleAutocomplete extends activityMapperBase implements activityMapperAutocompleteInterface {
-  public static function autocomplete($plugin, $string, $autocomplete = TRUE) {
+  public function autocomplete($plugin, $data, $type = 'autocomplete') {
     $matches = array();
 
-    $role_id = self::_getRoleId($plugin);
+    $role_id = $this->getRoleId($plugin);
     if (empty($role_id)) {
       return $matches;
+    }
+
+    $search_string = '';
+    if (in_array($type, array('autocomplete', 'autocompleteids', 'tokeninput'))) {
+      $search_string = reset($data);
     }
 
     $count = 0;
@@ -25,18 +35,33 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
         continue;
       }
 
-      if (stripos($entry->name, $string) === FALSE) {
-        continue;
+      switch ($type) {
+        case 'tokeninput':
+        case 'autocomplete':
+          if (stripos($entry->name, $search_string) === FALSE) {
+            continue 2;
+          }
+          break;
+        case 'autocompleteids':
+          if ($entry->name != $search_string) {
+            continue 2;
+          }
+          break;
+        case 'tokeninputids':
+          if (!in_array($entry->id, $data)) {
+            continue 2;
+          }
+          break;
+
+        default:
+          continue 2;
+          break;
       }
 
-      if ($autocomplete) {
-        // $return_string = check_plain($entry->name) . ' (' . intval($entry->id) . ')';
-        $return_string = check_plain($entry->name);
-        $matches[$return_string] = $return_string;
-      }
-      else {
-        $matches[] = clone $entry;
-      }
+      $matches[] = array(
+        'id' => intval($entry->id),
+        'name' => filter_xss_admin($entry->name),
+      );
 
       $count++;
     }
@@ -44,21 +69,24 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
     return $matches;
   }
 
-  public static function getAutocompleteValue($plugin, $string) {
-    $matches = self::autocomplete($plugin, $string, FALSE);
-
+  public function getAutocompleteValue($plugin, $data, $type) {
+    $matches = $this->autocomplete($plugin, $data, $type);
     if (empty($matches)) {
       return NULL;
     }
 
-    $entry = reset($matches);
-    if (isset($entry->id)) {
-      return array(intval($entry->id));
+    if ($type == 'autocompleteids') {
+      $entry = reset($matches);
+      if (isset($entry['id'])) {
+        return array(intval($entry['id']));
+      }
     }
+
+    return $matches;
   }
 
   // @TODO: Request ID from the API.
-  public static function _getRoleId($plugin) {
+  public function getRoleId($plugin) {
     static $roles_data;
 
     if (!isset($roles_data)) {
@@ -86,12 +114,16 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
  * Autocomplete helper.
  */
 class activityMapperSectorAutocomplete extends activityMapperBase implements activityMapperAutocompleteInterface {
-  public static function autocomplete($plugin, $string, $autocomplete = TRUE) {
+  public function autocomplete($plugin, $data, $type = 'autocomplete') {
     $matches = array();
-
-    $sector_id = self::_getSectorId($plugin);
+    $sector_id = $this->_getSectorId($plugin);
     if (empty($sector_id)) {
       return $matches;
+    }
+
+    $search_string = '';
+    if (in_array($type, array('autocomplete', 'autocompleteids', 'tokeninput'))) {
+      $search_string = reset($data);
     }
 
     $request_data = ampapi_request('get', $plugin['report filter endpoint'] . '/' . $sector_id);
@@ -105,44 +137,56 @@ class activityMapperSectorAutocomplete extends activityMapperBase implements act
         break;
       }
 
-      $is_code = FALSE;
+      $prepend_entry = FALSE;
       // Match full codes and codes starting with the provided string.
-      if (!$autocomplete && is_numeric($string) && $string == $entry->code) {
-        $is_code = TRUE;
+      if (is_numeric($search_string) && $search_string == $entry->code) {
+        $prepend_entry = TRUE;
       }
 
-      $is_matching = FALSE;
-      if (stripos($entry->name, $string) !== FALSE) {
-        $is_matching = TRUE;
+      switch ($type) {
+        case 'tokeninput':
+        case 'autocomplete':
+          if (stripos($entry->name, $search_string) === FALSE) {
+            continue 2;
+          }
+          break;
+        case 'autocompleteids':
+          if ($entry->name != $search_string) {
+            continue 2;
+          }
+          break;
+        case 'tokeninputids':
+          if (!in_array($entry->id, $data)) {
+            continue 2;
+          }
+          break;
+
+        default:
+          continue 2;
+          break;
       }
 
-      if (!$is_matching && !$is_code) {
-        continue;
-      }
-
-      if ($autocomplete) {
-        // $return_string = check_plain($entry->name) . ' (' . intval($entry->id) . ')';
-        $return_string = check_plain($entry->name);
-
-        if ($autocomplete && $is_code) {
-          $matches = array($return_string => $return_string) + $matches;
-        }
-        else {
-          $matches[$return_string] = $return_string;
-        }
+      if (!$prepend_entry) {
+        $matches[] = array(
+          'id' => intval($entry->id),
+          'name' => filter_xss_admin($entry->name),
+        );
       }
       else {
-        $matches[] = clone $entry;
+        $new_value = array(
+          'id' => intval($entry->id),
+          'name' => filter_xss_admin($entry->name),
+        );
+        $matches = array_shift($new_value, $matches);
       }
 
       $count++;
     }
-
     return $matches;
   }
 
   // @TODO: Request ID from the API.
-  public static function _getSectorId($plugin) {
+  public function _getSectorId($plugin) {
     static $sectors_data;
 
     if (!isset($sectors_data)) {
@@ -160,17 +204,20 @@ class activityMapperSectorAutocomplete extends activityMapperBase implements act
     }
   }
 
-  public static function getAutocompleteValue($plugin, $string) {
-    $matches = self::autocomplete($plugin, $string, FALSE);
+  public function getAutocompleteValue($plugin, $data, $type) {
+    $matches = $this->autocomplete($plugin, $data, $type);
 
     if (empty($matches)) {
       return NULL;
     }
 
-    $entry = reset($matches);
-    if (isset($entry->id)) {
-      return array(intval($entry->id));
+    if ($type == 'autocompleteids') {
+      $entry = reset($matches);
+      if (isset($entry['id'])) {
+        return array(intval($entry['id']));
+      }
     }
-  }
 
+    return $matches;
+  }
 }

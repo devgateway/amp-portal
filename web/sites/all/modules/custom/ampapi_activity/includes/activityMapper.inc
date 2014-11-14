@@ -17,10 +17,7 @@ interface activityMapperInterface {
   public static function getValue($plugin, $column);
 }
 
-interface activityMapperAutocompleteInterface {
-  public static function autocomplete($plugin, $string);
-  public static function getAutocompleteValue($plugin, $string);
-}
+class activityMapperException extends Exception {}
 
 /**
  * Defines the base implementation for all API mappers.

@@ -24,7 +24,7 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
   function option_definition() {
     $options = parent::option_definition();
 
-    $options['type'] = array('default' => 'textfield');
+    $options['type'] = array('default' => 'autocomplete');
     $options['error_message'] = array('default' => TRUE, 'bool' => TRUE);
 
     return $options;
@@ -34,17 +34,60 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
     $form['type'] = array(
       '#type' => 'radios',
       '#title' => t('Selection type'),
-      '#options' => array('token' => t('TokenInput'), 'textfield' => t('Autocomplete')),
+      '#options' => array('tokeninput' => t('Tokeninput'), 'autocomplete' => t('Autocomplete')),
       '#default_value' => $this->options['type'],
     );
   }
 
   function value_form(&$form, &$form_state) {
-    if ($this->options['type'] == 'textfield') {
+    $identifier = $this->options['expose']['identifier'];
+    $field_name = $this->options['field'];
+
+    if ($this->options['type'] == 'tokeninput') {
+      // @HACK: For some reason we don't have the provided data.
+      $js_setting = array();
+      $js_setting[$field_name]['values'] = array();
+      if (isset($form_state['input'][$identifier])) {
+        $values = $form_state['input'][$identifier];
+        $values = explode(',', $values);
+
+        $plugin = ampapi_get_mapper_by_property_name($this->options['field']);
+        $class_name = ctools_plugin_get_class($plugin, 'handler');
+
+        // If we have previously validated input, override.
+        $handler = new $class_name();
+        $js_setting[$field_name]['values'] = $handler->getAutocompleteValue($plugin, $values, 'tokeninputids');
+      }
+      drupal_add_js(array('viewsTokeninput' => $js_setting), 'setting');
+
+      // Load the "jQuery Tokeninput" JavaScript library.
+      libraries_load('jquery-tokeninput', 'minified');
+
+      // @TODO: Use libraries API.
+      $module_path = drupal_get_path('module', 'ampapi_activity');
+      drupal_add_js($module_path . '/scripts/ampapi_activity.searchform.js');
+
+      $form['value'] = array(
+        '#title' => t('Selected'),
+        '#type' => 'textfield',
+        '#default_value' => NULL,
+        '#attributes' => array(
+          'class' => array(
+            'tokeninput-textfield',
+          ),
+          'data-name' => $field_name,
+        ),
+      );
+    }
+    else if ($this->options['type'] == 'autocomplete') {
       $default = '';
-      // @TODO: Fix!
+      // @TODO: Provide default value for filter!
       if ($this->value) {
         // @TODO: Provide a list of selected filters.
+        // If we have previously validated input, override.
+        // $field_name = $this->options['field'];
+        // $handler = new $class_name();
+        // $js_setting[$field_name]['values'] = $handler->getAutocompleteValue($plugin, $values, 'tokeninputids');
         // $query = new EntityFieldQuery;
         // $result = $query
         //   ->entityCondition('entity_type', 'taxonomy_term')
@@ -65,7 +108,7 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
         '#title' => t('Selected'),
         '#type' => 'textfield',
         '#default_value' => $default,
-        '#autocomplete_path' => 'ampapi/autocomplete/' . $this->options['field'],
+        '#autocomplete_path' => 'ampapi/autocomplete/' . $field_name,
       );
     }
   }
@@ -73,7 +116,7 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
 
   function value_validate($form, &$form_state) {
     // We only validate if they've chosen the text field style.
-    if ($this->options['type'] != 'textfield') {
+    if ($this->options['type'] != 'autocomplete') {
       return;
     }
 
@@ -90,26 +133,42 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
       return TRUE;
     }
 
-    $raw_value = $this->view->exposed_raw_input[$this->options['expose']['identifier']];
+    $identifier = $this->options['expose']['identifier'];
+    $raw_value = NULL;
+    if (isset($this->view->exposed_raw_input[$identifier])) {
+      $raw_value = $this->view->exposed_raw_input[$identifier];
+    }
 
     // If it's non-required and there's no value don't bother filtering.
     if (!$this->options['expose']['required'] && empty($raw_value)) {
       return FALSE;
     }
 
-    $plugin = ampapi_get_mapper_by_property_name($this->options['field']);
-    if (empty($plugin['report filter endpoint'])) {
-      return FALSE;
-    }
+    if ($this->options['type'] == 'tokeninput') {
+      $tokens = explode(',', $raw_value);
 
-    $class_name = ctools_plugin_get_class($plugin, 'handler');
-    if (empty($class_name) || !in_array('activityMapperAutocompleteInterface', class_implements($class_name))) {
-      return FALSE;
-    }
+      // The API only likes integers.
+      foreach ($tokens as &$token) {
+        $token = intval($token);
+      }
 
-    // If we have previously validated input, override.
-    if (isset($raw_value)) {
-      $value = $class_name::getAutocompleteValue($plugin, $raw_value);
+      $this->value = $tokens;
+      return TRUE;
+    }
+    else if ($this->options['type'] == 'autocomplete') {
+      $plugin = ampapi_get_mapper_by_property_name($this->options['field']);
+      if (empty($plugin['report filter endpoint'])) {
+        return FALSE;
+      }
+
+      $class_name = ctools_plugin_get_class($plugin, 'handler');
+      if (empty($class_name) || !in_array('activityMapperAutocompleteInterface', class_implements($class_name))) {
+        return FALSE;
+      }
+
+      // If we have previously validated input, override.
+      $handler = new $class_name();
+      $value = $handler->getAutocompleteValue($plugin, array($raw_value), 'autocompleteids');
       if (isset($value)) {
         $this->value = $value;
         return TRUE;
@@ -127,7 +186,7 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
     // $identifier = $this->options['expose']['identifier'];
 
     // // We only validate if they've chosen the text field style.
-    // if ($this->options['type'] != 'textfield') {
+    // if ($this->options['type'] != 'autocomplete') {
     //   if ($form_state['values'][$identifier] != 'All')  {
     //     $this->validated_exposed_input = (array) $form_state['values'][$identifier];
     //   }

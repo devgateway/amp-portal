@@ -132,7 +132,7 @@ function ampapi_activity_menu() {
       'title' => $plugin['title'] . ' Autocomplete',
       'page callback' => 'ampapi_activity_autocomplete',
       'page arguments' => array(2),
-      'access arguments' => array('survey entity edit'),
+      'access callback' => TRUE,
       'type' => MENU_CALLBACK,
       'file' => 'ampapi_activity.pages.inc',
     );
@@ -145,6 +145,7 @@ function ampapi_activity_homepage_search_form($form, &$form_state) {
   $search_page_url = 'activities';
   $form = array(
     '#action' => $search_page_url,
+    '#method' => 'GET',
   );
 
   $form['search'] = array(

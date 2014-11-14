@@ -77,6 +77,52 @@ function helpertheme_libraries_info() {
     ),
   );
 
+  $libraries['jquery-tokeninput'] = array(
+    'name' => 'jQuery Tokeninput',
+    'vendor url' => 'https://github.com/loopj/jquery-tokeninput',
+    'download url' => 'https://github.com/loopj/jquery-tokeninput/archive/master.tar.gz',
+    'version arguments' => array(
+      'file' => 'component.json',
+      'pattern' => '/["\']version["\']\s*:\s*["\']?([0-9a-zA-Z\.-]+)["\']?/',
+      'lines' => 10,
+      'cols' => 100,
+    ),
+    'files' => array(
+      'js' => array(
+        'src/jquery.tokeninput.js' => array(),
+      ),
+      'css' => array(
+        'styles/token-input.css' => array(
+          'type' => 'file',
+          'media' => 'screen',
+        ),
+        'styles/token-input-facebook.css' => array(
+          'type' => 'file',
+          'media' => 'screen',
+        ),
+      ),
+    ),
+    'variants' => array(
+      'minified' => array(
+        'files' => array(
+          'js' => array(
+            'build/jquery.tokeninput.min.js' => array(),
+          ),
+          'css' => array(
+            'styles/token-input.css' => array(
+              'type' => 'file',
+              'media' => 'screen',
+            ),
+            'styles/token-input-facebook.css' => array(
+              'type' => 'file',
+              'media' => 'screen',
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   return $libraries;
 }
 
@@ -240,7 +286,7 @@ function helpertheme_preprocess_page(&$variables) {
   // Load the "Modernizr" JavaScript library.
   libraries_load('modernizr', 'minified');
 
-  // Load the " SVG for Everybody" JavaScript library.
+  // Load the "SVG for Everybody" JavaScript library.
   libraries_load('svg4everybody', 'minified');
 
   // Get path to the current module.

@@ -149,50 +149,36 @@
 // }
 
 // @TODO: Define styles for large displays.
-// .xLargeUp() {
-//   .page-wrapper {
-//     .row-wrapper(16);
-//     position: relative;
-//   }
+.xLargeUp() {
+  .page-activities {
+    .page-wrapper {
+      .row-wrapper(16);
+      position: relative;
+    }
 
-//   .main-header {
-//     .site-name-wrapper {
-//       width: 40%;
-//       float: left;
-//     }
-//     .site-name {
-//       font-size: 1em;
-//     }
-//     .header-items {
-//       width: 60%;
-//       float: right;
-//       text-align: right;
-//     }
-//   }
-
-//   .layout-right-sidebar {
-//     .group-left {
-//       .column(12);
-//       .first-child-column();
-//     }
-//     .group-right {
-//       .column(4);
-//       .last-child-column();
-//     }
-//   }
-
-//   .homepage-welcome-block {
-//     .column(12);
-//     margin: 0;
-//   }
-// }
+    .main-header {
+      .site-name-wrapper {
+        width: 40%;
+        float: left;
+      }
+      .site-name {
+        font-size: 1em;
+      }
+      .header-items {
+        width: 60%;
+        float: right;
+        text-align: right;
+      }
+    }
+  }
+}
 
 @import './lib/custom-grid.less';
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';
 
 
-
+// @TODO: Cleanup this mess!!!
 .ampapi-activity-homepage-search-form {
   margin-right: 1em;
   .form-text {

@@ -119,7 +119,8 @@ class ampAPIEntityQueryHelper {
 
       $plugin = ampapi_get_mapper_by_property_name($condition['column']);
       if ($class_name = ctools_plugin_get_class($plugin, 'handler')) {
-        $class_name::filter($plugin, $api_parameters, $request_body, $condition);
+        $handler = new $class_name();
+        $handler->filter($plugin, $api_parameters, $request_body, $condition);
       }
     }
 
@@ -127,7 +128,8 @@ class ampAPIEntityQueryHelper {
     foreach ($query->propertyConditions as $condition) {
       $plugin = ampapi_get_mapper_by_property_name($condition['column']);
       if ($class_name = ctools_plugin_get_class($plugin, 'handler')) {
-        $class_name::filter($plugin, $api_parameters, $request_body, $condition);
+        $handler = new $class_name();
+        $handler->filter($plugin, $api_parameters, $request_body, $condition);
       }
     }
 
@@ -170,7 +172,8 @@ class ampAPIEntityQueryHelper {
       $plugin = ampapi_get_mapper_by_property_name($order['specifier']);
 
       if ($class_name = ctools_plugin_get_class($plugin, 'handler')) {
-        $class_name::sort($plugin, $api_parameters, $request_body, $order);
+        $handler = new $class_name();
+        $handler->sort($plugin, $api_parameters, $request_body, $order);
       }
     }
 

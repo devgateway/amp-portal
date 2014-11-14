@@ -35,6 +35,11 @@ function ampapi_activity_embeddedform_content_type_render($subtype, $conf, $pane
   $block->title = '';
 
   $output['form'] = drupal_get_form($conf['form_callback']);
+  // Cleanup the submitted URL.
+  unset($output['form']['form_id']);
+  unset($output['form']['form_token']);
+  unset($output['form']['form_build_id']);
+
   $output['form'] += array(
     '#prefix' => '<div class="activities-homepage-search-form clearfix">',
     '#suffix' => '</div>',

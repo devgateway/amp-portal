@@ -60,7 +60,7 @@ class activityStatusMapper extends activityMapperBase {
     }
 
     foreach ($response_data->values as $value) {
-      $options[check_plain($value->id)] = check_plain($value->name);
+      $options[intval($value->id)] = filter_xss_admin($value->name);
     }
 
     if (!empty($options)) {

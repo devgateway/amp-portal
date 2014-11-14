@@ -300,20 +300,29 @@ function theme_amp_report_info($variables) {
   $elements['#prefix'] = '<div class="activity-search-info">';
   $elements['#suffix'] = '</div>';
 
-  // The number of the first item on the page.
-  $start_item = ($variables['current_page'] * $variables['items_per_page']) + 1;
+  // Display number of pages if necessary.
+  if ($variables['total_items'] > $variables['items_per_page']) {
+    // The number of the first item on the page.
+    $start_item = ($variables['current_page'] * $variables['items_per_page']) + 1;
 
-  // The number of the last item on the page.
-  $end_item_on_page = $variables['current_page'] * $variables['items_per_page'] + $variables['items_per_page'];
-  $end_item = min($end_item_on_page, $variables['total_items']);
+    // The number of the last item on the page.
+    $end_item_on_page = $variables['current_page'] * $variables['items_per_page'] + $variables['items_per_page'];
+    $end_item = min($end_item_on_page, $variables['total_items']);
 
-  $t_args= array(
-    '@total' => $variables['total_items'],
-    '@start' => $start_item,
-    '@end' => $end_item,
-  );
+    $t_args= array(
+      '@total' => $variables['total_items'],
+      '@start' => $start_item,
+      '@end' => $end_item,
+    );
+
+    $summary_markup = t('Displaying activities @start-@end of @total', $t_args);
+  }
+  else {
+    $summary_markup = format_plural($variables['total_items'], 'Displaying one activity', 'Displaying @count activities');
+  }
+
   $elements['totals'] = array(
-    '#markup' => t('Displaying activities @start-@end of @total', $t_args),
+    '#markup' => $summary_markup,
   );
 
   return drupal_render($elements);
