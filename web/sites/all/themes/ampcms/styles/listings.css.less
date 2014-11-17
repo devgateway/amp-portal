@@ -104,6 +104,9 @@ table {
     &.even {
       background-color: @even_color;
     }
+    &.odd {
+      background-color: #ffffff;
+    }
   }
 
   th,
@@ -144,15 +147,68 @@ table {
   td, th {
     &:first-child {
       border-left: 0;
-      padding-left: 2em;
+      padding-left: 1.5em;
     }
     &:last-child {
       border-right: 0;
-      padding-right: 2em;
+      padding-right: 1.5em;
     }
   }
   .more-link {
-    right: 2em;
+    right: 1.5em;
+  }
+}
+
+.activities-search-results {
+  form {
+    margin: 1em 0;
+  }
+
+  table {
+    // @TODO: Remove! temporarily override the default table size.
+    tr {
+      font-size: 1em;
+    }
+    th, td {
+      font-size: 0.625em;
+    }
+  }
+
+  .views-field-external-url {
+    text-align: center;
+    a {
+      display: block;
+      &.active,
+      &:focus,
+      &:hover {
+        text-decoration: none;
+        svg {
+          fill: @clanchor;
+        }
+      }
+    }
+    svg {
+      fill: @clpassive;
+    }
+  }
+
+  .views-field-actual-commitments,
+  .views-field-actual-disbursements {
+    text-align: right;
+  }
+}
+
+.activity-search-totals {
+  .totals-table {
+    text-align: right;
+  }
+}
+.xMediumAndUp() {
+  .activity-search-totals {
+    .totals-table {
+      float: right;
+      width: auto;
+    }
   }
 }
 

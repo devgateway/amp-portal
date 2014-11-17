@@ -193,7 +193,7 @@ function contentblock_entity_form_delete_submit($form, &$form_state) {
 }
 
 /**
- * Menu callback: Creates overview page for custom mongo entites at admin/structure/%.
+ * Menu callback: Creates overview page for custom contentblock entites at admin/structure/%.
  */
 function contentblock_entity_overview_types($entity_type) {
   $entity_info = entity_get_info($entity_type);

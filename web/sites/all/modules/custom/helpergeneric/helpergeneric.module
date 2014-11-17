@@ -423,7 +423,7 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
     }
   }
 
-  // Attach action links to node and mongo entities.
+  // Attach action links to node and contentblock entities.
   $position = 1;
   $attach_entity_actions = TRUE;
   if (empty($router_item['load_functions'][$position]) || empty($router_item['map'][$position])) {
@@ -635,24 +635,58 @@ function helpergeneric_locale_default_languages_alter(&$languages) {
 /**
  * Tries to detect the AMP base URL using the PHP $_SERVER variables.
  * @see drupal_detect_baseurl()
- *
- * @return
- *   The auto-detected $base_url that should be configured in 'admin/settings/api'.
  */
 function helpergeneric_detect_amp_baseurl() {
-  $proto = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-  $host = $_SERVER['SERVER_NAME'];
-  $port = ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']);
-  $dir = base_path();
+  static $url = NULL;
+  if (isset($url)) {
+    return $url;
+  }
 
-  // Trim the trailing slash.
-  return rtrim("$proto$host$port$dir", '/');
+  $restclient_hostname = variable_get('restclient_hostname', NULL);
+  if (!empty($restclient_hostname)) {
+    $restclient_hostname_parts = parse_url($restclient_hostname);
+    unset($restclient_hostname_parts['path']);
+    $url = helpergeneric_unparse_url($restclient_hostname_parts);
+  }
+  else {
+    $proto = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+    $host = $_SERVER['SERVER_NAME'];
+    $port = ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']);
+    $dir = base_path();
+
+    // Trim the trailing slash.
+    $url = rtrim("$proto$host$port$dir", '/');
+  }
+
+  return $url;
+}
+
+/**
+ * The reverse of parse_url()
+ */
+function helpergeneric_unparse_url($parsed_url) {
+  $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+  $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+  $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+  $user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+  $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
+  $pass     = ($user || $pass) ? "$pass@" : '';
+  $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+  $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+  $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+  return "$scheme$user$pass$host$port$path$query$fragment";
 }
 
 /**
  * Tries to determine if the API is online or not.
  */
 function helpergeneric_check_api_status($link = TRUE) {
+  static $status;
+
+  if (!empty($status)) {
+    return $status;
+  }
+
   $status = array(
     'online' => FALSE,
     'message' => '',
@@ -674,7 +708,12 @@ function helpergeneric_check_api_status($link = TRUE) {
     $status['online'] = TRUE;
   }
   else {
-    $status['message'] = t('The API returned the following status message: %message', array('%message' => $response->status_message));
+    if (!empty($response->error)) {
+      $status['message'] = t('The API returned the following status message: %message', array('%message' => $response->error));
+    }
+    else if (!empty($response->status_message)) {
+      $status['message'] = t('The API returned the following status message: %message', array('%message' => $response->status_message));
+    }
   }
 
   return $status;

@@ -82,3 +82,28 @@ function __ampcms_preprocess_views_view__blog_listing(&$vars) {
       break;
   }
 }
+
+/**
+ * Implements ampcms_preprocess_views_view() for activities view.
+ */
+function __ampcms_preprocess_views_view__activities(&$vars) {
+  switch ($vars['view']->current_display) {
+    case 'search_page':
+      if (!empty($vars['view']->query->pager->total_items)) {
+        // TODO: Use built in "Result summary".
+        $info = array(
+          'current_page' => $vars['view']->query->pager->current_page,
+          'items_per_page' => $vars['view']->query->pager->options['items_per_page'],
+          'total_items' => $vars['view']->query->pager->total_items,
+        );
+        $vars['attachment_before'] .= theme('amp_report_info', $info);
+      }
+
+      if (!empty($vars['view']->query->query->metaData['report_totals'])) {
+        $report_totals = $vars['view']->query->query->metaData['report_totals'];
+        $vars['attachment_after'] .= theme('amp_report_totals', $report_totals);
+      }
+
+      break;
+  }
+}

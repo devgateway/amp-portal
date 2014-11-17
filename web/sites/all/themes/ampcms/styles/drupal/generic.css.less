@@ -7,7 +7,11 @@
  * Force browsers to calculate the width of a 'select all' TH element.
  */
 table {
-  @header_color: darken(#ebf5fd, 10%);
+  @header_color: #ebf5fd;
+  @border_color: #d2e1f0;
+  @even_color: #f8f8f8;
+  @header_active_color: darken(@header_color, 5%);
+
   th {
     a {
       display: block;
@@ -17,7 +21,7 @@ table {
       width: 1px;
     }
     &.active {
-      background: @header_color;
+      background: @header_active_color;
       a {
         padding: 0 2em 0 0; /* LTR */
       }
@@ -28,16 +32,17 @@ table {
       }
     }
   }
-  td.active {
-    background: #e9e9dd;
+
+  tr.even td.active {
+    background: darken(@even_color, 0.8%);
   }
   tr.odd td.active {
-    background: #f3f4ee;
+    background: #fdfdfd;
   }
   tr.selected td.active,
   tr.selected td {
-    background: #ffc;
-    border-color: #eeb;
+    // background: #ffc;
+    // border-color: #eeb;
   }
 }
 
