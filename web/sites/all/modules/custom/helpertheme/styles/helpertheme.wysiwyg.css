@@ -10,6 +10,7 @@
 table[align="left"],
 table[align="right"] {
   border: 0px none transparent;
+  margin-top: 0 !important;
   width: auto !important;
 }
 
@@ -24,5 +25,4 @@ table[align="left"] td,
 table[align="right"] td {
   border: 0px none transparent;
   padding: 0;
-  margin-top: 0;
 }
