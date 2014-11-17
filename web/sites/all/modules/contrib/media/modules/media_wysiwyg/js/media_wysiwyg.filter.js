@@ -28,7 +28,7 @@
           // compatibility with existing media and is moderately more efficient
           // than re-building the element.
           var media = Drupal.settings.tagmap[match];
-          var media_json = match.replace(/^\[\[/, '').replace(/\]\]$/, '');
+          var media_json = match.replace('[[', '').replace(']]', '');
 
           // Ensure that the media JSON is valid.
           try {
@@ -68,9 +68,6 @@
      */
     replacePlaceholderWithToken: function(content) {
       Drupal.media.filter.ensure_tagmap();
-
-      // Rewrite the tagmap in case any of the macros have changed.
-      Drupal.settings.tagmap = {};
 
       // Wrap the content to be able to use replaceWith() and html().
       content = $('<div>').append(content);
