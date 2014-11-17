@@ -147,20 +147,22 @@ function sql_drush_command() {
     'aliases' => array('sqlq'),
   );
   $items['sql-sync'] = array(
-    'description' => 'Copy and import source database to target database. Transfers via rsync.',
+    'description' => 'Copies the database contents from a source site to a target site. Transfers the database dump via rsync.',
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'drush dependencies' => array('core'), // core-rsync.
     'examples' => array(
-      'drush sql-sync @prod @dev' => 'Copy the DB defined in sites/prod to the DB in sites/dev.',
+      'drush sql-sync @source @target' => 'Copy the database from the site with the alias "source" to the site with the alias "target".',
+      'drush sql-sync prod dev' => 'Copy the database from the site in /sites/prod to the site in /sites/dev (multisite installation).',
     ),
     'arguments' => array(
-      'from' => 'Name of subdirectory within /sites or a site-alias.',
-      'to' => 'Name of subdirectory within /sites or a site-alias.',
+      'source' => 'A site-alias or the name of a subdirectory within /sites whose database you want to copy from.',
+      'target' => 'A site-alias or the name of a subdirectory within /sites whose database you want to replace.',
     ),
+    'required-arguments' => TRUE,
     'options' => array(
-      'skip-tables-key' => 'A key in the $skip_tables array. @see example.drushrc.php. Optional.',
+      'skip-tables-key' => 'A key in the $skip_tables array. See example.drushrc.php. Optional.',
       'skip-tables-list' => 'A comma-separated list of tables to exclude completely. Optional.',
-      'structure-tables-key' => 'A key in the $structure_tables array. @see example.drushrc.php. Optional.',
+      'structure-tables-key' => 'A key in the $structure_tables array. See example.drushrc.php. Optional.',
       'structure-tables-list' => 'A comma-separated list of tables to include for structure, but not data. Optional.',
       'tables-key' => 'A key in the $tables array. Optional.',
       'tables-list' => 'A comma-separated list of tables to transfer. Optional.',
@@ -883,6 +885,17 @@ function drush_sql_query($query = NULL) {
 function _drush_sql_query($query, $db_spec = NULL, $filename = NULL) {
   $suffix = '';
   $scheme = _drush_sql_get_scheme($db_spec);
+
+  // Handle case when $filename is a tarball. Needed for compat with Drush7's sql-sync.
+  if ($filename && drush_file_is_tarball($filename)) {
+    if (drush_shell_exec('gunzip %s', $filename)) {
+      $filename = trim($filename, '.gz');
+    }
+    else {
+      return drush_set_error(dt('Failed to gunzip input file.'));
+    }
+  }
+
   // Inject table prefixes as needed.
   if (drush_has_boostrapped(DRUSH_BOOTSTRAP_DRUPAL_DATABASE)) {
     if ($filename) {
@@ -1222,10 +1235,6 @@ function _drush_sql_get_credentials($db_spec = NULL) {
         $parameters['host'] = $db_spec['host'];
       }
 
-      if (!empty($db_spec['port'])) {
-        $parameters['port'] = $db_spec['port'];
-      }
-
       // User is required. Drupal calls it 'username'. MySQL calls it 'user'.
       $parameters['user'] = $db_spec['username'];
 
@@ -1233,6 +1242,11 @@ function _drush_sql_get_credentials($db_spec = NULL) {
       if (isset($db_spec['password'])) {
         $parameters['password'] = $db_spec['password'];
       }
+
+      if (!empty($db_spec['port'])) {
+        $parameters['port'] = $db_spec['port'];
+      }
+      
       break;
 
     case 'pgsql':

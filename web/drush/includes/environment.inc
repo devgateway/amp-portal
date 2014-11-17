@@ -633,7 +633,7 @@ function drush_build_drush_command($drush_path = NULL, $php = NULL, $os = NULL, 
     }
     // We will also add in the php options from --php-options
     $prefix = drush_escapeshellarg($php, $os);
-    $php_options = drush_get_option('php-options','');
+    $php_options = implode(' ', drush_get_context_options('php-options'));
     if (!empty($php_options)) {
       $prefix .= ' ' . $php_options;
       $additional_options .= ' --php-options=' . drush_escapeshellarg($php_options, $os);
@@ -647,6 +647,10 @@ function drush_build_drush_command($drush_path = NULL, $php = NULL, $os = NULL, 
       }
       if ($php_options_alias = drush_get_option('php-options', NULL, 'alias')) {
         $environment_variables[] = 'PHP_OPTIONS=' . drush_escapeshellarg($php_options_alias, $os);
+      }
+      $columns = drush_get_context('DRUSH_COLUMNS');
+      if (($columns) && ($columns != 80)) {
+        $environment_variables[] = 'COLUMNS=' . $columns;
       }
       $prefix = implode(' ', $environment_variables);
     }

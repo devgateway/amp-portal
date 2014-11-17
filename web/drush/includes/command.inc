@@ -605,9 +605,9 @@ function _drush_verify_cli_arguments($command) {
       $missing = $required_arg_count > 1 ? dt('Missing required arguments') : dt('Missing required argument');
       $required = array_slice(array_keys($command['argument-description']), 0, $required_arg_count);
 
-      return drush_set_error(dt("@missing: '@required'.  See `drush help @command` for information on usage.", array(
+      return drush_set_error(dt("@missing: @required.  See `drush help @command` for information on usage.", array(
         '@missing' => $missing,
-        '@required' => implode("', '", $required),
+        '@required' => implode(", ", $required),
         '@command' => $command['command'],
       )));
     }
@@ -1395,23 +1395,19 @@ function _drush_find_commandfiles($phase, $phase_max = FALSE) {
         if (drush_drupal_major_version() >=8) {
           $searchpath[] = 'modules';
         }
-      }
 
-      $cid = drush_cid_install_profile();
-      if ($cached = drush_cache_get($cid)) {
-        $profile = $cached->data;
-        $path = "profiles/$profile/modules";
-        if (file_exists($path)) {
-          $searchpath[] = $path;
+        // Adding commandfiles located within /profiles. Try to limit to one profile for speed. Note
+        // that Drupal allows enabling modules from a non-active profile so this logic is non-ideal.
+        $cid = drush_cid_install_profile();
+        if ($cached = drush_cache_get($cid)) {
+          $profile = $cached->data;
+          $searchpath[] = "profiles/$profile/modules";
         }
-        elseif (file_exists('sites/all/' . $path)) {
-          $searchpath[] = 'sites/all/' . $path;
+        else {
+          // If install_profile is not available, scan all profiles.
+          $searchpath[] = "profiles";
+          $searchpath[] = "sites/all/profiles";
         }
-      }
-      else {
-        // If install_profile is not available, scan all profiles.
-        $searchpath[] = "profiles";
-        $searchpath[] = "sites/all/profiles";
       }
 
       // TODO: Treat themes like modules and stop unconditionally searching here.
@@ -1450,7 +1446,7 @@ function _drush_add_commandfiles($searchpath, $phase = NULL, $reset = FALSE) {
       // Assemble a cid specific to the bootstrap phase and searchpaths.
       // Bump $cf_version when making a change to a dev version of Drush
       // that invalidates the commandfile cache.
-      $cf_version = 2;
+      $cf_version = 3;
       $cid = drush_get_cid('commandfiles-' . $phase, array(), array_merge($searchpath, array($cf_version)));
       $command_cache = drush_cache_get($cid);
       if (isset($command_cache->data)) {
