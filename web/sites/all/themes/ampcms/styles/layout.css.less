@@ -25,6 +25,9 @@
     .row-wrapper(8);
     position: relative;
   }
+  .homepage-form-block {
+    padding-left: 1em;
+  }
 }
 
 .site-name {
@@ -45,15 +48,15 @@
 }
 
 // @TODO: Define styles for large displays.
-// .xNormalOnly() {
-.xNormalAndUp() {
+.xNormalOnly() {
+// .xNormalAndUp() {
   .page-wrapper {
     .row-wrapper();
     position: relative;
   }
   .main-header {
     .site-name-wrapper {
-      width: 40%;
+      width: 50%;
       float: left;
     }
     .site-name {
@@ -61,7 +64,7 @@
       display: block;
     }
     .header-items {
-      width: 60%;
+      width: 50%;
       float: right;
       text-align: right;
     }
@@ -122,8 +125,7 @@
     }
   }
 }
-// .xNormalOnly() {
-.xNormalAndUp() {
+.xNormalOnly() {
   .cbreference-linkedmap {
     &.cbreference-view-mode-wide {
       .title-wrapper {
@@ -135,41 +137,59 @@
     }
   }
 }
-// .xLargeUp() {
-//   .cbreference-linkedmap {
-//     &.cbreference-view-mode-wide {
-//       .title-wrapper {
-//         .column-compacted(6);
-//       }
-//       .field-name-field-cbimage {
-//         .column-full(10);
-//       }
-//     }
-//   }
-// }
+.xLargeUp() {
+  .cbreference-linkedmap {
+    &.cbreference-view-mode-wide {
+      .title-wrapper {
+        .column-compacted(6);
+      }
+      .field-name-field-cbimage {
+        .column-full(10);
+      }
+    }
+  }
+}
 
 // @TODO: Define styles for large displays.
 .xLargeUp() {
-  .page-activities {
-    .page-wrapper {
-      .row-wrapper(16);
-      position: relative;
-    }
+  .page-wrapper {
+    .row-wrapper(16);
+    position: relative;
+  }
 
-    .main-header {
-      .site-name-wrapper {
-        width: 40%;
-        float: left;
-      }
-      .site-name {
-        font-size: 1em;
-      }
-      .header-items {
-        width: 60%;
-        float: right;
-        text-align: right;
-      }
+  .main-header {
+    .site-name-wrapper {
+      width: 50%;
+      float: left;
     }
+    .site-name {
+      font-size: 1em;
+    }
+    .header-items {
+      width: 50%;
+      float: right;
+      text-align: right;
+    }
+  }
+
+  .layout-right-sidebar {
+    .group-left {
+      .column(12);
+      .first-child-column();
+    }
+    .group-right {
+      .column(4);
+      .last-child-column();
+    }
+  }
+
+  .homepage-welcome-block {
+    .column(8);
+    .first-child-column();
+  }
+  .homepage-form-block {
+    .column(8);
+    .last-child-column();
   }
 }
 
@@ -198,3 +218,4 @@
 .homepage-featured-block {
   background-color: @clcontent__featured;
 }
+
