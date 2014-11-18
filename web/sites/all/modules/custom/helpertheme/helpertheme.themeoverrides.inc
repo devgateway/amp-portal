@@ -232,3 +232,12 @@ function _helpertheme_menu_local_action_title($title, $icon, $size) {
 
   return $svgicon . '<span class="title">' . check_plain($title) . '</span>';
 }
+
+/**
+ * Implements hook_media_wysiwyg_token_to_markup_alter().
+ */
+function helpertheme_media_wysiwyg_token_to_markup_alter(&$element, $tag_info, $settings) {
+  if (!empty($element['content']['#type']) && $element['content']['#type'] == 'container') {
+    unset($element['content']['#type']);
+  }
+}
