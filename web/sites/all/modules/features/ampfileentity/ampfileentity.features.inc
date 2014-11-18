@@ -415,7 +415,7 @@ function ampfileentity_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => 560,
+          'width' => 800,
           'height' => 112,
         ),
         'weight' => 1,
@@ -435,7 +435,7 @@ function ampfileentity_image_default_styles() {
           ),
           'under' => 1,
           'exact' => array(
-            'width' => 560,
+            'width' => 800,
             'height' => 112,
             'xpos' => 'center',
             'ypos' => 'center',
