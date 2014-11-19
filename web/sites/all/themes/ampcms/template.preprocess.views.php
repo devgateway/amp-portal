@@ -89,6 +89,16 @@ function __ampcms_preprocess_views_view__blog_listing(&$vars) {
 function __ampcms_preprocess_views_view__activities(&$vars) {
   switch ($vars['view']->current_display) {
     case 'search_page':
+      // Reattach the form to the view.
+
+      // $result = $vars['view']->display_handler->get_special_blocks();
+      // if (!empty($result)) {
+      //   $special_block_type = '-exp';
+      //   $special_block = $vars['view']->display_handler->view_special_blocks($special_block_type);
+      //   $vars['attachment_before'] .= $special_block['content'];
+      // }
+      // dpm($result, '$result');
+
       if (!empty($vars['view']->query->pager->total_items)) {
         // TODO: Use built in "Result summary".
         $info = array(

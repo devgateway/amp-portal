@@ -7,16 +7,11 @@
  */
 Drupal.behaviors.projectsSearchFormModalDialog = {
   attach: function (context, settings) {
-    if ($('.view-filters form', context).length === 0) {
+    if ($('.views-exposed-form-activities-search-page', context).length === 0) {
       return;
     }
 
-    // console.log($('.view-filters form .form-text#edit-da', context), 'here2');
-    // $('.view-filters form .form-text#edit-search', context).tokenInput();
-
-    // console.log(endpoint, 'endpoint');
-
-    $('.view-filters form .tokeninput-textfield', context).each(function() {
+    $('.views-exposed-form-activities-search-page .tokeninput-textfield', context).each(function() {
       var field_name = $(this).attr('data-name');
       var endpoint = settings.basePath + 'ampapi/autocomplete/' + field_name;
 

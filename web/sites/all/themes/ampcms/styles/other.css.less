@@ -290,9 +290,7 @@ ul.tips, div.description, .form-item div.description {
 /* Example tokeninput style #2: Facebook style */
 .token-input-list-ampcms {
   overflow: hidden;
-  height: auto !important;
-  height: 1%;
-  min-width: 300px;
+  min-width: 200px;
   border: 1px solid #ccc;
   border-top-color: #999;
   cursor: text;
@@ -305,7 +303,10 @@ ul.tips, div.description, .form-item div.description {
   background-color: #fff;
   list-style-type: none;
   clear: left;
-  li input {
+  li {
+    vertical-align: middle;
+  }
+  input {
     border: 1px solid transparent;
     border-top-width: 2px;
     width: 100px;
@@ -328,12 +329,11 @@ ul.tips, div.description, .form-item div.description {
   cursor: default;
   border: 1px solid #ccc;
   border-bottom-color: #aaa;
+  display: inline-block;
   font-size: 11px;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  float: left;
-  white-space: nowrap;
   p {
     display: inline;
     padding: 0;
@@ -352,7 +352,7 @@ ul.tips, div.description, .form-item div.description {
   color: #fff;
 }
 .token-input-input-token-ampcms {
-  float: left;
+  display: inline-block;
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -413,8 +413,32 @@ ul.tips, div.description, .form-item div.description {
 
 
 
+// @TODO: Cleanup this mess!!!
+.homepage-form-block {
+  .views-exposed-form-activities-search-page {
+    margin-right: 1em;
+  }
 
+  .form-item {
+    margin-top: 0;
+    margin-bottom: 0.2em;
+  }
+  .form-text {
+    .box-sizing(border-box);
+    width: 100%;
+  }
+  .form-actions {
+    text-align: right;
+  }
+  input.form-submit, a.button {
+    margin-right: 0;
+    margin-left: 0.6em;
+  }
+}
 
+.homepage-featured-block {
+  background-color: @clcontent__featured;
+}
 
 
 

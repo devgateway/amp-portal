@@ -34,19 +34,31 @@ function ampapi_activity_embeddedform_content_type_render($subtype, $conf, $pane
 
   $block->title = '';
 
-  $output['form'] = drupal_get_form($conf['form_callback']);
-  // Cleanup the submitted URL.
-  unset($output['form']['form_id']);
-  unset($output['form']['form_token']);
-  unset($output['form']['form_build_id']);
+  $name = 'activities';
+  $display_id = 'search_page';
+  $view = views_get_view($name);
+  if (empty($view)) {
+    return;
+  }
 
-  $output['form'] += array(
-    '#prefix' => '<div class="activities-homepage-search-form clearfix">',
-    '#suffix' => '</div>',
-  );
+  if (!$view->access($display_id)) {
+    return;
+  }
+
+  $view->set_display($display_id);
+  $view->init_handlers();
+
+  $output['form'] = array();
+  if (isset($view->display_handler)) {
+    $view->display_handler->set_option('exposed_block', TRUE);
+    $exposed_form = $view->display_handler->get_plugin('exposed_form');
+    $exposed_form->options['reset_button'] = FALSE;
+    $exposed_form->options['submit_button'] = t('Search Activities');
+    $output['form']['#markup'] = $exposed_form->render_exposed_form(TRUE);
+  }
+  $view->destroy();
 
   $block->content = drupal_render($output);
-
   return $block;
 }
 
