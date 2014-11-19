@@ -11,7 +11,7 @@
  */
 $plugin = array(
   'title' => 'News And Events',
-  'description' => 'Will a list of recent news and events.',
+  'description' => 'Will display a list of recent news and events.',
   'render callback' => 'contentblock_newsevents_widget_render',
   'settings form' => 'contentblock_newsevents_widget_settings',
   'defaults' => array(),

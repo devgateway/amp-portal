@@ -11,7 +11,7 @@
  */
 $plugin = array(
   'title' => 'Top Projects',
-  'description' => 'Will a list of top projects (by commitment size) during a selected time period.',
+  'description' => 'Will display a list of top projects (by commitment size) during a selected time period.',
   'render callback' => 'contentwidget_topprojects_widget_render',
   'settings form' => 'contentwidget_topprojects_widget_settings',
   'settings storage' => 'contentwidget_topprojects_widget_settings_storage',

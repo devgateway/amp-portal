@@ -202,7 +202,7 @@ function ampcms_preprocess_entity(&$variables, $hook) {
       $widget = $variables['contentblock']->field_cbwidget[LANGUAGE_NONE][0]['widget'];
       $variables['classes_array'][] = drupal_clean_css_identifier('contentwidget-' . $widget);
 
-      if (in_array($widget, array('topdonors', 'topprojects'))) {
+      if (in_array($widget, array('topdonors', 'topprojects', 'lastupdated'))) {
         $variables['classes_array'][] = 'contentwidget-fullwidth';
       }
     }

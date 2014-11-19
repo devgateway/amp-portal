@@ -11,7 +11,7 @@
  */
 $plugin = array(
   'title' => 'Top Donors',
-  'description' => 'Will a list of top donors by commitments or disbursements size during a selected time period.',
+  'description' => 'Will display a list of top donors by commitments or disbursements size during a selected time period.',
   'render callback' => 'contentwidget_topdonors_widget_render',
   'settings form' => 'contentwidget_topdonors_widget_settings',
   'settings storage' => 'contentwidget_topdonors_widget_settings_storage',
