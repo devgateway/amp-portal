@@ -163,13 +163,22 @@ function ampapi_entity_access($op, $entity = NULL, $account = NULL, $entity_type
 
 
 function ampapi_request($type, $endpoint, $options = array()) {
+  global $language_content;
+  $langcode = $language_content->language;
+
   $options += array('reset' => TRUE, 'error_handling' => TRUE);
 
+  $parameters = array();
+  if (!empty($langcode) && $langcode != LANGUAGE_NONE) {
+    $parameters['language'] = $langcode;
+  }
+
   if ($type == 'get') {
-    $response = restclient_get($endpoint, $options);
+    $url = $endpoint . '?' . drupal_http_build_query($parameters);
+    $response = restclient_get($endpoint . '?' . drupal_http_build_query($parameters), $options);
   }
   else if ($type == 'post') {
-    $response = restclient_post($endpoint, $options);
+    $response = restclient_post($endpoint . '?' . drupal_http_build_query($parameters), $options);
   }
 
   // @TODO: Add support for more 200 class response codes.
