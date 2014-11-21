@@ -56,7 +56,6 @@ $modules = array(
     'efq_views',
 
 );
-// Install modules
 _us_module__install($modules);
 
 // Enable Field Templates. (Customize the labels and the HTML output of your fields.)

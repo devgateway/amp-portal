@@ -98,3 +98,14 @@ function update_scripts_uninstall() {
   variable_del('update_scripts_closed_phases');
   variable_del('update_scripts_revert_features');
 }
+
+/**
+ * Force the creation or update of the .htaccess file for update scripts.
+ */
+function update_scripts_update_7001() {
+  // Get update scripts directory.
+  $path = update_scripts_get_directory();
+
+  $htaccess_path = $path . DIRECTORY_SEPARATOR . '.htaccess';
+  file_create_htaccess($path, TRUE, TRUE);
+}

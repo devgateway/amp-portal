@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ * Exposes custom theme functions.
+ *
+ * @TODO: Add caching.
+ */
 
 /**
  * Returns HTML for the svg icons.
@@ -40,6 +46,16 @@ function theme_svg_sprite($elements) {
       'fragment' => $elements['symbol'],
     );
   }
+
+  // A dummy query-string is added to filenames, to gain control over
+  // browser-caching. The string changes on every update or full cache
+  // flush, forcing browsers to load a new copy of the files, as the
+  // URL changed. Files that should not be cached (see drupal_add_js())
+  // get REQUEST_TIME as query-string instead, to enforce reload on every
+  // page request.
+  $default_query_string = variable_get('css_js_query_string', '0');
+  $args['query'][$default_query_string] = NULL;
+
   $elements['#use']['xlink:href'] = url($elements['path'], $args);
 
   return '<svg' . drupal_attributes($elements['#attributes']) . '><use'. drupal_attributes($elements['#use']) . '/></svg>';
@@ -55,8 +71,8 @@ function theme_header_logo() {
   $site_link_title = t(variable_get('site_link_title', 'Visit the main page'));
   $site_name = filter_xss_admin(variable_get('site_name', 'Drupal'));
 
-  $items['#prefix'] = '<h1 class="site-name contextual-links-region">';
-  $items['#suffix'] = '</h1>';
+  $items['#prefix'] = '<div class="site-name-wrapper contextual-links-region">';
+  $items['#suffix'] = '</div>';
 
   // Initialize the template variable as a renderable array.
   $items['contextual_links'] = array(
@@ -66,13 +82,16 @@ function theme_header_logo() {
     ),
   );
 
-  $items['logo_markup'] = array(
+  $items['header']['#prefix'] = '<h1 class="site-name">';
+  $items['header']['#suffix'] = '</h1>';
+
+  $items['header']['logo_markup'] = array(
     '#prefix' => '<a href="' . url('<front>') . '" title="' . $site_link_title . '" class="link" rel="home">',
     '#suffix' => "</a>",
   );
 
   // Replace the PNG logo with a SVG one.
-  $items['logo_markup']['svg'] = array(
+  $items['header']['logo_markup']['svg'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.svg'),
     '#alt' => '',
@@ -82,7 +101,7 @@ function theme_header_logo() {
     '#prefix' => "<!--[if (gte IE 9)|!(IE)]><!-->",
     '#suffix' => "<!--<![endif]-->",
   );
-  $items['logo_markup']['png'] = array(
+  $items['header']['logo_markup']['png'] = array(
     '#theme' => 'image',
     '#path' => url(drupal_get_path('theme', $theme) . '/logo.png'),
     '#alt' => '',
@@ -90,7 +109,7 @@ function theme_header_logo() {
     '#suffix' => "<![endif]-->",
   );
 
-  $items['logo_markup']['site_name'] = array(
+  $items['header']['logo_markup']['site_name'] = array(
     '#markup' => $site_name,
     '#prefix' => '<span class="text">',
     '#suffix' => "</span>",
@@ -236,4 +255,105 @@ function theme_main_navigation() {
 
   // Remove whitespace between items. Helps with styling in-line elements.
   return preg_replace('/\>[\n\ ]+\</', '><', $output);
+}
+
+/**
+ * Returns HTML for the footer items.
+ */
+function theme_footer_items() {
+  $footer_elements = array();
+
+  $footer_elements = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'footer-items',
+      ),
+    ),
+  );
+
+  // Load the ctools content type plugin.
+  ctools_include('plugins');
+  ctools_include('content');
+  $content_type = ctools_get_content_type('cbreference');
+  $content_subtype = ctools_content_get_subtype($content_type, 'cbreference');
+
+  $configuration = ctools_content_get_defaults($content_type, $content_subtype);
+  $configuration['machine_name'] = 'footer';
+
+  // Render the footer content.
+  $content = ctools_content_render('cbreference', 'cbreference', $configuration, array());
+  $footer_elements['content']['#markup'] = theme('panels_pane', array('content' => $content));
+
+  // Render the HTML.
+  $output = drupal_render($footer_elements);
+
+  // Remove whitespace between items. Helps with styling in-line elements.
+  return preg_replace('/\>\s+\</', '><', $output);
+}
+
+/**
+ * Returns HTML containing information about the report.
+ */
+function theme_amp_report_info($variables) {
+  $elements = array();
+  $elements['#prefix'] = '<div class="activity-search-info">';
+  $elements['#suffix'] = '</div>';
+
+  // Display number of pages if necessary.
+  if ($variables['total_items'] > $variables['items_per_page']) {
+    // The number of the first item on the page.
+    $start_item = ($variables['current_page'] * $variables['items_per_page']) + 1;
+
+    // The number of the last item on the page.
+    $end_item_on_page = $variables['current_page'] * $variables['items_per_page'] + $variables['items_per_page'];
+    $end_item = min($end_item_on_page, $variables['total_items']);
+
+    $t_args= array(
+      '@total' => $variables['total_items'],
+      '@start' => $start_item,
+      '@end' => $end_item,
+    );
+
+    $summary_markup = t('Displaying activities @start-@end of @total', $t_args);
+  }
+  else {
+    $summary_markup = format_plural($variables['total_items'], 'Displaying one activity', 'Displaying @count activities');
+  }
+
+  $elements['totals'] = array(
+    '#markup' => $summary_markup,
+  );
+
+  return drupal_render($elements);
+}
+
+/**
+ * Returns HTML for the activities search footer totals.
+ */
+function theme_amp_report_totals($totals) {
+  $elements = array();
+
+  $elements['#prefix'] = '<div class="activity-search-totals clearfix">';
+  $elements['#suffix'] = '</div>';
+
+  $header = array('');
+  $data = array(t('Totals'));
+  foreach (array('Actual Commitments', 'Actual Disbursements') as $key) {
+    if (!isset($totals[$key]['amount'])) {
+      continue;
+    }
+    $header[] = $totals[$key]['header'];
+    $data[] = $totals[$key]['amount'];
+  }
+
+  $elements['totals'] = array(
+    '#theme' => 'table',
+    '#sticky' => FALSE,
+    '#header' => $header,
+    '#rows' => array($data),
+    '#attributes' => array('class' => array('totals-table')),
+  );
+
+  return drupal_render($elements);
 }

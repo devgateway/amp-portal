@@ -28,6 +28,13 @@
   width: (@gen_column_width + @gen_gutter_width) * @count;
 }
 
+.column-compacted(@count) {
+  display: inline;
+  float: left;
+  position: relative;
+  width: (@gen_column_width + @gen_gutter_width) * @count - @gen_gutter_width;
+}
+
 .column-single(@count) {
   display: block;
   margin-left: @gen_gutter_width / 2;

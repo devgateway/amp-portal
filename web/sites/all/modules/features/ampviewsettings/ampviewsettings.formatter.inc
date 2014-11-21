@@ -107,23 +107,20 @@ function _ampviewsettings_clean_text_summary($text, $format = NULL, $size = NULL
   }
 
   // Remove all empty anchor tags.
-  $text = preg_replace('@\s*<a[^>]*>\W*</a>\s*@', ' ', $text);
+  $text = preg_replace('/\s*<a[^>]*>\W*<\/a>\s*/', ' ', $text);
 
   // Remove any paragraph tags that do not contain at least 5 words and all the space around them.
-  $text = preg_replace('@\s*<p>(?:\W*\w*\W*){0,4}</p>\s*@', '', $text);
+  $text = preg_replace('/\s*<p>(?:\W*\w*\W*){0,4}<\/p>\s*/', '', $text);
 
   // Remove extra whitespace between tags.
-  $text = preg_replace('@>[\s\W]+<@', '> <', $text);
-
-  // Remove extra whitespace
-  // $text = preg_replace('@\s*@', ' ', $text);
+  $text = preg_replace('/>[\s\W]+</', '> <', $text);
 
   // Get a trimmed summary and count the characters not displayed to the user: tag attributes.
-  $trimmed_text = truncate_utf8($text, $size);
+  $trimmed_text = truncate_utf8($text, $size * 2);
 
   // Count the number of 'irrelevant' characters.
   $extra = 0;
-  if (preg_match_all('/<[a-z]+(\ ?[^>]+)>/', $trimmed_text, $matches)) {
+  if (preg_match_all('/<(\/?[a-z]+\ ?[^>]+)>/', $trimmed_text, $matches)) {
     if (!empty($matches[1])) {
       foreach ($matches[1] as $value) {
         $extra += drupal_strlen($value);
@@ -135,9 +132,15 @@ function _ampviewsettings_clean_text_summary($text, $format = NULL, $size = NULL
   $size += $extra;
   $summary = truncate_utf8($text, $size);
 
-  // Remove opening anchor tags that are not closed.
-  if (preg_match('/<a[^>]+$/', $summary, $matches)) {
-    $summary = preg_replace('/\s+<a[^>]+$/', '', $summary);
+  // Remove tags that are not closed.
+  if (preg_match('/<\/?[a-z]+[^>]+$/', $summary, $matches)) {
+    $summary = preg_replace('/<\/?[a-z]+[^>]+$/', '', $summary);
+  }
+
+  // Remove paragraphs that contain only one link.
+  // This cleans up linked images and files that are at the beginning of the post.
+  if (preg_match('/<p>\ *<a[^>]+>[^<]+<\/a>\ *<\/p>/', $summary, $matches)) {
+    $summary = preg_replace('/<p>\ *<a[^>]+>[^<]+<\/a>\ *<\/p>/', '', $summary);
   }
 
   // Store the actual length of the UTF8 string -- which might not be the same

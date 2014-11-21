@@ -31,6 +31,33 @@ function ampfileentity_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'narrow' => array(
+        'custom_settings' => FALSE,
+      ),
+      'narrow_linked' => array(
+        'custom_settings' => FALSE,
+      ),
+      'normal' => array(
+        'custom_settings' => FALSE,
+      ),
+      'normal_linked' => array(
+        'custom_settings' => FALSE,
+      ),
+      'original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'thumbnail' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wide' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wide_linked' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -55,6 +82,10 @@ function ampfileentity_strongarm() {
             'visible' => TRUE,
           ),
           'preview' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'wysiwyg' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -85,6 +116,33 @@ function ampfileentity_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'narrow' => array(
+        'custom_settings' => FALSE,
+      ),
+      'narrow_linked' => array(
+        'custom_settings' => FALSE,
+      ),
+      'normal' => array(
+        'custom_settings' => FALSE,
+      ),
+      'normal_linked' => array(
+        'custom_settings' => FALSE,
+      ),
+      'original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'thumbnail' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wide' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wide_linked' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -109,6 +167,10 @@ function ampfileentity_strongarm() {
             'visible' => TRUE,
           ),
           'preview' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'wysiwyg' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -256,6 +318,33 @@ function ampfileentity_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'narrow' => array(
+        'custom_settings' => FALSE,
+      ),
+      'narrow_linked' => array(
+        'custom_settings' => FALSE,
+      ),
+      'normal' => array(
+        'custom_settings' => FALSE,
+      ),
+      'normal_linked' => array(
+        'custom_settings' => FALSE,
+      ),
+      'original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'thumbnail' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wide' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wide_linked' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -280,6 +369,10 @@ function ampfileentity_strongarm() {
             'visible' => TRUE,
           ),
           'preview' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'wysiwyg' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -315,9 +408,9 @@ function ampfileentity_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'media_wysiwyg_wysiwyg_allowed_types';
   $strongarm->value = array(
-    0 => 'image',
-    1 => 'video',
-    2 => 'document',
+    0 => 'document',
+    1 => 'image',
+    2 => 'video',
   );
   $export['media_wysiwyg_wysiwyg_allowed_types'] = $strongarm;
 

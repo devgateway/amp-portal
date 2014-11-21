@@ -114,6 +114,8 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'date_format_shortest',
         'helpergeneric_cleanup_ui_force',
         'helpergeneric_disabled_languages',
+        // 'helpertheme_load_external_fonts',
+        'update_scripts_user_one_updated',
 
         // Hide CORE variables.
         'additional_settings__active_tab_blog',
@@ -157,6 +159,24 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'site_name',
         'teaser_length',
         'theme_default',
+
+        // Cache specific variables.
+        'cache_flush_cache',
+        'cache_flush_cache_field',
+        'cache_flush_cache_filter',
+        'cache_flush_cache_form',
+        'cache_flush_cache_htmlpurifier',
+        'cache_flush_cache_image',
+        'cache_flush_cache_libraries',
+        'cache_flush_cache_menu',
+        'cache_flush_cache_page',
+        'cache_flush_cache_panels',
+        'cache_flush_cache_path',
+        'cache_flush_cache_restclient',
+        'cache_flush_cache_token',
+        'cache_flush_cache_variable',
+        'cache_flush_cache_views',
+        'cache_flush_cache_views_data',
 
         // Hide admin_menu.module variables.
         'admin_menu_devel_modules_enabled',
@@ -235,6 +255,12 @@ function helpergeneric_features_component_export_alter(&$component_export, $comp
         'media_wysiwyg_view_mode_video_file_wysiwyg_view_mode_status',
         'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes',
         'media_wysiwyg_view_mode_video_wysiwyg_restricted_view_modes_status',
+
+        // Hide restclient.module variables.
+        'restclient_caching',
+        'restclient_filepath',
+        'restclient_hostname',
+        'restclient_testing',
 
         // Hide update.module variables.
         'update_last_check',
@@ -333,6 +359,21 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
     }
     if (isset($form['personalization'])) {
       $form['personalization']['#access'] = FALSE;
+    }
+  }
+
+  // Group actions in the exposed filters form.
+  if ($form_id == 'views_exposed_form') {
+    $form['actions'] = array('#type' => 'actions');
+
+    if (isset($form['submit'])) {
+      $form['actions']['submit'] = $form['submit'];
+      unset($form['submit']);
+    }
+
+    if (isset($form['reset'])) {
+      $form['actions']['reset'] = $form['reset'];
+      unset($form['reset']);
     }
   }
 
@@ -590,5 +631,25 @@ function _helpergeneric_alter_vertical_tabs(&$form) {
     foreach (element_children($form['#groups']) as $key) {
       $form['#groups'][$key]->format_type = 'fieldset';
     }
+  }
+}
+
+
+
+/**
+ * Implement hook_form_alter() for views_exposed_form.
+ */
+function helpergeneric_form_views_exposed_form_alter(&$form, &$form_state) {
+  return;
+  dpm($form, 'helpergeneric $form');
+  foreach ($form['#info'] as $id => $info) {
+    $key = $info['value'];
+    if (isset($form[$key]['#type']) && $form[$key]['#type'] != 'textfield') {
+      continue;
+    }
+
+    $form[$key]['#attributes']['placeholder'] = t($info['label']);
+    $form[$key]['#title_display'] = 'invisible';
+    // $form[$key]['#title_display'] = 'attribute';
   }
 }

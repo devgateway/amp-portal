@@ -40,7 +40,6 @@ $modules = array(
   // 'stage_file_proxy',
 
 );
-// Install modules
 _us_module__install($modules);
 
 // Set administration theme.

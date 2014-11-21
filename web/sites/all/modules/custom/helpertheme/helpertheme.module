@@ -77,6 +77,52 @@ function helpertheme_libraries_info() {
     ),
   );
 
+  $libraries['jquery-tokeninput'] = array(
+    'name' => 'jQuery Tokeninput',
+    'vendor url' => 'https://github.com/loopj/jquery-tokeninput',
+    'download url' => 'https://github.com/loopj/jquery-tokeninput/archive/master.tar.gz',
+    'version arguments' => array(
+      'file' => 'component.json',
+      'pattern' => '/["\']version["\']\s*:\s*["\']?([0-9a-zA-Z\.-]+)["\']?/',
+      'lines' => 10,
+      'cols' => 100,
+    ),
+    'files' => array(
+      'js' => array(
+        'src/jquery.tokeninput.js' => array(),
+      ),
+      'css' => array(
+        'styles/token-input.css' => array(
+          'type' => 'file',
+          'media' => 'screen',
+        ),
+        'styles/token-input-facebook.css' => array(
+          'type' => 'file',
+          'media' => 'screen',
+        ),
+      ),
+    ),
+    'variants' => array(
+      'minified' => array(
+        'files' => array(
+          'js' => array(
+            'build/jquery.tokeninput.min.js' => array(),
+          ),
+          'css' => array(
+            'styles/token-input.css' => array(
+              'type' => 'file',
+              'media' => 'screen',
+            ),
+            'styles/token-input-facebook.css' => array(
+              'type' => 'file',
+              'media' => 'screen',
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   return $libraries;
 }
 
@@ -184,6 +230,20 @@ function helpertheme_theme() {
     'main_navigation' => array(
       'file' => 'helpertheme.theme.inc',
     ),
+    'footer_items' => array(
+      'file' => 'helpertheme.theme.inc',
+    ),
+    'amp_report_info' => array(
+      'variables' => array(
+        'current_page' => NULL,
+        'items_per_page' => NULL,
+        'total_items' => NULL,
+      ),
+      'file' => 'helpertheme.theme.inc',
+    ),
+    'amp_report_totals' => array(
+      'file' => 'helpertheme.theme.inc',
+    ),
   );
 }
 
@@ -226,7 +286,7 @@ function helpertheme_preprocess_page(&$variables) {
   // Load the "Modernizr" JavaScript library.
   libraries_load('modernizr', 'minified');
 
-  // Load the " SVG for Everybody" JavaScript library.
+  // Load the "SVG for Everybody" JavaScript library.
   libraries_load('svg4everybody', 'minified');
 
   // Get path to the current module.
@@ -363,14 +423,11 @@ function helpertheme_html_head_alter(&$head_elements) {
 function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
   $available_icons = array(
     'home',
-
-    // fill="#4B4A4A"
+    'blog',
     'dashboard',
     'datasource1',
     'datasource2',
     'datasource3',
-
-    // fill="#CFCECE"
     'documents',
     'locations',
     'login',

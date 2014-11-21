@@ -5,7 +5,6 @@
  */
 
 // Include formatter specific code.
-module_load_include('inc', 'contentblock', 'contentblock.formatter');
 module_load_include('inc', 'contentblock', 'contentblock.admin_cbreference');
 
 /**
@@ -27,7 +26,6 @@ function contentblock_entity_info() {
     'plural label' => t('Content Blocks'),
     'description' => t('A custom content block.'),
 
-    // We don't have a base table, entities are stored in MongoDB.
     'base table' => 'contentblock',
     'module' => 'contentblock',
 
@@ -205,7 +203,7 @@ function contentblock_get_hidden_types($type = NULL) {
   );
 
   $items['footer'] = array(
-    'title' => t('Footer Section'),
+    'title' => t('Footer'),
     'description' => t('The footer is a section of free text in the page footer.'),
     'action label' => t('Configure'),
     'is section' => TRUE,

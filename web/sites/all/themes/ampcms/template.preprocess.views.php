@@ -45,7 +45,8 @@ function __ampcms_preprocess_views_view__homepage(&$vars) {
   switch ($vars['view']->current_display) {
     case 'news_events':
       if (!empty($vars['view']->result)) {
-        // @HACK: needed for more-link next to pane header. Breaks views contextual links.
+        // @HACK: Remove views contextual links, needed for more-link next to contentblock header.
+        $vars['title_suffix']['contextual_links'] = array();
         if (in_array('contextual-links-region', $vars['classes_array'])) {
           $key = array_search('contextual-links-region', $vars['classes_array']);
           unset($vars['classes_array'][$key]);
@@ -76,6 +77,41 @@ function __ampcms_preprocess_views_view__blog_listing(&$vars) {
       }
       else {
         $vars['view']->set_title(t('Blog'));
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements ampcms_preprocess_views_view() for activities view.
+ */
+function __ampcms_preprocess_views_view__activities(&$vars) {
+  switch ($vars['view']->current_display) {
+    case 'search_page':
+      // Reattach the form to the view.
+
+      // $result = $vars['view']->display_handler->get_special_blocks();
+      // if (!empty($result)) {
+      //   $special_block_type = '-exp';
+      //   $special_block = $vars['view']->display_handler->view_special_blocks($special_block_type);
+      //   $vars['attachment_before'] .= $special_block['content'];
+      // }
+      // dpm($result, '$result');
+
+      if (!empty($vars['view']->query->pager->total_items)) {
+        // TODO: Use built in "Result summary".
+        $info = array(
+          'current_page' => $vars['view']->query->pager->current_page,
+          'items_per_page' => $vars['view']->query->pager->options['items_per_page'],
+          'total_items' => $vars['view']->query->pager->total_items,
+        );
+        $vars['attachment_before'] .= theme('amp_report_info', $info);
+      }
+
+      if (!empty($vars['view']->query->query->metaData['report_totals'])) {
+        $report_totals = $vars['view']->query->query->metaData['report_totals'];
+        $vars['attachment_after'] .= theme('amp_report_totals', $report_totals);
       }
 
       break;

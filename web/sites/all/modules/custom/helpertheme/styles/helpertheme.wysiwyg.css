@@ -7,18 +7,22 @@
 /**
  * Align table styles.
  */
-table[align="left"] {
-  border: none;
-  margin-right: 0.5em;
+table[align="left"],
+table[align="right"] {
+  border: 0px none transparent;
+  margin-top: 0 !important;
   width: auto !important;
 }
+
+table[align="left"] {
+  margin-right: 0.5em;
+}
 table[align="right"] {
-  border: none;
   margin-left: 0.5em;
-  width: auto !important;
 }
 
 table[align="left"] td,
 table[align="right"] td {
+  border: 0px none transparent;
   padding: 0;
 }

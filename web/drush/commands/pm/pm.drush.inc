@@ -170,6 +170,7 @@ function pm_drush_command() {
     'arguments' => array(
       'modules' => 'A list of modules.',
     ),
+    'aliases' => array('pmu'),
   );
   $items['pm-list'] = array(
     'description' => 'Show a list of available extensions (modules and themes).',
@@ -263,7 +264,7 @@ function pm_drush_command() {
       'projects' => 'A list of project names, with optional version. Defaults to \'drupal\'',
     ),
     'options' => array(
-      'html' => dt('Display releasenotes in HTML rather than plain text.'),
+      'html' => dt('Display release notes in HTML rather than plain text.'),
     ),
     'examples' => array(
       'drush rln cck' => 'Prints the release notes for the recommended version of CCK project.',
@@ -283,6 +284,9 @@ function pm_drush_command() {
     ),
     'examples' => array(
       'drush pm-releases cck zen' => 'View releases for cck and Zen projects for your Drupal version.',
+    ),
+    'options' => array(
+      'default-major' => 'Show releases compatible with the specified major version of Drupal.',
     ),
     'aliases' => array('rl'),
     'bootstrap' => DRUSH_BOOTSTRAP_MAX,
@@ -452,7 +456,7 @@ function _drush_pm_sort_extensions($a, $b) {
 }
 
 /**
- * Calculate a extension status based on current status and schema version.
+ * Calculate an extension status based on current status and schema version.
  *
  * @param $extension
  *   Object of a single extension info.
@@ -1596,7 +1600,7 @@ interface drush_version_control {
 
 /**
  * A simple factory function that tests for version control systems, in a user
- * specified order, and return the one that appears to be appropriate for a
+ * specified order, and returns the one that appears to be appropriate for a
  * specific directory.
  */
 function drush_pm_include_version_control($directory = '.') {

@@ -276,7 +276,7 @@ function drush_backend_parse_output($string, $backend_options = array(), $output
  */
 function _drush_backend_integrate($data, $backend_options, $outputted) {
   // In 'integrate' mode, logs and errors have already been handled
-  // by drush_backend_packet (sender) drush_backend_parse_packets (reciever - us)
+  // by drush_backend_packet (sender) drush_backend_parse_packets (receiver - us)
   // during incremental output.  We therefore do not need to call drush_set_error
   // or drush_log here.  The exception is if the sender is an older version of
   // Drush (version 4.x) that does not send backend packets, then we will
@@ -601,13 +601,14 @@ function _drush_backend_adjust_options($site_record, $command, $command_options,
   if ((array_key_exists('integrate', $backend_options)) && ($backend_options['integrate'] === FALSE) && (!array_key_exists('output', $backend_options))) {
     $backend_options['output'] = FALSE;
   }
+  $has_site_specification = array_key_exists('root', $site_record) || array_key_exists('uri', $site_record);
   $result = $backend_options + array(
      'method' => 'GET',
      'output' => TRUE,
      'log' => TRUE,
      'integrate' => TRUE,
      'backend' => TRUE,
-     'dispatch-using-alias' => FALSE,
+     'dispatch-using-alias' => !$has_site_specification,
   );
   // Convert '#integrate' et. al. into backend options
   foreach ($command_options as $key => $value) {

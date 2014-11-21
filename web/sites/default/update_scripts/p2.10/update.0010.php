@@ -41,7 +41,6 @@ $modules = array(
     'variable_store',
     // 'variable_views',
 );
-// Install modules
 _us_module__install($modules);
 
 // Clear system caches.

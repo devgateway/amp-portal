@@ -3,8 +3,8 @@
   margin: 0 1em;
 }
 
-.mdzr-inlinesvg .entity-action.has-icon .title {
-    display: none;
+.view-empty {
+  margin: 1em 0;
 }
 
 .label-inline {
@@ -175,26 +175,6 @@ ul.tips, div.description, .form-item div.description {
     }
   }
 }
-.xNormalAndUp() {
-  .cbreference-linkedmap {
-    &.cbreference-view-mode-wide {
-      .title-wrapper {
-        float: left;
-        width: 294px;
-        a {
-          font-size: 1.25em;
-          line-height: 5.6em;
-        }
-      }
-    }
-    &.cbreference-view-mode-normal {
-      .title-wrapper a {
-        line-height: 4em;
-        padding-left: 1em;
-      }
-    }
-  }
-}
 
 // @TODO: Cleanup!
 .featured-dark-block {
@@ -272,14 +252,6 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
-// @TODO: use a more generic selector!
-.layout-block {
-  .field-name-body,
-  .field-name-field-cbbody {
-    font-size: 0.875em;
-  }
-}
-
 .xMediumAndDown() {
   .page-title {
     margin-bottom: 0;
@@ -292,6 +264,7 @@ ul.tips, div.description, .form-item div.description {
     text-align: center;
     margin-left: 0;
     margin-right: 0;
+    margin-top: 1em;
     width: 100% !important;
     td {
       padding: 0;
@@ -305,6 +278,173 @@ ul.tips, div.description, .form-item div.description {
     display: none !important;
   }
 }
+
+.activity-search-info {
+  text-align: right;
+}
+
+
+
+
+
+/* Example tokeninput style #2: Facebook style */
+.token-input-list-ampcms {
+  overflow: hidden;
+  min-width: 200px;
+  border: 1px solid #ccc;
+  border-top-color: #999;
+  cursor: text;
+  font-size: 12px;
+  font-family: Verdana, sans-serif;
+  min-height: 1px;
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  list-style-type: none;
+  clear: left;
+  li {
+    vertical-align: middle;
+  }
+  input {
+    border: 1px solid transparent;
+    border-top-width: 2px;
+    width: 100px;
+    padding: 0.3em 0.5em;
+    background-color: white;
+    margin: 2px 0;
+    -webkit-appearance: caret;
+  }
+}
+
+.token-input-token-ampcms {
+  overflow: hidden;
+  height: auto !important;
+  height: 15px;
+  margin: 3px;
+  padding: 0.3em 0.5em;
+
+  background-color: #ebf5fd;
+  color: #000;
+  cursor: default;
+  border: 1px solid #ccc;
+  border-bottom-color: #aaa;
+  display: inline-block;
+  font-size: 11px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  p {
+    display: inline;
+    padding: 0;
+    margin: 0;
+  }
+  span {
+    color: #a6b3cf;
+    margin-left: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+.token-input-selected-token-ampcms {
+  background-color: #5670a6;
+  border: 1px solid #3b5998;
+  color: #fff;
+}
+.token-input-input-token-ampcms {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.token-input-dropdown-ampcms {
+  position: absolute;
+  width: 400px;
+  background-color: #fff;
+  overflow: hidden;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  cursor: default;
+  font-size: 11px;
+  font-family: Verdana, sans-serif;
+  z-index: 1;
+  p {
+    margin: 0;
+    padding: 5px;
+    font-weight: bold;
+    color: #777;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul li {
+    background-color: #fff;
+    padding: 3px;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  ul .token-input-dropdown-item-ampcms {
+    background-color: #fff;
+  }
+
+  ul .token-input-dropdown-item2-ampcms {
+    background-color: #fff;
+  }
+
+  ul li em {
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  ul .token-input-selected-dropdown-item-ampcms {
+    background-color: #3b5998;
+    color: #fff;
+  }
+}
+
+
+
+
+
+
+// @TODO: Cleanup this mess!!!
+.homepage-form-block {
+  .views-exposed-form-activities-search-page {
+    margin-right: 1em;
+  }
+
+  .form-item {
+    margin-top: 0;
+    margin-bottom: 0.2em;
+  }
+  .form-text {
+    .box-sizing(border-box);
+    width: 100%;
+  }
+  .form-actions {
+    text-align: right;
+  }
+  input.form-submit, a.button {
+    margin-right: 0;
+    margin-left: 0.6em;
+  }
+}
+
+.homepage-featured-block {
+  background-color: @clcontent__featured;
+}
+
+
+
+
+
+
 
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';

@@ -42,6 +42,15 @@ function helpergeneric_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/settings/api'] = array(
+    'title' => 'API Settings',
+    'description' => 'AMP API settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('helpergeneric_api_settings_form'),
+    'access arguments' => array('helpergeneric administer settings'),
+    'file' => 'helpergeneric.admin.inc',
+  );
+
   $items['admin/settings/generic'] = array(
     'title' => 'Generic settings',
     'description' => 'Project generic settings.',
@@ -414,7 +423,7 @@ function helpergeneric_menu_local_tasks_alter(&$data, $router_item, $root_path) 
     }
   }
 
-  // Attach action links to node and mongo entities.
+  // Attach action links to node and contentblock entities.
   $position = 1;
   $attach_entity_actions = TRUE;
   if (empty($router_item['load_functions'][$position]) || empty($router_item['map'][$position])) {
@@ -621,4 +630,91 @@ function helpergeneric_locale_default_languages_alter(&$languages) {
   // Manually update the language_count variable, features will take care of
   // the language settings.
   variable_set('language_count', $enabled_count);
+}
+
+/**
+ * Tries to detect the AMP base URL using the PHP $_SERVER variables.
+ * @see drupal_detect_baseurl()
+ */
+function helpergeneric_detect_amp_baseurl() {
+  static $url = NULL;
+  if (isset($url)) {
+    return $url;
+  }
+
+  $restclient_hostname = variable_get('restclient_hostname', NULL);
+  if (!empty($restclient_hostname)) {
+    $restclient_hostname_parts = parse_url($restclient_hostname);
+    unset($restclient_hostname_parts['path']);
+    $url = helpergeneric_unparse_url($restclient_hostname_parts);
+  }
+  else {
+    $proto = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+    $host = $_SERVER['SERVER_NAME'];
+    $port = ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']);
+    $dir = base_path();
+
+    // Trim the trailing slash.
+    $url = rtrim("$proto$host$port$dir", '/');
+  }
+
+  return $url;
+}
+
+/**
+ * The reverse of parse_url()
+ */
+function helpergeneric_unparse_url($parsed_url) {
+  $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+  $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+  $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+  $user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+  $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
+  $pass     = ($user || $pass) ? "$pass@" : '';
+  $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+  $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+  $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+  return "$scheme$user$pass$host$port$path$query$fragment";
+}
+
+/**
+ * Tries to determine if the API is online or not.
+ */
+function helpergeneric_check_api_status($link = TRUE) {
+  static $status;
+
+  if (isset($status)) {
+    return $status;
+  }
+
+  $status = array(
+    'online' => FALSE,
+    'message' => '',
+  );
+
+  $response = restclient_get('test', array('reset' => TRUE, 'error_handling' => TRUE));
+  if (empty($response)) {
+    $status['online'] = FALSE;
+    $status['message'] = t('The API server seems to be offline.');
+    if ($link) {
+      $t_args = array('!settings' => l(t('API Settings'), 'admin/settings/api'));
+      $status['message'] .= ' ' . t('Please check the !settings page.', $t_args);
+    }
+    return $status;
+  }
+
+  // @TODO: Add support for more response codes.
+  if (restclient_response_code($response) == RESTCLIENT_RESPONSE_SUCCESS) {
+    $status['online'] = TRUE;
+  }
+  else {
+    if (!empty($response->error)) {
+      $status['message'] = t('The API returned the following status message: %message', array('%message' => $response->error));
+    }
+    else if (!empty($response->status_message)) {
+      $status['message'] = t('The API returned the following status message: %message', array('%message' => $response->status_message));
+    }
+  }
+
+  return $status;
 }

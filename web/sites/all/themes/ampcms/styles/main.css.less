@@ -22,11 +22,7 @@ html {
 }
 
 // Style local actions.
-.page-title {
-  display: inline-block;
-}
 .action-links {
-  display: inline;
   padding: 0;
   margin: 0;
 
@@ -35,20 +31,26 @@ html {
     display: inline-block;
   }
 }
-
 .entity-action.has-icon {
+  .link-color(@clpassive);
+  text-decoration: none;
+  vertical-align: super;
   svg {
     fill: @clpassive;
-    vertical-align: text-bottom;
+    vertical-align: middle;
   }
   &:hover {
     svg {
       fill: @clanchor;
     }
   }
-  .mdzr-inlinesvg & {
-    .title {
-      display: none;
+}
+.custom-doublelayout {
+  .entity-action.has-icon {
+    .mdzr-inlinesvg & {
+      .title {
+        display: none;
+      }
     }
   }
 }
@@ -64,6 +66,12 @@ html {
     padding: 0 1em 1em;
     min-height: 10em;
     width: auto;
+  }
+}
+
+.node-blog.view-mode-full {
+  .field-name-field-blog-image {
+    text-align: center;
   }
 }
 

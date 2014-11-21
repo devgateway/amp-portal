@@ -5,6 +5,7 @@ package = AMP Entities
 version = 7.x-0.9
 project = ampcontentblock
 dependencies[] = contentblock
+dependencies[] = contentwidget
 dependencies[] = ctools
 dependencies[] = ds
 dependencies[] = entityqueue
