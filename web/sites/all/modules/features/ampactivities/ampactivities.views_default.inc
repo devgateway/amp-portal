@@ -127,7 +127,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
   $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
   $handler->display->display_options['empty']['area_text_custom']['content'] = 'No activities matching search criteria.';
-  /* Field: Activity: Activity Title */
+  /* Field: Activity: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -154,7 +154,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['external_url']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['external_url']['link_to_entity'] = 0;
   $handler->display->display_options['fields']['external_url']['display_as_link_text'] = 'View';
-  /* Field: Activity: Activity Title */
+  /* Field: Activity: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -174,6 +174,11 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
+  /* Field: Activity: Location */
+  $handler->display->display_options['fields']['location']['id'] = 'location';
+  $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['location']['field'] = 'location';
+  $handler->display->display_options['fields']['location']['link_to_entity'] = 0;
   /* Field: Activity: Actual Start Date */
   $handler->display->display_options['fields']['actual_start_date']['id'] = 'actual_start_date';
   $handler->display->display_options['fields']['actual_start_date']['table'] = 'efq_activity';
@@ -196,7 +201,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['actual_disbursements']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Activity: Activity Title */
+  /* Filter criterion: Activity: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['title']['field'] = 'title';
@@ -265,6 +270,23 @@ function ampactivities_views_default_views() {
     3 => 0,
   );
   $handler->display->display_options['filters']['primary_sector']['type'] = 'tokeninput';
+  /* Filter criterion: Activity: Location */
+  $handler->display->display_options['filters']['location']['id'] = 'location';
+  $handler->display->display_options['filters']['location']['table'] = 'efq_activity';
+  $handler->display->display_options['filters']['location']['field'] = 'location';
+  $handler->display->display_options['filters']['location']['value'] = '';
+  $handler->display->display_options['filters']['location']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['location']['expose']['operator_id'] = 'location_op';
+  $handler->display->display_options['filters']['location']['expose']['label'] = 'Location';
+  $handler->display->display_options['filters']['location']['expose']['operator'] = 'location_op';
+  $handler->display->display_options['filters']['location']['expose']['identifier'] = 'loc';
+  $handler->display->display_options['filters']['location']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    4 => 0,
+    3 => 0,
+  );
+  $handler->display->display_options['filters']['location']['type'] = 'tokeninput';
   $handler->display->display_options['path'] = 'activities';
   $translatables['activities'] = array(
     t('Master'),
@@ -283,13 +305,14 @@ function ampactivities_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No activities matching search criteria.'),
-    t('Activity Title'),
+    t('Title'),
     t('Actual Commitments'),
     t('Actual Disbursements'),
     t('Search Page'),
     t('Beneficiary Agency'),
     t('Donor Agency'),
     t('Primary Sector'),
+    t('Location'),
     t('Actual Start Date'),
     t('Actual Completion Date'),
     t('Search Terms'),

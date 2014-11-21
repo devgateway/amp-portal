@@ -110,6 +110,73 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
   }
 }
 
+class activityMapperLocationAutocomplete extends activityMapperBase implements activityMapperAutocompleteInterface {
+  public function autocomplete($plugin, $data, $type = 'autocomplete') {
+    $matches = array();
+
+    $search_string = '';
+    if (in_array($type, array('autocomplete', 'autocompleteids', 'tokeninput'))) {
+      $search_string = reset($data);
+    }
+
+    $count = 0;
+    $request_data = ampapi_request('get', $plugin['report filter endpoint']);
+    foreach ($request_data->children as $entry) {
+      if ($count >= 10) {
+        break;
+      }
+
+      switch ($type) {
+        case 'tokeninput':
+        case 'autocomplete':
+          if (stripos($entry->name, $search_string) === FALSE) {
+            continue 2;
+          }
+          break;
+        case 'autocompleteids':
+          if ($entry->name != $search_string) {
+            continue 2;
+          }
+          break;
+        case 'tokeninputids':
+          if (!in_array($entry->id, $data)) {
+            continue 2;
+          }
+          break;
+
+        default:
+          continue 2;
+          break;
+      }
+
+      $matches[] = array(
+        'id' => intval($entry->id),
+        'name' => filter_xss_admin($entry->name),
+      );
+
+      $count++;
+    }
+
+    return $matches;
+  }
+
+  public function getAutocompleteValue($plugin, $data, $type) {
+    $matches = $this->autocomplete($plugin, $data, $type);
+    if (empty($matches)) {
+      return NULL;
+    }
+
+    if ($type == 'autocompleteids') {
+      $entry = reset($matches);
+      if (isset($entry['id'])) {
+        return array(intval($entry['id']));
+      }
+    }
+
+    return $matches;
+  }
+}
+
 /**
  * Autocomplete helper.
  */

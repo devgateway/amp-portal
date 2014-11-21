@@ -5,7 +5,7 @@
  */
 
 $plugin = array(
-  'title' => t('Activity Title'),
+  'title' => t('Title'),
   'description' => t(''),
 
   'property name' => 'title',
