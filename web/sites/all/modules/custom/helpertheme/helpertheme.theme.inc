@@ -340,11 +340,11 @@ function theme_amp_report_totals($totals) {
   $header = array('');
   $data = array(t('Totals'));
   foreach (array('Actual Commitments', 'Actual Disbursements') as $key) {
-    if (!isset($totals[$key]['values'])) {
+    if (!isset($totals[$key]['amount'])) {
       continue;
     }
     $header[] = $totals[$key]['header'];
-    $data[] = $totals[$key]['values']->displayedValue;
+    $data[] = $totals[$key]['amount'];
   }
 
   $elements['totals'] = array(

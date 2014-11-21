@@ -130,7 +130,8 @@ function contentwidget_topdonors_widget_render($plugin, $widget_settings, $entit
 
   $rows = array();
   if (isset($data->donorFunding)) {
-    $rows = _contentwidget_topdonors_get_data_rows($data->donorFunding);
+    $number_format = isset($data->numberformat) ? $data->numberformat : NULL;
+    $rows = _contentwidget_topdonors_get_data_rows($data->donorFunding, $number_format);
   }
 
   $build = array();
@@ -204,12 +205,25 @@ function contentwidget_topdonors_widget_settings(&$element, &$form_state, $plugi
 /**
  * Returns a list of rows for theme_table().
  */
-function _contentwidget_topdonors_get_data_rows($items) {
+function _contentwidget_topdonors_get_data_rows($items, $number_format = NULL) {
   $rows = array();
+
+  // @see https://php.net/manual/en/numberformatter.create.php
+  // @see http://www.icu-project.org/apiref/icu4c/classDecimalFormat.html#details
+  $formatter_locale = NULL;
+  $formatter = new NumberFormatter($formatter_locale, NumberFormatter::PATTERN_DECIMAL, $number_format);
 
   foreach ($items as $delta => $values) {
     $row = array();
     foreach (array_keys((array) $values) as $key) {
+
+      // Update amounts according to the AMP number format pattern.
+      if (is_numeric($values->$key) && in_array($key, array('actual-commitments', 'actual-disbursements'))) {
+        if ($formatter) {
+          $values->$key = $formatter->format($values->$key);
+        }
+      }
+
       $row_value = check_plain($values->$key);
       $row[$key] = array(
         'data' => $row_value,

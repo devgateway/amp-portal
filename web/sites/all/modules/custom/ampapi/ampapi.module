@@ -181,11 +181,20 @@ function ampapi_request($type, $endpoint, $options = array()) {
     $response = restclient_post($endpoint . '?' . drupal_http_build_query($parameters), $options);
   }
 
+  if (empty($response)) {
+    drupal_set_message(t('The API returned an empty response, please try again later.'), 'error');
+    return array();
+  }
+
   // @TODO: Add support for more 200 class response codes.
   if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
-    $t_args = array(
-      '%message' => check_plain($response->status_message),
-    );
+    $t_args = array();
+    if (!empty($response->error)) {
+      $t_args['%message'] = $response->error;
+    }
+    else if (!empty($response->status_message)) {
+      $t_args['%message'] = $response->status_message;
+    }
     drupal_set_message(t('The API returned the following status message: %message', $t_args), 'error');
     return array();
   }

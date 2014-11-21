@@ -683,7 +683,7 @@ function helpergeneric_unparse_url($parsed_url) {
 function helpergeneric_check_api_status($link = TRUE) {
   static $status;
 
-  if (!empty($status)) {
+  if (isset($status)) {
     return $status;
   }
 

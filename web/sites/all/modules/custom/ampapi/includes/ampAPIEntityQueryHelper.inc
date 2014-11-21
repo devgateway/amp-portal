@@ -228,8 +228,17 @@ class ampAPIEntityQueryHelper {
       $response_data->page->pageArea->children[] = $row;
     }
 
+    // Get the number formatting pattern.
+    $number_format = NULL;
+    foreach ($response_data->settings as $info) {
+      if ($info->id != 'ammountPattern') {
+        continue;
+      }
+      $number_format = $info->value;
+    }
+
     if (!empty($response_data->page->pageArea->children)) {
-      $this->process_response_data($response_data, $entities);
+      $this->process_response_data($response_data, $entities, $number_format);
     }
 
     // Tell efq_views that the entities are already loaded.
@@ -239,15 +248,32 @@ class ampAPIEntityQueryHelper {
       if (!empty($response_data->page->pageArea->contents)) {
         $response_totals = $response_data->page->pageArea->contents;
 
+        // @see https://php.net/manual/en/numberformatter.create.php
+        // @see http://www.icu-project.org/apiref/icu4c/classDecimalFormat.html#details
+        $formatter_locale = NULL;
+        $formatter = new NumberFormatter($formatter_locale, NumberFormatter::PATTERN_DECIMAL, $number_format);
+
         $report_totals = array();
         foreach ($response_data->headers as $h_info) {
-          if (!isset($response_totals->{$h_info->hierarchicalName})) {
+          // @TODO: user mappers.
+          if (!in_array($h_info->hierarchicalName, array('[Actual Commitments]', '[Actual Disbursements]'))) {
             continue;
           }
 
+          if (!isset($response_totals->{$h_info->hierarchicalName}->value)) {
+            continue;
+          }
+
+          if ($formatter) {
+            $amount = $formatter->format($response_totals->{$h_info->hierarchicalName}->value);
+          }
+          else {
+            $amount = check_plain($response_totals->{$h_info->hierarchicalName}->displayedValue);
+          }
+
           $report_totals[$h_info->originalColumnName] = array(
-            'header' => $h_info->columnName,
-            'values' => $response_totals->{$h_info->hierarchicalName},
+            'header' => filter_xss($h_info->columnName, array()),
+            'amount' => $amount,
           );
         }
         $query->addMetaData('report_totals', $report_totals);
@@ -257,7 +283,7 @@ class ampAPIEntityQueryHelper {
     return array($this->entityType => $entities);
   }
 
-  function process_response_data($data, &$entities) {
+  function process_response_data($data, &$entities, $number_format = NULL) {
     // Get all available mapper plugins.
     $mappers = ampapi_get_mappers();
 
@@ -274,6 +300,14 @@ class ampAPIEntityQueryHelper {
           continue;
         }
 
+        $formatter = NULL;
+        if ($plugin['report field group'] == 'measures') {
+          // @see https://php.net/manual/en/numberformatter.create.php
+          // @see http://www.icu-project.org/apiref/icu4c/classDecimalFormat.html#details
+          $formatter_locale = NULL;
+          $formatter = new NumberFormatter($formatter_locale, NumberFormatter::PATTERN_DECIMAL, $number_format);
+        }
+
         $hierarchical_name = NULL;
         foreach ($headers as $header) {
           if ($header->originalColumnName == $plugin['report field key']) {
@@ -282,7 +316,7 @@ class ampAPIEntityQueryHelper {
         }
 
         if ($hierarchical_name && $class_name = ctools_plugin_get_class($plugin, 'handler')) {
-          $values[$plugin['property name']] = call_user_func_array(array($class_name, 'getValue'), array($plugin, $row->contents->$hierarchical_name));
+          $values[$plugin['property name']] = call_user_func_array(array($class_name, 'getValue'), array($plugin, $row->contents->$hierarchical_name, $formatter));
         }
 
         if ($plugin['property name'] == 'id') {
