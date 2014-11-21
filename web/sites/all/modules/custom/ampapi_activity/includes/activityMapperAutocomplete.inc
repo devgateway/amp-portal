@@ -5,11 +5,6 @@
  * Shared classes and interfaces for the API mapper system.
  */
 
-interface activityMapperAutocompleteInterface {
-  public function autocomplete($plugin, $string);
-  public function getAutocompleteValue($plugin, $data, $type);
-}
-
 class activityMapperRoleAutocomplete extends activityMapperBase implements activityMapperAutocompleteInterface {
   public function autocomplete($plugin, $data, $type = 'autocomplete') {
     $matches = array();
@@ -38,7 +33,7 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
       switch ($type) {
         case 'tokeninput':
         case 'autocomplete':
-          if (stripos($entry->name, $search_string) === FALSE) {
+          if (stripos($entry->name, $search_string) === FALSE && stripos($entry->acronym, $search_string) === FALSE ) {
             continue 2;
           }
           break;
@@ -58,9 +53,14 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
           break;
       }
 
+      $name = $entry->name;
+      if (!empty($entry->acronym)) {
+        $name .= ' (' . $entry->acronym . ')';
+      }
+
       $matches[] = array(
         'id' => intval($entry->id),
-        'name' => filter_xss_admin($entry->name),
+        'name' => filter_xss_admin($name),
       );
 
       $count++;

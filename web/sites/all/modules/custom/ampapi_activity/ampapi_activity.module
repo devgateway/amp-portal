@@ -7,6 +7,12 @@ define('AMPACTIVITY_UI_PATH', 'activity');
 define('AMPACTIVITY_ADMIN_UI_PATH', 'admin/content/activity');
 define('AMPACTIVITY_BUNDLE_ADMIN_UI_PATH', 'admin/structure/activity');
 
+
+interface activityMapperAutocompleteInterface {
+  public function autocomplete($plugin, $string);
+  public function getAutocompleteValue($plugin, $data, $type);
+}
+
 /**
  * Implements hook_entity_info().
  */
