@@ -271,7 +271,6 @@ function helpertheme_preprocess_views_exposed_form(&$vars) {
       $widget->operator = drupal_render($form[$info['operator']]);
     }
 
-    dpm($form[$info['value']], '$form[$info[value]]');
     $widget->widget = drupal_render($form[$info['value']]);
 
     if (!empty($info['description'])) {
