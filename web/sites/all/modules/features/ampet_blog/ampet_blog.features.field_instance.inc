@@ -387,6 +387,7 @@ function ampet_blog_field_default_field_instances() {
   t('Event Date');
   t('Image');
   t('Marking a blog entry as "News" or "Event" will make them show up in "News" or "Event" specific sections. Marking a blog entry as an event will also expose an extra "Event Date" field.');
+  t('The image is displayed in some listings where this content is visible.');
   t('Title');
 
   return $field_instances;
