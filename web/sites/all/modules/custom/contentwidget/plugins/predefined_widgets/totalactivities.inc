@@ -176,6 +176,9 @@ function contentwidget_totalactivities_widget_render($plugin, $widget_settings, 
   $widget_settings += $plugin['defaults'];
 
   $data = contentwidget_totalactivities_widget_retrieve_data($widget_settings, $langcode);
+  if (empty($data)) {
+    return;
+  }
 
   $info_blocks = array(
     'actual_commitments' => 'Total Commitments',
