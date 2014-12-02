@@ -29,6 +29,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search Activities';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
@@ -127,7 +128,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
   $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
   $handler->display->display_options['empty']['area_text_custom']['content'] = 'No activities matching search criteria.';
-  /* Field: Activity: Title */
+  /* Field: Activity: Titlu */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -154,30 +155,31 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['external_url']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['external_url']['link_to_entity'] = 0;
   $handler->display->display_options['fields']['external_url']['display_as_link_text'] = 'View';
-  /* Field: Activity: Title */
+  /* Field: Activity: Titlu */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
-  /* Field: Activity: Beneficiary Agency */
+  /* Field: Activity: Agenții Beneficiare */
   $handler->display->display_options['fields']['beneficiary_agency']['id'] = 'beneficiary_agency';
   $handler->display->display_options['fields']['beneficiary_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['beneficiary_agency']['field'] = 'beneficiary_agency';
   $handler->display->display_options['fields']['beneficiary_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Donor Agency */
+  /* Field: Activity: Agenții Donatoare */
   $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Primary Sector */
+  /* Field: Activity: Sectoare Primare */
   $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Location */
+  /* Field: Activity: Locaţia */
   $handler->display->display_options['fields']['location']['id'] = 'location';
   $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['location']['field'] = 'location';
+  $handler->display->display_options['fields']['location']['label'] = 'Location';
   $handler->display->display_options['fields']['location']['link_to_entity'] = 0;
   /* Field: Activity: Actual Start Date */
   $handler->display->display_options['fields']['actual_start_date']['id'] = 'actual_start_date';
@@ -201,7 +203,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['actual_disbursements']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Activity: Title */
+  /* Filter criterion: Activity: Titlu */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['title']['field'] = 'title';
@@ -217,7 +219,7 @@ function ampactivities_views_default_views() {
     4 => 0,
     3 => 0,
   );
-  /* Filter criterion: Activity: Donor Agency */
+  /* Filter criterion: Activity: Agenții Donatoare */
   $handler->display->display_options['filters']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['filters']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['donor_agency']['field'] = 'donor_agency';
@@ -235,7 +237,7 @@ function ampactivities_views_default_views() {
     3 => 0,
   );
   $handler->display->display_options['filters']['donor_agency']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Beneficiary Agency */
+  /* Filter criterion: Activity: Agenții Beneficiare */
   $handler->display->display_options['filters']['beneficiary_agency']['id'] = 'beneficiary_agency';
   $handler->display->display_options['filters']['beneficiary_agency']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['beneficiary_agency']['field'] = 'beneficiary_agency';
@@ -253,7 +255,7 @@ function ampactivities_views_default_views() {
     3 => 0,
   );
   $handler->display->display_options['filters']['beneficiary_agency']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Primary Sector */
+  /* Filter criterion: Activity: Sectoare Primare */
   $handler->display->display_options['filters']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['filters']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['primary_sector']['field'] = 'primary_sector';
@@ -270,7 +272,7 @@ function ampactivities_views_default_views() {
     3 => 0,
   );
   $handler->display->display_options['filters']['primary_sector']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Location */
+  /* Filter criterion: Activity: Locaţia */
   $handler->display->display_options['filters']['location']['id'] = 'location';
   $handler->display->display_options['filters']['location']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['location']['field'] = 'location';
@@ -292,7 +294,7 @@ function ampactivities_views_default_views() {
     t('Master'),
     t('Activities'),
     t('more'),
-    t('Apply'),
+    t('Search Activities'),
     t('Reset'),
     t('Sort by'),
     t('Asc'),
@@ -305,17 +307,20 @@ function ampactivities_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No activities matching search criteria.'),
-    t('Title'),
+    t('Titlu'),
     t('Actual Commitments'),
     t('Actual Disbursements'),
     t('Search Page'),
-    t('Beneficiary Agency'),
-    t('Donor Agency'),
-    t('Primary Sector'),
+    t('Agenții Beneficiare'),
+    t('Agenții Donatoare'),
+    t('Sectoare Primare'),
     t('Location'),
     t('Actual Start Date'),
     t('Actual Completion Date'),
     t('Search Terms'),
+    t('Donor Agency'),
+    t('Beneficiary Agency'),
+    t('Primary Sector'),
   );
   $export['activities'] = $view;
 
