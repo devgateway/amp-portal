@@ -291,8 +291,7 @@ ul.tips, div.description, .form-item div.description {
 .token-input-list-ampcms {
   overflow: hidden;
   min-width: 200px;
-  border: 1px solid #ccc;
-  border-top-color: #999;
+  border: 1px solid #e5e5e5;
   cursor: text;
   font-size: 12px;
   font-family: Verdana, sans-serif;
@@ -363,9 +362,9 @@ ul.tips, div.description, .form-item div.description {
   width: 400px;
   background-color: #fff;
   overflow: hidden;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #e5e5e5;
+  border-right: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
   cursor: default;
   font-size: 11px;
   font-family: Verdana, sans-serif;
@@ -424,9 +423,6 @@ ul.tips, div.description, .form-item div.description {
   .views-exposed-form-activities-search-page {
     margin-right: 1em;
   }
-  .form-item {
-    margin-bottom: 0.2em;
-  }
   .form-text {
     .box-sizing(border-box);
     width: 100%;
@@ -480,6 +476,76 @@ ul.tips, div.description, .form-item div.description {
   .text {
     font-size: 1.5em;
     color: @cldetail__highlight;
+  }
+}
+
+
+.homepage-form-block {
+  @dark: #b7b7b7;
+  @background: #f5f5f5;
+  .views-exposed-widgets {
+    border: 1px solid @dark;
+    border-radius: 0.2em;
+    background-color: @background;
+    overflow-x: hidden;
+  }
+
+  .has-values {
+    label {
+      color: green;
+    }
+  }
+  label {
+    border-top: 1px solid #e5e5e5;
+    padding: 0.5em;
+    cursor: pointer;
+  }
+  .views-exposed-widget:first-of-type {
+    label {
+       border-bottom: 0 none;
+    }
+  }
+
+  .views-accordion-widget {
+    padding: 0 0.5em;
+  }
+
+  .form-item {
+    margin-bottom: 0;
+  }
+
+  .form-text {
+    border-radius: 0.25em;
+    border-color: #e5e5e5;
+    margin: 0;
+  }
+
+  .token-input-list-ampcms {
+    border-radius: 0.25em;
+    min-height: 3.5em;
+  }
+  .token-input-focused-ampcms {
+    border-bottom-left-radius: 0em;
+    border-bottom-right-radius: 0em;
+  }
+}
+
+.views-accordion-widget {
+  overflow: hidden;
+  height: 0px;
+  margin-bottom: 0;
+  .css-transition('all 5s ease-in-out');
+}
+.views-accordion-radio {
+  display: none;
+
+  &:checked ~ .views-accordion-widget {
+    .css-transition('all 5s ease-in-out');
+    height: 3.5em;
+    overflow-y: auto;
+  }
+  &:checked ~ label {
+    color: #030303;
   }
 }
 

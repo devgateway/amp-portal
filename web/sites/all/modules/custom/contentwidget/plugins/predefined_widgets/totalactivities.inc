@@ -10,6 +10,7 @@
  * by the system that includes this file.
  */
 $plugin = array(
+  'hidden' => TRUE,
   'title' => 'Total Activities',
   'description' => 'Will display the total commitments, disbursements and the total number of activities in system.',
   'render callback' => 'contentwidget_totalactivities_widget_render',
@@ -33,8 +34,9 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
   $cache_id = "contentblock:widget:{$langcode}:totalactivities:" . md5(serialize($widget_settings));
 
   // Try to get the response from cache.
-  if (FALSE && $cached = cache_get($cache_id, 'cache')) {
-   $response = $cached->data;
+  $report_totals = array();
+  if ($cached = cache_get($cache_id, 'cache')) {
+   $report_totals = $cached->data;
   }
   else {
     // Prepare a list of parameters for the request.
@@ -84,8 +86,7 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
   }
 
   // @TODO: Add support for more response codes.
-  $report_totals = array();
-  if (restclient_response_code($response) == RESTCLIENT_RESPONSE_SUCCESS) {
+  if (empty($report_totals) && restclient_response_code($response) == RESTCLIENT_RESPONSE_SUCCESS) {
     if (!empty($response->data)) {
       // [Actual Commitments]
       $response_data = json_decode($response->data);
@@ -161,7 +162,7 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
       drupal_set_message(t('No data retrieved from the API. Please try again later or check the API Settings.'), 'error');
     }
   }
-  else {
+  else if (empty($report_totals)) {
     drupal_set_message(t('Could not retrieve data from the API. Please try again later or check the API Settings.'), 'error');
   }
 
@@ -215,23 +216,6 @@ function contentwidget_totalactivities_widget_render($plugin, $widget_settings, 
       ),
     );
   }
-
-  // $build = array();
-  // $build['totalactivities'] = array(
-  //   '#theme' => 'table',
-  //   '#header' => $header,
-  //   '#rows' => array($row),
-  //   '#attributes' => array(
-  //     'class' => array(
-  //       'contentblock-widget',
-  //       'contentblock-widget-totalactivities',
-  //     ),
-  //   ),
-  //   '#empty' => t('No data available.'),
-  //   '#sticky' => FALSE,
-  //   '#prefix' => '<div class="large-table-wrapper">',
-  //   '#suffix' => '</div>',
-  // );
 
   return array('#markup' => drupal_render($build));
 }

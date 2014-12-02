@@ -53,7 +53,6 @@ function ampapi_activity_embeddedform_content_type_render($subtype, $conf, $pane
     $view->display_handler->set_option('exposed_block', TRUE);
     $exposed_form = $view->display_handler->get_plugin('exposed_form');
     $exposed_form->options['reset_button'] = FALSE;
-    $exposed_form->options['submit_button'] = t('Search Activities');
     $output['form']['#markup'] = $exposed_form->render_exposed_form(TRUE);
   }
   $view->destroy();
