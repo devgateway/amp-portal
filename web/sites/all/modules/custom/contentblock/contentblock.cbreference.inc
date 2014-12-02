@@ -98,7 +98,7 @@ function contentblock_field_display_contentblock_alter__section(&$display, $cont
  */
 function contentblock_field_display_contentblock_alter__welcome(&$display, $context) {
   if ($context['field']['field_name'] == 'field_cbimage') {
-    $display['settings']['image_style'] = 'img-tfeatured';
+    $display['settings']['image_style'] = 'img-hfeatured';
   }
 }
 

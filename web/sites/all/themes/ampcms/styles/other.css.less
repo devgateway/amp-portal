@@ -479,10 +479,14 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
-
 .homepage-form-block {
   @dark: #b7b7b7;
   @background: #f5f5f5;
+
+  .views-exposed-form-activities-search-page {
+    font-size: 0.875em;
+  }
+
   .views-exposed-widgets {
     border: 1px solid @dark;
     border-radius: 0.2em;
@@ -522,7 +526,7 @@ ul.tips, div.description, .form-item div.description {
 
   .token-input-list-ampcms {
     border-radius: 0.25em;
-    min-height: 3.5em;
+    min-height: 4em;
   }
   .token-input-focused-ampcms {
     border-bottom-left-radius: 0em;
@@ -534,15 +538,14 @@ ul.tips, div.description, .form-item div.description {
   overflow: hidden;
   height: 0px;
   margin-bottom: 0;
-  .css-transition('all 5s ease-in-out');
 }
 .views-accordion-radio {
   display: none;
 
   &:checked ~ .views-accordion-widget {
-    .css-transition('all 5s ease-in-out');
-    height: 3.5em;
+    height: 5em;
     overflow-y: auto;
+    padding-bottom: 0.25em;
   }
   &:checked ~ label {
     color: #030303;
