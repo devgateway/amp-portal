@@ -250,5 +250,7 @@ function helpertheme_media_wysiwyg_token_to_markup_alter(&$element, $tag_info, $
 function helpertheme_preprocess_views_exposed_form(&$variables) {
   if (drupal_is_front_page()) {
     $variables['theme_hook_suggestions'][] = 'views_exposed_form__homepage_search';
+    $variables['svgicon_active'] = helpertheme_get_svg_icons('arrow', array('width' => '1em', 'height' => '1em'));
+    $variables['svgicon_inactive'] = helpertheme_get_svg_icons('arrow-right', array('width' => '1em', 'height' => '1em'));
   }
 }

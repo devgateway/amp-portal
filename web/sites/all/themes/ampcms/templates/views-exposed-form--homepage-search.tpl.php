@@ -69,6 +69,8 @@ $widget_delta = 0;
           <?php $widget_delta++; ?>
 
           <label for="<?php print $widget->id . '--accordion'; ?>">
+            <?php print $svgicon_active; ?>
+            <?php print $svgicon_inactive; ?>
             <?php print $widget->label; ?>
           </label>
         <?php endif; ?>

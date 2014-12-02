@@ -494,11 +494,6 @@ ul.tips, div.description, .form-item div.description {
     overflow-x: hidden;
   }
 
-  .has-values {
-    label {
-      color: green;
-    }
-  }
   label {
     border-top: 1px solid #e5e5e5;
     padding: 0.5em;
@@ -510,6 +505,23 @@ ul.tips, div.description, .form-item div.description {
     }
   }
 
+  .symbol-arrow {
+    display: none;
+    fill: #030303;
+  }
+  .symbol-arrow-right {
+    display: inline-block;
+    fill: @clnormal;
+  }
+
+  .has-values {
+    label {
+      color: green;
+    }
+    .symbol-arrow-right {
+      color: green;
+    }
+  }
   .views-accordion-widget {
     padding: 0 0.5em;
   }
@@ -547,9 +559,17 @@ ul.tips, div.description, .form-item div.description {
     overflow-y: auto;
     padding-bottom: 0.25em;
   }
+
   &:checked ~ label {
     color: #030303;
+    .symbol-arrow {
+      display: inline-block;
+    }
+    .symbol-arrow-right {
+      display: none;
+    }
   }
+
 }
 
 

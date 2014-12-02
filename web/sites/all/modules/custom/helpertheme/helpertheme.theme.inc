@@ -13,6 +13,7 @@ function theme_svg_sprite($elements) {
   if (empty($elements['symbol'])) {
     return NULL;
   }
+  $elements['#attributes']['class'] = 'symbol ' . drupal_clean_css_identifier('symbol-' . $elements['symbol']);
 
   // Fallback SVG sprite.
   if (empty($elements['path'])) {
