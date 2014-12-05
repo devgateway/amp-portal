@@ -516,19 +516,6 @@ ul.tips, div.description, .form-item div.description {
     font-weight: 0.875em;
     display: inline;
   }
-  .description {
-    display: inline;
-    margin: 0;
-    &:before {
-      content: ' - ';
-    }
-  }
-  .form-text {
-    .box-sizing(border-box);
-    padding: 0.5em;
-    border: 1px solid #e5e5e5;
-    width: 100%;
-  }
   .form-actions {
     margin: 0;
   }
@@ -663,6 +650,26 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
+.views-exposed-form-activities-search-page {
+  label {
+    display: inline;
+  }
+
+  .description {
+    display: inline;
+    margin: 0;
+    &:before {
+      content: ' - ';
+    }
+  }
+
+  .form-text {
+    .box-sizing(border-box);
+    padding: 0.5em;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+  }
+}
 
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';
