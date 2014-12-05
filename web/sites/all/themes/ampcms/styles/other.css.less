@@ -300,11 +300,6 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
-.activity-search-info {
-  text-align: right;
-}
-
-
 
 
 
@@ -634,10 +629,11 @@ ul.tips, div.description, .form-item div.description {
 
 .activity-search-actions {
   svg {
-    fill: @clpassive;
+    fill: @clcontent__separator;
+    margin-right: 0.5em;
   }
   .action-link {
-    margin-left: 0.5em;
+    margin-left: 2em;
     &:hover {
       svg {
         fill: @clanchor;
@@ -647,6 +643,26 @@ ul.tips, div.description, .form-item div.description {
   .throbber {
     display: inline-block;
     float: none;
+  }
+  .activity-search-actions-extra > * {
+    margin-top: 0.2em;
+  }
+}
+.xNormalAndUp() {
+  .activity-search-info {
+    margin-top: 2em;
+  }
+
+  .activity-search-summary {
+    float: left;
+  }
+
+  .activity-search-info {
+    text-align: right;
+  }
+
+  .view-activities .views-table {
+    margin-top: 0.5em;
   }
 }
 
