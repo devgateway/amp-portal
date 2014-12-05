@@ -29,7 +29,7 @@ function ampapi_activity_embeddedform_content_type_render($subtype, $conf, $pane
   $block->module = 'ampapi_activity';
 
 
-  $svgicon = helpertheme_get_svg_icons('maps', array('width' => '2em', 'height' => '2em'));
+  $svgicon = helpertheme_get_svg_icons('reports', array('width' => '2em', 'height' => '2em'));
   $block->title = '<div class="title">' . $svgicon . t('Search Activities') . '</div>';
   $block->title_is_xss_free = TRUE;
 
