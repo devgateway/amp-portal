@@ -435,6 +435,8 @@ function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
     'organization',
     'reports',
     'sector',
+
+    'search',
   );
 
   // These can only be used in the code.
