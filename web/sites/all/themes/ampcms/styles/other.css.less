@@ -66,6 +66,7 @@ ul.tips, div.description, .form-item div.description {
       float: right;
       margin: 0;
       margin-left: 1em;
+      max-width: 50%;
     }
   }
 }
@@ -172,6 +173,26 @@ ul.tips, div.description, .form-item div.description {
     .field-name-field-cbimage {
       // text-align: center;
       display: none;
+    }
+  }
+}
+.xNormalAndUp() {
+  .cbreference-linkedmap {
+    @title_font_size: 1.25em;
+    @title_height: 5.5em; // 110px / 16 / @title_font_size
+    // @title_height: 4.58333em; // 110px / 16 / 1.5
+
+    &.cbreference-view-mode-wide {
+      .title-wrapper {
+        a {
+          font-size: @title_font_size;
+          line-height: @title_height;
+
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
     }
   }
 }
@@ -412,33 +433,6 @@ ul.tips, div.description, .form-item div.description {
 
 
 
-
-
-
-
-
-
-// @TODO: Cleanup this MESS!!!!!!!!!
-.homepage-form-block {
-  .views-exposed-form-activities-search-page {
-    margin-right: 1em;
-  }
-  .form-text {
-    .box-sizing(border-box);
-    width: 100%;
-  }
-  .form-actions {
-    text-align: right;
-  }
-  input.form-submit, a.button {
-    margin-right: 0;
-    margin-left: 0.6em;
-  }
-}
-.homepage-featured-block {
-  background-color: @clcontent__featured;
-}
-
 // @TODO: Cleanup this MESS!!!!!!!!!
 .contentwidget-topdonors,
 .contentwidget-lastupdated {
@@ -478,101 +472,202 @@ ul.tips, div.description, .form-item div.description {
     color: @cldetail__highlight;
   }
 }
+.xMediumAndDown() {
+  .cbreference-totalactivities {
+    .infoblock {
+      padding: 0.5em;
+    }
+  }
+}
 
 .homepage-form-block {
   @dark: #b7b7b7;
-  @background: #f5f5f5;
+  background-color: @clmain__alt;
 
   .views-exposed-form-activities-search-page {
-    font-size: 0.875em;
-  }
-
-  .views-exposed-widgets {
-    border: 1px solid @dark;
-    border-radius: 0.2em;
-    background-color: @background;
-    overflow-x: hidden;
-  }
-
-  label {
-    border-top: 1px solid #e5e5e5;
-    padding: 0.5em;
-    cursor: pointer;
-  }
-  .views-exposed-widget:first-of-type {
-    label {
-       border-bottom: 0 none;
+    margin-top: 0;
+    & > div {
+      .clearfix-mixin();
     }
   }
 
-  .symbol-arrow {
-    display: none;
-    fill: #030303;
-  }
-  .symbol-arrow-right {
-    display: inline-block;
-    fill: @clnormal;
-  }
+  border: @border_width solid @clcontent__separator;
+  margin-bottom: 1em;
+  position: relative;
 
-  .has-values {
-    label {
-      color: green;
-    }
-    .symbol-arrow-right {
-      color: green;
-    }
-  }
-  .views-accordion-widget {
-    padding: 0 0.5em;
-  }
-
-  .form-item {
-    margin-bottom: 0;
-  }
-
-  .form-text {
-    border-radius: 0.25em;
-    border-color: #e5e5e5;
+  // Pane title needs to be 1em in order for the layout to work
+  .pane-title {
+    font-size: 1em;
     margin: 0;
   }
 
-  .token-input-list-ampcms {
-    border-radius: 0.25em;
-    min-height: 4em;
-  }
-  .token-input-focused-ampcms {
-    border-bottom-left-radius: 0em;
-    border-bottom-right-radius: 0em;
-  }
-}
+  .title {
+    color: @clactive;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
 
-.views-accordion-widget {
-  overflow: hidden;
-  height: 0px;
-  margin-bottom: 0;
-}
-.views-accordion-radio {
-  display: none;
-
-  &:checked ~ .views-accordion-widget {
-    height: 5em;
-    overflow-y: auto;
-    padding-bottom: 0.25em;
-  }
-
-  &:checked ~ label {
-    color: #030303;
-    cursor: default;
-    .symbol-arrow {
-      display: inline-block;
+    a {
+      color: @clactive;
+      display: block;
+      text-decoration: none;
     }
-    .symbol-arrow-right {
+    svg {
+      fill: @clactive;
+      margin-right: 0.5em;
+    }
+  }
+
+  label {
+    font-weight: 0.875em;
+    display: inline;
+  }
+  .description {
+    display: inline;
+    margin: 0;
+    &:before {
+      content: ' - ';
+    }
+  }
+  .form-text {
+    .box-sizing(border-box);
+    padding: 0.5em;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+  }
+  .form-actions {
+    margin: 0;
+  }
+  input.form-submit {
+    font-size: 1em;
+    margin: 0;
+    padding: 0.5em;
+  }
+
+  .views-extra-widgets {
+    display: none;
+  }
+}
+
+.extra-widgets-toggle-label {
+  position: absolute;
+
+  color: @clnormal;
+  cursor: pointer;
+  font-size: 0.75em;
+  .symbol {
+    fill: @clnormal;
+  }
+
+  .less {
+    display: none;
+  }
+}
+
+.extra-widgets-toggle {
+  display: none;
+  &:checked ~ .extra-widgets-toggle-label {
+    .more {
       display: none;
     }
+    .less {
+      display: inline;
+    }
   }
-
+  &:checked ~ .views-widgets-wrapper .views-extra-widgets {
+    display: block;
+  }
 }
 
+.xMediumAndDown() {
+  .extra-widgets-toggle-label {
+    bottom: 3em;
+    right: 1em;
+  }
+
+  .homepage-form-block {
+    padding: 0.5em;
+
+    .title {
+      margin-bottom: 0.5em;
+
+      svg {
+        width: 1.5em !important;
+        height: 1.5em !important;
+      }
+    }
+  }
+}
+
+.xNormalAndUp() {
+  .extra-widgets-toggle-label {
+    bottom: 0em;
+    line-height: 3em;
+    right: 1.5em;
+  }
+
+  .homepage-form-block {
+    @title_font_size: 1.25em;
+    @title_height: 5.5em; // 110px / 16 / @title_font_size
+    // @title_height: 4.58333em; // 110px / 16 / 1.5
+
+    .title {
+      font-size: @title_font_size;
+      line-height: @title_height;
+      margin: 0;
+      padding-left: 1em;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .views-base-widget {
+      margin-top: 0.75em; // center in @title_height
+    }
+    .views-actions {
+      margin-top: 2.125em; // center in @title_height
+    }
+    .views-widgets-wrapper {
+      display: inline-block;
+      min-height: 6.875em;
+    }
+    .form-actions {
+      width: auto;
+      margin-right: 0.5em;
+      margin-left: 0.5em;
+    }
+    input.form-submit {
+      .box-sizing(border-box);
+      width: 100%;
+    }
+  }
+
+  .extra-widgets-toggle-label {
+    bottom: 0em;
+    line-height: 3em;
+    position: absolute;
+    right: 1.5em;
+  }
+}
+
+.activity-search-actions {
+  svg {
+    fill: @clpassive;
+  }
+  .action-link {
+    margin-left: 0.5em;
+    &:hover {
+      svg {
+        fill: @clanchor;
+      }
+    }
+  }
+  .throbber {
+    display: inline-block;
+    float: none;
+  }
+}
 
 
 @import './lib/custom-responsive.less';

@@ -47,8 +47,8 @@ function ampfileentity_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => 260,
-          'height' => 320,
+          'width' => 480,
+          'height' => 270,
         ),
         'weight' => 1,
       ),
@@ -67,8 +67,8 @@ function ampfileentity_image_default_styles() {
           ),
           'under' => 1,
           'exact' => array(
-            'width' => 260,
-            'height' => 320,
+            'width' => 480,
+            'height' => 270,
             'xpos' => 'center',
             'ypos' => 'center',
           ),
@@ -467,8 +467,8 @@ function ampfileentity_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => 800,
-          'height' => 112,
+          'width' => 880,
+          'height' => 110,
         ),
         'weight' => 1,
       ),
@@ -487,8 +487,8 @@ function ampfileentity_image_default_styles() {
           ),
           'under' => 1,
           'exact' => array(
-            'width' => 800,
-            'height' => 112,
+            'width' => 880,
+            'height' => 110,
             'xpos' => 'center',
             'ypos' => 'center',
           ),

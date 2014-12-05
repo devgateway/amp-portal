@@ -146,30 +146,3 @@ function ampapi_activity_menu() {
 
   return $items;
 }
-
-function ampapi_activity_homepage_search_form($form, &$form_state) {
-  $search_page_url = 'activities';
-  $form = array(
-    '#action' => $search_page_url,
-    '#method' => 'GET',
-  );
-
-  $form['search'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Enter search terms'),
-    '#default_value' => '',
-  );
-
-  $form['actions'] = array('#tree' => FALSE, '#type' => 'actions');
-  $form['actions']['more'] = array(
-    '#type' => 'link',
-    '#title' => t('More filters'),
-    '#href' => $search_page_url,
-  );
-  $form['actions']['explore'] = array(
-    '#type' => 'submit',
-    '#value' => t('Explore'),
-  );
-
-  return $form;
-}

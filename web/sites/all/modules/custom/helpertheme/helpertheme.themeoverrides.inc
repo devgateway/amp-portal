@@ -250,7 +250,22 @@ function helpertheme_media_wysiwyg_token_to_markup_alter(&$element, $tag_info, $
 function helpertheme_preprocess_views_exposed_form(&$variables) {
   if (drupal_is_front_page()) {
     $variables['theme_hook_suggestions'][] = 'views_exposed_form__homepage_search';
-    $variables['svgicon_active'] = helpertheme_get_svg_icons('arrow', array('width' => '1em', 'height' => '1em'));
-    $variables['svgicon_inactive'] = helpertheme_get_svg_icons('arrow-right', array('width' => '1em', 'height' => '1em'));
+
+    if (isset($variables['widgets']['filter-title'])) {
+      $variables['basewidget'] = clone $variables['widgets']['filter-title'];
+      unset($variables['widgets']['filter-title']);
+    }
+
+    $extra_widgets_toggle = '<input type="checkbox" name="vew" id="extra-widgets-toggle" class="extra-widgets-toggle" />';
+
+    $extra_widgets_toggle .= '<label for="extra-widgets-toggle" class="extra-widgets-toggle-label">';
+    $svgicon = helpertheme_get_svg_icons('arrow', array('width' => '1.2em', 'height' => '1.2em'));
+    $extra_widgets_toggle .= '<span class="more">' . $svgicon . t('more') . '</span>';
+
+    $svgicon = helpertheme_get_svg_icons('arrow-up', array('width' => '1.2em', 'height' => '1.2em'));
+    $extra_widgets_toggle .= '<span class="less">' . $svgicon . t('less') . '</span>';
+    $extra_widgets_toggle .= '</label>';
+
+    $variables['extra_widgets_toggle'] = $extra_widgets_toggle;
   }
 }
