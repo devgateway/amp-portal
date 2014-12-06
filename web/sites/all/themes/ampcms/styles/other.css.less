@@ -40,37 +40,6 @@ ul.tips, div.description, .form-item div.description {
   margin: 1em 0;
 }
 
-.xMediumAndDown() {
-  .homepage-welcome-block {
-    .field-name-field-cbimage {
-      display: none;
-    }
-    .welcome-content-wrapper {
-      padding: 0;
-      margin: 1em;
-    }
-    a.more-link {
-      display: block;
-      margin: 1em 0;
-      position: static;
-      text-align: right;
-    }
-  }
-}
-.xNormalAndUp() {
-  .homepage-welcome-block {
-    .pane-content {
-      .clearfix-mixin();
-    }
-    .field-name-field-cbimage {
-      float: right;
-      margin: 0;
-      margin-left: 1em;
-      max-width: 50%;
-    }
-  }
-}
-
 .layout-block {
   .box-sizing(border-box);
   background-color: @clcontent;
@@ -113,7 +82,6 @@ ul.tips, div.description, .form-item div.description {
 
 .cbreference-linkedmap {
   border: @border_width solid @clcontent__separator;
-  margin-bottom: 1em;
 
   .title-wrapper {
     color: @clactive;
@@ -134,14 +102,6 @@ ul.tips, div.description, .form-item div.description {
     margin: 0;
   }
 
-  &.cbreference-view-mode-wide {
-    background-color: @clmain__alt;
-    .title-wrapper {
-      a {
-        padding-left: 1em;
-      }
-    }
-  }
   &.cbreference-view-mode-normal {
     background-color: @clcontent;
     .title-wrapper a {
@@ -152,17 +112,20 @@ ul.tips, div.description, .form-item div.description {
     }
   }
 }
+.homepage-linkedmap-block {
+  background-color: @clmain__alt;
+  .title-wrapper {
+    a {
+      padding-left: 1em;
+    }
+  }
+}
 .xMediumAndDown() {
   .cbreference-linkedmap {
     .title-wrapper {
       svg {
         width: 1.5em !important;
         height: 1.5em !important;
-      }
-    }
-    &.cbreference-view-mode-wide {
-      .title-wrapper a {
-        padding: 0.5em;
       }
     }
     &.cbreference-view-mode-normal {
@@ -175,44 +138,27 @@ ul.tips, div.description, .form-item div.description {
       display: none;
     }
   }
+  .homepage-linkedmap-block {
+    .title-wrapper a {
+      padding: 0.5em;
+    }
+  }
 }
 .xNormalAndUp() {
-  .cbreference-linkedmap {
+  .homepage-linkedmap-block {
     @title_font_size: 1.25em;
     @title_height: 5.5em; // 110px / 16 / @title_font_size
     // @title_height: 4.58333em; // 110px / 16 / 1.5
 
-    &.cbreference-view-mode-wide {
-      .title-wrapper {
-        a {
-          font-size: @title_font_size;
-          line-height: @title_height;
+    .title-wrapper {
+      a {
+        font-size: @title_font_size;
+        line-height: @title_height;
 
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
-    }
-  }
-}
-
-// @TODO: Cleanup!
-.featured-dark-block {
-  background-color: @cldetail;
-  color: @clcontent;
-
-  a {
-    .link-color(@cldetail__highlight);
-  }
-  .contentblock-title {
-    color: @cldetail__highlight;
-  }
-}
-.xNormalAndUp() {
-  .featured-dark-block {
-    .contentblock-title {
-      margin: 0;
     }
   }
 }
@@ -250,13 +196,31 @@ ul.tips, div.description, .form-item div.description {
 }
 .xMediumAndDown() {
   .homepage-welcome-block {
+    margin-bottom: 1em;
+
     .field-name-field-cbbody {
       max-height: none;
       overflow: auto;
     }
+    .welcome-content-wrapper {
+      padding: 0;
+      margin: 1em;
+    }
+    a.more-link {
+      display: block;
+      margin: 1em 0;
+      position: static;
+      text-align: right;
+    }
   }
 }
-
+.xNormalAndUp() {
+  .homepage-welcome-block {
+    .contentblock-title {
+      margin: 0;
+    }
+  }
+}
 
 .link-field-column {
   float: left;
@@ -441,18 +405,45 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
-.cbreference-totalactivities {
-  margin-top: 0;
-  margin-bottom: 1em;
 
-  border-top: 1px solid @clmain;
-  background-color: @cldetail;
-  color: @clmain;
 
-  .infoblock {
-    .box-sizing(border-box);
-    padding: 2em;
+
+// @TODO: Cleanup!
+.xNormalAndDown() {
+  .homepage-welcome-block,
+  .homepage-totalactivities-block {
+    background-color: @cldetail;
+    color: @clmain;
+
+    a {
+      .link-color(@cldetail__highlight);
+    }
+    .contentblock-title {
+      color: @cldetail__highlight;
+    }
   }
+}
+.xLargeUp() {
+  .homepage-featured-block {
+    background-color: @cldetail;
+    color: @clmain;
+
+    a {
+      .link-color(@cldetail__highlight);
+    }
+    .contentblock-title {
+      color: @cldetail__highlight;
+    }
+  }
+
+  .homepage-totalactivities-block {
+    .infoblock {
+      margin: 1em;
+    }
+  }
+}
+
+.homepage-totalactivities-block {
   .header {
     color: @clmain;
     font-size: 1em;
@@ -468,7 +459,7 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 .xMediumAndDown() {
-  .cbreference-totalactivities {
+  .homepage-totalactivities-block {
     .infoblock {
       padding: 0.5em;
     }
@@ -487,7 +478,6 @@ ul.tips, div.description, .form-item div.description {
   }
 
   border: @border_width solid @clcontent__separator;
-  margin-bottom: 1em;
   position: relative;
 
   // Pane title needs to be 1em in order for the layout to work
