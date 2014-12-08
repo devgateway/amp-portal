@@ -454,8 +454,8 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['location']['type'] = 'tokeninput';
   $handler->display->display_options['path'] = 'activities/export/csv';
   $handler->display->display_options['displays'] = array(
+    'search_page' => 'search_page',
     'default' => 0,
-    'search_page' => 0,
   );
   $handler->display->display_options['segment_size'] = '100';
   $translatables['activities'] = array(
