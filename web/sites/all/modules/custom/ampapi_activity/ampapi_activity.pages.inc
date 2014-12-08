@@ -73,14 +73,16 @@ function ampapi_activity_search_export() {
   }
 
   // file_unmanaged_save_data() deals with file name collisions.
-  $uri = $directory . '/activities-' . REQUEST_TIME . '.txt';
+  $uri = $directory . '/activities-' . REQUEST_TIME . '.csv';
 
   // @see drupal_delete_file_if_stale()
   if ($path = file_unmanaged_save_data($data, $uri, $replace = FILE_EXISTS_RENAME)) {
-    $url = file_create_url($path);
     $output['file_path'] = $path;
-    $output['file_url'] = $url;
-    $output['markup'] = l(t('Click here to download the file.'), $url);
+
+    $output['file_url'] = file_create_url($path);
+
+    $output['file_size'] = _ampapi_human_filesize($path);
+    $output['markup'] = l(t('Download CSV'), $output['file_url']) . ' <em>(' . t('size: !size', array('!size' => $output['file_size'])) . ')</em>';
   }
   else {
     $output['error'] = 'Failed to create file. Please try again later or contact site administrator.';

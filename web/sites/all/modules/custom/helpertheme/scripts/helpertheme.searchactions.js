@@ -56,13 +56,6 @@ Drupal.behaviors.searchActions = {
         var response_markup = $('<div class="action"></div>').html(settings.searchActions.response.markup);
         extra_container.html(response_markup);
       }
-
-      // settings.searchActions.filePath = false;
-      // var progress = new Drupal.progressBar('activity-search-actions-extra', updateCallback, 'GET', errorCallback);
-      // progress.setProgress(-1, 'settings.batch.initMessage');
-      // extra_container.html(progress.element);
-
-      // progress.startMonitoring(settings.basePath + 'activities/export', 1000);
     });
 
     $('.activity-search-actions .action-permalink', context).click(function(e) {
