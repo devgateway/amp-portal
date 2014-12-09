@@ -43,6 +43,7 @@ features[field_base][] = field_blog_entry_type
 features[field_base][] = field_blog_event_date
 features[field_base][] = field_blog_image
 features[field_group][] = group_resources|node|blog|form
+features[field_group][] = group_title_wrapper|node|blog|full
 features[field_instance][] = node-blog-body
 features[field_instance][] = node-blog-field_blog_entry_type
 features[field_instance][] = node-blog-field_blog_event_date

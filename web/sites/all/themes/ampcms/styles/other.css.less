@@ -677,5 +677,86 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
+.title-links {
+  margin: 0;
+  padding: 0;
+  li {
+    margin-left: 0.5em;
+    display: inline-block;
+  }
+}
+
+.page-title-wrapper {
+  .layout-block & {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 1em;
+    .social-links {
+      bottom: 1em;
+    }
+  }
+
+  margin: 1em 0;
+  padding-right: 3em;
+  position: relative;
+
+  .page-title {
+    margin: 0;
+  }
+  .social-links {
+    position: absolute;
+    bottom: 0em;
+    right: 0em;
+    line-height: 2.5em;
+  }
+}
+
+.social-links {
+  .text {
+    display: none;
+  }
+  .share-link {
+    text-decoration: none;
+    svg {
+      background-color: @clanchor;
+      border-radius: 50%;
+
+      padding: 0.2em;
+
+      fill: @clcontent;
+      vertical-align: middle;
+    }
+    &:hover {
+      svg {
+        fill: @clmain;
+      }
+    }
+  }
+}
+
+.entity-action.has-icon {
+  .link-color(@clpassive);
+  text-decoration: none;
+  vertical-align: super;
+  svg {
+    fill: @clpassive;
+    vertical-align: middle;
+  }
+  &:hover {
+    svg {
+      fill: @clanchor;
+    }
+  }
+}
+.custom-doublelayout {
+  .entity-action.has-icon {
+    .mdzr-inlinesvg & {
+      .title {
+        display: none;
+      }
+    }
+  }
+}
+
+
 @import './lib/custom-responsive.less';
 @import './lib/helpers.less';

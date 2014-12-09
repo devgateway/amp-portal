@@ -21,40 +21,6 @@ html {
   }
 }
 
-// Style local actions.
-.action-links {
-  padding: 0;
-  margin: 0;
-
-  li {
-    margin-left: 0.5em;
-    display: inline-block;
-  }
-}
-.entity-action.has-icon {
-  .link-color(@clpassive);
-  text-decoration: none;
-  vertical-align: super;
-  svg {
-    fill: @clpassive;
-    vertical-align: middle;
-  }
-  &:hover {
-    svg {
-      fill: @clanchor;
-    }
-  }
-}
-.custom-doublelayout {
-  .entity-action.has-icon {
-    .mdzr-inlinesvg & {
-      .title {
-        display: none;
-      }
-    }
-  }
-}
-
 .maintenance-page {
   .main-header {
     position: relative;
