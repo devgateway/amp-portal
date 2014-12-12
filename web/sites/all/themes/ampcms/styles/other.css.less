@@ -94,6 +94,7 @@ ul.tips, div.description, .form-item div.description {
       display: block;
       text-decoration: none;
     }
+    // @TODO: use contentblock-style--* classes.
     svg {
       fill: @clactive;
       margin-right: 0.5em;
@@ -388,21 +389,28 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
-
-
-
-
-
-// @TODO: Cleanup this MESS!!!!!!!!!
-.contentwidget-topdonors,
-.contentwidget-lastupdated {
-  .contentblock-title {
-    color: #f8aa33;
+.contentblock-title {
+  svg {
+    margin-right: 0.5em;
   }
-}
-.contentwidget-newsevents {
-  .contentblock-title {
+
+  .contentwidget-style--one & {
+    color: #f8aa33;
+    svg {
+      fill: #f8aa33;
+    }
+  }
+  .contentwidget-style--two & {
     color: #990000;
+    svg {
+      fill: #990000;
+    }
+  }
+  .contentwidget-style--three & {
+    color: #4fa600;
+    svg {
+      fill: #4fa600;
+    }
   }
 }
 
@@ -488,6 +496,7 @@ ul.tips, div.description, .form-item div.description {
     margin: 0;
   }
 
+  // @TODO: use contentblock-style--* classes.
   .title {
     color: @clactive__alt;
     font-size: 1em;

@@ -37,14 +37,50 @@ function contentblock_form($form, &$form_state, $entity) {
   //   '#weight' => 95,
   // );
 
-  $form['title'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Title'),
-    '#default_value' => $entity->title,
-  );
+  // Allow uses to configure the style and title icon for all content blocks except hidden ones.
+  // @see contentblock_get_hidden_types()
+  if ($entity->type != 'hidden') {
+    $form['title'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Title'),
+      '#default_value' => $entity->title,
+    );
+
+    $form['style_settings'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Style Settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#weight' => 49,
+    );
+
+    $options = array(
+      '' => t('Default'),
+      'one' => t('One: orange header'),
+      'two' => t('Two: red header'),
+      'three' => t('Three: green header'),
+    );
+    $form['style_settings']['style'] = array(
+      '#type' => 'select',
+      '#title' => t('Style'),
+      '#options' => $options,
+      '#default_value' => $entity->style,
+    );
+
+    $icons = helpertheme_get_svg_icons();
+    $options = array('' => t('No Icon'));
+    $options += drupal_map_assoc(array_keys($icons));
+    $form['style_settings']['icon'] = array(
+      '#type' => 'radioicons',
+      '#title' => t('Icon'),
+      '#options' => $options,
+      '#icons' => $icons,
+      '#default_value' => $entity->icon,
+    );
+  }
 
   // Add the buttons.
-  $form['actions'] = array('#type' => 'actions');
+  $form['actions'] = array('#type' => 'actions', '#weight' => 50);
   $form['actions']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
