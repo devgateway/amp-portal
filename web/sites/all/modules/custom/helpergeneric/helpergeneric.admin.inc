@@ -184,7 +184,6 @@ function helpergeneric_settings_form($form, &$form_state) {
     '#title' => t('Upload new icon image'),
     '#description' => t("Use this field to upload your shortcut icon."),
     '#tree' => FALSE,
-    '#disabled' => TRUE,
   );
 
   $form['#validate'][] = 'helpergeneric_settings_form_validate';
