@@ -57,10 +57,6 @@ function helpergeneric_toggle_cleanup_ui_force_submit($form, &$form_state) {
  * Page callback for 'admin/settings/api'.
  */
 function helpergeneric_api_settings_form($form, &$form_state) {
-  $settings = variable_get('helpergeneric_api_settings', array(
-    'restclient_hostname' => 'http://localhost:80/rest',
-  ));
-
   $api_status = helpergeneric_check_api_status(FALSE);
   if (!$api_status['online']) {
     drupal_set_message($api_status['message'], 'warning');
@@ -74,19 +70,55 @@ function helpergeneric_api_settings_form($form, &$form_state) {
     '#collapsed' => FALSE,
   );
 
-  $example_url = helpergeneric_detect_amp_baseurl() . ':80/rest';
+  $example_url = helpergeneric_detect_amp_baseurl();
   $form['location']['restclient_hostname'] = array(
     '#type' => 'textfield',
     '#title' => t('Hostname'),
-    '#description' => t('The hostname for the server with no trailing slash. Ex: ') . $example_url,
+    '#description' => t('The hostname for the server with no trailing slash. Ex: ') . $example_url . '/rest',
     '#size' => 40,
-    '#maxlength' => 255,
     '#default_value' => variable_get('restclient_hostname', 'http://localhost:80/rest'),
   );
 
+  // Provide an alternative link for links to AMP.
+  $amp_hostname = variable_get('helpergeneric_amp_hostname', NULL);
+  $form['location']['alternative_hostname'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use alternative hostname for Activity view links'),
+    '#default_value' => !empty($amp_hostname),
+    '#description' => t('If you are using localhost to access the API check here to use an alternative hostname for the Activity view links.'),
+  );
+
+  $form['location']['wrapper'] = array(
+    '#type' => 'container',
+    '#states' => array(
+      'visible' => array(
+        ":input[name=\"alternative_hostname\"]" => array('checked' => TRUE),
+      ),
+    ),
+  );
+
+  $form['location']['wrapper']['helpergeneric_amp_hostname'] = array(
+    '#type' => 'textfield',
+    '#title' => t('AMP Hostname'),
+    '#description' => t('The hostname for the AMP environment, without a trailing slash. Ex: ') . $example_url,
+    '#size' => 40,
+    '#default_value' => $amp_hostname,
+  );
+
+  $form['#validate'][] = 'helpergeneric_api_settings_form_validate';
   $form['#submit'][] = 'helpergeneric_api_settings_form_submit';
 
   return system_settings_form($form);
+}
+
+/**
+ * Validation callback for helpergeneric_api_settings_form().
+ */
+function helpergeneric_api_settings_form_validate($form, &$form_state) {
+  if (empty($form_state['values']['alternative_hostname'])) {
+    $form_state['values']['helpergeneric_amp_hostname'] = NULL;
+  }
+  unset($form_state['values']['alternative_hostname']);
 }
 
 /**
