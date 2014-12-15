@@ -208,9 +208,8 @@ function contentwidget_totalactivities_widget_render($plugin, $widget_settings, 
     );
 
     $build[$key]['info'] = array(
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#value' => $data[$key],
+      '#type' => 'container',
+      '#children' => $data[$key],
       '#attributes' => array(
         'class' => array('info'),
       ),
