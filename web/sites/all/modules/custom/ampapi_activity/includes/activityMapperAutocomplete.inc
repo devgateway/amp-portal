@@ -20,7 +20,7 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
     }
 
     $count = 0;
-    $request_data = ampapi_request('get', $plugin['report filter endpoint']);
+    $request_data = ampapi_request('get', $plugin['report filter endpoint'], TRUE);
     foreach ($request_data as $entry) {
       if ($count >= 10) {
         break;
@@ -90,7 +90,7 @@ class activityMapperRoleAutocomplete extends activityMapperBase implements activ
     static $roles_data;
 
     if (!isset($roles_data)) {
-      $roles_data = ampapi_request('get', $plugin['report filter endpoint extra']);
+      $roles_data = ampapi_request('get', $plugin['report filter endpoint extra'], TRUE);
     }
 
     if (empty($roles_data)) {
@@ -120,7 +120,7 @@ class activityMapperLocationAutocomplete extends activityMapperBase implements a
     }
 
     $count = 0;
-    $request_data = ampapi_request('get', $plugin['report filter endpoint']);
+    $request_data = ampapi_request('get', $plugin['report filter endpoint'], TRUE);
     foreach ($request_data->children as $entry) {
       if ($count >= 10) {
         break;
@@ -183,7 +183,7 @@ class activityMapperLocationAutocomplete extends activityMapperBase implements a
 class activityMapperSectorAutocomplete extends activityMapperBase implements activityMapperAutocompleteInterface {
   public function autocomplete($plugin, $data, $type = 'autocomplete') {
     $matches = array();
-    $sector_id = $this->_getSectorId($plugin);
+    $sector_id = $this->getSectorId($plugin);
     if (empty($sector_id)) {
       return $matches;
     }
@@ -193,7 +193,7 @@ class activityMapperSectorAutocomplete extends activityMapperBase implements act
       $search_string = reset($data);
     }
 
-    $request_data = ampapi_request('get', $plugin['report filter endpoint'] . '/' . $sector_id);
+    $request_data = ampapi_request('get', $plugin['report filter endpoint'] . '/' . $sector_id, TRUE);
     if (empty($request_data->children)) {
       return $matches;
     }
@@ -253,11 +253,11 @@ class activityMapperSectorAutocomplete extends activityMapperBase implements act
   }
 
   // @TODO: Request ID from the API.
-  public function _getSectorId($plugin) {
+  public function getSectorId($plugin) {
     static $sectors_data;
 
     if (!isset($sectors_data)) {
-      $sectors_data = ampapi_request('get', $plugin['report filter endpoint']);
+      $sectors_data = ampapi_request('get', $plugin['report filter endpoint'], TRUE);
     }
 
     if (empty($sectors_data)) {
