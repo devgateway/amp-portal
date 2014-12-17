@@ -2,6 +2,9 @@
 
 // Provide a list of modules to be installed.
 $modules = array(
+  'captcha',
+  'recaptcha',
+
   'entityform',
   'entity2text',
 
@@ -17,3 +20,13 @@ $feature_names = array(
   'ampcontact',
 );
 _us_features__install($feature_names);
+
+// Add some example organizations.
+$organizations = array(
+  'Government',
+  'Donor agency',
+  'Civil society',
+  'Researcher',
+  'Student',
+);
+variable_set('amp_contact_organizations', $organizations);
