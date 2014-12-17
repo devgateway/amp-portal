@@ -275,7 +275,7 @@ function contentblock_access($op, $entity = NULL, $account = NULL) {
     if (user_access("contentblock entity administer") || user_access("contentblock entity access overview")) {
       $allow = TRUE;
     }
-    else if (user_access("contentblock entity $op")) {
+    else if ($entity->status && user_access("contentblock entity $op")) {
       // For now we ignore the status field.
       $allow = TRUE;
     }
@@ -578,6 +578,10 @@ function contentblock_entity_view_alter(&$build, $entity_type) {
 function contentblock_preprocess_entity(&$variables, $hook) {
   if ($variables['entity_type'] != 'contentblock') {
     return;
+  }
+
+  if (empty($variables['contentblock']->status)) {
+    $variables['classes_array'][] = 'contentblock-unpublished';
   }
 
   if (!empty($variables['contentblock']->style)) {

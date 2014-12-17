@@ -165,11 +165,15 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 
-.homepage-welcome-block {
-  .welcome-content-wrapper {
-    padding: 1em;
+.empty-contentblock {
+  padding: 1em;
+  p,
+  .contentblock-title {
+    margin: 0;
   }
+}
 
+.homepage-welcome-block {
   // Style the read more link and related elements.
   position: relative;
   .more-link {
@@ -197,16 +201,16 @@ ul.tips, div.description, .form-item div.description {
   }
 }
 .xMediumAndDown() {
+  .empty-contentblock {
+    padding: 0;
+    margin: 1em;
+  }
   .homepage-welcome-block {
     margin-bottom: 1em;
 
     .field-name-field-cbbody {
       max-height: none;
       overflow: auto;
-    }
-    .welcome-content-wrapper {
-      padding: 0;
-      margin: 1em;
     }
     a.more-link {
       display: block;
@@ -777,6 +781,10 @@ ul.tips, div.description, .form-item div.description {
     width: 24em;
     max-width: 100%;
   }
+}
+
+.contentblock-unpublished {
+  outline: 1px solid #fff4f4;
 }
 
 @import './lib/custom-responsive.less';

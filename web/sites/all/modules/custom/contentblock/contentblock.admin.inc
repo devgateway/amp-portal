@@ -77,6 +77,13 @@ function contentblock_form($form, &$form_state, $entity) {
       '#icons' => $icons,
       '#default_value' => $entity->icon,
     );
+
+    $form['options']['status'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Published'),
+      '#default_value' => $entity->status,
+      '#weight' => 49,
+    );
   }
 
   // Add the buttons.
