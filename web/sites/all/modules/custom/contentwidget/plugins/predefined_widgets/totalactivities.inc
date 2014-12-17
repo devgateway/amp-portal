@@ -27,7 +27,7 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
   $api_status = helpergeneric_check_api_status();
   if (!$api_status['online']) {
     drupal_set_message($api_status['message'], 'warning');
-    return $data;
+    return;
   }
 
   $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
@@ -36,7 +36,8 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
   // Try to get the response from cache.
   $report_totals = array();
   if ($cached = cache_get($cache_id, 'cache')) {
-   $report_totals = $cached->data;
+    $report_totals = $cached->data;
+    return $report_totals;
   }
   else {
     // Prepare a list of parameters for the request.
@@ -86,85 +87,84 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
   }
 
   // @TODO: Add support for more response codes.
-  if (empty($report_totals) && restclient_response_code($response) == RESTCLIENT_RESPONSE_SUCCESS) {
-    if (!empty($response->data)) {
-      // [Actual Commitments]
-      $response_data = json_decode($response->data);
+  if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
+    drupal_set_message(t('Could not retrieve data from the API. Please try again later or check the API Settings.'), 'error');
+    return;
+  }
 
-      // Get the number formatting pattern.
-      $number_format = NULL;
-      $currency = '';
-      foreach ($response_data->settings as $info) {
-        if ($info->id == 'ammountPattern') {
-          $number_format = $info->value;
-        }
+  if (empty($response->data)) {
+    drupal_set_message(t('No data retrieved from the API. Please try again later or check the API Settings.'), 'error');
+    return;
+  }
 
-        // @HACK: The id for currency is "1"!!!
-        // @see: Docs for /rest/gis/settings (which does not actually work)
-        if ($info->id == '1') {
-          $currency = $info->value->defaultId;
-        }
-      }
+  $response_data = json_decode($response->data);
 
-      // @see https://php.net/manual/en/numberformatter.create.php
-      // @see http://www.icu-project.org/apiref/icu4c/classDecimalFormat.html#details
-      $formatter_locale = NULL;
-      $number_format = '###0.00';
-      $formatter = new NumberFormatter($formatter_locale, NumberFormatter::PATTERN_DECIMAL, $number_format);
+  // Get the number formatting pattern.
+  $number_format = NULL;
+  $currency = '';
+  foreach ($response_data->settings as $info) {
+    if ($info->id == 'ammountPattern') {
+      $number_format = $info->value;
+    }
 
-      foreach ($response_data->headers as $h_info) {
-        // @TODO: user mappers.
-        if (!in_array($h_info->hierarchicalName, array('[Actual Commitments]', '[Actual Disbursements]'))) {
-          continue;
-        }
+    // @HACK: The id for currency is "1"!!!
+    // @see: Documentation for /rest/gis/settings
+    if ($info->id == '1') {
+      $currency = $info->value->defaultId;
+    }
+  }
 
-        if (!isset($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->value)) {
-          continue;
-        }
+  // @see https://php.net/manual/en/numberformatter.create.php
+  // @see http://www.icu-project.org/apiref/icu4c/classDecimalFormat.html#details
+  $formatter_locale = NULL;
+  $number_format = '###0.00';
+  $formatter = new NumberFormatter($formatter_locale, NumberFormatter::PATTERN_DECIMAL, $number_format);
 
-        if ($formatter) {
-          $value = $response_data->page->pageArea->contents->{$h_info->hierarchicalName}->value;
-          // Display configuration in millions.
-          // @TODO: Add configuration options.
-          $value = $value / 1000 / 1000;
+  foreach ($response_data->headers as $h_info) {
+    // @TODO: use mappers.
+    if (!in_array($h_info->hierarchicalName, array('[Actual Commitments]', '[Actual Disbursements]'))) {
+      continue;
+    }
 
-          $value = intval($value);
+    if (!isset($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->value)) {
+      continue;
+    }
 
-          $amount = '<span class="amount">' . $formatter->format($value) . '</span> ';
-          $amount .= '<span class="text">' . t('Millions !currencysymbol', array('!currencysymbol' => $currency)) . '</span>';
-        }
-        else {
-          $amount = check_plain($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->displayedValue);
-        }
+    if ($formatter) {
+      $value = $response_data->page->pageArea->contents->{$h_info->hierarchicalName}->value;
+      // Display configuration in millions.
+      // @TODO: Add configuration options.
+      $value = $value / 1000 / 1000;
 
-        switch ($h_info->hierarchicalName) {
-          case '[Actual Commitments]':
-            $report_totals['actual_commitments'] = $amount;
-            break;
-          case '[Actual Disbursements]':
-            $report_totals['actual_disbursements'] = $amount;
-            break;
-        }
-      }
+      $value = intval($value);
 
-      if (empty($response_data->page->totalRecords)) {
-        $report_totals['activities_count'] = '<span class="amount">' . $data[$key] . '</span> ';
-      }
-      else {
-        $report_totals['activities_count'] = '<span class="amount">' . intval($response_data->page->totalRecords) . '</span> ';
-      }
-
-      // 1 hours cache life time for requests should be plenty for now.
-      $expire = 3600;
-      cache_set($cache_id, $report_totals, 'cache', REQUEST_TIME + $expire);
+      $amount = '<span class="amount">' . $formatter->format($value) . '</span> ';
+      $amount .= '<span class="text">' . t('Millions !currencysymbol', array('!currencysymbol' => $currency)) . '</span>';
     }
     else {
-      drupal_set_message(t('No data retrieved from the API. Please try again later or check the API Settings.'), 'error');
+      $amount = check_plain($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->displayedValue);
+    }
+
+    switch ($h_info->hierarchicalName) {
+      case '[Actual Commitments]':
+        $report_totals['actual_commitments'] = $amount;
+        break;
+      case '[Actual Disbursements]':
+        $report_totals['actual_disbursements'] = $amount;
+        break;
     }
   }
-  else if (empty($report_totals)) {
-    drupal_set_message(t('Could not retrieve data from the API. Please try again later or check the API Settings.'), 'error');
+
+  if (empty($response_data->page->totalRecords)) {
+    $report_totals['activities_count'] = '<span class="amount">' . $data[$key] . '</span> ';
   }
+  else {
+    $report_totals['activities_count'] = '<span class="amount">' . intval($response_data->page->totalRecords) . '</span> ';
+  }
+
+  // 1 hours cache life time for requests should be plenty for now.
+  $expire = 3600;
+  cache_set($cache_id, $report_totals, 'cache', REQUEST_TIME + $expire);
 
   return $report_totals;
 }
