@@ -22,8 +22,6 @@ $plugin = array(
 );
 
 function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $langcode = NULL) {
-  $data = array();
-
   $api_status = helpergeneric_check_api_status();
   if (!$api_status['online']) {
     drupal_set_message($api_status['message'], 'warning');
@@ -52,7 +50,6 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
       'Content-Type' => 'application/json',
     );
 
-
     $request_body = array(
       'add_columns' => array(),
       'add_measures' => array(),
@@ -66,7 +63,6 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
 
     $actual_disbursements_plugin = ampapi_get_mapper_by_property_name('actual_disbursements');
     $request_body['add_measures'][] = $actual_disbursements_plugin['report field key'];
-
 
     $request_body['page'] = 1;
     $request_body['recordsPerPage'] = 1;
@@ -98,6 +94,13 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
   }
 
   $response_data = json_decode($response->data);
+
+  if (!empty($response_data->error)) {
+    $t_args = array();
+    $t_args['%message'] = reset($response_data->error);
+    drupal_set_message(t('The API returned the following status message: %message', $t_args), 'error');;
+    return;
+  }
 
   // Get the number formatting pattern.
   $number_format = NULL;
@@ -155,10 +158,7 @@ function contentwidget_totalactivities_widget_retrieve_data($widget_settings, $l
     }
   }
 
-  if (empty($response_data->page->totalRecords)) {
-    $report_totals['activities_count'] = '<span class="amount">' . $data[$key] . '</span> ';
-  }
-  else {
+  if (!empty($response_data->page->totalRecords)) {
     $report_totals['activities_count'] = '<span class="amount">' . intval($response_data->page->totalRecords) . '</span> ';
   }
 
