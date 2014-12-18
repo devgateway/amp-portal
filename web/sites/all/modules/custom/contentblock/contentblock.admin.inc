@@ -24,18 +24,17 @@ function contentblock_form($form, &$form_state, $entity) {
   // );
 
   // Entity options for administrators
-  // $form['options'] = array(
-  //   '#type' => 'fieldset',
-  //   '#access' => user_access("survey {$entity_type} administer"),
-  //   '#title' => t('Publishing options'),
-  //   '#collapsible' => TRUE,
-  //   '#collapsed' => TRUE,
-  //   '#group' => 'additional_settings',
-  //   '#attributes' => array(
-  //     'class' => array("{$entity_type}-form-options"),
-  //   ),
-  //   '#weight' => 95,
-  // );
+  $form['options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Publishing options'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
+    '#attributes' => array(
+      'class' => array("{$entity_type}-form-options"),
+    ),
+    '#weight' => 95,
+  );
 
   // Allow uses to configure the style and title icon for all content blocks except hidden ones.
   // @see contentblock_get_hidden_types()
@@ -77,17 +76,25 @@ function contentblock_form($form, &$form_state, $entity) {
       '#icons' => $icons,
       '#default_value' => $entity->icon,
     );
+  }
 
-    $form['options']['status'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Published'),
-      '#default_value' => $entity->status,
-      '#weight' => 49,
-    );
+  $form['options']['status'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Published'),
+    '#default_value' => $entity->status,
+    '#weight' => 98,
+  );
+  if ($entity->machine_name) {
+    $info = contentblock_get_hidden_types($entity->machine_name);
+    if (!empty($info['is section'])) {
+      $form['options']['status']['#default_value'] = TRUE;
+      $form['options']['status']['#description'] = t('Content sections are always published.');
+      $form['options']['status']['#disabled'] = 'disabled';
+    }
   }
 
   // Add the buttons.
-  $form['actions'] = array('#type' => 'actions', '#weight' => 50);
+  $form['actions'] = array('#type' => 'actions', '#weight' => 99);
   $form['actions']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
