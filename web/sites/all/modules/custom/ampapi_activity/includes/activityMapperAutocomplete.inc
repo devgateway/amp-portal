@@ -138,10 +138,15 @@ class activityMapperLocationAutocomplete extends activityMapperBase implements a
       $search_string = transliteration_get($search_string, '', $language->language);
     }
 
-    $count = 0;
     $request_data = ampapi_request('get', $plugin['report filter endpoint'], TRUE);
-    foreach ($request_data->children as $entry) {
-      if ($count >= 10) {
+    $this->getMatchedValues($search_string, $type, array($request_data), $matches);
+
+    return $matches;
+  }
+
+  private function getMatchedValues($search_string, $type, $entries, &$matches) {
+    foreach ($entries as $entry) {
+      if (count($matches) >= 10) {
         break;
       }
 
@@ -183,11 +188,19 @@ class activityMapperLocationAutocomplete extends activityMapperBase implements a
         'id' => intval($entry->id),
         'name' => filter_xss_admin($entry->name),
       );
-
-      $count++;
     }
 
-    return $matches;
+    if (count($matches) >= 10) {
+      return;
+    }
+
+    // Search sub-levels.
+    foreach ($entries as $entry) {
+      if (empty($entry->children)) {
+        continue;
+      }
+      $this->getMatchedValues($search_string, $type, $entry->children, $matches);
+    }
   }
 
   public function getAutocompleteValue($plugin, $data, $type) {
