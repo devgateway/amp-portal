@@ -27,7 +27,7 @@ function _contentblock_form_contentblock_form_alter(&$form, &$form_state, $form_
   // Add a description on add form.
   if ($form_state['op'] == 'add' || !in_array('field_title', $cbreference_info['available_fields'])) {
     $title_suffix = '';
-    if (!empty($form['#entity']->language)) {
+    if (!empty($form['#entity']->language) && $form['#entity']->language != LANGUAGE_NONE) {
       $languages = language_list();
       $title_suffix = ' [' . t($languages[$form['#entity']->language]->name) . ']';
     }
