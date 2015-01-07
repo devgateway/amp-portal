@@ -334,7 +334,8 @@ class ampAPIEntityQueryHelper {
         if ($plugin['property name'] == 'id') {
           $amp_baseurl = helpergeneric_detect_amp_baseurl();
           $url_prefix = '/aim/viewActivityPreview.do~public=true~pageId=2~activityId=';
-          $values['external_url'] = $amp_baseurl . $url_prefix . $values['id'];
+          $language_suffix = helpergeneric_get_amp_language_parameter();
+          $values['external_url'] = $amp_baseurl . $url_prefix . $values['id'] . $language_suffix;
         }
       }
 
