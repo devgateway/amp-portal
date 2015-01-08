@@ -124,8 +124,9 @@ function helpergeneric_amp_redirect() {
 
   // Set the default js options.
   $js_options = array(
-    'group' => 'redirect',
+    'type' => 'external',
     'every_page' => FALSE,
+    'preprocess' => FALSE,
   );
 
   $amp_baseurl = helpergeneric_detect_amp_baseurl();
