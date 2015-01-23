@@ -219,6 +219,7 @@ class ampAPIEntityQueryHelper {
           '%message' => check_plain($error_message),
         );
         drupal_set_message(t('The API returned the following error message: %message', $t_args), 'error');
+        return ($query->count) ? 0 : array();
       }
     }
 
