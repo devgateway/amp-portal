@@ -13,15 +13,27 @@ root = true
 
 # Configuration for all file types.
 [*]
+charset = utf-8
 end_of_line = lf
 indent_size = 2
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.patch]
+[*.{md,markdown}]
+trim_trailing_whitespace = false
+
+[*.{diff,patch}]
 insert_final_newline = false
 trim_trailing_whitespace = false
+
+[*.svg]
+insert_final_newline = false
+indent_size = 2
+indent_style = tab
+
+[composer.{json,lock}]
+indent_size = 4
 
 [Makefile]
 indent_size = 4
