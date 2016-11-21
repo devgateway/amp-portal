@@ -264,7 +264,7 @@ function _ampapi_activity_get_field_status($name, $handler, $ssc_status) {
 
   // Hide external_url field in exports, and display in other listings.
   if ($name == 'external_url') {
-    if ($handler->view->current_display == 'export_page') {
+    if ($handler->view->current_display == 'export_page' || $handler->view->current_display == 'views_data_export_xls') {
       return FALSE;
     }
     else {
