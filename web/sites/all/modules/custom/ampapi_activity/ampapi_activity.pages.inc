@@ -47,86 +47,75 @@ function ampapi_activity_autocomplete($property_name, $string = '') {
 /**
  * Menu callback: Activity search export.
  */
-function ampapi_activity_search_export() {
+function ampapi_activity_search_export($type = 'csv') {
   $output = array();
 
   $view_name = 'activities';
   // Basically a map of display_id => extension.
   $export_map = array(
-    'export_page' => 'csv',
-    'views_data_export_xls' => 'xls'
+    'csv' => 'export_page',
+    'xls' => 'views_data_export_xls'
   );
+  $display_id = $export_map[$type];
 
   $exposed_input = $_GET;
   unset($exposed_input['q']);
   unset($exposed_input['_']);
   unset($exposed_input['attach']);
   $exposed_input = array_filter($exposed_input);
-  foreach ($export_map as $display_id => $file_extension) {
-    $view = views_get_view($view_name);
 
-    // @TODO: Move validation to menu access callback.
-    if (!$view || !$view->access($display_id)) {
-      $output['error'] = 'Export failed.';
-      drupal_json_output($output);
-      exit;
-    }
+  $view = views_get_view($view_name);
 
-    $view->set_exposed_input($exposed_input);
-    $view->set_display($display_id);
-    $view->pre_execute();
-    $data = $view->render($display_id);
+  // @TODO: Move validation to menu access callback.
+  if (!$view || !$view->access($display_id)) {
+    $output['error'] = 'Export failed.';
+    drupal_json_output($output);
+    exit;
+  }
 
-    // Apparently that is needed only when generating a CSV (it messes up XLS file).
-    if ($file_extension == 'csv') {
-      // Make sure data is UTF-8 with BOM for Microsoft Excel compliance
-      if (function_exists('mb_detect_encoding')) {
-        $encoding = mb_detect_encoding($data);
-        if ($encoding != 'UTF-8') {
-          $new_data = drupal_convert_to_utf8($data, $encoding);
-          if ($new_data) {
-            $data = $new_data;
-          }
+  $view->set_exposed_input($exposed_input);
+  $view->set_display($display_id);
+  $view->pre_execute();
+  $data = $view->render($display_id);
+
+  // Apparently that is needed only when generating a CSV (it messes up XLS file).
+  if ($type == 'csv') {
+    // Make sure data is UTF-8 with BOM for Microsoft Excel compliance
+    if (function_exists('mb_detect_encoding')) {
+      $encoding = mb_detect_encoding($data);
+      if ($encoding != 'UTF-8') {
+        $new_data = drupal_convert_to_utf8($data, $encoding);
+        if ($new_data) {
+          $data = $new_data;
         }
       }
-      if (strncmp($data, "\xEF\xBB\xBF", 3)) {
-        $data = "\xEF\xBB\xBF" . $data;
-      }
     }
-
-    // Prepare the destination directory.
-    $directory = 'public://temp-downloads';
-    if (!file_prepare_directory($directory, FILE_CREATE_DIRECTORY)) {
-      $output['error'] = 'Failed to create directory. Please try again later or contact site administrator.';
-    }
-
-    // file_unmanaged_save_data() deals with file name collisions.
-    $uri = $directory . '/activities-' . REQUEST_TIME . '.' . $file_extension;
-
-    // @see drupal_delete_file_if_stale()
-    if ($path = file_unmanaged_save_data($data, $uri, $replace = FILE_EXISTS_RENAME)) {
-      $output[$file_extension]['file_path'] = $path;
-
-      $output[$file_extension]['file_url'] = file_create_url($path);
-
-      $output[$file_extension]['file_size'] = _ampapi_human_filesize($path);
-      $output['markup'][] = l(t('Download @extension', array('@extension' => $file_extension)), $output[$file_extension]['file_url']) . ' <em>(' . t('size: !size', array('!size' => $output[$file_extension]['file_size'])) . ')</em>';
-    }
-    else {
-      $output[$file_extension]['error'] = 'Failed to create file. Please try again later or contact site administrator.';
+    if (strncmp($data, "\xEF\xBB\xBF", 3)) {
+      $data = "\xEF\xBB\xBF" . $data;
     }
   }
 
-  // Process the markup.
-  $list_vars = array(
-    'type' => 'ul',
-    'items' => $output['markup'],
-    'title' => '',
-    'attributes' => array(
-      'class' => array('export-files-list')
-    ),
-  );
-  $output['markup'] = theme_item_list($list_vars);
+  // Prepare the destination directory.
+  $directory = 'public://temp-downloads';
+  if (!file_prepare_directory($directory, FILE_CREATE_DIRECTORY)) {
+    $output['error'] = 'Failed to create directory. Please try again later or contact site administrator.';
+  }
+
+  // file_unmanaged_save_data() deals with file name collisions.
+  $uri = $directory . '/activities-' . REQUEST_TIME . '.' . $type;
+
+  // @see drupal_delete_file_if_stale()
+  if ($path = file_unmanaged_save_data($data, $uri, $replace = FILE_EXISTS_RENAME)) {
+    $output['file_path'] = $path;
+
+    $output['file_url'] = file_create_url($path);
+
+    $output['file_size'] = _ampapi_human_filesize($path);
+    $output['markup'] = l(t('Download @extension', array('@extension' => $type)), $output['file_url']) . ' <em>(' . t('size: !size', array('!size' => $output['file_size'])) . ')</em>';
+  }
+  else {
+    $output['error'] = 'Failed to create file. Please try again later or contact site administrator.';
+  }
 
   drupal_json_output($output);
 }

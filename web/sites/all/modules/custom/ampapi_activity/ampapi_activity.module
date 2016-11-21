@@ -151,10 +151,18 @@ function ampapi_activity_menu() {
   }
 
   // @TODO: Add session token to prevent users abusing the system.
-  $items['activities/export'] = array(
-    'title' => 'Activity search export',
+  $items['activities/export-csv'] = array(
+    'title' => 'Activity search export (CSV)',
     'page callback' => 'ampapi_activity_search_export',
-    'page arguments' => array(2),
+    'page arguments' => array('csv'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'ampapi_activity.pages.inc',
+  );
+  $items['activities/export-xls'] = array(
+    'title' => 'Activity search export (XLS)',
+    'page callback' => 'ampapi_activity_search_export',
+    'page arguments' => array('xls'),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'ampapi_activity.pages.inc',
