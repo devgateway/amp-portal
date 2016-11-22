@@ -29,8 +29,7 @@ the web server to point the `web` directory instead of the project root directly
 3.  Copy the configuration and site files from the old portal.
     ```
     # Make sure the files are writable by the user.
-    chmod +w /var/www/amp212-portal/sites/default/
-    chmod +w /var/www/amp212-portal/sites/default/*
+    chmod -R +w /var/www/amp212-portal/sites/default/
 
     # Copy the portal configuration (i.e. database credentials).
     # Please note the extra `web` directory in path.
