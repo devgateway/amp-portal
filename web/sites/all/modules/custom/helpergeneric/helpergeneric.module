@@ -247,6 +247,10 @@ function helpergeneric_permission() {
       'restrict access' => TRUE,
       'description' => t('Allow users to access the vocabularies.'),
     ),
+    'helpergeneric user roles' => array(
+      'title' => t('Change or assign User Roles'),
+      'description' => t('Allow users to change user roles.'),
+    ),
   );
 }
 
