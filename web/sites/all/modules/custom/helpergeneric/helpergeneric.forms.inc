@@ -399,6 +399,9 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
   }
   if ($form_id == 'user_profile_form') {
     _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
+
+    // Set a separate permissions for setting user roles.
+    $form['account']['roles']['#access'] = user_access('helpergeneric user roles');
   }
 }
 
