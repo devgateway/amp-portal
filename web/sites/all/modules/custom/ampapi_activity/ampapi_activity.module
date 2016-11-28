@@ -151,10 +151,18 @@ function ampapi_activity_menu() {
   }
 
   // @TODO: Add session token to prevent users abusing the system.
-  $items['activities/export'] = array(
-    'title' => 'Activity search export',
+  $items['activities/export-csv'] = array(
+    'title' => 'Activity search export (CSV)',
     'page callback' => 'ampapi_activity_search_export',
-    'page arguments' => array(2),
+    'page arguments' => array('csv'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'ampapi_activity.pages.inc',
+  );
+  $items['activities/export-xls'] = array(
+    'title' => 'Activity search export (XLS)',
+    'page callback' => 'ampapi_activity_search_export',
+    'page arguments' => array('xls'),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'ampapi_activity.pages.inc',
@@ -264,7 +272,7 @@ function _ampapi_activity_get_field_status($name, $handler, $ssc_status) {
 
   // Hide external_url field in exports, and display in other listings.
   if ($name == 'external_url') {
-    if ($handler->view->current_display == 'export_page') {
+    if ($handler->view->current_display == 'export_page' || $handler->view->current_display == 'views_data_export_xls') {
       return FALSE;
     }
     else {

@@ -4,19 +4,21 @@ Drupal.behaviors.searchActions = {
   attach: function(context, settings) {
     $('.activity-search-actions .action-export', context).click(function(e) {
       e.preventDefault();
-      var extra_container = $(this).siblings('.activity-search-actions-extra');
+      var $this = $(this);
+      var extra_container = $this.siblings('.activity-search-actions-extra');
       settings.searchActions = settings.searchActions || {};
 
-      if (!settings.searchActions.response || settings.searchActions.waiting) {
+      if (!settings.searchActions.waiting) {
+        extra_container.empty();
         var message = $('<div class="ajax-progress">' + Drupal.t('Please wait...') + ' <div class="throbber"></div></div>');
         extra_container.html(message);
       }
 
-      if (!settings.searchActions.response && !settings.searchActions.waiting) {
+      if (!settings.searchActions.waiting) {
         settings.searchActions.waiting = true;
 
         // Add the current applied query parameters.
-        var request_url = settings.basePath + 'activities/export';
+        var request_url = settings.basePath + $this.data('url');
 
         if (window.location.search) {
           request_url += window.location.search;
@@ -49,12 +51,6 @@ Drupal.behaviors.searchActions = {
             extra_container.html(error);
           }
         });
-
-      }
-
-      if (settings.searchActions.response) {
-        var response_markup = $('<div class="action"></div>').html(settings.searchActions.response.markup);
-        extra_container.html(response_markup);
       }
     });
 

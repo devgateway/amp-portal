@@ -279,7 +279,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['beneficiary_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['beneficiary_agency']['field'] = 'beneficiary_agency';
   $handler->display->display_options['fields']['beneficiary_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Donor Agency */
+  /* Field: Activity: Partenaire technique et financier */
   $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
@@ -289,17 +289,17 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['organization_roles']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['organization_roles']['field'] = 'organization_roles';
   $handler->display->display_options['fields']['organization_roles']['link_to_entity'] = 0;
-  /* Field: Activity: Primary Sector */
+  /* Field: Activity: Secteur primaire */
   $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Secondary Sector */
+  /* Field: Activity: Secteur secondaire */
   $handler->display->display_options['fields']['secondary_sector']['id'] = 'secondary_sector';
   $handler->display->display_options['fields']['secondary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['secondary_sector']['field'] = 'secondary_sector';
   $handler->display->display_options['fields']['secondary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Location */
+  /* Field: Activity: Localisation */
   $handler->display->display_options['fields']['location']['id'] = 'location';
   $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['location']['field'] = 'location';
@@ -410,7 +410,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['description'] = 'search keywords within activities';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'search';
-  /* Filter criterion: Activity: Donor Agency */
+  /* Filter criterion: Activity: Partenaire technique et financier */
   $handler->display->display_options['filters']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['filters']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['donor_agency']['field'] = 'donor_agency';
@@ -436,7 +436,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['beneficiary_agency']['expose']['operator'] = 'beneficiary_agency_op';
   $handler->display->display_options['filters']['beneficiary_agency']['expose']['identifier'] = 'ba';
   $handler->display->display_options['filters']['beneficiary_agency']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Primary Sector */
+  /* Filter criterion: Activity: Secteur primaire */
   $handler->display->display_options['filters']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['filters']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['primary_sector']['field'] = 'primary_sector';
@@ -449,7 +449,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['primary_sector']['expose']['operator'] = 'primary_sector_op';
   $handler->display->display_options['filters']['primary_sector']['expose']['identifier'] = 'psec';
   $handler->display->display_options['filters']['primary_sector']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Secondary Sector */
+  /* Filter criterion: Activity: Secteur secondaire */
   $handler->display->display_options['filters']['secondary_sector']['id'] = 'secondary_sector';
   $handler->display->display_options['filters']['secondary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['secondary_sector']['field'] = 'secondary_sector';
@@ -475,7 +475,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['national_plan_objective']['expose']['operator'] = 'national_plan_objective_op';
   $handler->display->display_options['filters']['national_plan_objective']['expose']['identifier'] = 'npo';
   $handler->display->display_options['filters']['national_plan_objective']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Location */
+  /* Filter criterion: Activity: Localisation */
   $handler->display->display_options['filters']['location']['id'] = 'location';
   $handler->display->display_options['filters']['location']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['location']['field'] = 'location';
@@ -530,7 +530,6 @@ function ampactivities_views_default_views() {
     3 => 0,
     5 => 0,
   );
-
   /* Filter criterion: Activity: Status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'efq_activity';
@@ -549,13 +548,12 @@ function ampactivities_views_default_views() {
   );
   $handler->display->display_options['filters']['status']['type'] = 'select';
 
-
   /* Display: Search Page */
   $handler = $view->new_display('page', 'Search Page', 'search_page');
   $handler->display->display_options['path'] = 'activities';
 
-  /* Display: Export Page */
-  $handler = $view->new_display('views_data_export', 'Export Page', 'export_page');
+  /* Display: Export Page (CSV) */
+  $handler = $view->new_display('views_data_export', 'Export Page (CSV)', 'export_page');
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'views_data_export_csv';
@@ -567,6 +565,20 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['style_options']['header'] = 1;
   $handler->display->display_options['style_options']['keep_html'] = 0;
   $handler->display->display_options['path'] = 'activities/export/csv';
+  $handler->display->display_options['displays'] = array(
+    'search_page' => 'search_page',
+    'default' => 0,
+  );
+  $handler->display->display_options['segment_size'] = '100';
+
+  /* Display: Export Page (XLS) */
+  $handler = $view->new_display('views_data_export', 'Export Page (XLS)', 'views_data_export_xls');
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
+  $handler->display->display_options['style_options']['provide_file'] = 0;
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['path'] = 'activities/export/xls';
   $handler->display->display_options['displays'] = array(
     'search_page' => 'search_page',
     'default' => 0,
@@ -592,11 +604,11 @@ function ampactivities_views_default_views() {
     t('Title'),
     t('Primary Program'),
     t('Beneficiary Agency'),
-    t('Donor Agency'),
+    t('Partenaire technique et financier'),
     t('Organization Roles'),
-    t('Primary Sector'),
-    t('Secondary Sector'),
-    t('Location'),
+    t('Secteur primaire'),
+    t('Secteur secondaire'),
+    t('Localisation'),
     t('Actual Approval Date'),
     t('Actual Start Date'),
     t('Actual Completion Date'),
@@ -617,17 +629,22 @@ function ampactivities_views_default_views() {
     t('Disaster Response Marker'),
     t('Search Terms'),
     t('search keywords within activities'),
+    t('Donor Agency'),
     t('filter activities by donor agency'),
     t('filter activities by beneficiary agency'),
+    t('Primary Sector'),
     t('filter activities by primary sector'),
+    t('Secondary Sector'),
     t('filter activities by secondary sector'),
     t('National Plan Objective'),
     t('filter activities by national plan objective'),
+    t('Location'),
     t('filter activities by location'),
     t('Activities Search Type'),
     t('Humanitarian Aid'),
     t('Search Page'),
-    t('Export Page'),
+    t('Export Page (CSV)'),
+    t('Export Page (XLS)'),
   );
   $export['activities'] = $view;
 

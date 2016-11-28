@@ -356,16 +356,31 @@ function theme_amp_report_info($variables) {
 
   $actions = array();
 
+  // CSV.
   $svgicon = helpertheme_get_svg_icons('export', array('width' => '1.2em', 'height' => '1.2em'));
   $l_args = array(
     'html' => TRUE,
     'external' => TRUE,
-    'fragment' => 'export',
+    'fragment' => 'export-csv',
     'attributes' => array(
       'class' => array('action-link', 'action-export'),
+      'data-url' => 'activities/export-csv',
     ),
   );
-  $actions[] = l($svgicon . t('Export'), '', $l_args);
+  $actions[] = l($svgicon . t('Export CSV'), '', $l_args);
+
+  // XLS.
+  $svgicon = helpertheme_get_svg_icons('export', array('width' => '1.2em', 'height' => '1.2em'));
+  $l_args = array(
+    'html' => TRUE,
+    'external' => TRUE,
+    'fragment' => 'export-xls',
+    'attributes' => array(
+      'class' => array('action-link', 'action-export'),
+      'data-url' => 'activities/export-xls',
+    ),
+  );
+  $actions[] = l($svgicon . t('Export XLS'), '', $l_args);
 
   $svgicon = helpertheme_get_svg_icons('link', array('width' => '1.2em', 'height' => '1.2em'));
   $l_args = array(
