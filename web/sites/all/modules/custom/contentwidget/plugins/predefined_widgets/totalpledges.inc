@@ -38,6 +38,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
 
   // Let's prepare the amount units (pre-configured per widget).
   $amount_units_key = isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amountUnits1';
+  $amount_fraction_digits = isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : 3;
   $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
   $amount_units = $amount_units_settings[$amount_units_key];
 
@@ -84,6 +85,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
 
   // Let's add amount units.
   $request_body['settings']['amountFormat']['amountUnits'] = $amount_units['value'];
+  $request_body['settings']['amountFormat']['maxFracDigits'] = $amount_fraction_digits;
 
   // Handle the global "Humanitarian Aid" filter.
   // @see helpergeneric_api_settings_form()
@@ -397,6 +399,14 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
     '#default_value' => isset($widget_settings['amount-units-label-type']) ? $widget_settings['amount-units-label-type'] : 'short',
     '#description' => t('Please specify format would you like to use.<br />Short Example: M; Long Example: Millions.'),
   );
+  $form['amount_settings']['widget_amount_fraction_digits'] = array(
+    '#type' => 'select',
+    '#title' => t('Fraction Digits'),
+    '#options' => array('0' => t('0 Digits (No digits)'), '1' => t('1 Digits'), '2' => t('2 Digits'), '3' => t('3 Digits')),
+    '#default_value' => isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : '3',
+    '#description' => t('Please specify how many digits after the Decimal Symbol (Fraction Digits) you would like to display.'),
+  );
+
   $form['#submit'][] = 'contentwidget_totalpledges_widget_settings_submit';
 
   return $form;
@@ -413,10 +423,12 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
 
   $values = $form_state['values'];
   $amount = $values['widget_amount'];
+  $fraction_digits = $values['widget_amount_fraction_digits'];
   $label_type = $values['widget_amount_label_type'];
 
   $data['amount-units'] = $amount;
   $data['amount-units-label-type'] = $label_type;
+  $data['amount-fraction-digits'] = $fraction_digits;
 
   _contentwidget_fixed_set_settings($entity->machine_name, $data);
 }

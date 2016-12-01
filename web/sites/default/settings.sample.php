@@ -36,8 +36,8 @@ $databases = array();
 // Main database settings.
 $databases['default']['default'] = array(
   'driver'   => 'pgsql',
-  'database' => 'amp_cms_local',
-  'username' => 'amp_cms_user',
+  'database' => 'amp_portal_local',
+  'username' => 'amp_portal_user',
   'password' => 'demo1',
   'host'     => 'localhost',
   'port'     => '',
