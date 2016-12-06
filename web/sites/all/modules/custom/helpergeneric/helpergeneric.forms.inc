@@ -399,6 +399,9 @@ function helpergeneric_form_alter(&$form, &$form_state, $form_id) {
   }
   if ($form_id == 'user_profile_form') {
     _helpergeneric_cleanup_user_form($form, $form_state, $form_id);
+
+    // Set a separate permissions for setting user roles.
+    $form['account']['roles']['#access'] = user_access('helpergeneric user roles');
   }
 }
 
@@ -638,7 +641,13 @@ function _helpergeneric_alter_vertical_tabs(&$form) {
   }
 }
 
-
+/**
+ * We want to make small changes to the default user form.
+ */
+function helpergeneric_form_user_register_form_alter(&$form, &$form_state) {
+  // Set a separate permissions for setting user roles.
+  $form['account']['roles']['#access'] = user_access('helpergeneric user roles');
+}
 
 /**
  * Implement hook_form_alter() for views_exposed_form.
