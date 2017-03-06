@@ -309,6 +309,13 @@ class ampAPIEntityQueryHelper {
       if ($setting->id == '1' && isset($setting->value->defaultId)) {
         $query->addMetaData('report_currency', $setting->value->defaultId);
       }
+      if ($setting->id == 'amountFormat') {
+        foreach ($setting->value as $sub_delta => $sub_setting) {
+          if ($sub_setting->id == 'amountUnits' && isset($sub_setting->value->defaultId)) {
+            $query->addMetaData('report_amount_units', $sub_setting->value->defaultId);
+          }
+        }
+      }
     }
 
     // Add the totals to the query metadata.
