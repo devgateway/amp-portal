@@ -88,7 +88,7 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
     // NOTE: Filters for the custom reports endpoint need to be inside a "filters" key.
     $ha_key = $humanitarian_aid_plugin['report field key'];
     $ha_value = $handler->getMatchedValue($humanitarian_aid_plugin, TRUE);
-    $request_body['filters']['columnFilters'][$ha_key] = array($ha_value);
+    $request_body['filters'][$ha_key] = array($ha_value);
   }
 
   // Handle the global "Disaster Response Marker" filter.
@@ -102,7 +102,7 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
     // Only display data related to disaster response.
     $drm_key = $disaster_response_marker_plugin['report field key'];
     $drm_value = $handler->getMatchedValue($disaster_response_marker_plugin, TRUE);
-    $request_body['filters']['columnFilters'][$drm_key] = array($drm_value);
+    $request_body['filters'][$drm_key] = array($drm_value);
   }
 
   // JSON Encode the request body. Can't use JSON_FORCE_OBJECT.

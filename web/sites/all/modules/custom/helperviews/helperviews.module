@@ -23,3 +23,51 @@ function helperviews_views_plugins() {
 
   return $plugins;
 }
+
+/**
+ * Small adjustment, see here:
+ * - https://www.drupal.org/node/1183418 ,
+ * - https://www.drupal.org/files/views-exposed-forms-ajax-support-1183418-32.patch .
+ */
+function helperviews_form_views_exposed_form_alter(&$form, &$form_state) {
+  // AJAX behaviors need these data, so we add it back in #after_build.
+  $form['#after_build'][] = 'helperviews_views_exposed_form_ajax_enable';
+}
+
+/**
+ * Checks whether the exposed form will use ajax and passes required
+ * form information removed in views_form_views_exposed_form_alter().
+ */
+function helperviews_views_exposed_form_ajax_enable(&$form, &$form_state) {
+  // In order for Ajax to work, we need the form build info. Here we
+  // check if #ajax has been added to any form elements, and if so,
+  // pass this info as settings via Javascript, which get attached to
+  // the submitted form on Ajax form submissions.
+  foreach (element_children($form) as $key) {
+    if (isset($form[$key]['#ajax'])) {
+      $form_info = array(
+        'form_id' => $form['#form_id'],
+        'form_build_id' => $form['#build_id'],
+      );
+      // Anonymous users don't get a token.
+      if (!empty($form['#token'])) {
+        $form_info['form_token'] = drupal_get_token($form['#token']);
+      }
+      $form['#attached']['js'][] = array(
+        'type' => 'setting',
+        'data' => array(
+          'exposed_form_info' => $form_info,
+        ),
+      );
+      // Add the javascript behavior that will handle this data.
+      $form['#attached']['js'][] = array(
+        'weight' => 100,
+        'data' => drupal_get_path('module', 'helperviews') . '/js/exposed_form_ajax.js',
+      );
+      // We only need to check this once.
+      break;
+    }
+  }
+
+  return $form;
+}
