@@ -22,6 +22,9 @@ function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
   elseif (empty($form_state['input']['location_dep'])) {
     $form['location_mun']['#disabled'] = TRUE;
   }
+
+  $svgicon = helpertheme_get_svg_icons('search', array('width' => '1em', 'height' => '1em'));
+  $form['submit']['#prefix'] = $svgicon;
 }
 
 /**
@@ -29,4 +32,12 @@ function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
  */
 function ampreports_location_filter_ajax_callback($form, $form_state) {
   return $form['location_mun'];
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function ampreports_views_pre_render(&$view) {
+  $css_path = drupal_get_path('module', 'ampreports') . '/styles/report.styles.css.less';
+  drupal_add_css($css_path, array('preprocess' => FALSE));
 }

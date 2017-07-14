@@ -34,6 +34,10 @@
 <?php endif; ?>
 <?php print render($title_suffix); ?>
 
+<div class="views-howto">
+  <?php print t('To create a report by department or municipality, please choose your settings from the filter below and click Search.'); ?>
+</div>
+
 <?php if ($exposed): ?>
   <div class="view-filters">
     <?php print $exposed; ?>
@@ -83,9 +87,13 @@
 <?php endif; ?>
 
 <?php if ($feed_icon): ?>
-  <div class="feed-icon">
-    <?php print $feed_icon; ?>
+  <div class="feed-wrapper">
+    <div class="feed-info"><?php print t('Download the Report'); ?></div>
+
+    <div class="feed-icon">
+        <?php print $feed_icon; ?>
+    </div>
   </div>
 <?php endif; ?>
 
-  </div><?php /* class view */ ?>
+</div><?php /* class view */ ?>

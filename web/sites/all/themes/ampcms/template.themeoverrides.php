@@ -136,3 +136,15 @@ function __ampcms_menu_link__level(&$variables, $level = NULL) {
   $tag = 'li';
   return "<$tag" . drupal_attributes($element['#attributes']) . '>' . $link . $output . "</$tag>\n";
 }
+
+/**
+ * Overriding the default views_data_export_feed_icon().
+ */
+function ampcms_views_data_export_feed_icon__report_page(&$variables) {
+  extract($variables, EXTR_SKIP);
+  $url_options = array('html' => TRUE);
+  if ($query) {
+    $url_options['query'] = $query;
+  }
+  return l($text, $url, $url_options);
+}

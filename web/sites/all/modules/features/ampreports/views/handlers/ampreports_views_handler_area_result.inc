@@ -76,7 +76,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       );
       if (!empty($municipality)) {
         $output['stats']['department'] = array(
-          '#markup' => t('Department of @department, municipality @municipality', array(
+          '#markup' => t('<div class="stats-query">Department of @department, municipality @municipality</div>', array(
             '@department' => $department,
             '@municipality' => $municipality,
           )),
@@ -84,7 +84,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       }
       else {
         $output['stats']['department'] = array(
-          '#markup' => t('Department of @department', array(
+          '#markup' => t('<div class="stats-query">Department of @department</div>', array(
             '@department' => $department,
           )),
           '#weight' => 0,
@@ -110,13 +110,13 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
         $status_value_key = $view_clone->filter['status']->value;
       }
       $output['stats']['count_all'] = array(
-        '#markup' => '<div class="count-all">' . t('Total number of projects: <div class="">@count_all</div>', array(
+        '#markup' => '<div class="count-all">' . t('Total number of projects: <div class="count-value">@count_all</div>', array(
             '@count_all' => $count_all,
           )) . '</div>',
         '#weight' => 5,
       );
       $output['stats']['count_status'] = array(
-        '#markup' => '<div class="count-all">' . t('Total number of projects "@status": <div class="">@count_status</div>', array(
+        '#markup' => '<div class="count-all">' . t('Total number of projects "@status": <div class="count-value">@count_status</div>', array(
             '@count_status' => $count_status,
             '@status' => $status_value_ops[$status_value_key],
           )) . '</div>',

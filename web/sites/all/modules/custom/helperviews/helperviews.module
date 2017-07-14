@@ -8,6 +8,8 @@
  * Implements hook_views_plugins().
  */
 function helperviews_views_plugins() {
+  $path = drupal_get_path('module', 'helperviews');
+
   $plugins = array(
     'pager' => array(
       'featured' => array(
@@ -21,7 +23,43 @@ function helperviews_views_plugins() {
     ),
   );
 
+  if (module_exists('pdf_using_mpdf')) {
+    $plugins['style']['views_data_export_pdf'] = array(
+      'title' => t('PDF file'),
+      'help' => t('Display the view as a PDF file.'),
+      'handler' => 'views_data_export_plugin_style_export_pdf',
+      'export headers' => array('Content-Type' => 'application/pdf'),
+      'export feed type' => 'pdf',
+      'export feed text' => 'Adobe PDF',
+      'export feed file' => '%view.pdf',
+      'export feed icon' => $path . '/images/pdf.png',
+      'additional themes' => array(
+        'views_data_export_pdf_body' => 'style',
+      ),
+      'additional themes base' => 'views_data_export_pdf',
+      'path' => $path . '/plugins',
+      'theme path' => $path . '/theme',
+      'parent' => 'views_data_export',
+      'theme' => 'views_data_export_pdf',
+      'theme file' => 'views_data_export.theme.inc',
+      'uses row plugin' => FALSE,
+      'uses fields' => TRUE,
+      'uses options' => TRUE,
+      'type' => 'data_export',
+    );
+  }
   return $plugins;
+}
+
+/**
+ * Implements hook_views_plugins_alter().
+ */
+function helperviews_views_plugins_alter(&$plugins) {
+  $path = drupal_get_path('module', 'helperviews');
+  $plugins['style']['views_data_export_xls']['handler'] = 'views_data_export_plugin_style_export_amp';
+  $plugins['style']['views_data_export_xls']['path'] = $path . '/plugins';
+  $plugins['style']['views_data_export_doc']['handler'] = 'views_data_export_plugin_style_export_amp';
+  $plugins['style']['views_data_export_doc']['path'] = $path . '/plugins';
 }
 
 /**
@@ -70,4 +108,24 @@ function helperviews_views_exposed_form_ajax_enable(&$form, &$form_state) {
   }
 
   return $form;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helperviews_theme() {
+  $path = drupal_get_path('module', 'helperviews');
+
+  $hooks['views_data_export_pdf_body'] = array(
+    'variables' => array(
+      'view' => NULL,
+      'options' => NULL,
+      'rows' => NULL,
+      'title' => NULL,
+    ),
+    'file' => 'views_data_export.theme.inc',
+    'path' => $path . '/theme',
+  );
+
+  return $hooks;
 }

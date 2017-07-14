@@ -7,3 +7,5 @@ dependencies[] = views
 
 ; Handlers
 files[] = plugins/views_plugin_pager_featured.inc
+files[] = plugins/views_data_export_plugin_style_export_amp.inc
+files[] = plugins/views_data_export_plugin_style_export_pdf.inc
