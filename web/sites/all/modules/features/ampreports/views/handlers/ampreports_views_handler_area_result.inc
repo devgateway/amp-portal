@@ -127,9 +127,13 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       // Load options.
       $status_value_ops = $this->view->filter['status']->get_value_options();
       $status_value_key = reset($this->view->filter['status']->value);
+      $view_clone = $this->view->clone_view();
+      $view_clone->exposed_input = $this->view->exposed_input;
+      $view_clone->set_items_per_page('0');
+      $view_clone->execute();
 
       $output['stats']['count_status'] = array(
-        '#markup' => '<div class="count-all">' . t('Total number of projects "@status": <div class="">@count_status</div>', array(
+        '#markup' => '<div class="count-all">' . t('Total number of projects "@status": <div class="count-value">@count_status</div>', array(
             '@count_status' => $count_all,
             '@status' => $status_value_ops[$status_value_key],
           )) . '</div>',

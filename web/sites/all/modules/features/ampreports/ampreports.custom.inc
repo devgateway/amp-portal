@@ -13,11 +13,11 @@ function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
   $form['location_mun']['#prefix'] = '<div id="location-municipality">';
   $form['location_mun']['#suffix'] = '</div>';
 
-  if (!empty($form_state['input']['location_dep'])) {
-    $form['location_mun']['#autocomplete_path'] .= '/3:' . drupal_encode_path($form_state['input']['location_dep']);
-  }
-  elseif (!empty($form_state['values']['location_dep'])) {
+  if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
     $form['location_mun']['#autocomplete_path'] .= '/3:' . drupal_encode_path($form_state['values']['location_dep']);
+  }
+  elseif (!empty($form_state['input']['location_dep']) && trim($form_state['input']['location_dep']) !== '') {
+    $form['location_mun']['#autocomplete_path'] .= '/3:' . drupal_encode_path($form_state['input']['location_dep']);
   }
   elseif (empty($form_state['input']['location_dep'])) {
     $form['location_mun']['#disabled'] = TRUE;
