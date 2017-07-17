@@ -44,7 +44,10 @@ function ampapi_activity_autocomplete($property_name, $string = '', $string2 = '
       // Just make sure it's an integer.
       $level = intval($level);
       $handler->setExtraFilter('location_level', $level);
-      $handler->setExtraFilter('location_field', $field);
+
+      if (!empty($field)) {
+        $handler->setExtraFilter('location_field', $field);
+      }
     }
     $autocomplete_values = $handler->autocomplete($plugin, array($string), $request_type);
 

@@ -60,8 +60,8 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     global $user;
     $output = array();
 
-    if (empty($this->view->exposed_input['location_dep'])) {
-      return t('Please select a department.');
+    if (empty($this->view->exposed_input['location_dep']) && empty($this->view->exposed_input['location_mun'])) {
+      return t('Please select a department or municipality.');
     }
 
     $department = $this->view->exposed_input['location_dep'];
@@ -69,11 +69,11 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     $status = !empty($this->view->exposed_input['status']) ? $this->view->exposed_input['status'] : 0;
     $count_all = $this->view->total_rows;
 
+    $output['stats'] = array(
+      '#type' => 'container',
+      '#attributes' => array('class' => array('stats-wrapper')),
+    );
     if (!empty($department)) {
-      $output['stats'] = array(
-        '#type' => 'container',
-        '#attributes' => array('class' => array('stats-wrapper')),
-      );
       if (!empty($municipality)) {
         $output['stats']['department'] = array(
           '#markup' => t('<div class="stats-query">Department of @department, municipality @municipality</div>', array(
@@ -88,6 +88,16 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
             '@department' => $department,
           )),
           '#weight' => 0,
+        );
+      }
+    }
+    else {
+      // The extra case, no department, just municipalities.
+      if (!empty($municipality)) {
+        $output['stats']['department'] = array(
+          '#markup' => t('<div class="stats-query">Municipality @municipality</div>', array(
+            '@municipality' => $municipality,
+          )),
         );
       }
     }
