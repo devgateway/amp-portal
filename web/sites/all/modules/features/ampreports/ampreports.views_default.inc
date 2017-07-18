@@ -116,7 +116,6 @@ function ampreports_views_default_views() {
   $handler->display->display_options['filters']['location']['expose']['label'] = 'Department';
   $handler->display->display_options['filters']['location']['expose']['operator'] = 'location_op';
   $handler->display->display_options['filters']['location']['expose']['identifier'] = 'location_dep';
-  $handler->display->display_options['filters']['location']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['location']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,

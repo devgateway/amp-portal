@@ -59,6 +59,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
   function render($empty = FALSE) {
     global $user;
     $output = array();
+    return '';
 
     if (empty($this->view->exposed_input['location_dep']) && empty($this->view->exposed_input['location_mun'])) {
       return t('Please select a department or municipality.');
