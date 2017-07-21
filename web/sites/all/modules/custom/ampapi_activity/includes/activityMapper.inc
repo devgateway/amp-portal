@@ -61,7 +61,7 @@ class activityMapperBase implements activityMapperInterface {
         // The AMP API likes to group filters into certain groups, or not.
         // @TODO: Requests for the API to change this behavior.
         if ($plugin['report field group'] == 'columns') {
-          $request_body['filters']['columnFilters'][$key] = $condition['value'];
+          $request_body['filters'][$key] = $condition['value'];
         }
         else if ($plugin['report field group'] == 'others') {
           $request_body['filters']['otherFilters'][$key] = $condition['value'];
