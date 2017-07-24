@@ -19,11 +19,11 @@ $plugin = array(
   // @TODO: Make things simpler.
   'report filter key' => 'Primary Sector',
 
-  'report filter endpoint' => 'filters/sectors',
+    'report filter endpoint' => 'filters/sectors',
 
   // These are used to filter out entries:
   // When filterId is available, we'll try 'report sub-filter filter-id'.
-  'report sub-filter filter-id' => 'Primary Sector',
+  'report sub-filter filter-id' => 'primary-sector',
 
   'handler' => 'primarySectorMapper',
 );

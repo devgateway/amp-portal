@@ -22,7 +22,7 @@ $plugin = array(
   'report filter endpoint' => 'filters/sectors',
   // These are used to filter out entries:
   // When filterId is available, we'll try 'report sub-filter filter-id'.
-  'report sub-filter filter-id' => 'Secondary Sector',
+  'report sub-filter filter-id' => 'secondary-sector',
 
   'handler' => 'secondarySectorMapper',
 );
