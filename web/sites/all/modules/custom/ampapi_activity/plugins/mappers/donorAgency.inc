@@ -24,7 +24,7 @@ $plugin = array(
 
   // These are used to filter out entries:
   // When filterId is available, we'll tr 'report sub-filter filter-id'.
-  'report sub-filter filter-id' => 'Donor',
+  'report sub-filter filter-id' => 'donor-agency',
   'handler' => 'donorAgencyMapper',
 );
 

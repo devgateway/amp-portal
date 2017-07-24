@@ -20,7 +20,7 @@ $plugin = array(
   'report filter key' => 'National Planning Objectives Level 1',
 
   'report filter endpoint' => 'filters/programs',
-  'report sub-filter filter-id' => 'National Plan Objective',
+  'report sub-filter filter-id' => 'national-planning-objectives',
   'report filter endpoint extra' => 'filters/programs',
 
   'handler' => 'nationalPlanObjectiveMapper',
