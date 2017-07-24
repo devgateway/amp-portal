@@ -179,6 +179,7 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
         $form['value'] = array(
           '#title' => $this->options['expose']['label'],
           '#type' => 'checkbox',
+          '#default_value' => 0,
         );
       }
     }

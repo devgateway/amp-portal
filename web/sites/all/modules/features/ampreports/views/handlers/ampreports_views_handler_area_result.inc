@@ -105,14 +105,16 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     // Let's find out, how many are 'in execution' (or, any value specified in the settings of 'status').
     if ($status == 0) {
       $view_clone = $this->view->clone_view();
-      $view_clone->exposed_input = $this->view->exposed_input;
-      $view_clone->exposed_input['status'] = 1;
+      $new_exposed_input = $this->view->get_exposed_input();
+      $new_exposed_input['status'] = 1;
+      $view_clone->set_exposed_input($new_exposed_input);
       $view_clone->set_items_per_page('0');
       $view_clone->execute();
       $count_status = $view_clone->total_rows;
 
       // Load options.
       $status_value_ops = $view_clone->filter['status']->get_value_options();
+
       if (is_array($view_clone->filter['status']->value)) {
         $status_value_key = reset($view_clone->filter['status']->value);
       }
@@ -132,6 +134,11 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
           )) . '</div>',
         '#weight' => 10,
       );
+
+      // OMG that's a pain, we NEED to revert.
+      unset($new_exposed_input['status']);
+      unset($this->view->exposed_raw_input['status']);
+      $this->view->set_exposed_input($new_exposed_input);
     }
     else {
       // Load options.
@@ -157,6 +164,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
         '#markup' => '<div id="projects_chart"></div>',
       );
       $this->get_google_chart($view_clone->result);
+      $view_clone->destroy();
     }
 
     return render($output);
