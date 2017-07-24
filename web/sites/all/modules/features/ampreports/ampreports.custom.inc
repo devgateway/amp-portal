@@ -5,24 +5,30 @@
  * Implements hook_form_alter().
  */
 function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
-  $form['location_dep']['#ajax'] = array(
-    'callback' => 'ampreports_location_filter_ajax_callback',
-    'wrapper' => 'location-municipality',
-    'effect' => 'fade',
-  );
-  $form['location_mun']['#prefix'] = '<div id="location-municipality">';
-  $form['location_mun']['#suffix'] = '</div>';
+  $view = $form_state['view'];
+  if ($view->name == 'reports' && $view->current_display == 'report_page') {
+    $form['location_dep']['#ajax'] = array(
+      'callback' => 'ampreports_location_filter_ajax_callback',
+      'wrapper' => 'location-municipality',
+      'effect' => 'fade',
+    );
+    $form['location_mun']['#prefix'] = '<div id="location-municipality">';
+    $form['location_mun']['#suffix'] = '</div>';
 
-  $form['location_mun']['#autocomplete_path'] .= '/3:';
-  if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
-    $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['values']['location_dep']);
-  }
-  elseif (!empty($form_state['input']['location_dep']) && trim($form_state['input']['location_dep']) !== '') {
-    $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['input']['location_dep']);
-  }
+    $form['location_mun']['#autocomplete_path'] .= '/3:';
+    if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
+      $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['values']['location_dep']);
+    }
+    elseif (!empty($form_state['input']['location_dep']) && trim($form_state['input']['location_dep']) !== '') {
+      $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['input']['location_dep']);
+    }
 
-  $svgicon = helpertheme_get_svg_icons('search', array('width' => '1em', 'height' => '1em'));
-  $form['submit']['#prefix'] = $svgicon;
+    $svgicon = helpertheme_get_svg_icons('search', array(
+      'width' => '1em',
+      'height' => '1em'
+    ));
+    $form['submit']['#prefix'] = $svgicon;
+  }
 }
 
 /**
