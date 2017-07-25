@@ -165,9 +165,11 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
     if ($this->options['type'] == 'tokeninput') {
       $tokens = explode(',', $raw_value);
 
-      // The API only likes integers.
-      foreach ($tokens as &$token) {
-        $token = intval($token);
+      // The API only likes integers (except locations).
+      if ($this->field !== 'location') {
+        foreach ($tokens as &$token) {
+          $token = intval($token);
+        }
       }
 
       $this->value = $tokens;
