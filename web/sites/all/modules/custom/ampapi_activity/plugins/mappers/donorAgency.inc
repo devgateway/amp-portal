@@ -15,16 +15,11 @@ $plugin = array(
 
   'report field group' => 'columns',
   'report field key' => 'Donor Agency',
-  // Changed in 2.12.
-  // @TODO: Make things simpler.
-  'report filter key' => 'Donor Agency',
+  'report filter key' => 'donor-agency',
 
   'report filter endpoint' => 'filters/orgs',
   'report filter endpoint extra' => 'filters/org-roles',
 
-  // These are used to filter out entries:
-  // When filterId is available, we'll tr 'report sub-filter filter-id'.
-  'report sub-filter filter-id' => 'donor-agency',
   'handler' => 'donorAgencyMapper',
 );
 

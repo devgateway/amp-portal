@@ -375,12 +375,9 @@ function _ampapi_activity_get_filter_status($name, $handler, $ssc_status) {
   // Some filers have a key that is different from the field key. like:
   // 'National Plan Objective' vs 'National Planning Objectives Level 1 Id'
   $mapper_plugin = ampapi_get_mapper_by_property_name($handler->real_field);
-  if (isset($mapper_plugin['report filter key'])) {
-    $filter_key = $mapper_plugin['report filter key'];
-  }
-  else {
-    $filter_key = $mapper_plugin['report field key'];
-  }
+
+  // We moved from a specific filter key, to a generic field key.
+  $filter_key = $mapper_plugin['report field key'];
 
   // Hide filters disabled in AMP.
   if ($mapper_plugin['report field group'] == 'columns') {
