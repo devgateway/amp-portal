@@ -85,6 +85,10 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
             $name .= filter_xss_admin($parent->name) . ' > ';
           }
         }
+        $id = $entry->filterId . ':' . intval($entry->id);
+      }
+      else {
+        $id = intval($entry->id);
       }
 
       // Include acronym in name, if any.
@@ -94,7 +98,7 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
       }
 
       $new_value = array(
-        'id' => intval($entry->id),
+        'id' => $id,
         'name' => $name,
       );
 
@@ -181,8 +185,17 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
           return TRUE;
         }
         break;
+
       case 'tokeninputids':
-        if (in_array($entry->id, $info['values'])) {
+        $id = $entry->id;
+
+        // Slight adjustment for locations.
+        if ($info['endpoint'] == 'filters/locations') {
+          $id = $entry->filterId . ':' . intval($entry->id);
+        }
+
+
+        if (in_array($id, $info['values'])) {
           return TRUE;
         }
         break;
