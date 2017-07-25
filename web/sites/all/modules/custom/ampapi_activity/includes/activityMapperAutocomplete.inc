@@ -274,7 +274,7 @@ class activityMapperSubFilterAutocomplete extends activityMapperAutocompleteBase
     }
 
     // Setup the new and correct filterId value.
-    $look_up_filter = (isset($plugin['report sub-filter filter-id'])) ? $plugin['report sub-filter filter-id'] : '';
+    $look_up_filter = (isset($plugin['report filter key'])) ? $plugin['report filter key'] : '';
 
     foreach ($sub_filter_data as $info) {
       if (isset($info->filterId) && $info->filterId == $look_up_filter) {
