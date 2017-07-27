@@ -122,15 +122,17 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
         $status_value_key = $view_clone->filter['status']->value;
       }
       $output['stats']['count_all'] = array(
-        '#markup' => '<div class="count-all">' . t('Total number of projects: <div class="count-value">@count_all</div>', array(
-            '@count_all' => $count_all,
-          )) . '</div>',
+        '#markup' => '<div class="count-all">' . t('Total number of projects:') .
+            format_string('<div class="count-value">@count_all</div>', array(
+              '@count_all' => $count_all,
+            )) . '</div>',
         '#weight' => 5,
       );
       $output['stats']['count_status'] = array(
-        '#markup' => '<div class="count-all">' . t('Total number of projects "@status": <div class="count-value">@count_status</div>', array(
-            '@count_status' => $count_status,
+        '#markup' => '<div class="count-all">' . t('Total number of projects "@status":', array(
             '@status' => $status_value_ops[$status_value_key],
+          )) . format_string('<div class="count-value">@count_status</div>', array(
+            '@count_status' => $count_status,
           )) . '</div>',
         '#weight' => 10,
       );
