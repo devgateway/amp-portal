@@ -152,9 +152,10 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       $view_clone->execute();
 
       $output['stats']['count_status'] = array(
-        '#markup' => '<div class="count-all">' . t('Total number of projects "@status": <div class="count-value">@count_status</div>', array(
-            '@count_status' => $count_all,
+        '#markup' => '<div class="count-all">' . t('Total number of projects "@status":', array(
             '@status' => $status_value_ops[$status_value_key],
+          )) . format_string('<div class="count-value">@count_status</div>', array(
+            '@count_status' => $count_all,
           )) . '</div>',
         '#weight' => 10,
       );
@@ -190,7 +191,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     $cutoff = $this->options['chart_sectors'];
     $showing = array_slice($normalized_data, 0, $cutoff);
     $rest = array_sum(array_slice($normalized_data, $cutoff));
-    $all_sectors = $showing + array('Other' => $rest);
+    $all_sectors = $showing + array(t('Other') => $rest);
 
     // Proper settings.
     $settings['chart']['projects_chart'] = array(
