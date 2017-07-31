@@ -39,7 +39,6 @@ google.load("visualization", "1", {packages:["corechart"]});
               row[j] = settings.chart[chartId].rows[j][i];
             }
             row.unshift(settings.chart[chartId].header[i]);
-            console.log(row);
             data.addRows([row]);
           }
 
