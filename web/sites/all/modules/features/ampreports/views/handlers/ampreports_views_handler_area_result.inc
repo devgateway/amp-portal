@@ -180,7 +180,17 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     // Polish the results and structure them properly.
     $normalized_data = array();
     foreach ($results as $result) {
-      list($id, $sector) = explode(' - ', $result->primary_sector);
+      if (strpos($result->primary_sector, '.') !== FALSE) {
+        list($id, $sector) = explode('.', $result->primary_sector);
+        $sector = trim($sector);
+      }
+      else if (strpos($result->primary_sector, '-') !== FALSE) {
+        list($id, $sector) = explode('-', $result->primary_sector);
+        $sector = trim($sector);
+      }
+      else {
+        $sector = $result->primary_sector;
+      }
       if (strlen($sector) > $this->options['chart_projects_length']) {
         $sector = substr($sector, 0, $this->options['chart_projects_length']) . '...';
       }
