@@ -59,3 +59,25 @@ function ampreports_views_pre_render(&$view) {
     drupal_add_css($css_path, array('preprocess' => FALSE));
   }
 }
+
+/**
+ * Custom overridden version of draw_charts (google_chart_tools.module).
+ */
+function _ampreports_custom_draw_chart($settings) {
+  drupal_alter('draw_chart', $settings);
+  foreach ($settings['chart'] as $id => $chart) {
+    if (!isset($settings['chart'][$id]['containerId'])) {
+      $settings['chart'][$id]['containerId'] = drupal_strtolower(str_replace(" ", "-", $id));
+    }
+  }
+  drupal_add_css(drupal_get_path('module', 'google_chart_tools') . '/google_chart_tools.css');
+  drupal_add_js(drupal_get_path('module', 'ampreports') . '/js/custom_google_charts.js');
+  drupal_add_js($settings, array('type' => 'setting'));
+  $ret = array(
+    'title' =>  $chart['options']['title'],
+    'id' =>  $id,
+    'weight' => isset($chart['weight']) ? $chart['weight'] : 0,
+    'markup' =>  "<div id='{$settings['chart'][$id]['containerId']}'></div>"
+  );
+  return $ret;
+}

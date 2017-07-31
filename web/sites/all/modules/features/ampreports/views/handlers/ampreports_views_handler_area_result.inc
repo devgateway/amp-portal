@@ -191,11 +191,8 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       else {
         $sector = $result->primary_sector;
       }
-      if (strlen($sector) > $this->options['chart_projects_length']) {
-        $sector = substr($sector, 0, $this->options['chart_projects_length']) . '...';
-      }
       $sector = ucfirst(strtolower($sector));
-      $normalized_data[$sector] = (!isset($normalized_data[$sector])) ? 0 : $normalized_data[$sector] + 1;
+      $normalized_data[$sector] = (!isset($normalized_data[$sector])) ? 1 : $normalized_data[$sector] + 1;
     }
     arsort($normalized_data);
     $cutoff = $this->options['chart_sectors'];
@@ -204,12 +201,25 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     $all_sectors = $showing + array(t('Other') => $rest);
 
     // Proper settings.
+    $shorten_sectors = array();
+    foreach ($all_sectors as $sector_name => $sector_data) {
+      if (strlen($sector_name) > $this->options['chart_projects_length']) {
+        $shorten_sectors[$sector_name] =  substr($sector_name, 0, $this->options['chart_projects_length']) . '...';
+      }
+      else {
+        $shorten_sectors[$sector_name] = $sector_name;
+      }
+    }
+    $header = array_keys($all_sectors);
+    $rows = array_values($all_sectors);
+
     $settings['chart']['projects_chart'] = array(
       'chartType' => 'ColumnChart',
       'containerId' => 'projects_chart',
       'columns' => array(t('Projects')),
-      'header' => array_keys($all_sectors),
-      'rows' => array(array_values($all_sectors)),
+      'header' => array_values($shorten_sectors),
+      'rows' => array($rows, $header),
+      'use_tooltips_column' => TRUE,
       'options' => array(
         'forceIFrame' => FALSE,
         'title' => t('Projects by Sectors'),
@@ -230,6 +240,6 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     );
 
     // Now draw.
-    draw_chart($settings);
+    _ampreports_custom_draw_chart($settings);
   }
 }
