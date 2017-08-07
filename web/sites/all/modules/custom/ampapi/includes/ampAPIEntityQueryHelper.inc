@@ -152,9 +152,14 @@ class ampAPIEntityQueryHelper {
 
     // Let's add amount units (and force them to be floats).
     $global_amount = $search_settings['global_amount'];
-    $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
-    $global_amount_settings = $amount_units_settings[$global_amount];
-    $request_body['settings']['amountFormat']['amountUnits'] = $global_amount_settings['value'];
+    $amount_units_settings = _ampapi_activity_get_api_settings('amount-format:number-divider');
+
+    $amount_units_options = array();
+    foreach ($amount_units_settings->value->options as $delta => $amount_unit_option) {
+      $amount_units_options[$amount_unit_option->id] = $amount_unit_option;
+    }
+    $global_amount_settings = $amount_units_options[$global_amount];
+    $request_body['settings']['amount-format']['number-divider'] = $global_amount_settings->value;
     $query->addMetaData('amount_units', $global_amount_settings);
 
     // TODO: Deal with multiple sorts and mapping of special properties.
@@ -272,24 +277,13 @@ class ampAPIEntityQueryHelper {
     $search_settings = ampapi_activity_get_search_settings();
     $query->addMetaData('entities_preloaded', TRUE);
 
-    // Add the currency to the query metadata.
-    foreach ($response_data->settings as $setting) {
-      // @HACK: The id for currency is "1"!!!
-      // @see: Documentation for /rest/gis/settings
-      if ($setting->id == '1' && isset($setting->value->defaultId)) {
-        $query->addMetaData('report_currency', $setting->value->defaultId);
-      }
-    }
+    $currency_setting = _ampapi_activity_get_api_settings('currency-code');
+    $query->addMetaData('report_currency', $currency_setting->value->defaultId);
 
     // Add the totals to the query metadata.
     if (!empty($response_data->page->pageArea->contents)) {
       $response_totals = $response_data->page->pageArea->contents;
       $report_totals = array();
-
-      // @see https://php.net/manual/en/numberformatter.create.php
-      // @see http://www.icu-project.org/apiref/icu4c/classDecimalFormat.html#details
-      $formatter_locale = NULL;
-      $formatter = new NumberFormatter($formatter_locale, NumberFormatter::PATTERN_DECIMAL, $number_format);
 
       $headers_list = array();
       $mappers = ampapi_get_mappers();
@@ -308,7 +302,7 @@ class ampAPIEntityQueryHelper {
         }
 
         // Only display enabled measures in the totals table.
-        $headers_list[$plugin['property name']] = '[' . $plugin['report field key'] . ']';
+        $headers_list[$plugin['property name']] = '[Totals][' . $plugin['report field key'] . ']';
       }
 
       foreach ($response_data->headers as $h_info) {
@@ -317,16 +311,8 @@ class ampAPIEntityQueryHelper {
           continue;
         }
 
-        if (!isset($response_totals->{$h_info->hierarchicalName}->value)) {
-          continue;
-        }
-
-        if ($formatter) {
-          $amount = $formatter->format($response_totals->{$h_info->hierarchicalName}->value);
-        }
-        else {
-          $amount = check_plain($response_totals->{$h_info->hierarchicalName}->displayedValue);
-        }
+        // Removed all previously defined client-side formatting, as now we trust the API formatting.
+        $amount = check_plain($response_totals->{$h_info->hierarchicalName}->displayedValue);
 
         $report_totals[$h_info->originalColumnName] = array(
           'header' => filter_xss($h_info->columnName, array()),

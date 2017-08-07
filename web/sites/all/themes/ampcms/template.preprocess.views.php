@@ -116,6 +116,15 @@ function __ampcms_preprocess_views_view__activities(&$vars) {
         $report_totals = $vars['view']->query->query->metaData['report_totals'];
         if (isset($vars['view']->query->query->metaData['report_currency'])) {
           $report_currency = $vars['view']->query->query->metaData['report_currency'];
+          // Let's add the amount units to the currency.
+          if (!empty($vars['view']->query->query->metaData['report_amount_units'])) {
+              $amount_used = $vars['view']->query->query->metaData['report_amount_units'];
+              $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
+              $amount_unit_used_settings = $amount_units_settings[$amount_used];
+              if (!empty($amount_unit_used_settings['label long'])) {
+                $report_currency = $amount_unit_used_settings['label long'] . ' ' . $report_currency;
+              }
+           }
         }
 
         $vars['attachment_after'] .= theme('amp_report_totals', array('totals' => $report_totals, 'currency' => $report_currency));

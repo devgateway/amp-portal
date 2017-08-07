@@ -444,6 +444,15 @@ function amppermissions_user_default_permissions() {
     'module' => 'helpergeneric',
   );
 
+  // Exported permission: 'helpergeneric user roles'.
+  $permissions['helpergeneric user roles'] = array(
+    'name' => 'helpergeneric user roles',
+    'roles' => array(
+      'admin user' => 'admin user',
+    ),
+    'module' => 'helpergeneric',
+  );
+
   // Exported permission: 'manage features'.
   $permissions['manage features'] = array(
     'name' => 'manage features',

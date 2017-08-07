@@ -160,10 +160,10 @@ function ampapi_activity_search_settings_form($form, &$form_state) {
   );
 
   // Let's allow users to select global amount option.
-  $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
+  $amount_units_settings = _ampapi_activity_get_api_settings('amount-format:number-divider');
   $amount_units_options = array();
-  foreach ($amount_units_settings as $amount_id => $amount_unit_setting) {
-    $amount_units_options[$amount_id] = $amount_unit_setting['name'];
+  foreach ($amount_units_settings->value->options as $delta => $amount_unit_option) {
+    $amount_units_options[$amount_unit_option->id] = $amount_unit_option->name;
   }
   $form_elements['amount_settings'] = array(
     '#type' => 'fieldset',
