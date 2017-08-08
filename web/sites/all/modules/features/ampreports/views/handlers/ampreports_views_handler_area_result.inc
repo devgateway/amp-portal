@@ -67,7 +67,12 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     $department = $this->view->exposed_input['location_dep'];
     $municipality = !empty($this->view->exposed_input['location_mun']) ? $this->view->exposed_input['location_mun'] : FALSE;
     $status = !empty($this->view->exposed_input['status']) ? $this->view->exposed_input['status'] : 0;
-    $count_all = $this->view->total_rows;
+    if (!empty($this->view->total_rows) && $this->view->total_rows !== 0) {
+      $count_all = $this->view->total_rows;
+    }
+    else {
+      $count_all = count($this->view->result);
+    }
 
     $output['stats'] = array(
       '#type' => 'container',
@@ -213,6 +218,9 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     $header = array_keys($all_sectors);
     $rows = array_values($all_sectors);
 
+
+    $input_hash = md5(implode(':', $this->view->exposed_input));
+
     $settings['chart']['projects_chart'] = array(
       'chartType' => 'ColumnChart',
       'containerId' => 'projects_chart',
@@ -220,6 +228,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       'header' => array_values($shorten_sectors),
       'rows' => array($rows, $header),
       'use_tooltips_column' => TRUE,
+      'input_hash' => $input_hash,
       'options' => array(
         'forceIFrame' => FALSE,
         'title' => t('Projects by Sectors'),

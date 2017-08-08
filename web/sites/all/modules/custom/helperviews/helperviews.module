@@ -34,13 +34,13 @@ function helperviews_views_plugins() {
       'export feed file' => '%view.pdf',
       'export feed icon' => $path . '/images/pdf.png',
       'additional themes' => array(
-        'views_data_export_pdf_body' => 'style',
+        'views_data_export_reports_body' => 'style',
       ),
-      'additional themes base' => 'views_data_export_pdf',
+      'additional themes base' => 'views_data_export_reports',
       'path' => $path . '/plugins',
       'theme path' => $path . '/theme',
       'parent' => 'views_data_export',
-      'theme' => 'views_data_export_pdf',
+      'theme' => 'views_data_export_reports',
       'theme file' => 'views_data_export.theme.inc',
       'uses row plugin' => FALSE,
       'uses fields' => TRUE,
@@ -56,10 +56,15 @@ function helperviews_views_plugins() {
  */
 function helperviews_views_plugins_alter(&$plugins) {
   $path = drupal_get_path('module', 'helperviews');
-  $plugins['style']['views_data_export_xls']['handler'] = 'views_data_export_plugin_style_export_amp';
-  $plugins['style']['views_data_export_xls']['path'] = $path . '/plugins';
   $plugins['style']['views_data_export_doc']['handler'] = 'views_data_export_plugin_style_export_amp';
   $plugins['style']['views_data_export_doc']['path'] = $path . '/plugins';
+  $plugins['style']['views_data_export_doc']['additional themes base'] = 'views_data_export_reports';
+  $plugins['style']['views_data_export_doc']['theme path'] = $path . '/theme';
+  $plugins['style']['views_data_export_doc']['theme'] = 'views_data_export_reports';
+  $plugins['style']['views_data_export_doc']['theme file'] = 'views_data_export.theme.inc';
+  $plugins['style']['views_data_export_doc']['additional themes'] = array(
+    'views_data_export_reports_body' => 'style',
+  );
 }
 
 /**
@@ -108,24 +113,4 @@ function helperviews_views_exposed_form_ajax_enable(&$form, &$form_state) {
   }
 
   return $form;
-}
-
-/**
- * Implements hook_theme().
- */
-function helperviews_theme() {
-  $path = drupal_get_path('module', 'helperviews');
-
-  $hooks['views_data_export_pdf_body'] = array(
-    'variables' => array(
-      'view' => NULL,
-      'options' => NULL,
-      'rows' => NULL,
-      'title' => NULL,
-    ),
-    'file' => 'views_data_export.theme.inc',
-    'path' => $path . '/theme',
-  );
-
-  return $hooks;
 }

@@ -50,10 +50,44 @@ google.load("visualization", "1", {packages:["corechart"]});
           var element = document.getElementById(settings.chart[chartId].containerId);
           if (element) {
             chart[settings.chart[chartId]] = new google.visualization[settings.chart[chartId].chartType](element);
+
+            // Wait for the chart to finish drawing before calling the getImageURI() method.
+            google.visualization.events.addListener(chart[settings.chart[chartId]], 'ready', function () {
+              settings.chart[chartId].finalImage = chart[settings.chart[chartId]].getImageURI();
+            });
             chart[settings.chart[chartId]].draw(data, options);
           }
         }
       }
+    }
+  };
+
+  Drupal.behaviors.ampReports = {
+    attach: function(context, settings) {
+      $('.feed-icon a', context).click(function(evObj) {
+        evObj.preventDefault();
+        var image = settings.chart.projects_chart.finalImage,
+            $link = $(this);
+        if (image !== undefined) {
+          var wrapper = $link.closest('.feed-wrapper'),
+              $ajax_throbber = $('<div class="ajax-progress ajax-progress-throbber"><div class="throbber">&nbsp;</div></div>');
+          $ajax_throbber.appendTo($link.parent());
+          $.ajax({
+            type: 'POST',
+            url: '/ampreports/chart/' + settings.chart.projects_chart.input_hash,
+            dataType: 'json',
+            success: function(data, status) {
+              if (data === 'saved') {
+                window.location = $link.attr('href');
+                $ajax_throbber.remove();
+              }
+            },
+            data: {
+               image: image
+            }
+          });
+        }
+      });
     }
   };
 })(jQuery);

@@ -3,11 +3,12 @@
 /**
  * An overridden version of the theme function specifically for the PDF export.
  */
-function theme_views_data_export_pdf_body(&$vars) {
+function theme_views_data_export_reports_body(&$vars) {
   // Here we just took _views_data_export_header_shared_preprocess and made sure
   // it uses translated labels instead of the labels of the fields.
   $view     = $vars['view'];
   $fields   = &$view->field;
+  $output = '';
 
   $vars['header'] = array();
   foreach ($fields as $key => $field) {
@@ -27,7 +28,30 @@ function theme_views_data_export_pdf_body(&$vars) {
     }
   }
 
-  $output = '';
+  $output  .= $view->display_handler->render_area('header', FALSE);
+
+  // Try to get and load the file.
+  $input_hash = md5(implode(':', $view->exposed_input));
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'file')
+    ->propertyCondition('filename', $input_hash . '.png');
+  $result = $query->execute();
+  if (!empty($result['file'])) {
+    $files = entity_load('file', array_keys($result['file']));
+    if (!empty($files)) {
+      $file = reset($files);
+      $image = theme_image(array(
+        'path' => $file->uri,
+        'width' => '100%',
+        'height' => 'auto',
+        'alt' => t('Projects graph'),
+        'title' => t('Projects graph'),
+        'attributes' => array(),
+      ));
+    }
+  }
+  $output .= '<div style="text-align: center;">' . $image . '</div>';
+
   $header = $vars['header'];
   unset($header['title']);
   unset($header['description']);
@@ -48,4 +72,13 @@ function theme_views_data_export_pdf_body(&$vars) {
   }
 
   return $output;
+}
+
+function template_preprocess_views_data_export_reports(&$vars) {
+  $vars['header'] = $vars['rows']['header'];
+  $vars['body'] = $vars['rows']['body'];
+  $vars['footer'] = $vars['rows']['footer'];
+
+  $view     = $vars['view'];
+  $fields   = &$view->field;
 }

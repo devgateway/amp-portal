@@ -81,3 +81,52 @@ function _ampreports_custom_draw_chart($settings) {
   );
   return $ret;
 }
+
+/**
+ * Implements hook_menu().
+ */
+function ampreports_menu() {
+  $items = array();
+
+  $items['ampreports/chart'] = array(
+    'title' => 'Chart export path',
+    'page callback' => 'ampreports_charts_ajax',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Ajax callback that saves the graph-image to the server-side,
+ * to be used later in the PDF / DOC export.
+ */
+function ampreports_charts_ajax($hash) {
+  $result = FALSE;
+
+  if ($hash && !empty($_POST['image'])) {
+    // Sanitize.
+    $image = preg_replace('#^data:image/\w+;base64,#i', '', $_POST['image']);
+    $data = base64_decode($image);
+
+    // Find out the mime.
+    $finfo = finfo_open();
+    $mime_type = finfo_buffer($finfo, $data, FILEINFO_MIME_TYPE);
+    finfo_close($finfo);
+
+    // Save only PNG mime.
+    if ($mime_type === 'image/png') {
+      $file = file_save_data($data, 'public://' . $hash . '.png', FILE_EXISTS_REPLACE);
+
+      // Save temporary staate.
+      $file->status = 0;
+      file_save($file);
+
+      $result = 'saved';
+    }
+  }
+
+  drupal_json_output($result);
+}
