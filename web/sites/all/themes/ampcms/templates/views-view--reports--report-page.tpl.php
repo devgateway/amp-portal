@@ -86,7 +86,7 @@
   </div>
 <?php endif; ?>
 
-<?php if ($feed_icon): ?>
+<?php if ($feed_icon && !empty($rows)): ?>
   <div class="feed-wrapper">
     <div class="feed-info"><?php print t('Download the Report'); ?></div>
 
