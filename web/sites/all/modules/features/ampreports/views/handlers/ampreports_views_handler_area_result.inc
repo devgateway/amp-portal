@@ -196,7 +196,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       else {
         $sector = $result->primary_sector;
       }
-      $sector = ucfirst(strtolower($sector));
+      $sector = mb_convert_case($sector, MB_CASE_TITLE, "UTF-8");
       $normalized_data[$sector] = (!isset($normalized_data[$sector])) ? 1 : $normalized_data[$sector] + 1;
     }
     arsort($normalized_data);
