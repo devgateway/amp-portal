@@ -81,17 +81,17 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     if (!empty($department)) {
       if (!empty($municipality)) {
         $output['stats']['department'] = array(
-          '#markup' => t('<div class="stats-query">Department of @department, municipality @municipality</div>', array(
+          '#markup' => '<div class="stats-query">' . t('Department of @department, municipality @municipality', array(
             '@department' => $department,
             '@municipality' => $municipality,
-          )),
+          )) . '</div>',
         );
       }
       else {
         $output['stats']['department'] = array(
-          '#markup' => t('<div class="stats-query">Department of @department</div>', array(
+          '#markup' => '<div class="stats-query">' . t('Department of @department', array(
             '@department' => $department,
-          )),
+          )) . '</div>',
           '#weight' => 0,
         );
       }
@@ -100,9 +100,9 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       // The extra case, no department, just municipalities.
       if (!empty($municipality)) {
         $output['stats']['department'] = array(
-          '#markup' => t('<div class="stats-query">Municipality @municipality</div>', array(
+          '#markup' => '<div class="stats-query">' . t('Municipality @municipality', array(
             '@municipality' => $municipality,
-          )),
+          )) . '</div>',
         );
       }
     }
