@@ -244,6 +244,14 @@ function ampreports_views_default_views() {
   $handler->display->display_options['fields']['actual_commitments']['label'] = 'Real Commitments';
   $handler->display->display_options['fields']['actual_commitments']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['actual_commitments']['link_to_entity'] = 0;
+  $handler->display->display_options['fields']['actual_commitments']['override'] = TRUE;
+  $handler->display->display_options['fields']['actual_commitments']['currency_settings'] = array(
+    'set_precision' => 1,
+    'precision' => '0',
+    'decimal' => '.',
+    'separator' => ',',
+    'separator_remove' => ',',
+  );
   /* Field: Activity: Actual Disbursements */
   $handler->display->display_options['fields']['actual_disbursements']['id'] = 'actual_disbursements';
   $handler->display->display_options['fields']['actual_disbursements']['table'] = 'efq_activity';
@@ -251,6 +259,14 @@ function ampreports_views_default_views() {
   $handler->display->display_options['fields']['actual_disbursements']['label'] = 'Real Disbursements';
   $handler->display->display_options['fields']['actual_disbursements']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['actual_disbursements']['link_to_entity'] = 0;
+  $handler->display->display_options['fields']['actual_disbursements']['override'] = TRUE;
+  $handler->display->display_options['fields']['actual_disbursements']['currency_settings'] = array(
+    'set_precision' => 1,
+    'precision' => '0',
+    'decimal' => '.',
+    'separator' => ',',
+    'separator_remove' => ',',
+  );
   /* Field: Path (Excluded) */
   $handler->display->display_options['fields']['external_url']['id'] = 'external_url';
   $handler->display->display_options['fields']['external_url']['table'] = 'efq_activity';
@@ -436,6 +452,8 @@ function ampreports_views_default_views() {
     t('Municipality'),
     t('Only include projects that are in execution'),
     t('Report Page'),
+    t('.'),
+    t(','),
     t('Export Page (Doc)'),
     t('Project Title'),
     t('Project Description'),

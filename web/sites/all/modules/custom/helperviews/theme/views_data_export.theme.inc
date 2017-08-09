@@ -74,6 +74,9 @@ function theme_views_data_export_reports_body(&$vars) {
   return $output;
 }
 
+/**
+ * Implements temmplate_preprocess_HOOK().
+ */
 function template_preprocess_views_data_export_reports(&$vars) {
   $vars['header'] = $vars['rows']['header'];
   $vars['body'] = $vars['rows']['body'];
