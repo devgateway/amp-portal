@@ -107,7 +107,7 @@ function ampcontact_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'redirect' => array(
-          'weight' => '4',
+          'weight' => '5',
         ),
       ),
       'display' => array(),
