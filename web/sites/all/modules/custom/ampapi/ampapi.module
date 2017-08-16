@@ -247,6 +247,9 @@ function ampapi_url_outbound_alter(&$path, &$options, $original_path) {
     $options['external'] = TRUE;
     $options['absolute'] = TRUE;
   }
+  elseif (substr($path, 0, 29) == 'ampapi/autocomplete/location/') {
+    unset($options['query']['language']);
+  }
 }
 
 /**

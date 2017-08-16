@@ -39,13 +39,19 @@ function ampapi_activity_autocomplete($property_name, $string = '', $string2 = '
 
     // Check whether we have an extra string present, and set it up as the extra filter.
     if ($plugin['property name'] == 'location' && !empty($extra_string)) {
-      list($level, $field) = explode(':', $extra_string);
+      $exploded_arr = explode(':', $extra_string);
+      if (count($exploded_arr) === 2) {
+        list($level, $field) = $exploded_arr;
+      }
+      else {
+        $level = reset($exploded_arr);
+      }
 
       // Just make sure it's an integer.
       $level = intval($level);
       $handler->setExtraFilter('location_level', $level);
 
-      if (!empty($field)) {
+      if (isset($field) && !empty($field)) {
         $handler->setExtraFilter('location_field', $field);
       }
     }
