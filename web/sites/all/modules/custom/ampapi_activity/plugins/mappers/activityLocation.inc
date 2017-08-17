@@ -59,4 +59,21 @@ class activityLocationMapper extends activityMapperAutocompleteBase {
 
     return $data;
   }
+
+  public function getAutocompleteValue($plugin, $data, $type) {
+    $matches = $this->autocomplete($plugin, $data, $type);
+    if (empty($matches)) {
+      return NULL;
+    }
+    // Special case for autocomplete powered view filters.
+    // Not using the jQuery TokenInput library.
+    if ($type == 'autocompleteids') {
+      $entry = reset($matches);
+      if (isset($entry['id'])) {
+        return array($entry['id']);
+      }
+    }
+
+    return $matches;
+  }
 }

@@ -31,10 +31,14 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
   $cache_id = "contentblock:widget:{$langcode}:totalactivities:" . md5(serialize($widget_settings));
 
   // Let's prepare the amount units (pre-configured per widget).
-  $amount_units_key = isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amountUnits1';
+  $amount_units_key = isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amount-units-1';
   $amount_fraction_digits = isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : 3;
-  $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
-  $amount_units = $amount_units_settings[$amount_units_key];
+  $amount_units_settings = _ampapi_activity_get_api_settings('amount-format:number-divider');
+  $amount_units_options = array();
+  foreach ($amount_units_settings->value->options as $delta => $amount_unit_option) {
+    $amount_units_options[$amount_unit_option->id] = $amount_unit_option;
+  }
+  $amount_units = $amount_units_options[$amount_units_key];
 
   // Try to get the processed response from cache.
   if ($cached = cache_get($cache_id, 'cache')) {
@@ -73,8 +77,8 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
   $api_settings = helpergeneric_get_api_settings();
 
   // Let's add amount units.
-  $request_body['settings']['amountFormat']['amountUnits'] = $amount_units['value'];
-  $request_body['settings']['amountFormat']['maxFracDigits'] = $amount_fraction_digits;
+  $request_body['settings']['amount-format']['number-divider'] = $amount_units->value;
+  $request_body['settings']['amount-format']['max-frac-digits'] = (integer) $amount_fraction_digits;
 
   // Handle the global "Humanitarian Aid" filter.
   // @see helpergeneric_api_settings_form()
@@ -116,15 +120,8 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
   }
 
   // Get the number formatting pattern.
-  $currency = '';
-  /** @noinspection PhpUndefinedFieldInspection */
-  foreach ($response_data->settings as $info) {
-    // @HACK: The id for currency is "1"!!!
-    // @see: Documentation for /rest/gis/settings
-    if ($info->id == '1') {
-      $currency = $info->value->defaultId;
-    }
-  }
+  $currency_setting = _ampapi_activity_get_api_settings('currency-code');
+  $currency = $currency_setting->value->defaultId;
 
   $report_totals = array();
   /** @noinspection PhpUndefinedFieldInspection */
@@ -140,16 +137,11 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
     }
 
     // Now, we really trust the API display values.
-    $amount_units_label = '';
-    if ((isset($widget_settings['amount-units-label-type']) && $widget_settings['amount-units-label-type'] == 'long')) {
-      if (isset($amount_units['label long'])) {
-        $amount_units_label = filter_xss($amount_units['label long']);
-      }
+    if (isset($widget_settings['amount-units-label-type'])) {
+      $amount_units_label = filter_xss(_ampapi_amount_unit_get_label($amount_units->id, $widget_settings['amount-units-label-type']));
     }
     else {
-      if (isset($amount_units['label short'])) {
-        $amount_units_label = filter_xss($amount_units['label short']);
-      }
+      $amount_units_label = filter_xss(_ampapi_amount_unit_get_label($amount_units->id, 'long'));
     }
 
     /** @noinspection PhpUndefinedFieldInspection */
@@ -266,10 +258,10 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
   ctools_form_include_file($form_state, $plugin['path'] . '/' . $plugin['file']);
 
   // Let's allow users to select widget-related amount formatting.
-  $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
+  $amount_units_settings = _ampapi_activity_get_api_settings('amount-format:number-divider');
   $amount_units_options = array();
-  foreach ($amount_units_settings as $amount_id => $amount_unit_setting) {
-    $amount_units_options[$amount_id] = $amount_unit_setting['name'];
+  foreach ($amount_units_settings->value->options as $delta => $amount_unit_option) {
+    $amount_units_options[$amount_unit_option->id] = $amount_unit_option->name;
   }
   $form['amount_settings'] = array(
     '#type' => 'fieldset',

@@ -36,11 +36,14 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
   $cache_id = "contentblock:widget:{$langcode}:totalpledges:" . md5(serialize($widget_settings));
 
-  // Let's prepare the amount units (pre-configured per widget).
-  $amount_units_key = isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amountUnits1';
+  $amount_units_key = isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amount-units-1';
   $amount_fraction_digits = isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : 3;
-  $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
-  $amount_units = $amount_units_settings[$amount_units_key];
+  $amount_units_settings = _ampapi_activity_get_api_settings('amount-format:number-divider');
+  $amount_units_options = array();
+  foreach ($amount_units_settings->value->options as $delta => $amount_unit_option) {
+    $amount_units_options[$amount_unit_option->id] = $amount_unit_option;
+  }
+  $amount_units = $amount_units_options[$amount_units_key];
 
   // Try to get the response from cache.
   $report_totals = array();
@@ -84,8 +87,8 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   $api_settings = helpergeneric_get_api_settings();
 
   // Let's add amount units.
-  $request_body['settings']['amountFormat']['amountUnits'] = $amount_units['value'];
-  $request_body['settings']['amountFormat']['maxFracDigits'] = $amount_fraction_digits;
+  $request_body['settings']['amount-format']['number-divider'] = $amount_units->value;
+  $request_body['settings']['amount-format']['max-frac-digits'] = (integer) $amount_fraction_digits;
 
   // Handle the global "Humanitarian Aid" filter.
   // @see helpergeneric_api_settings_form()
@@ -99,7 +102,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
     // NOTE: Filters for the custom reports endpoint need to be inside a "filters" key.
     $ha_key = $humanitarian_aid_plugin['report field key'];
     $ha_value = $handler->getMatchedValue($humanitarian_aid_plugin, TRUE);
-    $request_body['filters'][$ha_key] = array($ha_value);
+	  $request_body['filters'][$ha_key] = array($ha_value);
   }
 
   // Handle the global "Disaster Response Marker" filter.
@@ -113,7 +116,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
     // Only display data related to disaster response.
     $drm_key = $disaster_response_marker_plugin['report field key'];
     $drm_value = $handler->getMatchedValue($disaster_response_marker_plugin, TRUE);
-    $request_body['filters'][$drm_key] = array($drm_value);
+	  $request_body['filters'][$drm_key] = array($drm_value);
   }
 
   // JSON Encode the request body. Can't use JSON_FORCE_OBJECT.
@@ -127,19 +130,8 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   }
 
   // Get the number formatting pattern.
-  $currency = '';
-  // There's a case (for now) when API returns wrong data, we should handle it.
-  /** @noinspection PhpUndefinedFieldInspection */
-  if (!is_null($response_data->settings)) {
-    /** @noinspection PhpUndefinedFieldInspection */
-    foreach ($response_data->settings as $info) {
-      // @HACK: The id for currency is "1"!!!
-      // @see: Documentation for /rest/gis/settings
-      if ($info->id == '1') {
-        $currency = $info->value->defaultId;
-      }
-    }
-  }
+  $currency_setting = _ampapi_activity_get_api_settings('currency-code');
+  $currency = $currency_setting->value->defaultId;
 
   // There's a case (for now) when API returns wrong data, we should handle it.
   $report_totals = array();
@@ -156,16 +148,11 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
       }
 
       // Now, we really trust the API display values.
-      $amount_units_label = '';
-      if ((isset($widget_settings['amount-units-label-type']) && $widget_settings['amount-units-label-type'] == 'long')) {
-        if (isset($amount_units['label long'])) {
-          $amount_units_label = filter_xss($amount_units['label long']);
-        }
+      if (isset($widget_settings['amount-units-label-type'])) {
+        $amount_units_label = filter_xss(_ampapi_amount_unit_get_label($amount_units->id, $widget_settings['amount-units-label-type']));
       }
       else {
-        if (isset($amount_units['label short'])) {
-          $amount_units_label = filter_xss($amount_units['label short']);
-        }
+        $amount_units_label = filter_xss(_ampapi_amount_unit_get_label($amount_units->id, 'long'));
       }
 
       /** @noinspection PhpUndefinedFieldInspection */
@@ -240,7 +227,7 @@ function contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $wi
     // NOTE: Filters for the custom reports endpoint need to be inside a "filters" key.
     $ha_key = $humanitarian_aid_plugin['report field key'];
     $ha_value = $handler->getMatchedValue($humanitarian_aid_plugin, TRUE);
-    $request_body['filters'][$ha_key] = array($ha_value);
+  	$request_body['filters'][$ha_key] = array($ha_value);
   }
 
   // Handle the global "Disaster Response Marker" filter.
@@ -371,10 +358,10 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
   ctools_form_include_file($form_state, $plugin['path'] . '/' . $plugin['file']);
 
   // Let's allow users to select widget-related amount formatting.
-  $amount_units_settings = _ampapi_activity_get_api_settings('amount-units');
+  $amount_units_settings = _ampapi_activity_get_api_settings('amount-format:number-divider');
   $amount_units_options = array();
-  foreach ($amount_units_settings as $amount_id => $amount_unit_setting) {
-    $amount_units_options[$amount_id] = $amount_unit_setting['name'];
+  foreach ($amount_units_settings->value->options as $delta => $amount_unit_option) {
+    $amount_units_options[$amount_unit_option->id] = $amount_unit_option->name;
   }
 
   $form['amount_settings'] = array(
@@ -389,7 +376,7 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
     '#type' => 'select',
     '#title' => t('Widget Amount Units'),
     '#options' => $amount_units_options,
-    '#default_value' => isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amountUnits1',
+    '#default_value' => isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amount-units-1',
     '#description' => t('Please specify which widget-based amount formatting option you would like to use.'),
   );
   $form['amount_settings']['widget_amount_label_type'] = array(

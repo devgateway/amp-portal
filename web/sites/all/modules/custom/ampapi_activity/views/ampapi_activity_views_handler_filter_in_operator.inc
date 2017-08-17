@@ -218,11 +218,12 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
     if ($this->options['type'] == 'tokeninput') {
       $tokens = explode(',', $raw_value);
 
-      // The API only likes integers.
-      foreach ($tokens as &$token) {
-        $token = intval($token);
+      // The API only likes integers (except locations).
+      if ($this->field !== 'location') {
+        foreach ($tokens as &$token) {
+          $token = intval($token);
+        }
       }
-
       $this->value = $tokens;
       return TRUE;
     }
@@ -240,7 +241,14 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
       // If we have previously validated input, override.
       /** @var activityMapperAutocompleteInterface $handler */
       $handler = new $class_name();
-      $value = $handler->getAutocompleteValue($plugin, array($raw_value), 'autocompleteids');
+      // Exceptions, this needs to be re-done.
+      if ($plugin['property name'] == 'location' && $this->options['expose']['identifier'] == 'location_dep' && !empty($this->view->exposed_input['location_mun'])) {
+        return FALSE;
+      }
+      else {
+        $value = $handler->getAutocompleteValue($plugin, array($raw_value), 'autocompleteids');
+      }
+
       if (isset($value)) {
         $this->value = $value;
         return TRUE;

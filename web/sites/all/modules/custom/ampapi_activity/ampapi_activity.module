@@ -375,12 +375,9 @@ function _ampapi_activity_get_filter_status($name, $handler, $ssc_status) {
   // Some filers have a key that is different from the field key. like:
   // 'National Plan Objective' vs 'National Planning Objectives Level 1 Id'
   $mapper_plugin = ampapi_get_mapper_by_property_name($handler->real_field);
-  if (isset($mapper_plugin['report filter key'])) {
-    $filter_key = $mapper_plugin['report filter key'];
-  }
-  else {
-    $filter_key = $mapper_plugin['report field key'];
-  }
+
+  // We moved from a specific filter key, to a generic field key.
+  $filter_key = $mapper_plugin['report field key'];
 
   // Hide filters disabled in AMP.
   if ($mapper_plugin['report field group'] == 'columns') {
@@ -448,7 +445,7 @@ function ampapi_activity_get_search_settings() {
   }
 
   if (empty($settings['global_amount'])) {
-    $settings['global_amount'] = 'amountUnits1';
+    $settings['global_amount'] = 'amount-units-1';
   }
 
   return $settings;
@@ -458,7 +455,7 @@ function ampapi_activity_get_search_settings() {
  * Fetches the API settings.
  *
  * @param mixed $id
- *  String representation of the ID of the searched settings.
+ *  String representation of the ID of the searched settings. You can specify id:sub-id:sub-sub-id to get the deep setting.
  *
  * @return mixed
  *  Returns ALL settings if $id argument isn't specified,
@@ -466,51 +463,44 @@ function ampapi_activity_get_search_settings() {
  *  If specified $id is a wrong one, returns FALSE.
  */
 function _ampapi_activity_get_api_settings($id = FALSE) {
-  // Make the call.
-  $settings = ampAPIRestClient::get('amp/settings');
-  // Specify exceptions (usually hardcoded settings, FOR NOW).
-  $exceptions = array(
-    'amount-units' => array(
-      'amountUnits1' => array(
-        'name' => t('Units (1)'),
-        'value' => 1.0,
-      ),
-      'amountUnits1000' => array(
-        'name' => t('Thousands (1 000)'),
-        'label long' => t('Thousands'),
-        'label short' => t('K'),
-        'value' => 0.001,
-      ),
-      'amountUnits1000000' => array(
-        'name' => t('Millions (1 000 000)'),
-        'label long' => t('Millions'),
-        'label short' => t('M'),
-        'value' => 0.000001,
-      ),
-      'amountUnits1000000000' => array(
-        'name' => t('Billions (1 000 000 000)'),
-        'label long' => t('Billions'),
-        'label short' => t('B'),
-        'value' => 0.000000001,
-      ),
-    )
-  );
+  $ids = explode(':', $id);
 
-  if ($id) {
-    // Of course, we have exceptions, these are hardcoded versions of the settings,
-    // because currently API doesn't handle them nicely.
-    if (in_array($id, array_keys($exceptions))) {
-      return $exceptions[$id];
+  // Make the call.
+  $cache = cache_get('amp_api_settings');
+  if (empty($cache->data)) {
+    $settings = ampAPIRestClient::get('amp/settings');
+    $new_settings = ampAPIRestClient::get('settings-definitions/public');
+
+    // Now let's merge all these settings into one settings array and store it in cache, until next flush.
+    if (!empty($new_settings)) {
+      // For these, we need to flatten them out a bit that's why we'll want to map them by ID instead of random delta.
+      foreach ($new_settings as $delta => $settings_object) {
+        $settings->{$settings_object->id} = $settings_object;
+      }
     }
-    else {
+    cache_set('amp_api_settings', $settings);
+  }
+  else {
+    $settings = $cache->data;
+  }
+
+  // Exceptions removed, because now they are a part of the new settings.
+  if (!empty($ids)) {
+    for ($i = 0; $i < count($ids); $i++) {
+      $id = $ids[$i];
       // Look-up the ID.
-      foreach ($settings as $setting) {
-        if ($id == $setting->id) {
-          return $id;
+      foreach ($settings as $delta => $setting) {
+        if (!empty($setting->id) && $id == $setting->id) {
+          $settings = $setting->value;
+          if ($i == (count($ids) - 1)) {
+            return $setting;
+          }
+        }
+        if ($delta === $id && ($i == (count($ids) - 1))) {
+          return $setting;
         }
       }
     }
-    return FALSE;
   }
   return $settings;
 }
@@ -522,4 +512,39 @@ function ampapi_activity_ssc_status() {
   $search_settings = ampapi_activity_get_search_settings();
 
   return $search_settings['ssc_status'];
+}
+
+/**
+ * A custom function that returns the label for the specified amount unit settings.
+ * This is a hardcoded option for now, *later* API will returns this for PP.
+ *
+ * @param string $amount_unit_id
+ *  The ID of the setting used (returned by the API).
+ *
+ * @param string $label_type
+ *  Can be of 2 types: long or short.
+ */
+function _ampapi_amount_unit_get_label($amount_unit_id, $label_type = 'long') {
+  $label_mappings = array(
+    'amount-units-1' => array(
+      'long' => '',
+      'short' => '',
+    ),
+    'amount-units-1000' => array(
+      'long' => t('Thousands'),
+      'short' => t('K'),
+    ),
+    'amount-units-1000000' => array(
+      'long' => t('Millions'),
+      'short' => t('M'),
+    ),
+    'amount-units-1000000000' => array(
+      'long' => t('Billions'),
+      'short' => t('B'),
+    ),
+  );
+  if (isset($label_mappings[$amount_unit_id][$label_type])) {
+    return $label_mappings[$amount_unit_id][$label_type];
+  }
+  return FALSE;
 }
