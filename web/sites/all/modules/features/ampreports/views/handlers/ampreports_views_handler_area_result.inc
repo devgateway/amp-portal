@@ -203,7 +203,14 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     $cutoff = $this->options['chart_sectors'];
     $showing = array_slice($normalized_data, 0, $cutoff);
     $rest = array_sum(array_slice($normalized_data, $cutoff));
-    $all_sectors = $showing + array(t('Other') => $rest);
+
+    // Only if we have something left, we place all those under 'Other'.
+    if ($rest != 0) {
+      $all_sectors = $showing + array(t('Other') => $rest);
+    }
+    else {
+      $all_sectors = $showing;
+    }
 
     // Proper settings.
     $shorten_sectors = array();
@@ -217,8 +224,6 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     }
     $header = array_keys($all_sectors);
     $rows = array_values($all_sectors);
-
-
     $input_hash = md5(implode(':', $this->view->exposed_input));
 
     $settings['chart']['projects_chart'] = array(
