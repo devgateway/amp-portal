@@ -56,14 +56,20 @@ function theme_views_data_export_reports_body(&$vars) {
   unset($header['title']);
   unset($header['description']);
   foreach ($complete_array as $item) {
+    // Use title outside of the table.
     if (!empty($item['title'])) {
       $output .= '<h3>' . $item['title'] . '</h3>';
-      unset($item['title']);
     }
+    // Then unset it, so it won't go into the table cells.
+    unset($item['title']);
+
+    // Same goes for the description.
     if (!empty($item['description'])) {
       $output .= '<p>' . $item['description'] . '</p>';
-      unset($item['description']);
     }
+    unset($item['description']);
+
+    // Now we want to nicely print a table with header and a single-row body.
     $output .= theme('table', array(
       'header' => $header,
       'rows' => array($item),
