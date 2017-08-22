@@ -31,6 +31,10 @@ function ampcontact_form_contact_entityform_edit_form_alter(&$form, &$form_state
   $query = drupal_get_query_parameters();
   if (!empty($query) && in_array('subject', array_keys($query))) {
     $subject = $query['subject'];
-    $form['field_contact_subject']['und'][0]['value']['#default_value'] = check_plain($subject);
+    $form['field_contact_subject']['und'][0]['value']['#type'] = 'value';
+    $form['field_contact_subject']['und'][0]['value']['#value'] = check_plain($subject);
+  }
+  else {
+    $form['field_contact_subject']['#access'] = FALSE;
   }
 }
