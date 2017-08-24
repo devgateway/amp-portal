@@ -300,6 +300,12 @@ function helpergeneric_settings_form($form, &$form_state) {
     '#description' => t('If you want to hide the export functionality, uncheck this option.'),
     '#default_value' => variable_get('misc_use_export_buttons', 1),
   );
+  $form['misc']['misc_use_reports'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Reports'),
+    '#description' => t('If you want to enable the Reports page, check this box.'),
+    '#default_value' => module_exists('ampreports'),
+  );
 
   $form['#validate'][] = 'helpergeneric_settings_form_validate';
   $form['#submit'][] = 'helpergeneric_settings_form_submit';
@@ -375,6 +381,17 @@ function helpergeneric_settings_form_submit($form, &$form_state) {
   foreach (array('site_name', 'site_mail', 'misc_use_export_buttons') as $var) {
     if (isset($form_state['values'][$var]))
       variable_set($var, $form_state['values'][$var]);
+  }
+
+  // Enable the feature as requested.
+  if (isset($form_state['values']['misc_use_reports']) && $form_state['values']['misc_use_reports'] == TRUE) {
+    module_enable(array('ampreports'));
+    features_revert_module('ampreports');
+    features_revert_module('ampcontact');
+    cache_clear_all();
+  }
+  elseif (isset($form_state['values']['misc_use_reports']) && $form_state['values']['misc_use_reports'] == FALSE) {
+    module_disable(array('ampreports'));
   }
 
   // i18n variable.
