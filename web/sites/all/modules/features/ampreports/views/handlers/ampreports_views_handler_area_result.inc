@@ -108,6 +108,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     }
 
     // Let's find out, how many are 'in execution' (or, any value specified in the settings of 'status').
+    $data = $this->get_data($this->view->build_info['efq_query']);
     if ($status == 0) {
       $view_clone = $this->view->clone_view();
       $new_exposed_input = $this->view->get_exposed_input();
@@ -118,13 +119,13 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       $count_status = $view_clone->total_rows;
 
       // Load options.
-      $status_value_ops = $view_clone->filter['status']->get_value_options();
+      $status_value_ops = $this->view->filter['status']->get_value_options();
 
-      if (is_array($view_clone->filter['status']->value)) {
-        $status_value_key = reset($view_clone->filter['status']->value);
+      if (is_array($this->view->filter['status']->value)) {
+        $status_value_key = reset($this->view->filter['status']->value);
       }
       else {
-        $status_value_key = $view_clone->filter['status']->value;
+        $status_value_key = $this->view->filter['status']->value;
       }
       $output['stats']['count_all'] = array(
         '#markup' => '<div class="count-all">' . t('Total number of projects:') .
@@ -151,10 +152,6 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       // Load options.
       $status_value_ops = $this->view->filter['status']->get_value_options();
       $status_value_key = reset($this->view->filter['status']->value);
-      $view_clone = $this->view->clone_view();
-      $view_clone->exposed_input = $this->view->exposed_input;
-      $view_clone->set_items_per_page('0');
-      $view_clone->execute();
 
       $output['stats']['count_status'] = array(
         '#markup' => '<div class="count-all">' . t('Total number of projects "@status":', array(
@@ -171,11 +168,94 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       $output['chart'] = array(
         '#markup' => '<div id="projects_chart"></div>',
       );
-      $this->get_google_chart($view_clone->result);
-      $view_clone->destroy();
+      $this->get_google_chart($data);
     }
 
     return render($output);
+  }
+
+  /**
+   * Get the data, make the call.
+   *
+   * @return mixed
+   *   The data made after the call.
+   */
+  function get_data($efq) {
+    $data = array();
+    $api_status = ampAPIRestClient::status();
+    if (!$api_status['online']) {
+      return $data;
+    }
+
+    $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
+    $cache_id = "api:reports:{$langcode}:chart:" . $this->get_input_hash();
+    // Try to get the processed response from cache.
+    if ($cached = cache_get($cache_id, 'cache')) {
+      return $cached->data;
+    }
+
+    // Prepare a list of options for the request.
+    $options = array();
+    $options['headers'] = array(
+      'Accept' => 'application/json',
+      'Content-Type' => 'application/json',
+    );
+    $request_body = array();
+    $request_body['name'] = $cache_id;
+    $request_body['page'] = -1;
+    $request_body['recordsPerPage'] = -1;
+    $request_body['regenerate'] = TRUE;
+    $request_body['summary']  = TRUE;
+    $request_body['groupingOption'] = 'T';
+    $request_body['add_columns'][] = 'Primary Sector';
+    $request_body['add_columns'][] = 'Activity Count';
+    $request_body['add_measures'][] = 'Actual Commitments';
+    $request_body['add_hierarchies'][] = 'Primary Sector';
+
+    // Populate filters from EFQ.
+    if (!empty($efq) && !empty($efq->propertyConditions)) {
+      foreach ($efq->propertyConditions as $condition) {
+        if ($condition['column'] === 'location') {
+          foreach ($condition['value'] as $value) {
+            list($filter_id, $filter_value) = explode(':', $value);
+            $request_body['filters'][$filter_id] = $filter_value;
+          }
+        }
+        else {
+          $request_body['filters'][$condition['column']] = $condition['value'];
+        }
+      }
+    }
+
+    // JSON Encode the request body.
+    $options['body'] = empty($request_body) ? '{}' : json_encode($request_body);
+
+    // Get the data.
+    $use_cache = FALSE;
+    $endpoint = 'data/report/custom/paginate';
+    $response_data = ampAPIRestClient::post($endpoint, $options, $use_cache);
+
+    if (empty($response_data)) {
+      return array();
+    }
+
+    // Now let's process it.
+    $processed_data = array();
+    foreach ($response_data->page->pageArea->children as $result) {
+      $processed_data[$result->contents->{'[Primary Sector]'}->displayedValue] = $result->contents->{'[Activity Count]'}->displayedValue;
+    }
+
+    $expire = 3600;
+    cache_set($cache_id, $processed_data, 'cache', REQUEST_TIME + $expire);
+
+    return $processed_data;
+  }
+
+  /**
+   * Returns a generated input hash.
+   */
+  private function get_input_hash() {
+    return md5(implode(':', $this->view->exposed_input));
   }
 
   /**
@@ -184,20 +264,17 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
   function get_google_chart($results) {
     // Polish the results and structure them properly.
     $normalized_data = array();
-    foreach ($results as $result) {
-      if (strpos($result->primary_sector, '.') !== FALSE) {
-        list($id, $sector) = explode('.', $result->primary_sector);
+    foreach ($results as $sector => $result) {
+      if (strpos($sector, '.') !== FALSE) {
+        list($id, $sector) = explode('.', $sector);
         $sector = trim($sector);
       }
-      else if (strpos($result->primary_sector, '-') !== FALSE) {
-        list($id, $sector) = explode('-', $result->primary_sector);
+      else if (strpos($sector, '-') !== FALSE) {
+        list($id, $sector) = explode('-', $sector);
         $sector = trim($sector);
-      }
-      else {
-        $sector = $result->primary_sector;
       }
       $sector = mb_convert_case($sector, MB_CASE_TITLE, "UTF-8");
-      $normalized_data[$sector] = (!isset($normalized_data[$sector])) ? 1 : $normalized_data[$sector] + 1;
+      $normalized_data[$sector] = (int) $result;
     }
     arsort($normalized_data);
     $cutoff = $this->options['chart_sectors'];
@@ -224,7 +301,6 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
     }
     $header = array_keys($all_sectors);
     $rows = array_values($all_sectors);
-    $input_hash = md5(implode(':', $this->view->exposed_input));
 
     $settings['chart']['projects_chart'] = array(
       'chartType' => 'ColumnChart',
@@ -233,7 +309,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       'header' => array_values($shorten_sectors),
       'rows' => array($rows, $header),
       'use_tooltips_column' => TRUE,
-      'input_hash' => $input_hash,
+      'input_hash' => $this->get_input_hash(),
       'options' => array(
         'forceIFrame' => FALSE,
         'title' => t('Projects by Sectors'),
