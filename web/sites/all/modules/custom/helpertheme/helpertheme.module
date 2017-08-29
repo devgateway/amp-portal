@@ -462,7 +462,6 @@ function helpertheme_get_svg_icons($icon = NULL, $options = array()) {
     'organization',
     'reports',
     'sector',
-
     'search',
     'export',
     'link',

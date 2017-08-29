@@ -8,6 +8,8 @@
  * Implements hook_views_plugins().
  */
 function helperviews_views_plugins() {
+  $path = drupal_get_path('module', 'helperviews');
+
   $plugins = array(
     'pager' => array(
       'featured' => array(
@@ -21,5 +23,94 @@ function helperviews_views_plugins() {
     ),
   );
 
+  if (module_exists('pdf_using_mpdf')) {
+    $plugins['style']['views_data_export_pdf'] = array(
+      'title' => t('PDF file'),
+      'help' => t('Display the view as a PDF file.'),
+      'handler' => 'views_data_export_plugin_style_export_pdf',
+      'export headers' => array('Content-Type' => 'application/pdf'),
+      'export feed type' => 'pdf',
+      'export feed text' => 'Adobe PDF',
+      'export feed file' => '%view.pdf',
+      'export feed icon' => $path . '/images/pdf.png',
+      'additional themes' => array(
+        'views_data_export_reports_body' => 'style',
+      ),
+      'additional themes base' => 'views_data_export_reports',
+      'path' => $path . '/plugins',
+      'theme path' => $path . '/theme',
+      'parent' => 'views_data_export',
+      'theme' => 'views_data_export_reports',
+      'theme file' => 'views_data_export.theme.inc',
+      'uses row plugin' => FALSE,
+      'uses fields' => TRUE,
+      'uses options' => TRUE,
+      'type' => 'data_export',
+    );
+  }
   return $plugins;
+}
+
+/**
+ * Implements hook_views_plugins_alter().
+ */
+function helperviews_views_plugins_alter(&$plugins) {
+  $path = drupal_get_path('module', 'helperviews');
+  $plugins['style']['views_data_export_doc']['handler'] = 'views_data_export_plugin_style_export_amp';
+  $plugins['style']['views_data_export_doc']['path'] = $path . '/plugins';
+  $plugins['style']['views_data_export_doc']['additional themes base'] = 'views_data_export_reports';
+  $plugins['style']['views_data_export_doc']['theme path'] = $path . '/theme';
+  $plugins['style']['views_data_export_doc']['theme'] = 'views_data_export_reports';
+  $plugins['style']['views_data_export_doc']['theme file'] = 'views_data_export.theme.inc';
+  $plugins['style']['views_data_export_doc']['additional themes'] = array(
+    'views_data_export_reports_body' => 'style',
+  );
+}
+
+/**
+ * Small adjustment, see here:
+ * - https://www.drupal.org/node/1183418 ,
+ * - https://www.drupal.org/files/views-exposed-forms-ajax-support-1183418-32.patch .
+ */
+function helperviews_form_views_exposed_form_alter(&$form, &$form_state) {
+  // AJAX behaviors need these data, so we add it back in #after_build.
+  $form['#after_build'][] = 'helperviews_views_exposed_form_ajax_enable';
+}
+
+/**
+ * Checks whether the exposed form will use ajax and passes required
+ * form information removed in views_form_views_exposed_form_alter().
+ */
+function helperviews_views_exposed_form_ajax_enable(&$form, &$form_state) {
+  // In order for Ajax to work, we need the form build info. Here we
+  // check if #ajax has been added to any form elements, and if so,
+  // pass this info as settings via Javascript, which get attached to
+  // the submitted form on Ajax form submissions.
+  foreach (element_children($form) as $key) {
+    if (isset($form[$key]['#ajax'])) {
+      $form_info = array(
+        'form_id' => $form['#form_id'],
+        'form_build_id' => $form['#build_id'],
+      );
+      // Anonymous users don't get a token.
+      if (!empty($form['#token'])) {
+        $form_info['form_token'] = drupal_get_token($form['#token']);
+      }
+      $form['#attached']['js'][] = array(
+        'type' => 'setting',
+        'data' => array(
+          'exposed_form_info' => $form_info,
+        ),
+      );
+      // Add the javascript behavior that will handle this data.
+      $form['#attached']['js'][] = array(
+        'weight' => 100,
+        'data' => drupal_get_path('module', 'helperviews') . '/js/exposed_form_ajax.js',
+      );
+      // We only need to check this once.
+      break;
+    }
+  }
+
+  return $form;
 }

@@ -61,7 +61,6 @@ class activityMapperBase implements activityMapperInterface {
         // The AMP API likes to group filters into certain groups, or not.
         // @TODO: Requests for the API to change this behavior.
         if ($plugin['report field group'] == 'columns') {
-
           // Let's override the $key for locations.
           if ($plugin['report filter endpoint'] == 'filters/locations') {
             foreach ($condition['value'] as $value) {
