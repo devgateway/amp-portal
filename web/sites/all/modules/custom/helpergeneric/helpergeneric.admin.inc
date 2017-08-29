@@ -391,7 +391,15 @@ function helpergeneric_settings_form_submit($form, &$form_state) {
     cache_clear_all();
   }
   elseif (isset($form_state['values']['misc_use_reports']) && $form_state['values']['misc_use_reports'] == FALSE) {
-    module_disable(array('ampreports'));
+    module_disable(array('ampreports'), FALSE);
+
+    $view_name = 'reports';
+    if ($view = views_get_view($view_name)) {
+      views_delete_view($view);
+    }
+
+    drupal_flush_all_caches();
+    menu_rebuild();
   }
 
   // i18n variable.
