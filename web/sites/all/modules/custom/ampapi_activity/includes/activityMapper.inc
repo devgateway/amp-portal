@@ -73,7 +73,7 @@ class activityMapperBase implements activityMapperInterface {
           }
         }
         else if ($plugin['report field group'] == 'others') {
-          $request_body['filters']['otherFilters'][$key] = $condition['value'];
+          $request_body['filters'][$key] = $condition['value'];
         }
         break;
 
