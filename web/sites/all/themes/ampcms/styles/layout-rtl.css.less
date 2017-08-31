@@ -1,8 +1,132 @@
 /**
  * @file
  *
- * This file is a part of RTL transitioning, including: base-rtl, main-rtl & other-rtl.
+ * This file is a part of RTL transitioning, including: main-rtl & other-rtl.
  */
+
+.xNormalAndUp() {
+  .main-header {
+    .site-name-wrapper {
+      float: right;
+    }
+    .header-items {
+      float: left;
+      text-align: left;
+    }
+  }
+  .layout-right-sidebar {
+    .group-left {
+      .last-child-column();
+      float: right;
+    }
+    .group-right {
+      .first-child-column();
+    }
+  }
+  .homepage-welcome-block {
+    .field-name-field-cbimage,
+    .field-name-field-slider-image {
+      float: left;
+      margin: 0;
+      margin-right: 1em;
+    }
+    .more-link {
+      left: auto;
+      right: 1em;
+    }
+  }
+
+  .homepage-totalactivities-block,
+  .homepage-totalpledges-block {
+    margin-top: 1px;
+
+    .pane-content {
+      .clearfix-mixin();
+    }
+
+    .infoblock {
+      .box-sizing();
+      float: right;
+      width: 38%;
+
+      margin: 0;
+      padding: 1.5em;
+
+      &.activities-count {
+        width: 24%;
+      }
+    }
+  }
+  .homepage-form-block {
+    .contentblock-pane-content {
+      float: right;
+    }
+    .pane-title {
+      float: right;
+    }
+    .views-widgets-wrapper {
+      float: right;
+      label {
+        float: right;
+        margin-lef: 5px;
+      }
+    }
+    .extra-widgets-toggle-label {
+      right: auto;
+      left: 1em;
+    }
+    .title {
+      padding-left: 0;
+      padding-right: 1em;
+
+      svg {
+        margin: 0;
+        margin-left: 0.5em;
+      }
+    }
+  }
+  .homepage-linkedmap-block {
+    .field-name-field-cbimage {
+      float: right;
+    }
+    .title-wrapper {
+      float: right;
+
+      a {
+        padding-left: 0;
+        padding-right: 1em;
+      }
+
+      svg {
+        margin: 0;
+        margin-left: 0.5em;
+      }
+    }
+  }
+  .contentwidget-fullwidth {
+    .contentblock-title {
+      padding-left: 3.5em;
+      padding-right: 1em;
+    }
+    .contentblock-title {
+      svg {
+        margin-right: 0;
+        margin-left: 0.5em;
+      }
+    }
+  }
+  .cbreference-linkedmap {
+    .title-wrapper a {
+      padding-right: 1em;
+      padding-left: 0;
+
+      svg {
+        margin-right: 0;
+        margin-left: 0.5em;
+      }
+    }
+  }
+}
 
 @import './lib/custom-grid.less';
 @import './lib/custom-responsive.less';
