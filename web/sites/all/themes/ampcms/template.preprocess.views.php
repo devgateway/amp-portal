@@ -49,6 +49,52 @@ function ampcms_preprocess_views_view_table(&$variables) {
  */
 
 /**
+ * Implements ampcms_preprocess_views_view() for reports view.
+ */
+function __ampcms_preprocess_views_view__reports(&$vars) {
+  $exposed_input = $vars['view']->exposed_input;
+  $query = array();
+  if (!empty($exposed_input)) {
+    if (!empty($exposed_input['location_mun'])) {
+      $query['subject'] = $exposed_input['location_mun'];
+    }
+    elseif (!empty($exposed_input['location_dep'])) {
+      $query['subject'] = $exposed_input['location_dep'];
+    }
+    $query['subject'] = str_replace('>', '-', $query['subject']);
+  }
+  $contact_link = l(t('Please leave a Message.'), 'contact', array(
+    'attributes' => array('class' => array('contact-link')),
+    'query' => $query
+  ));
+  $footer = array(
+    '#markup' => '<div class="report-contact">' . t('Do you want to comment or provide feedback on this data?') . $contact_link . '</div>',
+  );
+  $vars['footer'] .= render($footer);
+}
+
+/**
+ * Implements ampcms_preprocess_views_view_fields() for reports view.
+ */
+function __ampcms_preprocess_views_view_fields__reports(&$vars) {
+  // Specify which fields do we want to opt-in and create the small tables (like in design).
+  $table_fields = array('status', 'donor_agency', 'primary_sector', 'location', 'actual_commitments', 'actual_disbursements');
+  $header = array();
+  $rows = array();
+  $row = array();
+
+  foreach ($table_fields as $field) {
+    $header[] = array(
+      'data' => $vars['fields'][$field]->label_html,
+      'class' => array(drupal_html_class($field)),
+    );
+    $row[] = array('data' => $vars['fields'][$field]->content);
+  }
+  $rows[] = $row;
+  $vars['table'] = theme('table', array('header' => $header, 'rows' => $rows, 'empty' => t('No data available')));
+}
+
+/**
  * Implements ampcms_preprocess_views_view() for homepage view.
  */
 function __ampcms_preprocess_views_view__homepage(&$vars) {

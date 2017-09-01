@@ -18,14 +18,19 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
 
   function has_extra_options() { return TRUE; }
 
-//  function get_value_options() { /* don't overwrite the value options */ }
+  function expose_options() {
+    parent::expose_options();
 
+    // Just to make sure it saves properly.
+    $this->options['expose']['required'] = FALSE;
+  }
 
   function option_definition() {
     $options = parent::option_definition();
 
     $options['type'] = array('default' => 'autocomplete');
     $options['error_message'] = array('default' => TRUE, 'bool' => TRUE);
+    $options['amp_extra_options']['location_level'] = 0;
 
     return $options;
   }
@@ -38,9 +43,32 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
         'tokeninput' => t('Tokeninput'),
         'autocomplete' => t('Autocomplete'),
         'select' => t('Dropdown Select'),
+        'checkbox' => t('Checkbox'),
       ),
       '#default_value' => $this->options['type'],
     );
+  }
+
+  function options_form(&$form, &$form_state) {
+    parent::options_form($form, $form_state);
+    $form['amp_extra_options'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Extra Options'),
+      '#description' => t('All the extra options go here (such as custom AMP related options).')
+    );
+    $plugin = ampapi_get_mapper_by_property_name($this->options['field']);
+    if ($plugin['property name'] == 'location') {
+      $form['amp_extra_options']['location_level'] = array(
+        '#type' => 'select',
+        '#title' => t('Location Level'),
+        '#options' => array(
+          0 => t('- Show all - '),
+          2 => t('Level 2 (Department)'),
+          3 => t('Level 3 (Municipality)')
+        ),
+        '#default_value' => $this->options['amp_extra_options']['location_level'],
+      );
+    }
   }
 
   function value_form(&$form, &$form_state) {
@@ -53,6 +81,7 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
       $js_setting[$field_name]['values'] = array();
       if (isset($form_state['input'][$identifier])) {
         $values = $form_state['input'][$identifier];
+
         if (!empty($values)) {
           $values = explode(',', $values);
 
@@ -112,13 +141,17 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
         //   }
         // }
       }
-
       $form['value'] = array(
         '#title' => t('Selected'),
         '#type' => 'textfield',
         '#default_value' => $default,
         '#autocomplete_path' => 'ampapi/autocomplete/' . $field_name,
       );
+
+      // We want to make certain changes in the case of location.
+      if ($this->options['amp_extra_options']['location_level'] != 0) {
+        $form['value']['#autocomplete_path'] = 'ampapi/autocomplete/' . $field_name . '/' . $this->options['amp_extra_options']['location_level'];
+      }
     }
     else if ($this->options['type'] == 'select') {
       if (!empty($this->definition['options arguments'])) {
@@ -127,10 +160,30 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
           ctools_plugin_get_class($plugin, 'handler');
         }
       }
+
       parent::value_form($form, $form_state);
     }
+    else if ($this->options['type'] == 'checkbox') {
+      if (!empty($form['group_button'])) {
+        if (!empty($this->definition['options arguments'])) {
+          foreach ($this->definition['options arguments'] as $options_argument) {
+            $plugin = ampapi_get_mapper($options_argument);
+            ctools_plugin_get_class($plugin, 'handler');
+          }
+        }
+        parent::value_form($form, $form_state);
+        $form['value']['#type'] = 'select';
+        $form['value']['#multiple'] = FALSE;
+      }
+      else {
+        $form['value'] = array(
+          '#title' => $this->options['expose']['label'],
+          '#type' => 'checkbox',
+          '#default_value' => 0,
+        );
+      }
+    }
   }
-
 
   function value_validate($form, &$form_state) {
     // We only validate if they've chosen the text field style.
@@ -171,7 +224,6 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
           $token = intval($token);
         }
       }
-
       $this->value = $tokens;
       return TRUE;
     }
@@ -189,7 +241,14 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
       // If we have previously validated input, override.
       /** @var activityMapperAutocompleteInterface $handler */
       $handler = new $class_name();
-      $value = $handler->getAutocompleteValue($plugin, array($raw_value), 'autocompleteids');
+      // Exceptions, this needs to be re-done.
+      if ($plugin['property name'] == 'location' && $this->options['expose']['identifier'] == 'location_dep' && !empty($this->view->exposed_input['location_mun'])) {
+        return FALSE;
+      }
+      else {
+        $value = $handler->getAutocompleteValue($plugin, array($raw_value), 'autocompleteids');
+      }
+
       if (isset($value)) {
         $this->value = $value;
         return TRUE;
@@ -201,7 +260,12 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
       }
       return TRUE;
     }
-
+    else if ($this->options['type'] == 'checkbox') {
+      if ($raw_value == 1) {
+        $this->value = array($this->options['value']);
+        return TRUE;
+      }
+    }
     return FALSE;
   }
 
@@ -213,7 +277,10 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
       return;
     }
 
-    // $identifier = $this->options['expose']['identifier'];
+    $identifier = $this->options['expose']['identifier'];
+    if ($this->options['expose']['required'] && empty($form_state['values'][$identifier])) {
+      form_error($form[$identifier], t('The identifier is required if the filter is exposed.'));
+    }
 
     // // We only validate if they've chosen the text field style.
     // if ($this->options['type'] != 'autocomplete') {

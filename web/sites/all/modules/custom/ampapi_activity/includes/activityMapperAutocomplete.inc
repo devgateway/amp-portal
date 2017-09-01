@@ -6,6 +6,8 @@
  */
 
 class activityMapperAutocompleteBase extends activityMapperBase implements activityMapperAutocompleteInterface {
+  private $extra_filters = array();
+
   public function autocomplete($plugin, $data, $type = 'autocomplete') {
     $info = $this->getAutocompleteInfo($plugin, $data, $type);
     if (empty($info)) {
@@ -97,16 +99,19 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
         $name .= ' (' . filter_xss_admin($entry->acronym) . ')';
       }
 
-      $new_value = array(
-        'id' => $id,
-        'name' => $name,
-      );
+      // This filtered property is set in cases we want to filter-out some values in filterData().
+      if (!isset($entry->filtered) || $entry->filtered === FALSE) {
+        $new_value = array(
+          'id' => $id,
+          'name' => $name,
+        );
 
-      if ($prepend_entry) {
-        array_unshift($matches, $new_value);
-      }
-      else {
-        $matches[] = $new_value;
+        if ($prepend_entry) {
+          array_unshift($matches, $new_value);
+        }
+        else {
+          $matches[] = $new_value;
+        }
       }
     }
 
@@ -123,7 +128,6 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
           $entry->top_level = TRUE;
         }
         $temp_info['parents'][] = $entry;
-
         $matches = array_merge($matches, $this->getMatchedValues($temp_info, $entry->children, FALSE));
       }
     }
@@ -179,9 +183,24 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
         }
         break;
       case 'autocompleteids':
-        // Special case for autocomplete powered view filters.
-        // Not using the jQuery TokenInput library.
-        if ($entry->name == $search_string) {
+        if ($info['plugin']['property name'] == 'location') {
+          $name = '';
+          if (isset($info['parents'])) {
+            foreach ($info['parents'] as $parent) {
+              if (empty($parent->top_level)) {
+                $name .= filter_xss_admin($parent->name) . ' > ';
+              }
+            }
+            $name .= filter_xss_admin($entry->name);
+          }
+          else {
+            $name = filter_xss_admin($entry->name);
+          }
+          if (in_array($name, $info['values'])) {
+            return TRUE;
+          }
+        }
+        else if ($entry->name == $search_string) {
           return TRUE;
         }
         break;
@@ -220,6 +239,23 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
     }
 
     return $matches;
+  }
+
+  /**
+   * Sets a value to the specified key (for extra filtering).
+   */
+  public function setExtraFilter($key, $value) {
+    $this->extra_filters[$key] = $value;
+  }
+
+  /**
+   * Gets the value for the key. If none exists, uses default one.
+   */
+  public function getExtraFilter($key, $default_value) {
+    if (!empty($this->extra_filters[$key])) {
+      return $this->extra_filters[$key];
+    }
+    return $default_value;
   }
 }
 

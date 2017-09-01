@@ -3,13 +3,19 @@
 /**
  * Menu callback: Retrieve a JSON object containing autocomplete suggestions for existing surveys.
  */
-function ampapi_activity_autocomplete($property_name, $string = '') {
+function ampapi_activity_autocomplete($property_name, $string = '', $string2 = '') {
   $matches = array();
 
   $request_type = 'autocomplete';
   if (empty($string) && !empty($_GET['string'])) {
     $request_type = 'tokeninput';
     $string = $_GET['string'];
+  }
+
+  // Swapping these.
+  if (!empty($string2)) {
+    $extra_string = $string;
+    $string = $string2;
   }
 
   $plugin = ampapi_get_mapper_by_property_name($property_name);
@@ -30,6 +36,25 @@ function ampapi_activity_autocomplete($property_name, $string = '') {
   if ($string) {
     /** @var activityMapperAutocompleteBase $handler */
     $handler = new $class_name();
+
+    // Check whether we have an extra string present, and set it up as the extra filter.
+    if ($plugin['property name'] == 'location' && !empty($extra_string)) {
+      $exploded_arr = explode(':', $extra_string);
+      if (count($exploded_arr) === 2) {
+        list($level, $field) = $exploded_arr;
+      }
+      else {
+        $level = reset($exploded_arr);
+      }
+
+      // Just make sure it's an integer.
+      $level = intval($level);
+      $handler->setExtraFilter('location_level', $level);
+
+      if (isset($field) && !empty($field)) {
+        $handler->setExtraFilter('location_field', $field);
+      }
+    }
     $autocomplete_values = $handler->autocomplete($plugin, array($string), $request_type);
 
     foreach ($autocomplete_values as $value) {

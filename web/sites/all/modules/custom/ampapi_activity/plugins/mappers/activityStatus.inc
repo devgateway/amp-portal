@@ -17,7 +17,7 @@ $plugin = array(
   'report field group' => 'columns',
   'report field key' => 'Status',
 
-  'report filter key' => 'Status',
+  'report filter key' => 'status',
   'report filter endpoint' => 'filters/activityStatus',
 
   'handler' => 'activityStatusMapper',
@@ -46,8 +46,14 @@ class activityStatusMapper extends activityMapperBase {
 
   public static function filter($plugin, &$api_parameters, &$request_body, $condition) {
     // API requires integers, not strings.
-    foreach ($condition['value'] as $key => &$value) {
-      $value = intval($value);
+    if (is_array($condition['value'])) {
+      foreach ($condition['value'] as $key => &$value) {
+        $value = intval($value);
+      }
+    }
+    else {
+      // Case of a string.
+      $condition['value'] = array($condition['value']);
     }
 
     parent::filter($plugin, $api_parameters, $request_body, $condition);
