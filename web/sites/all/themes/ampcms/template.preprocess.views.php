@@ -57,11 +57,12 @@ function __ampcms_preprocess_views_view__reports(&$vars) {
   if (!empty($exposed_input)) {
     if (!empty($exposed_input['location_mun'])) {
       $query['subject'] = $exposed_input['location_mun'];
+      $query['subject'] = str_replace('>', '-', $query['subject']);
     }
     elseif (!empty($exposed_input['location_dep'])) {
       $query['subject'] = $exposed_input['location_dep'];
+      $query['subject'] = str_replace('>', '-', $query['subject']);
     }
-    $query['subject'] = str_replace('>', '-', $query['subject']);
   }
   $contact_link = l(t('Please leave a Message.'), 'contact', array(
     'attributes' => array('class' => array('contact-link')),
