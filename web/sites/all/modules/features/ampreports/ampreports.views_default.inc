@@ -29,7 +29,9 @@ function ampreports_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Apply Filters';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Clear Filters';
   $handler->display->display_options['exposed_form']['options']['expose_sort_order'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
@@ -64,28 +66,27 @@ function ampreports_views_default_views() {
   $handler->display->display_options['fields']['description']['label'] = '';
   $handler->display->display_options['fields']['description']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['description']['link_to_entity'] = 0;
-  /* Field: Activity: Status_ES */
+  /* Field: Activity: Status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['status']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['status']['format_name'] = 1;
-  /* Field: Activity: Donante */
+  /* Field: Activity: Agence Donatrice */
   $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['label'] = 'Donor';
   $handler->display->display_options['fields']['donor_agency']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['donor_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Primary Sector */
+  /* Field: Activity: Secteur Primaire */
   $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['label'] = 'Sector';
   $handler->display->display_options['fields']['primary_sector']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Location */
+  /* Field: Activity: Localisation */
   $handler->display->display_options['fields']['location']['id'] = 'location';
   $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['location']['field'] = 'location';
@@ -162,7 +163,7 @@ function ampreports_views_default_views() {
   $handler->display->display_options['filters']['location_1']['amp_extra_options'] = array(
     'location_level' => '0',
   );
-  /* Filter criterion: Activity: Status_ES */
+  /* Filter criterion: Activity: Status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -209,28 +210,27 @@ function ampreports_views_default_views() {
   $handler->display->display_options['fields']['description']['label'] = '';
   $handler->display->display_options['fields']['description']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['description']['link_to_entity'] = 0;
-  /* Field: Activity: Status_ES */
+  /* Field: Activity: Status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['status']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['status']['format_name'] = 1;
-  /* Field: Activity: Donante */
+  /* Field: Activity: Agence Donatrice */
   $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['label'] = 'Donor';
   $handler->display->display_options['fields']['donor_agency']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['donor_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Primary Sector */
+  /* Field: Activity: Secteur Primaire */
   $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['label'] = 'Sector';
   $handler->display->display_options['fields']['primary_sector']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Location */
+  /* Field: Activity: Localisation */
   $handler->display->display_options['fields']['location']['id'] = 'location';
   $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['location']['field'] = 'location';
@@ -303,28 +303,27 @@ function ampreports_views_default_views() {
   $handler->display->display_options['fields']['description']['label'] = 'Project Description';
   $handler->display->display_options['fields']['description']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['description']['link_to_entity'] = 0;
-  /* Field: Activity: Status_ES */
+  /* Field: Activity: Status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['status']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['status']['format_name'] = 1;
-  /* Field: Activity: Donante */
+  /* Field: Activity: Agence Donatrice */
   $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['label'] = 'Donor';
   $handler->display->display_options['fields']['donor_agency']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['donor_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Primary Sector */
+  /* Field: Activity: Secteur Primaire */
   $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['label'] = 'Sector';
   $handler->display->display_options['fields']['primary_sector']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Location */
+  /* Field: Activity: Localisation */
   $handler->display->display_options['fields']['location']['id'] = 'location';
   $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['location']['field'] = 'location';
@@ -376,28 +375,27 @@ function ampreports_views_default_views() {
   $handler->display->display_options['fields']['description']['label'] = 'Project Description';
   $handler->display->display_options['fields']['description']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['description']['link_to_entity'] = 0;
-  /* Field: Activity: Status_ES */
+  /* Field: Activity: Status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['status']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['status']['format_name'] = 1;
-  /* Field: Activity: Donante */
+  /* Field: Activity: Agence Donatrice */
   $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['label'] = 'Donor';
   $handler->display->display_options['fields']['donor_agency']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['donor_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Primary Sector */
+  /* Field: Activity: Secteur Primaire */
   $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['label'] = 'Sector';
   $handler->display->display_options['fields']['primary_sector']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Location */
+  /* Field: Activity: Localisation */
   $handler->display->display_options['fields']['location']['id'] = 'location';
   $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['location']['field'] = 'location';
@@ -428,8 +426,8 @@ function ampreports_views_default_views() {
     t('Master'),
     t('Report by Department or Municipality'),
     t('more'),
-    t('Search'),
-    t('Reset'),
+    t('Apply Filters'),
+    t('Clear Filters'),
     t('Sort by'),
     t('Asc'),
     t('Desc'),
@@ -441,7 +439,9 @@ function ampreports_views_default_views() {
     t('next ›'),
     t('last »'),
     t('No projects matching search criteria.'),
-    t('Status_ES'),
+    t('Status'),
+    t('.'),
+    t(','),
     t('Donor'),
     t('Sector'),
     t('Municipalities'),
@@ -452,8 +452,6 @@ function ampreports_views_default_views() {
     t('Municipality'),
     t('Only include projects that are in execution'),
     t('Report Page'),
-    t('.'),
-    t(','),
     t('Export Page (Doc)'),
     t('Project Title'),
     t('Project Description'),

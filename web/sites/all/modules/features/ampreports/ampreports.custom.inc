@@ -23,11 +23,15 @@ function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
       $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['input']['location_dep']);
     }
 
-    $svgicon = helpertheme_get_svg_icons('search', array(
+    $svgicon_search = helpertheme_get_svg_icons('search', array(
       'width' => '1em',
       'height' => '1em'
     ));
-    $form['submit']['#prefix'] = $svgicon;
+    $svgicon_clear = helpertheme_get_svg_icons('delete', array(
+      'width' => '1em',
+      'height' => '1em'
+    ));
+    $form['submit']['#prefix'] = $svgicon_search . $svgicon_clear;
   }
 }
 
