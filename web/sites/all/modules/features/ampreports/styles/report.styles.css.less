@@ -27,7 +27,7 @@
     #edit-location-mun-wrapper {
       display: inline-block;
       width: 23%;
-      padding-right: 2%;
+      padding-right: 1%;
       vertical-align: top;
     }
     .form-type-textfield {
@@ -46,34 +46,38 @@
     }
     #checkboxes-wrapper {
       display: inline-block;
-      width: 28%;
+      width: 25%;
       margin: 1.3em 2% 0 0;
       vertical-align: middle;
     }
     .views-submit-button {
       float: right;
-      margin: 0.8em 1.5em 0 0;
+      margin: 0.8em 0.5em 0 0;
     }
     #edit-actions {
-      .border-radius(5px);
-      background-color: @clstatus__alt;
-      color: @clcontent;
       position: relative;
 
       svg {
         fill: @clcontent;
         position: absolute;
-        left: 2.5em;
+        left: 1.5em;
         top: 1em;
+      }
+      svg.symbol-delete {
+        left: 12.75em;
       }
 
       input {
         border: 0 none;
-        background-color: transparent;
+        .border-radius(5px);
+        background-color: @clstatus__alt;
         background-image: none;
         color: @clcontent;
-        padding: 0.7em 3em 0.7em 4em;
+        padding: 0.7em 2em 0.7em 3em;
         font-size: 1em;
+      }
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
