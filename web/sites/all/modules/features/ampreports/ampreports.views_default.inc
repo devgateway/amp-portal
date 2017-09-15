@@ -138,6 +138,7 @@ function ampreports_views_default_views() {
     2 => array(),
     3 => array(),
   );
+  $handler->display->display_options['filters']['location']['type'] = 'tokeninput';
   $handler->display->display_options['filters']['location']['amp_extra_options'] = array(
     'location_level' => '2',
   );
@@ -160,6 +161,7 @@ function ampreports_views_default_views() {
     3 => 0,
     5 => 0,
   );
+  $handler->display->display_options['filters']['location_1']['type'] = 'tokeninput';
   $handler->display->display_options['filters']['location_1']['amp_extra_options'] = array(
     'location_level' => '0',
   );
@@ -440,8 +442,6 @@ function ampreports_views_default_views() {
     t('last »'),
     t('No projects matching search criteria.'),
     t('Status'),
-    t('.'),
-    t(','),
     t('Donor'),
     t('Sector'),
     t('Municipalities'),
@@ -452,6 +452,8 @@ function ampreports_views_default_views() {
     t('Municipality'),
     t('Only include projects that are in execution'),
     t('Report Page'),
+    t('.'),
+    t(','),
     t('Export Page (Doc)'),
     t('Project Title'),
     t('Project Description'),

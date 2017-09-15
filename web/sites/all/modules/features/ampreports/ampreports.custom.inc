@@ -11,16 +11,27 @@ function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
       'callback' => 'ampreports_location_filter_ajax_callback',
       'wrapper' => 'location-municipality',
       'effect' => 'fade',
+      'event' => 'change',
     );
     $form['location_mun']['#prefix'] = '<div id="location-municipality">';
     $form['location_mun']['#suffix'] = '</div>';
 
-    $form['location_mun']['#autocomplete_path'] .= '/3:';
-    if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
-      $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['values']['location_dep']);
+    if (!empty($form['location_mun']['#autocomplete_path'])) {
+      $form['location_mun']['#autocomplete_path'] .= '/3:';
+      if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
+        $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['values']['location_dep']);
+      }
+      elseif (!empty($form_state['input']['location_dep']) && trim($form_state['input']['location_dep']) !== '') {
+        $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['input']['location_dep']);
+      }
     }
-    elseif (!empty($form_state['input']['location_dep']) && trim($form_state['input']['location_dep']) !== '') {
-      $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['input']['location_dep']);
+    else {
+      if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
+        $form['location_mun']['#attributes']['data-extra-filter'] = '3:' . drupal_encode_path($form_state['values']['location_dep']);
+      }
+      elseif (!empty($form_state['input']['location_dep']) && trim($form_state['input']['location_dep']) !== '') {
+        $form['location_mun']['#attributes']['data-extra-filter'] = '3:' . drupal_encode_path($form_state['input']['location_dep']);
+      }
     }
 
     $svgicon_search = helpertheme_get_svg_icons('search', array(
