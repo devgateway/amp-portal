@@ -424,6 +424,77 @@ function ampreports_views_default_views() {
     'default' => 0,
   );
   $handler->display->display_options['segment_size'] = '50';
+
+  /* Display: Export Page (XLS) */
+  $handler = $view->new_display('views_data_export', 'Export Page (XLS)', 'views_data_export_1');
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
+  $handler->display->display_options['style_options']['provide_file'] = 1;
+  $handler->display->display_options['style_options']['filename'] = '%processed_filters-%timestamp-dd-%timestamp-mm-%timestamp-yyyy.xls';
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Activity: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Project Title';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
+  /* Field: Activity: Description */
+  $handler->display->display_options['fields']['description']['id'] = 'description';
+  $handler->display->display_options['fields']['description']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['description']['field'] = 'description';
+  $handler->display->display_options['fields']['description']['label'] = 'Project Description';
+  $handler->display->display_options['fields']['description']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['description']['link_to_entity'] = 0;
+  /* Field: Activity: Status */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['status']['link_to_entity'] = 0;
+  /* Field: Activity: Agence Donatrice */
+  $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
+  $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
+  $handler->display->display_options['fields']['donor_agency']['label'] = 'Donor';
+  $handler->display->display_options['fields']['donor_agency']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['donor_agency']['link_to_entity'] = 0;
+  /* Field: Activity: Secteur Primaire */
+  $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
+  $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
+  $handler->display->display_options['fields']['primary_sector']['label'] = 'Sector';
+  $handler->display->display_options['fields']['primary_sector']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
+  /* Field: Activity: Localisation */
+  $handler->display->display_options['fields']['location']['id'] = 'location';
+  $handler->display->display_options['fields']['location']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['location']['field'] = 'location';
+  $handler->display->display_options['fields']['location']['label'] = 'Municipalities';
+  $handler->display->display_options['fields']['location']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['location']['link_to_entity'] = 0;
+  /* Field: Activity: Actual Commitments */
+  $handler->display->display_options['fields']['actual_commitments']['id'] = 'actual_commitments';
+  $handler->display->display_options['fields']['actual_commitments']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['actual_commitments']['field'] = 'actual_commitments';
+  $handler->display->display_options['fields']['actual_commitments']['label'] = 'Real Commitments';
+  $handler->display->display_options['fields']['actual_commitments']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['actual_commitments']['link_to_entity'] = 0;
+  /* Field: Activity: Actual Disbursements */
+  $handler->display->display_options['fields']['actual_disbursements']['id'] = 'actual_disbursements';
+  $handler->display->display_options['fields']['actual_disbursements']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['actual_disbursements']['field'] = 'actual_disbursements';
+  $handler->display->display_options['fields']['actual_disbursements']['label'] = 'Real Disbursements';
+  $handler->display->display_options['fields']['actual_disbursements']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['actual_disbursements']['link_to_entity'] = 0;
+  $handler->display->display_options['path'] = 'reports/export/xls';
+  $handler->display->display_options['displays'] = array(
+    'report_page' => 'report_page',
+    'default' => 0,
+  );
+  $handler->display->display_options['segment_size'] = '100';
   $translatables['reports'] = array(
     t('Master'),
     t('Report by Department or Municipality'),
@@ -458,6 +529,7 @@ function ampreports_views_default_views() {
     t('Project Title'),
     t('Project Description'),
     t('Export Page (PDF)'),
+    t('Export Page (XLS)'),
   );
   $export['reports'] = $view;
 
