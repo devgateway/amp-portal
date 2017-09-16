@@ -315,16 +315,28 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
         $shorten_sectors[$sector_name] = $sector_name;
       }
     }
+
     $header = array_keys($all_sectors);
     $rows = array_values($all_sectors);
+
+    // Let's specify colors (generated) and add values to tooltips.
+    $colors = array();
+    foreach ($header as $id => $sector) {
+      $leaf = str_pad(dechex(255 - $id * 30), 2, '0', STR_PAD_LEFT);
+      $colors[$id] = '#3366' . $leaf;
+      $header[$id] = $sector . t(' - @num Projects', array(
+        '@num' => $rows[$id]
+      ));
+    }
 
     $settings['chart']['projects_chart'] = array(
       'chartType' => 'ColumnChart',
       'containerId' => 'projects_chart',
       'columns' => array(t('Projects')),
       'header' => array_values($shorten_sectors),
-      'rows' => array($rows, $header),
+      'rows' => array($rows, $header, $colors),
       'use_tooltips_column' => TRUE,
+      'use_style_column' => TRUE,
       'input_hash' => $this->get_input_hash(),
       'options' => array(
         'forceIFrame' => FALSE,
