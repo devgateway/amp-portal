@@ -425,13 +425,13 @@ function ampreports_views_default_views() {
   );
   $handler->display->display_options['segment_size'] = '50';
 
-  /* Display: Export Page (XLS) */
-  $handler = $view->new_display('views_data_export', 'Export Page (XLS)', 'views_data_export_1');
+  /* Display: Export Page (XLSX) */
+  $handler = $view->new_display('views_data_export', 'Export Page (XLSX)', 'views_data_export_xlsx');
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xlsx';
   $handler->display->display_options['style_options']['provide_file'] = 1;
-  $handler->display->display_options['style_options']['filename'] = '%processed_filters-%timestamp-dd-%timestamp-mm-%timestamp-yyyy.xls';
+  $handler->display->display_options['style_options']['filename'] = '%processed_filters-%timestamp-dd-%timestamp-mm-%timestamp-yyyy.xlsx';
   $handler->display->display_options['style_options']['parent_sort'] = 0;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Activity: Title */
@@ -489,7 +489,7 @@ function ampreports_views_default_views() {
   $handler->display->display_options['fields']['actual_disbursements']['label'] = 'Real Disbursements';
   $handler->display->display_options['fields']['actual_disbursements']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['actual_disbursements']['link_to_entity'] = 0;
-  $handler->display->display_options['path'] = 'reports/export/xls';
+  $handler->display->display_options['path'] = 'reports/export/xlsx';
   $handler->display->display_options['displays'] = array(
     'report_page' => 'report_page',
     'default' => 0,
@@ -529,7 +529,7 @@ function ampreports_views_default_views() {
     t('Project Title'),
     t('Project Description'),
     t('Export Page (PDF)'),
-    t('Export Page (XLS)'),
+    t('Export Page (XLSX)'),
   );
   $export['reports'] = $view;
 

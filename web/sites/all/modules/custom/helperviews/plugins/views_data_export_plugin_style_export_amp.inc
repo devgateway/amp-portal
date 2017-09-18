@@ -58,7 +58,7 @@ class views_data_export_plugin_style_export_amp extends views_data_export_plugin
       $processed_filters .= drupal_html_class($department['name']);
     }
     if (!empty($municipality)) {
-      $processed_filters .= drupal_html_class($municipality['name']);
+      $processed_filters .= '--' . drupal_html_class($municipality['name']);
     }
 
     $tokens['%processed_filters'] = $processed_filters;
