@@ -321,9 +321,24 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
 
     // Let's specify colors (generated) and add values to tooltips.
     $colors = array();
+    $flat_colors = array(
+      '#9b59b6',
+      '#3498db',
+      '#2ecc71',
+      '#1abc9c',
+      '#95a5a6',
+      '#e74c3c',
+      '#e67e22',
+      '#d35400',
+      '#f1c40f',
+      '#7f8c8d',
+      '#f39c12',
+      '#bdc3c7'
+    );
+
+    shuffle($flat_colors);
     foreach ($header as $id => $sector) {
-      $leaf = str_pad(dechex(255 - $id * 30), 2, '0', STR_PAD_LEFT);
-      $colors[$id] = '#3366' . $leaf;
+      $colors[$id] = $flat_colors[$id];
       $header[$id] = $sector . t(' - @num Projects', array(
         '@num' => $rows[$id]
       ));
