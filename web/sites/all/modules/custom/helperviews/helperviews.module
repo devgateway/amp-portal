@@ -56,6 +56,8 @@ function helperviews_views_plugins() {
  */
 function helperviews_views_plugins_alter(&$plugins) {
   $path = drupal_get_path('module', 'helperviews');
+
+  // Docs are first to be handled.
   $plugins['style']['views_data_export_doc']['handler'] = 'views_data_export_plugin_style_export_amp';
   $plugins['style']['views_data_export_doc']['path'] = $path . '/plugins';
   $plugins['style']['views_data_export_doc']['additional themes base'] = 'views_data_export_reports';
@@ -65,6 +67,19 @@ function helperviews_views_plugins_alter(&$plugins) {
   $plugins['style']['views_data_export_doc']['additional themes'] = array(
     'views_data_export_reports_body' => 'style',
   );
+
+  // Then Excel follows.
+  if (!empty($plugins['style']['views_data_export_xlsx'])) {
+    $plugins['style']['views_data_export_xlsx']['handler'] = 'views_data_export_plugin_style_export_xlsx';
+    $plugins['style']['views_data_export_xlsx']['path'] = $path . '/plugins';
+    $plugins['style']['views_data_export_xlsx']['additional themes base'] = 'views_data_export_reports_xlsx';
+    $plugins['style']['views_data_export_xlsx']['theme path'] = $path . '/theme';
+    $plugins['style']['views_data_export_xlsx']['theme'] = 'views_data_export_reports_xlsx';
+    $plugins['style']['views_data_export_xlsx']['theme file'] = 'views_data_export.theme.inc';
+    $plugins['style']['views_data_export_xlsx']['additional themes'] = array(
+      'views_data_export_reports_xlsx_body' => 'style',
+    );
+  }
 }
 
 /**

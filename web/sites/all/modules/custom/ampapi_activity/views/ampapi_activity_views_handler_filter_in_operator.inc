@@ -78,8 +78,9 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
     if ($this->options['type'] == 'tokeninput') {
       // @HACK: For some reason we don't have the provided data.
       $js_setting = array();
-      $js_setting[$field_name]['values'] = array();
-      if (isset($form_state['input'][$identifier])) {
+      $js_setting[$identifier]['values'] = array();
+
+      if (isset($form_state['input'][$identifier]) && $this->view->tag === 'default') {
         $values = $form_state['input'][$identifier];
 
         if (!empty($values)) {
@@ -92,7 +93,7 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
           /** @var activityMapperAutocompleteInterface $handler */
           $handler = new $class_name();
 
-          $js_setting[$field_name]['values'] = $handler->getAutocompleteValue($plugin, $values, 'tokeninputids');
+          $js_setting[$identifier]['values'] = $handler->getAutocompleteValue($plugin, $values, 'tokeninputids');
         }
       }
       $js_setting['language'] = $GLOBALS['language']->language;
@@ -102,8 +103,15 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
       libraries_load('jquery-tokeninput', 'minified');
 
       // @TODO: Use libraries API.
-      $module_path = drupal_get_path('module', 'ampapi_activity');
-      drupal_add_js($module_path . '/scripts/ampapi_activity.searchform.js');
+      if ($this->view->name !== 'reports') {
+        $module_path = drupal_get_path('module', 'ampapi_activity');
+        drupal_add_js($module_path . '/scripts/ampapi_activity.searchform.js');
+      }
+      else {
+        // Just a copy of previous script but adjusted to our reports' case.
+        $module_path = drupal_get_path('module', 'ampreports');
+        drupal_add_js($module_path . '/js/ampapi_reports.searchform.js');
+      }
 
       $form['value'] = array(
         '#title' => t('Selected'),
@@ -114,6 +122,8 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
             'tokeninput-textfield',
           ),
           'data-name' => $field_name,
+          'data-identifier' => $identifier,
+          'data-level' => $this->options['amp_extra_options']['location_level'],
         ),
       );
     }

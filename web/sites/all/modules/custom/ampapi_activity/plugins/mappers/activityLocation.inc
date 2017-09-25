@@ -27,10 +27,14 @@ class activityLocationMapper extends activityMapperAutocompleteBase {
     $location_level = $this->getExtraFilter('location_level', NULL);
     $location_field = $this->getExtraFilter('location_field', NULL);
 
+    // This is used on token-input, as it submits actually fully processed ID instead of string.
+    $location_field_processed = $this->getExtraFilter('location_field_processed', NULL);
+
     // Exit if no location level filtering is required.
     if ($location_level === NULL) {
       return $data;
     }
+
     foreach ($data as $entry) {
       if ($location_field !== NULL) {
         $location_field = urldecode($location_field);
@@ -38,7 +42,20 @@ class activityLocationMapper extends activityMapperAutocompleteBase {
         if ($entry->level != $location_level || ($parent_entry !== NULL && $parent_entry->name !== $location_field)) {
           $entry->filtered = TRUE;
         }
-        elseif ($parent_entry !== NULL && $parent_entry->name == $location_field) {
+        elseif ($parent_entry !== NULL && ($parent_entry->name == $location_field)) {
+          $entry->filtered = FALSE;
+        }
+      }
+      elseif($location_field_processed !== NULL) {
+        // We don't really care about the filterId, as we're matching via location level.
+        list($filter_id, $id) = explode(':', $location_field_processed);
+        // OMG this appears to be needed.
+        $id = intval($id);
+
+        if ($entry->level != $location_level || ($parent_entry !== NULL && $parent_entry->id !== $id)) {
+          $entry->filtered = TRUE;
+        }
+        elseif ($parent_entry !== NULL && ($parent_entry->id == $id)) {
           $entry->filtered = FALSE;
         }
       }
