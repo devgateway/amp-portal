@@ -24,9 +24,15 @@ google.load("visualization", "1", {packages:["corechart"]});
           for (var col in settings.chart[chartId].columns) {
             data.addColumn('number', settings.chart[chartId].columns[col]);
           }
+
           // Custom: add the tooltip column if required.
           if (settings.chart[chartId].use_tooltips_column === true) {
             data.addColumn({type: 'string', role: 'tooltip'});
+          }
+
+          // Custom: add the style column if required.
+          if (settings.chart[chartId].use_style_column === true) {
+            data.addColumn({type: 'string', role: 'style'});
           }
 
           // Adding the headers.

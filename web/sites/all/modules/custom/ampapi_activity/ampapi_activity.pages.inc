@@ -7,9 +7,16 @@ function ampapi_activity_autocomplete($property_name, $string = '', $string2 = '
   $matches = array();
 
   $request_type = 'autocomplete';
-  if (empty($string) && !empty($_GET['string'])) {
+  if (!empty($_GET['string'])) {
     $request_type = 'tokeninput';
-    $string = $_GET['string'];
+
+    if (empty($string)) {
+      $string = $_GET['string'];
+    }
+    else {
+      // A slight normalization for the case of having $string (location).
+      $string2 = $_GET['string'];
+    }
   }
 
   // Swapping these.
@@ -40,11 +47,18 @@ function ampapi_activity_autocomplete($property_name, $string = '', $string2 = '
     // Check whether we have an extra string present, and set it up as the extra filter.
     if ($plugin['property name'] == 'location' && !empty($extra_string)) {
       $exploded_arr = explode(':', $extra_string);
-      if (count($exploded_arr) === 2) {
-        list($level, $field) = $exploded_arr;
+
+      if ($request_type == 'tokeninput') {
+        $level = array_shift($exploded_arr);
+        $processed_field = implode(':', $exploded_arr);
       }
       else {
-        $level = reset($exploded_arr);
+        if (count($exploded_arr) === 2) {
+          list($level, $field) = $exploded_arr;
+        }
+        else {
+          $level = reset($exploded_arr);
+        }
       }
 
       // Just make sure it's an integer.
@@ -53,6 +67,9 @@ function ampapi_activity_autocomplete($property_name, $string = '', $string2 = '
 
       if (isset($field) && !empty($field)) {
         $handler->setExtraFilter('location_field', $field);
+      }
+      if (isset($processed_field) && !empty($processed_field)) {
+        $handler->setExtraFilter('location_field_processed', $processed_field);
       }
     }
     $autocomplete_values = $handler->autocomplete($plugin, array($string), $request_type);

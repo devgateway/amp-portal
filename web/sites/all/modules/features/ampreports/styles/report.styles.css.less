@@ -33,14 +33,22 @@
     .form-type-textfield {
       margin: 0.5em 0;
       input {
-        .border-radius(5px);
-        border: 1px solid @clcontent__separator;
         background-color: @clcontent;
-        width: 92%;
-        padding: 0.5em 4%;
+        padding: 0.5em 0.5em;
+        margin: 0;
+        font-size: 11px;
 
         &.form-autocomplete {
           background-position: 98% center;
+        }
+      }
+      .token-input-list-ampcms {
+        .token-input-selected-token-ampcms,
+        .token-input-token-ampcms {
+          border: 0 none;
+          background-color: transparent;
+          color: #000000;
+          padding: 0.5em 0.5em;
         }
       }
     }
@@ -93,7 +101,9 @@
       .stats-query {
         padding: 1em 0;
         display: inline-block;
-        width: 40%;
+        width: 38%;
+        padding-right: 2%;
+        vertical-align: top;
       }
 
       .count-all {
@@ -103,6 +113,7 @@
         padding-left: 2%;
         border-left: 1px solid @clcontent__separator;
         font-size: 0.5em;
+        vertical-align: top;
 
         .count-value {
           font-size: 3.5em;

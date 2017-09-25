@@ -74,6 +74,21 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       $count_all = count($this->view->result);
     }
 
+    $values['dep'] = $department;
+    $values['mun'] = $municipality;
+    $plugin = ampapi_get_mapper_by_property_name('location');
+    $class_name = ctools_plugin_get_class($plugin, 'handler');
+    $handler = new $class_name();
+    $values_fetched = $handler->getAutocompleteValue($plugin, $values, 'tokeninputids');
+    foreach ($values_fetched as $value_fetched) {
+      if ($value_fetched['id'] == $values['dep']) {
+        $department = $value_fetched;
+      }
+      if ($value_fetched['id'] == $values['mun']) {
+        $municipality = $value_fetched;
+      }
+    }
+
     $output['stats'] = array(
       '#type' => 'container',
       '#attributes' => array('class' => array('stats-wrapper')),
@@ -82,15 +97,15 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       if (!empty($municipality)) {
         $output['stats']['department'] = array(
           '#markup' => '<div class="stats-query">' . t('Department of @department, municipality @municipality', array(
-            '@department' => $department,
-            '@municipality' => $municipality,
+            '@department' => $department['name'],
+            '@municipality' => $municipality['name'],
           )) . '</div>',
         );
       }
       else {
         $output['stats']['department'] = array(
           '#markup' => '<div class="stats-query">' . t('Department of @department', array(
-            '@department' => $department,
+            '@department' => $department['name'],
           )) . '</div>',
           '#weight' => 0,
         );
@@ -101,7 +116,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       if (!empty($municipality)) {
         $output['stats']['department'] = array(
           '#markup' => '<div class="stats-query">' . t('Municipality @municipality', array(
-            '@municipality' => $municipality,
+            '@municipality' => $municipality['name'],
           )) . '</div>',
         );
       }
@@ -113,6 +128,7 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
       $view_clone = $this->view->clone_view();
       $new_exposed_input = $this->view->get_exposed_input();
       $new_exposed_input['status'] = 1;
+      $view_clone->tag = 'charts';
       $view_clone->set_exposed_input($new_exposed_input);
       $view_clone->set_items_per_page('0');
       $view_clone->execute();
@@ -299,16 +315,43 @@ class ampreports_views_handler_area_result extends views_handler_area_result {
         $shorten_sectors[$sector_name] = $sector_name;
       }
     }
+
     $header = array_keys($all_sectors);
     $rows = array_values($all_sectors);
+
+    // Let's specify colors (generated) and add values to tooltips.
+    $colors = array();
+    $flat_colors = array(
+      '#9b59b6',
+      '#3498db',
+      '#2ecc71',
+      '#1abc9c',
+      '#95a5a6',
+      '#e74c3c',
+      '#e67e22',
+      '#d35400',
+      '#f1c40f',
+      '#7f8c8d',
+      '#f39c12',
+      '#bdc3c7'
+    );
+
+    shuffle($flat_colors);
+    foreach ($header as $id => $sector) {
+      $colors[$id] = $flat_colors[$id];
+      $header[$id] = $sector . t(' - @num Projects', array(
+        '@num' => $rows[$id]
+      ));
+    }
 
     $settings['chart']['projects_chart'] = array(
       'chartType' => 'ColumnChart',
       'containerId' => 'projects_chart',
       'columns' => array(t('Projects')),
       'header' => array_values($shorten_sectors),
-      'rows' => array($rows, $header),
+      'rows' => array($rows, $header, $colors),
       'use_tooltips_column' => TRUE,
+      'use_style_column' => TRUE,
       'input_hash' => $this->get_input_hash(),
       'options' => array(
         'forceIFrame' => FALSE,
