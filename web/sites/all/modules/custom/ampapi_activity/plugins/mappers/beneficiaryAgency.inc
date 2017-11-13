@@ -15,10 +15,9 @@ $plugin = array(
 
   'report field group' => 'columns',
   'report field key' => 'Beneficiary Agency',
-  'report filter key' => 'beneficiary-agency',
 
-  'report filter endpoint' => 'filters/orgs',
-  'report filter endpoint extra' => 'filters/org-roles',
+  'report filter endpoint' => 'filters/organizations',
+  'report filter key' => 'beneficiary-agency',
 
   'handler' => 'beneficiaryAgencyMapper',
 );

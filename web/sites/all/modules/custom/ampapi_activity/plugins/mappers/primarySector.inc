@@ -15,9 +15,9 @@ $plugin = array(
 
   'report field group' => 'columns',
   'report field key' => 'Primary Sector',
-  'report filter key' => 'primary-sector',
 
-  'report filter endpoint' => 'filters/sectors',
+  'report filter endpoint' => 'filters/sectorlist',
+  'report filter key' => 'primary-sector',
 
   'handler' => 'primarySectorMapper',
 );
