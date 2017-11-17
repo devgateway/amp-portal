@@ -14,11 +14,10 @@ $plugin = array(
   ),
 
   'report field group' => 'columns',
-  'report field key' => 'National Plan Objective',
-  'report filter key' => 'national-planning-objectives',
+  'report field key' => 'National Planning Objectives',
 
-  'report filter endpoint' => 'filters/programs',
-  'report filter endpoint extra' => 'filters/programs',
+  'report filter endpoint' => 'filters/programlist',
+  'report filter key' => 'national-planning-objectives',
 
   'handler' => 'nationalPlanObjectiveMapper',
 );
