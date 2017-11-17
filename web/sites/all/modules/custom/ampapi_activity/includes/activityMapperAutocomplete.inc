@@ -147,8 +147,8 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
    */
   public function filterData($info, $data) {
     // If the response has field "items", it's a new filter implementation, return those.
-    if (!empty($data->items)) {
-      return $data->items;
+    if (!empty($info['filter_definition']->items) && !empty($data->items->{$info['filter_definition']->items})) {
+      return $data->items->{$info['filter_definition']->items};
     }
     return $data;
   }
@@ -300,15 +300,18 @@ class activityMapperSubFilterAutocomplete extends activityMapperAutocompleteBase
     $final_data = array();
 
     // We want to make sure that we actually have the *specific* organisation.
-    if (isset($info['filter_definition'])) {
+    if (isset($info['filter_definition']) && $info['filter_definition']->filtered === FALSE) {
       foreach ($filtered_data as $fd_key => $row) {
-        if (!empty($row->treeIds) && in_array($info['filter_definition']->id, $row->treeIds)) {
+        if (!empty($row->listDefinitionIds) && in_array($info['filter_definition']->id, $row->listDefinitionIds)) {
           $final_data[] = $row;
         }
         if (!empty($row->children)) {
           $final_data = array_merge($final_data, $this::filterData($info, $row->children));
         }
       }
+    }
+    else {
+      $final_data = $filtered_data;
     }
 
     return $final_data;
@@ -320,14 +323,14 @@ class activityMapperSubFilterAutocomplete extends activityMapperAutocompleteBase
     $data = ampAPIRestClient::get($endpoint);
 
     // Now all the metadata is stored in the treeDefinitions.
-    if (empty($data->treeDefinitions)) {
+    if (empty($data->listDefinitions)) {
       return FALSE;
     }
 
     // Setup the new and correct filterId value.
     $look_up_filter = (isset($plugin['report filter key'])) ? $plugin['report filter key'] : '';
 
-    foreach ($data->treeDefinitions as $metadata) {
+    foreach ($data->listDefinitions as $metadata) {
       if (!empty($metadata->filterIds) && in_array($look_up_filter, $metadata->filterIds)) {
         return $metadata;
       }
