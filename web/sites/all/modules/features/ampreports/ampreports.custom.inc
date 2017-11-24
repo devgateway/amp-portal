@@ -17,7 +17,7 @@ function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
     $form['location_mun']['#suffix'] = '</div>';
 
     if (!empty($form['location_mun']['#autocomplete_path'])) {
-      $form['location_mun']['#autocomplete_path'] .= '/3:';
+      $form['location_mun']['#autocomplete_path'] .= '/2:';
       if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
         $form['location_mun']['#autocomplete_path'] .= drupal_encode_path($form_state['values']['location_dep']);
       }
@@ -27,10 +27,10 @@ function ampreports_form_views_exposed_form_alter(&$form, &$form_state) {
     }
     else {
       if (!empty($form_state['values']['location_dep']) && trim($form_state['values']['location_dep']) !== '') {
-        $form['location_mun']['#attributes']['data-extra-filter'] = '3:' . drupal_encode_path($form_state['values']['location_dep']);
+        $form['location_mun']['#attributes']['data-extra-filter'] = '2:' . drupal_encode_path($form_state['values']['location_dep']);
       }
       elseif (!empty($form_state['input']['location_dep']) && trim($form_state['input']['location_dep']) !== '') {
-        $form['location_mun']['#attributes']['data-extra-filter'] = '3:' . drupal_encode_path($form_state['input']['location_dep']);
+        $form['location_mun']['#attributes']['data-extra-filter'] = '2:' . drupal_encode_path($form_state['input']['location_dep']);
       }
     }
 

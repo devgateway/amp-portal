@@ -63,8 +63,8 @@ class ampapi_activity_views_handler_filter_in_operator extends efq_views_handler
         '#title' => t('Location Level'),
         '#options' => array(
           0 => t('- Show all - '),
-          2 => t('Level 2 (Department)'),
-          3 => t('Level 3 (Municipality)')
+          1 => t('Level 2 (Department)'),
+          2 => t('Level 3 (Municipality)')
         ),
         '#default_value' => $this->options['amp_extra_options']['location_level'],
       );

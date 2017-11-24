@@ -62,7 +62,7 @@ class activityMapperBase implements activityMapperInterface {
         // @TODO: Requests for the API to change this behavior.
         if ($plugin['report field group'] == 'columns') {
           // Let's override the $key for locations.
-          if ($plugin['report filter endpoint'] == 'filters/locations') {
+          if ($plugin['report filter endpoint'] == 'filters/locationlist') {
             foreach ($condition['value'] as $value) {
               list($location_key, $value_id) = explode(':', $value);
               $request_body['filters'][$location_key][] = $value_id;

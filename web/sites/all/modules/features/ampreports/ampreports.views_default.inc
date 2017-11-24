@@ -140,7 +140,7 @@ function ampreports_views_default_views() {
   );
   $handler->display->display_options['filters']['location']['type'] = 'tokeninput';
   $handler->display->display_options['filters']['location']['amp_extra_options'] = array(
-    'location_level' => '2',
+    'location_level' => '1',
   );
   /* Filter criterion: Localisation (Municipality) */
   $handler->display->display_options['filters']['location_1']['id'] = 'location_1';

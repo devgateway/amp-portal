@@ -20,10 +20,6 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
     }
 
     switch ($plugin['report filter endpoint']) {
-      case 'filters/locations':
-        // Include top level (the country name) in the autocomplete suggestions.
-        $returned_data = array($returned_data);
-        break;
       case 'filters/programs':
       case 'filters/sectors':
         // Do not include top level option in the autocomplete suggestions.
@@ -54,7 +50,7 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
     return $info;
   }
 
-  public function getMatchedValues(array $info, array $entries, $top_level = TRUE) {
+  public function getMatchedValues(array $info, array $entries, $depth = 0) {
     global $language;
     $matches = array();
 
@@ -75,19 +71,20 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
         }
       }
 
-      if (!$this->_valueMatches($info, $entry, $search_string)) {
+      if (!$this->_valueMatches($info, $entry, $search_string, $depth)) {
         continue;
       }
 
       // Include parent Location Administrative Levels in name, if any.
       $name = '';
-      if ($info['plugin']['report filter endpoint'] == 'filters/locations' && isset($info['parents'])) {
+      if ($info['plugin']['report filter endpoint'] == 'filters/locationlist' && isset($info['parents'])) {
         foreach ($info['parents'] as $parent) {
           if (empty($parent->top_level)) {
             $name .= filter_xss_admin($parent->name) . ' > ';
           }
         }
-        $id = $entry->filterId . ':' . intval($entry->id);
+        $filterId = strtolower($info['filter_definition']->filterIds[$depth]);
+        $id = $filterId . ':' . intval($entry->id);
       }
       else {
         $id = intval($entry->id);
@@ -124,11 +121,11 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
       if (!empty($entry->children)) {
         // We need to change the info only for the current children.
         $temp_info = $info;
-        if ($top_level) {
+        if ($depth === 0) {
           $entry->top_level = TRUE;
         }
         $temp_info['parents'][] = $entry;
-        $matches = array_merge($matches, $this->getMatchedValues($temp_info, $entry->children, FALSE));
+        $matches = array_merge($matches, $this->getMatchedValues($temp_info, $entry->children, $depth + 1));
       }
     }
 
@@ -156,7 +153,7 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
   /**
    * Test if the entry object show be included in the returned values or not.
    */
-  private function _valueMatches(array $info, $entry, $search_string) {
+  private function _valueMatches(array $info, $entry, $search_string, $depth = 0) {
     global $language;
 
     switch ($info['type']) {
@@ -213,10 +210,10 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
         $id = $entry->id;
 
         // Slight adjustment for locations.
-        if ($info['endpoint'] == 'filters/locations') {
-          $id = $entry->filterId . ':' . intval($entry->id);
+        if ($info['endpoint'] == 'filters/locationlist') {
+          $filterId = strtolower($info['filter_definition']->filterIds[$depth]);
+          $id = $filterId . ':' . intval($entry->id);
         }
-
 
         if (in_array($id, $info['values'])) {
           return TRUE;
@@ -276,7 +273,7 @@ class activityMapperSubFilterAutocomplete extends activityMapperAutocompleteBase
   public function getAutocompleteInfo($plugin, $data, $type) {
     $info = parent::getAutocompleteInfo($plugin, $data, $type);
 
-    $filter_definition = $this->_getFilterByName($plugin);
+    $filter_definition = $this->_getFilterByFilterId($plugin);
 
     if (is_null($filter_definition)) {
       return NULL;
@@ -317,12 +314,15 @@ class activityMapperSubFilterAutocomplete extends activityMapperAutocompleteBase
     return $final_data;
   }
 
-  private function _getFilterByName($plugin) {
+  /**
+   * Helper function that gets the filter definition by its filter id.
+   */
+  private function _getFilterByFilterId($plugin) {
     $endpoint = $plugin['report filter endpoint'];
 
     $data = ampAPIRestClient::get($endpoint);
 
-    // Now all the metadata is stored in the treeDefinitions.
+    // Now all the metadata is stored in the listDefinitions.
     if (empty($data->listDefinitions)) {
       return FALSE;
     }
