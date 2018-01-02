@@ -81,10 +81,12 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
 
       // Include parent Location Administrative Levels in name, if any.
       $name = '';
-      if ($info['plugin']['report filter endpoint'] == 'filters/locations' && isset($info['parents'])) {
-        foreach ($info['parents'] as $parent) {
-          if (empty($parent->top_level)) {
-            $name .= filter_xss_admin($parent->name) . ' > ';
+      if ($info['plugin']['report filter endpoint'] == 'filters/locations') {
+        if (isset($info['parents'])) {
+          foreach ($info['parents'] as $parent) {
+            if (empty($parent->top_level)) {
+              $name .= filter_xss_admin($parent->name) . ' > ';
+            }
           }
         }
         $id = $entry->filterId . ':' . intval($entry->id);
