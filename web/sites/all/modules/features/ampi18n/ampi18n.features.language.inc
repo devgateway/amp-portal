@@ -10,6 +10,19 @@
 function ampi18n_locale_default_languages() {
   $languages = array();
 
+  // Exported language: ar.
+  $languages['ar'] = array(
+    'language' => 'ar',
+    'name' => 'Arabic',
+    'native' => 'العربية',
+    'direction' => 1,
+    'enabled' => 0,
+    'plurals' => 6,
+    'formula' => '(($n==1)?(0):(($n==0)?(1):(($n==2)?(2):(((($n%100)>=3)&&(($n%100)<=10))?(3):(((($n%100)>=11)&&(($n%100)<=99))?(4):5)))))',
+    'domain' => '',
+    'prefix' => 'ar',
+    'weight' => 0,
+  );
   // Exported language: en.
   $languages['en'] = array(
     'language' => 'en',
@@ -55,7 +68,7 @@ function ampi18n_locale_default_languages() {
     'name' => 'Romanian',
     'native' => 'Română',
     'direction' => 0,
-    'enabled' => 1,
+    'enabled' => 0,
     'plurals' => 3,
     'formula' => '(($n==1)?(0):((($n==0)||((($n%100)>0)&&(($n%100)<20)))?(1):2))',
     'domain' => '',
@@ -68,7 +81,7 @@ function ampi18n_locale_default_languages() {
     'name' => 'Russian',
     'native' => 'Русский',
     'direction' => 0,
-    'enabled' => 1,
+    'enabled' => 0,
     'plurals' => 3,
     'formula' => '(((($n%10)==1)&&(($n%100)!=11))?(0):((((($n%10)>=2)&&(($n%10)<=4))&&((($n%100)<10)||(($n%100)>=20)))?(1):2))',
     'domain' => '',
@@ -81,7 +94,7 @@ function ampi18n_locale_default_languages() {
     'name' => 'Serbo-Croatian',
     'native' => 'Serbo-Croatian',
     'direction' => 0,
-    'enabled' => 1,
+    'enabled' => 0,
     'plurals' => 0,
     'formula' => '',
     'domain' => '',
@@ -94,7 +107,7 @@ function ampi18n_locale_default_languages() {
     'name' => 'Albanian',
     'native' => 'Shqip',
     'direction' => 0,
-    'enabled' => 1,
+    'enabled' => 0,
     'plurals' => 0,
     'formula' => '',
     'domain' => '',
@@ -107,7 +120,7 @@ function ampi18n_locale_default_languages() {
     'name' => 'Tetum',
     'native' => 'Tetum',
     'direction' => 0,
-    'enabled' => 1,
+    'enabled' => 0,
     'plurals' => 0,
     'formula' => '',
     'domain' => '',
