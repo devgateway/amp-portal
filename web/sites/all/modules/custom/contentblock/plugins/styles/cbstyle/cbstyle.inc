@@ -187,6 +187,7 @@ function theme_cbstyle_style_render_pane($vars) {
         ),
       ),
     );
+    unset($content->title);
   }
 
   $elements['pane_content'] = array(

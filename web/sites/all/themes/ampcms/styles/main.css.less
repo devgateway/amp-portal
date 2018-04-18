@@ -44,12 +44,20 @@ html {
   }
 }
 
-.node-blog.view-mode-full {
-  .field-name-field-blog-image {
-    text-align: center;
-    img {
-      border: 1px solid @clcontent__separator;
+.node-blog{
+  .view-mode-full {
+    .field-name-field-blog-image {
+      text-align: center;
+      img {
+        border: 1px solid @clcontent__separator;
+      }
     }
+  }
+}
+
+.field-name-body, .field-name-field-cbbody {
+  a {
+    text-decoration: underline;
   }
 }
 
