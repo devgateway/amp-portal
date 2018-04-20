@@ -67,14 +67,24 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   $request_body['add_columns'][] = 'Related Projects';
   $request_body['add_columns'][] = 'Pledges Titles';
 
-  $actual_commitments_plugin = ampapi_get_mapper_by_property_name('actual_commitments');
-  $request_body['add_measures'][] = $actual_commitments_plugin['report field key'];
+  // If one of these is disabled, don't add it to the measures.
+  if ((isset($widget_settings['enable_commitments']) && $widget_settings['enable_commitments'] == TRUE)
+    || !isset($widget_settings['enable_commitments'])) {
+    $actual_commitments_plugin = ampapi_get_mapper_by_property_name('actual_commitments');
+    $request_body['add_measures'][] = $actual_commitments_plugin['report field key'];
+  }
 
-  $actual_disbursements_plugin = ampapi_get_mapper_by_property_name('actual_disbursements');
-  $request_body['add_measures'][] = $actual_disbursements_plugin['report field key'];
+  if ((isset($widget_settings['enable_disbursements']) && $widget_settings['enable_disbursements'] == TRUE)
+    || !isset($widget_settings['enable_disbursements'])) {
+    $actual_disbursements_plugin = ampapi_get_mapper_by_property_name('actual_disbursements');
+    $request_body['add_measures'][] = $actual_disbursements_plugin['report field key'];
+  }
 
   // Also, we don't use the mapper plugin because so far it's not needed.
-  $request_body['add_measures'][] = 'Actual Pledge';
+  if ((isset($widget_settings['enable_pledges']) && $widget_settings['enable_pledges'] == TRUE)
+    || !isset($widget_settings['enable_pledges'])) {
+    $request_body['add_measures'][] = 'Actual Pledge';
+  }
 
   $request_body['page'] = 1;
   $request_body['recordsPerPage'] = -1;
@@ -255,11 +265,15 @@ function contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $wi
   }
 
   $pledge_activities = array();
-  if (isset($response_data->ActivitiesWithPledgesCount)) {
-    $pledge_activities['pledge_activities'] = '<span class="amount">' . intval($response_data->ActivitiesWithPledgesCount) . '</span>';
-  }
-  else {
-    $pledge_activities = '<span class="amount">' . 0 . '</span>';
+
+  if ((isset($widget_settings['enable_totalactivities']) && $widget_settings['enable_totalactivities'] == TRUE)
+    || !isset($widget_settings['enable_totalactivities'])) {
+    if (isset($response_data->ActivitiesWithPledgesCount)) {
+      $pledge_activities['pledge_activities'] = '<span class="amount">' . intval($response_data->ActivitiesWithPledgesCount) . '</span>';
+    }
+    else {
+      $pledge_activities = '<span class="amount">' . 0 . '</span>';
+    }
   }
 
   // 1 hours cache life time for requests should be plenty for now.
@@ -297,10 +311,7 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
     'pledge_activities' => 'Pledge Activities',
   );
 
-  $build = array(
-    '#prefix' => '<div class="contentblock-published clearfix">',
-    '#suffix' => '</div>',
-  );
+  $build = array();
 
   // If it is not published (we don't make the call(s), and we render a custom version of the block).
   if (empty($entity->status) || $entity->status == NODE_NOT_PUBLISHED) {
@@ -320,31 +331,37 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
   }
 
   // Create the table headers.
+  $populated_data_counter = 0;
   foreach ($info_blocks as $key => $label) {
-    $build[$key] = array(
-      '#type' => 'container',
-      '#attributes' => array(
-        'class' => array(
-          'infoblock',
-          drupal_html_class($key),
+    if (!empty($data[$key])) {
+      $populated_data_counter++;
+      $build[$key] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'class' => array(
+            'infoblock',
+            drupal_html_class($key),
+          ),
         ),
-      ),
-    );
-
-    $build[$key]['label'] = array(
-      '#prefix' => '<h3 class="header">',
-      '#suffix' => '</h3>',
-      '#markup' => t($label),
-    );
-
-    $build[$key]['info'] = array(
-      '#type' => 'container',
-      '#children' => $data[$key],
-      '#attributes' => array(
-        'class' => array('info'),
-      ),
-    );
+      );
+      $build[$key]['label'] = array(
+        '#prefix' => '<h3 class="header">',
+        '#suffix' => '</h3>',
+        '#markup' => t($label),
+      );
+      $build[$key]['info'] = array(
+        '#type' => 'container',
+        '#children' => $data[$key],
+        '#attributes' => array(
+          'class' => array('info'),
+        ),
+      );
+    }
   }
+
+  // Add defaults.
+  $build['#prefix'] = '<div class="contentblock-published clearfix spread-' . $populated_data_counter . '">';
+  $build['#suffix'] = '</div>';
 
   return array('#markup' => drupal_render($build));
 }
@@ -393,6 +410,36 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
     '#default_value' => isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : '3',
     '#description' => t('Please specify how many digits after the Decimal Symbol (Fraction Digits) you would like to display.'),
   );
+  $form['extra_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Additional Settings'),
+    '#collapsible' => FALSE,
+    '#weight' => 15,
+  );
+  $form['extra_settings']['enable_pledges'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Pledges'),
+    '#description' => t('If you want to disable the pledges totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_pledges']) ? $widget_settings['enable_pledges'] : TRUE,
+  );
+  $form['extra_settings']['enable_commitments'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Commitments'),
+    '#description' => t('If you want to disable the commitments totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_commitments']) ? $widget_settings['enable_commitments'] : TRUE,
+  );
+  $form['extra_settings']['enable_disbursements'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Disbursements'),
+    '#description' => t('If you want to disable the disbursements totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_disbursements']) ? $widget_settings['enable_disbursements'] : TRUE,
+  );
+  $form['extra_settings']['enable_totalactivities'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Total Activities'),
+    '#description' => t('If you want to disable the activities totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_totalactivities']) ? $widget_settings['enable_totalactivities'] : TRUE,
+  );
 
   $form['#submit'][] = 'contentwidget_totalpledges_widget_settings_submit';
 
@@ -416,6 +463,10 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
   $data['amount-units'] = $amount;
   $data['amount-units-label-type'] = $label_type;
   $data['amount-fraction-digits'] = $fraction_digits;
+  $data['enable_pledges'] = $values['enable_pledges'];
+  $data['enable_commitments'] = $values['enable_commitments'];
+  $data['enable_disbursements'] = $values['enable_disbursements'];
+  $data['enable_totalactivities'] = $values['enable_totalactivities'];
 
   _contentwidget_fixed_set_settings($entity->machine_name, $data);
 }
