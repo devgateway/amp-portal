@@ -135,6 +135,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path']['report'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
@@ -260,6 +261,7 @@ function contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $wi
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path']['activities'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
@@ -297,6 +299,9 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
 
     if (!empty($data) && !empty($data_activities)) {
       $data = array_merge($data, $data_activities);
+    }
+    elseif (!empty($data_activities)) {
+      $data = $data_activities;
     }
 
     if (empty($data)) {
@@ -410,11 +415,14 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
     '#default_value' => isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : '3',
     '#description' => t('Please specify how many digits after the Decimal Symbol (Fraction Digits) you would like to display.'),
   );
+
+  // Build the Extra settings, we need to figure out what we want to show.
   $form['extra_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Additional Settings'),
     '#collapsible' => FALSE,
     '#weight' => 15,
+    '#description' => t('Please make sure you leave at least 1 option enabled.'),
   );
   $form['extra_settings']['enable_pledges'] = array(
     '#type' => 'checkbox',
@@ -441,9 +449,44 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
     '#default_value' => isset($widget_settings['enable_totalactivities']) ? $widget_settings['enable_totalactivities'] : TRUE,
   );
 
+  // Disable some options based on the API functionality.
+  $funding_type = _ampapi_activity_get_api_settings('funding-type');
+  $flat_funding_types = array();
+  foreach ($funding_type->value->options as $opt_delta => $option) {
+    $flat_funding_types[] = $option->id;
+  }
+  if (!in_array('Actual Pledge', $flat_funding_types)) {
+    $form['extra_settings']['enable_pledges']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_pledges']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_pledges']['#description'] = t('This functionality is disabled on the API.');
+  }
+  if (!in_array('Actual Commitments', $flat_funding_types)) {
+    $form['extra_settings']['enable_commitments']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_commitments']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_commitments']['#description'] = t('This functionality is disabled on the API.');
+  }
+  if (!in_array('Actual Disbursements', $flat_funding_types)) {
+    $form['extra_settings']['enable_disbursements']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_disbursements']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_disbursements']['#description'] = t('This functionality is disabled on the API.');
+  }
+
+  $form['#validate'][] = 'contentwidget_totalpledges_widget_settings_validate';
   $form['#submit'][] = 'contentwidget_totalpledges_widget_settings_submit';
 
   return $form;
+}
+
+/**
+ * The custom validation of the form.
+ */
+function contentwidget_totalpledges_widget_settings_validate($form, $form_state) {
+  // Check if user has unchecked all of the measures - and don't allow him to do that.
+  $values = $form_state['values'];
+  if ($values['enable_pledges'] == FALSE && $values['enable_commitments'] == FALSE
+    && $values['enable_disbursements'] == FALSE && $values['enable_totalactivities'] == FALSE) {
+    form_set_error('extra_settings', t('You have disabled all options under Extra Settings, make sure you have at least 1 option enabled.'));
+  }
 }
 
 
