@@ -135,6 +135,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path']['report'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
@@ -260,6 +261,7 @@ function contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $wi
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path']['activities'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
@@ -297,6 +299,9 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
 
     if (!empty($data) && !empty($data_activities)) {
       $data = array_merge($data, $data_activities);
+    }
+    elseif (!empty($data_activities)) {
+      $data = $data_activities;
     }
 
     if (empty($data)) {
@@ -454,6 +459,16 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
     $form['extra_settings']['enable_pledges']['#disabled'] = TRUE;
     $form['extra_settings']['enable_pledges']['#default_value'] = FALSE;
     $form['extra_settings']['enable_pledges']['#description'] = t('This functionality is disabled on the API.');
+  }
+  if (!in_array('Actual Commitments', $flat_funding_types)) {
+    $form['extra_settings']['enable_commitments']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_commitments']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_commitments']['#description'] = t('This functionality is disabled on the API.');
+  }
+  if (!in_array('Actual Disbursements', $flat_funding_types)) {
+    $form['extra_settings']['enable_disbursements']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_disbursements']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_disbursements']['#description'] = t('This functionality is disabled on the API.');
   }
 
   $form['#validate'][] = 'contentwidget_totalpledges_widget_settings_validate';

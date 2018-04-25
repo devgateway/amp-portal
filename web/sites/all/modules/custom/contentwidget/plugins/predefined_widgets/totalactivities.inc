@@ -121,6 +121,7 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
@@ -165,15 +166,15 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
     }
   }
 
-  if (empty($report_totals)) {
-    ampAPIRestClient::log($plugin['title'] . ': Data for measures is missing', array());
-    return array();
-  }
-
   /** @noinspection PhpUndefinedFieldInspection */
   if (!empty($response_data->page->totalRecords)) {
     /** @noinspection PhpUndefinedFieldInspection */
     $report_totals['activities_count'] = '<span class="amount">' . intval($response_data->page->totalRecords) . '</span> ';
+  }
+
+  if (empty($report_totals)) {
+    ampAPIRestClient::log($plugin['title'] . ': Data for measures is missing', array());
+    return array();
   }
 
   // 1 hours cache life time for requests should be plenty for now.
@@ -343,21 +344,9 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
     $form['extra_settings']['enable_disbursements']['#description'] = t('This functionality is disabled on the API.');
   }
 
-  $form['#validate'][] = 'contentwidget_totalactivities_widget_settings_validate';
   $form['#submit'][] = 'contentwidget_totalactivities_widget_settings_submit';
 
   return $form;
-}
-
-/**
- * The custom validation of the form.
- */
-function contentwidget_totalactivities_widget_settings_validate($form, $form_state) {
-  // Check if user has unchecked all of the measures - and don't allow him to do that.
-  $values = $form_state['values'];
-  if ($values['enable_commitments'] == FALSE && $values['enable_disbursements'] == FALSE) {
-    form_set_error('extra_settings', t('You have disabled all options under Extra Settings, make sure you have at least 1 option enabled.'));
-  }
 }
 
 /**
