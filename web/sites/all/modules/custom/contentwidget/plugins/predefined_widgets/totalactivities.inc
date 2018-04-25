@@ -121,6 +121,7 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
@@ -165,15 +166,15 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
     }
   }
 
-  if (empty($report_totals)) {
-    ampAPIRestClient::log($plugin['title'] . ': Data for measures is missing', array());
-    return array();
-  }
-
   /** @noinspection PhpUndefinedFieldInspection */
   if (!empty($response_data->page->totalRecords)) {
     /** @noinspection PhpUndefinedFieldInspection */
     $report_totals['activities_count'] = '<span class="amount">' . intval($response_data->page->totalRecords) . '</span> ';
+  }
+
+  if (empty($report_totals)) {
+    ampAPIRestClient::log($plugin['title'] . ': Data for measures is missing', array());
+    return array();
   }
 
   // 1 hours cache life time for requests should be plenty for now.
@@ -305,6 +306,8 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
     '#default_value' => isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : '3',
     '#description' => t('Please specify how many digits after the Decimal Symbol (Fraction Digits) you would like to display.'),
   );
+
+  // Build the Extra settings, we need to figure out what we want to show.
   $form['extra_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Additional Settings'),
@@ -317,13 +320,29 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
     '#description' => t('If you want to disable the commitments totals, uncheck this box.'),
     '#default_value' => isset($widget_settings['enable_commitments']) ? $widget_settings['enable_commitments'] : TRUE,
   );
-
   $form['extra_settings']['enable_disbursements'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Disbursements'),
     '#description' => t('If you want to disable the disbursements totals, uncheck this box.'),
     '#default_value' => isset($widget_settings['enable_disbursements']) ? $widget_settings['enable_disbursements'] : TRUE,
   );
+
+  // Disable some options based on the API functionality.
+  $funding_type = _ampapi_activity_get_api_settings('funding-type');
+  $flat_funding_types = array();
+  foreach ($funding_type->value->options as $opt_delta => $option) {
+    $flat_funding_types[] = $option->id;
+  }
+  if (!in_array('Actual Commitments', $flat_funding_types)) {
+    $form['extra_settings']['enable_commitments']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_commitments']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_commitments']['#description'] = t('This functionality is disabled on the API.');
+  }
+  if (!in_array('Actual Disbursements', $flat_funding_types)) {
+    $form['extra_settings']['enable_disbursements']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_disbursements']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_disbursements']['#description'] = t('This functionality is disabled on the API.');
+  }
 
   $form['#submit'][] = 'contentwidget_totalactivities_widget_settings_submit';
 
