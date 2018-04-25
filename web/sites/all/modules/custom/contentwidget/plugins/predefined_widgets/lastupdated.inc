@@ -116,11 +116,11 @@ function contentwidget_lastupdated_widget_render($plugin, $widget_settings, $ent
       drupal_set_message(t('Headers information missing from the API.'), 'error');
       return NULL;
     }
-
+    
     // Create the table headers.
     foreach ($data->headers[0] as $key => $header_text) {
       $header[$key] = array(
-        'data' => check_plain($header_text),
+        'data' => t(check_plain($key)),
         'class' => array(
           drupal_html_class('col-' . $key)
         ),
