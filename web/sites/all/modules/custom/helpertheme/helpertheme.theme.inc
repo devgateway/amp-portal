@@ -431,7 +431,10 @@ function theme_amp_report_totals($variables) {
     }
 
     $header[] = $variables['totals'][$key]['header'];
-    $data[] = $variables['totals'][$key]['amount'];
+    $data[] = array(
+      'data' => $variables['totals'][$key]['amount'],
+      'class' => array('amount'),
+    );
   }
 
   $elements['totals'] = array(
