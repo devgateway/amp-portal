@@ -173,10 +173,13 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
     }
   }
 
-  /** @noinspection PhpUndefinedFieldInspection */
-  if (!empty($response_data->page->totalRecords)) {
+  if ((isset($widget_settings['enable_totalactivities']) && $widget_settings['enable_totalactivities'] == TRUE)
+    || !isset($widget_settings['enable_totalactivities'])) {
     /** @noinspection PhpUndefinedFieldInspection */
-    $report_totals['activities_count'] = '<span class="amount">' . intval($response_data->page->totalRecords) . '</span> ';
+    if (!empty($response_data->page->totalRecords)) {
+      /** @noinspection PhpUndefinedFieldInspection */
+      $report_totals['activities_count'] = '<span class="amount">' . intval($response_data->page->totalRecords) . '</span> ';
+    }
   }
 
   if (empty($report_totals)) {
@@ -368,6 +371,12 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
     '#description' => t('If you want to disable the disbursements totals, uncheck this box.'),
     '#default_value' => isset($widget_settings['enable_disbursements']) ? $widget_settings['enable_disbursements'] : TRUE,
   );
+  $form['extra_settings']['enable_totalactivities'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Total Activities'),
+    '#description' => t('If you want to disable the activities totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_totalactivities']) ? $widget_settings['enable_totalactivities'] : TRUE,
+  );
 
   // Disable some options based on the API functionality.
   $funding_type = _ampapi_activity_get_api_settings('funding-type');
@@ -386,9 +395,21 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
     $form['extra_settings']['enable_disbursements']['#description'] = t('This functionality is disabled on the API.');
   }
 
+  $form['#validate'][] = 'contentwidget_totalactivities_widget_settings_validate';
   $form['#submit'][] = 'contentwidget_totalactivities_widget_settings_submit';
 
   return $form;
+}
+
+/**
+ * The custom validation of the form.
+ */
+function contentwidget_totalactivities_widget_settings_validate($form, $form_state) {
+  // Check if user has unchecked all of the measures - and don't allow him to do that.
+  $values = $form_state['values'];
+  if ($values['enable_commitments'] == FALSE && $values['enable_disbursements'] == FALSE && $values['enable_totalactivities'] == FALSE) {
+    form_set_error('extra_settings', t('You have disabled all options under Extra Settings, make sure you have at least 1 option enabled.'));
+  }
 }
 
 /**
@@ -409,6 +430,7 @@ function contentwidget_totalactivities_widget_settings_submit($form, $form_state
   $data['amount-fraction-digits'] = $fraction_digits;
   $data['enable_commitments'] = $values['enable_commitments'];
   $data['enable_disbursements'] = $values['enable_disbursements'];
+  $data['enable_totalactivities'] = $values['enable_totalactivities'];
 
   if ($data['amount-units'] == 'amount-units-1') {
     $data['amount-units-label-type'] = '';
