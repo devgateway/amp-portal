@@ -158,10 +158,18 @@ function contentwidget_totalactivities_widget_retrieve_data($plugin, $widget_set
     /** @noinspection PhpUndefinedFieldInspection */
     $amount = check_plain($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->displayedValue);
     $amount = '<span class="amount">' . $amount . '</span> ';
-    $amount .= '<span class="text">' . t('@amount_units !currencysymbol', array(
-      '!currencysymbol' => $currency,
-      '@amount_units' => $amount_units_label
-    )) . '</span>';
+    if (!$language->direction == 0) {
+      $amount .= '<span class="text">' . t('@amount_units !currencysymbol', array(
+          '!currencysymbol' => $currency,
+          '@amount_units' => $amount_units_label
+        )) . '</span>';
+    }
+    else {
+      $amount .= '<span class="text">' . t('!currencysymbol @amount_units', array(
+          '!currencysymbol' => $currency,
+          '@amount_units' => $amount_units_label
+        )) . '</span>';
+    }
 
     switch ($h_info->hierarchicalName) {
       case '[Totals][Actual Commitments]':
