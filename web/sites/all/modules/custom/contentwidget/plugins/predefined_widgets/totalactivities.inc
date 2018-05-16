@@ -291,6 +291,11 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
     '#options' => array('short' => t('Short'), 'long' => t('Long'), 'override' => t('Custom')),
     '#default_value' => isset($widget_settings['amount-units-label-type']) ? $widget_settings['amount-units-label-type'] : 'short',
     '#description' => t('Please specify format would you like to use.<br />Short Example: M; Long Example: Millions.'),
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="widget_amount"]' => array('value' => 'amount-units-1'),
+      ),
+    ),
   );
 
   // Prepare the overriding part of the labels.
@@ -302,19 +307,12 @@ function contentwidget_totalactivities_widget_settings($form, &$form_state, $plu
     '#type' => 'fieldset',
     '#title' => t('Custom Amount Labels'),
     '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
+    '#collapsed' => FALSE,
     '#states' => array(
       'visible' => array(
         ':input[name="widget_amount_label_type"]' => array('value' => 'override'),
       ),
     )
-  );
-  $form['amount_settings']['widget_amount_label_override']['widget_amount_label_und'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Override Amount (Language Neutral)'),
-    '#default_value' => isset($widget_settings['amount-label'][LANGUAGE_NONE]) ? $widget_settings['amount-label'][LANGUAGE_NONE] : $label_default,
-    '#description' => t('Override the default amount label (fallback version).'),
-    '#size' => 30,
   );
   if (drupal_multilingual()) {
     $languages = language_list();
@@ -359,7 +357,12 @@ function contentwidget_totalactivities_widget_settings_submit($form, $form_state
   $data['amount-units-label-type'] = $label_type;
   $data['amount-fraction-digits'] = $fraction_digits;
 
-  if ($label_type == 'override') {
+  if ($data['amount-units'] == 'amount-units-1') {
+    $data['amount-units-label-type'] = '';
+  }
+
+  // Fix the custom labels.
+  if ($data['amount-units'] !== 'amount-units-1' || $label_type == 'override') {
     $data['amount-label'][LANGUAGE_NONE] = $values['widget_amount_label_und'];
     if (drupal_multilingual()) {
       $languages = language_list();
