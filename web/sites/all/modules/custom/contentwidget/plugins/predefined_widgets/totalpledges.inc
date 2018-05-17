@@ -583,7 +583,7 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
 
   // Forcefully clear this widget's cache.
   $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
-  $cache_id = "contentblock:widget:{$langcode}:totalactivities:";
+  $cache_id = "contentblock:widget:{$langcode}:totalpledges:";
   cache_clear_all($cache_id, 'cache', TRUE);
 
 
