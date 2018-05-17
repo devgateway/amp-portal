@@ -462,6 +462,7 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
   $amount = $values['widget_amount'];
   $fraction_digits = $values['widget_amount_fraction_digits'];
   $label_type = $values['widget_amount_label_type'];
+  $langcode = $values['language'];
 
   $data['amount-units'] = $amount;
   $data['amount-units-label-type'] = $label_type;
@@ -473,7 +474,6 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
 
   // Fix the custom labels.
   if ($data['amount-units'] !== 'amount-units-1' || $label_type == 'override') {
-    $data['amount-label'][LANGUAGE_NONE] = $values['widget_amount_label_und'];
     if (drupal_multilingual()) {
       $languages = language_list();
       foreach ($languages as $lang_id => $language) {
@@ -486,6 +486,12 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
   else {
     $data['amount-label'] = array();
   }
+
+  // Forcefully clear this widget's cache.
+  $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
+  $cache_id = "contentblock:widget:{$langcode}:totalactivities:";
+  cache_clear_all($cache_id, 'cache', TRUE);
+
 
   _contentwidget_fixed_set_settings($entity->machine_name, $data);
 }
