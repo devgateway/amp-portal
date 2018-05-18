@@ -567,7 +567,7 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
   }
 
   // Fix the custom labels.
-  if ($data['amount-units'] !== 'amount-units-1' || $label_type == 'override') {
+  if ($data['amount-units'] !== 'amount-units-1' && $label_type == 'override') {
     if (drupal_multilingual()) {
       $languages = language_list();
       foreach ($languages as $lang_id => $language) {
