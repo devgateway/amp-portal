@@ -420,6 +420,9 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
       'visible' => array(
         ':input[name="widget_amount_label_type"]' => array('value' => 'override'),
       ),
+      'invisible' => array(
+        ':input[name="widget_amount"]' => array('value' => 'amount-units-1'),
+      ),
     )
   );
   if (drupal_multilingual()) {
