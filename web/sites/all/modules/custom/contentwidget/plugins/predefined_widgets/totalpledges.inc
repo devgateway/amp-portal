@@ -173,7 +173,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
       /** @noinspection PhpUndefinedFieldInspection */
       $amount = check_plain($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->displayedValue);
       $amount = '<span class="amount">' . $amount . '</span> ';
-      if (!$language->direction == 0) {
+      if ($language->direction == 0) {
         $amount .= '<span class="text">' . t('@amount_units !currencysymbol', array(
             '!currencysymbol' => $currency,
             '@amount_units' => $amount_units_label
