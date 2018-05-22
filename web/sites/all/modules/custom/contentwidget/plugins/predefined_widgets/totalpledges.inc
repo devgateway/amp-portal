@@ -28,13 +28,14 @@ $plugin = array(
  * Retrieves data from the report endpoint.
  */
 function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget_settings, $langcode = NULL) {
+  global $language;
   $api_status = ampAPIRestClient::status();
   if (!$api_status['online']) {
     return array();
   }
 
   $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
-  $cache_id = "contentblock:widget:{$langcode}:totalpledges:" . md5(serialize($widget_settings));
+  $cache_id = "contentblock:widget:{$langcode}:totalpledges:" . $language->language . ':' . md5(serialize($widget_settings));
 
   $amount_units_key = isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amount-units-1';
   $amount_fraction_digits = isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : 3;
@@ -159,7 +160,10 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
       }
 
       // Now, we really trust the API display values.
-      if (isset($widget_settings['amount-units-label-type'])) {
+      if (!empty($widget_settings['amount-label'][$language->language])) {
+        $amount_units_label = $widget_settings['amount-label'][$language->language];
+      }
+      elseif (isset($widget_settings['amount-units-label-type'])) {
         $amount_units_label = filter_xss(_ampapi_amount_unit_get_label($amount_units->id, $widget_settings['amount-units-label-type']));
       }
       else {
@@ -169,7 +173,18 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
       /** @noinspection PhpUndefinedFieldInspection */
       $amount = check_plain($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->displayedValue);
       $amount = '<span class="amount">' . $amount . '</span> ';
-      $amount .= '<span class="text">' . t('@amount_units !currencysymbol', array('!currencysymbol' => $currency, '@amount_units' => $amount_units_label)) . '</span>';
+      if ($language->direction == 0) {
+        $amount .= '<span class="text">' . t('@amount_units !currencysymbol', array(
+            '!currencysymbol' => $currency,
+            '@amount_units' => $amount_units_label
+          )) . '</span>';
+      }
+      else {
+        $amount .= '<span class="text">' . t('!currencysymbol @amount_units', array(
+            '!currencysymbol' => $currency,
+            '@amount_units' => $amount_units_label
+          )) . '</span>';
+      }
 
       switch ($h_info->hierarchicalName) {
         case '[Totals][Actual Pledge]':
@@ -404,10 +419,48 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
   $form['amount_settings']['widget_amount_label_type'] = array(
     '#type' => 'radios',
     '#title' => t('Amount Units Type'),
-    '#options' => array('short' => t('Short'), 'long' => t('Long')),
+    '#options' => array('short' => t('Short'), 'long' => t('Long'), 'override' => t('Custom')),
     '#default_value' => isset($widget_settings['amount-units-label-type']) ? $widget_settings['amount-units-label-type'] : 'short',
     '#description' => t('Please specify format would you like to use.<br />Short Example: M; Long Example: Millions.'),
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="widget_amount"]' => array('value' => 'amount-units-1'),
+      ),
+    ),
   );
+  // Prepare the overriding part of the labels.
+  // Get values first.
+  $amount_unit = isset($form_state['values']['widget_amount']) ? $form_state['values']['widget_amount'] : $widget_settings['amount-units'];
+  $label_default = _ampapi_amount_unit_get_label($amount_unit, 'short');
+
+  $form['amount_settings']['widget_amount_label_override'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Custom Amount Labels'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="widget_amount_label_type"]' => array('value' => 'override'),
+      ),
+      'invisible' => array(
+        ':input[name="widget_amount"]' => array('value' => 'amount-units-1'),
+      ),
+    )
+  );
+  if (drupal_multilingual()) {
+    $languages = language_list();
+    foreach ($languages as $lang_id => $language) {
+      if ($language->enabled) {
+        $form['amount_settings']['widget_amount_label_override']['widget_amount_label_' . $lang_id] = array(
+          '#type' => 'textfield',
+          '#title' => t('Override Amount (@lang)', array('@lang' => $language->name)),
+          '#default_value' => isset($widget_settings['amount-label'][$lang_id]) ? $widget_settings['amount-label'][$lang_id] : $label_default,
+          '#size' => 30,
+        );
+      }
+    }
+  }
+
   $form['amount_settings']['widget_amount_fraction_digits'] = array(
     '#type' => 'select',
     '#title' => t('Fraction Digits'),
@@ -502,6 +555,7 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
   $amount = $values['widget_amount'];
   $fraction_digits = $values['widget_amount_fraction_digits'];
   $label_type = $values['widget_amount_label_type'];
+  $langcode = $values['language'];
 
   $data['amount-units'] = $amount;
   $data['amount-units-label-type'] = $label_type;
@@ -510,6 +564,31 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
   $data['enable_commitments'] = $values['enable_commitments'];
   $data['enable_disbursements'] = $values['enable_disbursements'];
   $data['enable_totalactivities'] = $values['enable_totalactivities'];
+
+  if ($data['amount-units'] == 'amount-units-1') {
+    $data['amount-units-label-type'] = '';
+  }
+
+  // Fix the custom labels.
+  if ($data['amount-units'] !== 'amount-units-1' && $label_type == 'override') {
+    if (drupal_multilingual()) {
+      $languages = language_list();
+      foreach ($languages as $lang_id => $language) {
+        if ($language->enabled) {
+          $data['amount-label'][$lang_id] = $values['widget_amount_label_' . $lang_id];
+        }
+      }
+    }
+  }
+  else {
+    $data['amount-label'] = array();
+  }
+
+  // Forcefully clear this widget's cache.
+  $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
+  $cache_id = "contentblock:widget:{$langcode}:totalpledges:";
+  cache_clear_all($cache_id, 'cache', TRUE);
+
 
   _contentwidget_fixed_set_settings($entity->machine_name, $data);
 }
