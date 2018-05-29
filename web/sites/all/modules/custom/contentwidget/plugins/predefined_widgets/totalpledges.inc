@@ -313,9 +313,12 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
   foreach ($funding_type->value->options as $opt_delta => $option) {
     $flat_funding_types[] = $option->id;
   }
+  if (!in_array('Actual Pledge', $flat_funding_types)) {
+    return '';
+  }
 
   // Make the queries only if the entity is published.
-  if ($entity->status == NODE_PUBLISHED && in_array('Actual Pledge', $flat_funding_types)) {
+  if ($entity->status == NODE_PUBLISHED ) {
     $data = contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget_settings, $langcode);
     $data_activities = contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $widget_settings, $langcode);
 
