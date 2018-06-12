@@ -28,13 +28,14 @@ $plugin = array(
  * Retrieves data from the report endpoint.
  */
 function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget_settings, $langcode = NULL) {
+  global $language;
   $api_status = ampAPIRestClient::status();
   if (!$api_status['online']) {
     return array();
   }
 
   $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
-  $cache_id = "contentblock:widget:{$langcode}:totalpledges:" . md5(serialize($widget_settings));
+  $cache_id = "contentblock:widget:{$langcode}:totalpledges:" . $language->language . ':' . md5(serialize($widget_settings));
 
   $amount_units_key = isset($widget_settings['amount-units']) ? $widget_settings['amount-units'] : 'amount-units-1';
   $amount_fraction_digits = isset($widget_settings['amount-fraction-digits']) ? $widget_settings['amount-fraction-digits'] : 3;
@@ -67,14 +68,24 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   $request_body['add_columns'][] = 'Related Projects';
   $request_body['add_columns'][] = 'Pledges Titles';
 
-  $actual_commitments_plugin = ampapi_get_mapper_by_property_name('actual_commitments');
-  $request_body['add_measures'][] = $actual_commitments_plugin['report field key'];
+  // If one of these is disabled, don't add it to the measures.
+  if ((isset($widget_settings['enable_commitments']) && $widget_settings['enable_commitments'] == TRUE)
+    || !isset($widget_settings['enable_commitments'])) {
+    $actual_commitments_plugin = ampapi_get_mapper_by_property_name('actual_commitments');
+    $request_body['add_measures'][] = $actual_commitments_plugin['report field key'];
+  }
 
-  $actual_disbursements_plugin = ampapi_get_mapper_by_property_name('actual_disbursements');
-  $request_body['add_measures'][] = $actual_disbursements_plugin['report field key'];
+  if ((isset($widget_settings['enable_disbursements']) && $widget_settings['enable_disbursements'] == TRUE)
+    || !isset($widget_settings['enable_disbursements'])) {
+    $actual_disbursements_plugin = ampapi_get_mapper_by_property_name('actual_disbursements');
+    $request_body['add_measures'][] = $actual_disbursements_plugin['report field key'];
+  }
 
   // Also, we don't use the mapper plugin because so far it's not needed.
-  $request_body['add_measures'][] = 'Actual Pledge';
+  if ((isset($widget_settings['enable_pledges']) && $widget_settings['enable_pledges'] == TRUE)
+    || !isset($widget_settings['enable_pledges'])) {
+    $request_body['add_measures'][] = 'Actual Pledge';
+  }
 
   $request_body['page'] = 1;
   $request_body['recordsPerPage'] = -1;
@@ -125,6 +136,7 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path']['report'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
@@ -148,7 +160,10 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
       }
 
       // Now, we really trust the API display values.
-      if (isset($widget_settings['amount-units-label-type'])) {
+      if (!empty($widget_settings['amount-label'][$language->language])) {
+        $amount_units_label = $widget_settings['amount-label'][$language->language];
+      }
+      elseif (isset($widget_settings['amount-units-label-type'])) {
         $amount_units_label = filter_xss(_ampapi_amount_unit_get_label($amount_units->id, $widget_settings['amount-units-label-type']));
       }
       else {
@@ -158,7 +173,18 @@ function contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget
       /** @noinspection PhpUndefinedFieldInspection */
       $amount = check_plain($response_data->page->pageArea->contents->{$h_info->hierarchicalName}->displayedValue);
       $amount = '<span class="amount">' . $amount . '</span> ';
-      $amount .= '<span class="text">' . t('@amount_units !currencysymbol', array('!currencysymbol' => $currency, '@amount_units' => $amount_units_label)) . '</span>';
+      if ($language->direction == 0) {
+        $amount .= '<span class="text">' . t('@amount_units !currencysymbol', array(
+            '!currencysymbol' => $currency,
+            '@amount_units' => $amount_units_label
+          )) . '</span>';
+      }
+      else {
+        $amount .= '<span class="text">' . t('!currencysymbol @amount_units', array(
+            '!currencysymbol' => $currency,
+            '@amount_units' => $amount_units_label
+          )) . '</span>';
+      }
 
       switch ($h_info->hierarchicalName) {
         case '[Totals][Actual Pledge]':
@@ -250,16 +276,21 @@ function contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $wi
   // Get the data.
   $use_cache = FALSE;  // We cache the processed data, not the request.
   $response_data = ampAPIRestClient::post($plugin['resource api path']['activities'], $options, $use_cache);
+
   if (empty($response_data)) {
     return array();
   }
 
   $pledge_activities = array();
-  if (isset($response_data->ActivitiesWithPledgesCount)) {
-    $pledge_activities['pledge_activities'] = '<span class="amount">' . intval($response_data->ActivitiesWithPledgesCount) . '</span>';
-  }
-  else {
-    $pledge_activities = '<span class="amount">' . 0 . '</span>';
+
+  if ((isset($widget_settings['enable_totalactivities']) && $widget_settings['enable_totalactivities'] == TRUE)
+    || !isset($widget_settings['enable_totalactivities'])) {
+    if (isset($response_data->ActivitiesWithPledgesCount)) {
+      $pledge_activities['pledge_activities'] = '<span class="amount">' . intval($response_data->ActivitiesWithPledgesCount) . '</span>';
+    }
+    else {
+      $pledge_activities = '<span class="amount">' . 0 . '</span>';
+    }
   }
 
   // 1 hours cache life time for requests should be plenty for now.
@@ -276,13 +307,26 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
   // Provide some default values.
   $widget_settings += $plugin['defaults'];
 
+  // We need to fail-quickly if the settings says that the pledges are disabled on the API's end.
+  $funding_type = _ampapi_activity_get_api_settings('funding-type');
+  $flat_funding_types = array();
+  foreach ($funding_type->value->options as $opt_delta => $option) {
+    $flat_funding_types[] = $option->id;
+  }
+  if (!in_array('Actual Pledge', $flat_funding_types)) {
+    return '';
+  }
+
   // Make the queries only if the entity is published.
-  if ($entity->status == NODE_PUBLISHED) {
+  if ($entity->status == NODE_PUBLISHED ) {
     $data = contentwidget_totalpledges_widget_retrieve_report_data($plugin, $widget_settings, $langcode);
     $data_activities = contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $widget_settings, $langcode);
 
     if (!empty($data) && !empty($data_activities)) {
       $data = array_merge($data, $data_activities);
+    }
+    elseif (!empty($data_activities)) {
+      $data = $data_activities;
     }
 
     if (empty($data)) {
@@ -297,10 +341,7 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
     'pledge_activities' => 'Pledge Activities',
   );
 
-  $build = array(
-    '#prefix' => '<div class="contentblock-published clearfix">',
-    '#suffix' => '</div>',
-  );
+  $build = array();
 
   // If it is not published (we don't make the call(s), and we render a custom version of the block).
   if (empty($entity->status) || $entity->status == NODE_NOT_PUBLISHED) {
@@ -320,31 +361,37 @@ function contentwidget_totalpledges_widget_render($plugin, $widget_settings, $en
   }
 
   // Create the table headers.
+  $populated_data_counter = 0;
   foreach ($info_blocks as $key => $label) {
-    $build[$key] = array(
-      '#type' => 'container',
-      '#attributes' => array(
-        'class' => array(
-          'infoblock',
-          drupal_html_class($key),
+    if (!empty($data[$key])) {
+      $populated_data_counter++;
+      $build[$key] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'class' => array(
+            'infoblock',
+            drupal_html_class($key),
+          ),
         ),
-      ),
-    );
-
-    $build[$key]['label'] = array(
-      '#prefix' => '<h3 class="header">',
-      '#suffix' => '</h3>',
-      '#markup' => t($label),
-    );
-
-    $build[$key]['info'] = array(
-      '#type' => 'container',
-      '#children' => $data[$key],
-      '#attributes' => array(
-        'class' => array('info'),
-      ),
-    );
+      );
+      $build[$key]['label'] = array(
+        '#prefix' => '<h3 class="header">',
+        '#suffix' => '</h3>',
+        '#markup' => t($label),
+      );
+      $build[$key]['info'] = array(
+        '#type' => 'container',
+        '#children' => $data[$key],
+        '#attributes' => array(
+          'class' => array('info'),
+        ),
+      );
+    }
   }
+
+  // Add defaults.
+  $build['#prefix'] = '<div class="contentblock-published clearfix spread-' . $populated_data_counter . '">';
+  $build['#suffix'] = '</div>';
 
   return array('#markup' => drupal_render($build));
 }
@@ -382,10 +429,48 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
   $form['amount_settings']['widget_amount_label_type'] = array(
     '#type' => 'radios',
     '#title' => t('Amount Units Type'),
-    '#options' => array('short' => t('Short'), 'long' => t('Long')),
+    '#options' => array('short' => t('Short'), 'long' => t('Long'), 'override' => t('Custom')),
     '#default_value' => isset($widget_settings['amount-units-label-type']) ? $widget_settings['amount-units-label-type'] : 'short',
     '#description' => t('Please specify format would you like to use.<br />Short Example: M; Long Example: Millions.'),
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="widget_amount"]' => array('value' => 'amount-units-1'),
+      ),
+    ),
   );
+  // Prepare the overriding part of the labels.
+  // Get values first.
+  $amount_unit = isset($form_state['values']['widget_amount']) ? $form_state['values']['widget_amount'] : $widget_settings['amount-units'];
+  $label_default = _ampapi_amount_unit_get_label($amount_unit, 'short');
+
+  $form['amount_settings']['widget_amount_label_override'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Custom Amount Labels'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="widget_amount_label_type"]' => array('value' => 'override'),
+      ),
+      'invisible' => array(
+        ':input[name="widget_amount"]' => array('value' => 'amount-units-1'),
+      ),
+    )
+  );
+  if (drupal_multilingual()) {
+    $languages = language_list();
+    foreach ($languages as $lang_id => $language) {
+      if ($language->enabled) {
+        $form['amount_settings']['widget_amount_label_override']['widget_amount_label_' . $lang_id] = array(
+          '#type' => 'textfield',
+          '#title' => t('Override Amount (@lang)', array('@lang' => $language->name)),
+          '#default_value' => isset($widget_settings['amount-label'][$lang_id]) ? $widget_settings['amount-label'][$lang_id] : $label_default,
+          '#size' => 30,
+        );
+      }
+    }
+  }
+
   $form['amount_settings']['widget_amount_fraction_digits'] = array(
     '#type' => 'select',
     '#title' => t('Fraction Digits'),
@@ -394,9 +479,77 @@ function contentwidget_totalpledges_widget_settings($form, &$form_state, $plugin
     '#description' => t('Please specify how many digits after the Decimal Symbol (Fraction Digits) you would like to display.'),
   );
 
+  // Build the Extra settings, we need to figure out what we want to show.
+  $form['extra_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Additional Settings'),
+    '#collapsible' => FALSE,
+    '#weight' => 15,
+    '#description' => t('Please make sure you leave at least 1 option enabled.'),
+  );
+  $form['extra_settings']['enable_pledges'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Pledges'),
+    '#description' => t('If you want to disable the pledges totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_pledges']) ? $widget_settings['enable_pledges'] : TRUE,
+  );
+  $form['extra_settings']['enable_commitments'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Commitments'),
+    '#description' => t('If you want to disable the commitments totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_commitments']) ? $widget_settings['enable_commitments'] : TRUE,
+  );
+  $form['extra_settings']['enable_disbursements'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Disbursements'),
+    '#description' => t('If you want to disable the disbursements totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_disbursements']) ? $widget_settings['enable_disbursements'] : TRUE,
+  );
+  $form['extra_settings']['enable_totalactivities'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Total Activities'),
+    '#description' => t('If you want to disable the activities totals, uncheck this box.'),
+    '#default_value' => isset($widget_settings['enable_totalactivities']) ? $widget_settings['enable_totalactivities'] : TRUE,
+  );
+
+  // Disable some options based on the API functionality.
+  $funding_type = _ampapi_activity_get_api_settings('funding-type');
+  $flat_funding_types = array();
+  foreach ($funding_type->value->options as $opt_delta => $option) {
+    $flat_funding_types[] = $option->id;
+  }
+  if (!in_array('Actual Pledge', $flat_funding_types)) {
+    $form['extra_settings']['enable_pledges']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_pledges']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_pledges']['#description'] = t('This functionality is disabled on the API.');
+  }
+  if (!in_array('Actual Commitments', $flat_funding_types)) {
+    $form['extra_settings']['enable_commitments']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_commitments']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_commitments']['#description'] = t('This functionality is disabled on the API.');
+  }
+  if (!in_array('Actual Disbursements', $flat_funding_types)) {
+    $form['extra_settings']['enable_disbursements']['#disabled'] = TRUE;
+    $form['extra_settings']['enable_disbursements']['#default_value'] = FALSE;
+    $form['extra_settings']['enable_disbursements']['#description'] = t('This functionality is disabled on the API.');
+  }
+
+  $form['#validate'][] = 'contentwidget_totalpledges_widget_settings_validate';
   $form['#submit'][] = 'contentwidget_totalpledges_widget_settings_submit';
 
   return $form;
+}
+
+/**
+ * The custom validation of the form.
+ */
+function contentwidget_totalpledges_widget_settings_validate($form, $form_state) {
+  // Check if user has unchecked all of the measures - and don't allow him to do that.
+  $values = $form_state['values'];
+  if ($values['enable_pledges'] == FALSE && $values['enable_commitments'] == FALSE
+    && $values['enable_disbursements'] == FALSE && $values['enable_totalactivities'] == FALSE) {
+    form_set_error('extra_settings', t('You have disabled all options under Extra Settings, make sure you have at least 1 option enabled.'));
+  }
 }
 
 
@@ -412,10 +565,40 @@ function contentwidget_totalpledges_widget_settings_submit($form, $form_state) {
   $amount = $values['widget_amount'];
   $fraction_digits = $values['widget_amount_fraction_digits'];
   $label_type = $values['widget_amount_label_type'];
+  $langcode = $values['language'];
 
   $data['amount-units'] = $amount;
   $data['amount-units-label-type'] = $label_type;
   $data['amount-fraction-digits'] = $fraction_digits;
+  $data['enable_pledges'] = $values['enable_pledges'];
+  $data['enable_commitments'] = $values['enable_commitments'];
+  $data['enable_disbursements'] = $values['enable_disbursements'];
+  $data['enable_totalactivities'] = $values['enable_totalactivities'];
+
+  if ($data['amount-units'] == 'amount-units-1') {
+    $data['amount-units-label-type'] = '';
+  }
+
+  // Fix the custom labels.
+  if ($data['amount-units'] !== 'amount-units-1' && $label_type == 'override') {
+    if (drupal_multilingual()) {
+      $languages = language_list();
+      foreach ($languages as $lang_id => $language) {
+        if ($language->enabled) {
+          $data['amount-label'][$lang_id] = $values['widget_amount_label_' . $lang_id];
+        }
+      }
+    }
+  }
+  else {
+    $data['amount-label'] = array();
+  }
+
+  // Forcefully clear this widget's cache.
+  $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
+  $cache_id = "contentblock:widget:{$langcode}:totalpledges:";
+  cache_clear_all($cache_id, 'cache', TRUE);
+
 
   _contentwidget_fixed_set_settings($entity->machine_name, $data);
 }

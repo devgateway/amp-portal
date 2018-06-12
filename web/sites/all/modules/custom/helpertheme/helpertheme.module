@@ -400,6 +400,17 @@ function helpertheme_less_variables_alter(&$less_variables, $system_name) {
   $less_variables['@base_path'] = '"' . base_path() . '"';
   $less_variables['@theme_path'] = '"' . base_path() . $GLOBALS['theme_path'] . '/"';
   $less_variables['@contentblock_section_title'] = '"' . t('edit section content') . '"';
+
+  // For RTL case, less files don't have 'owner', this is why default settings are lost.
+  // Let's fix that.
+  if ($system_name == NULL) {
+    $defaults_cache = &drupal_static('less_defaults');
+
+    if (!isset($defaults_cache)) {
+      _less_registry();
+    }
+    $less_variables = array_merge($less_variables, array_filter($defaults_cache['ampcms']));
+  }
 }
 
 /**

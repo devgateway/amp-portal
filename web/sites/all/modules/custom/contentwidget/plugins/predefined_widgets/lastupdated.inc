@@ -25,6 +25,7 @@ $plugin = array(
 );
 
 function contentwidget_lastupdated_widget_retrieve_data($plugin, $widget_settings, $langcode = NULL) {
+  global $language;
   $data = array();
 
   $api_status = ampAPIRestClient::status();
@@ -32,7 +33,10 @@ function contentwidget_lastupdated_widget_retrieve_data($plugin, $widget_setting
     return $data;
   }
 
-  $langcode = (empty($langcode) ? LANGUAGE_NONE : $langcode);
+  // We actually don't want to have undefined language, so we fallback on the active language.
+  if (empty($langcode) || $langcode == LANGUAGE_NONE) {
+    $langcode = $language->language;
+  }
   $cache_id = "contentblock:widget:{$langcode}:lastupdated:" . md5(serialize($widget_settings));
 
   // Try to get the processed response from cache.
@@ -120,7 +124,7 @@ function contentwidget_lastupdated_widget_render($plugin, $widget_settings, $ent
     // Create the table headers.
     foreach ($data->headers[0] as $key => $header_text) {
       $header[$key] = array(
-        'data' => check_plain($header_text),
+        'data' => t(check_plain($key)),
         'class' => array(
           drupal_html_class('col-' . $key)
         ),
