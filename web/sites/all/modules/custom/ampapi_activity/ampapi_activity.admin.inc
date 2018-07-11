@@ -208,7 +208,7 @@ function ampapi_activity_search_settings_form($form, &$form_state) {
   );
   $form_elements['misc_settings']['search_move_keywords_last'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Move Keywords to the bottom'),
+    '#title' => t('Move Search Terms to the bottom'),
     '#description' => t('If you check this box, the keyword search will actually be displayed as the last item.'),
     '#default_value' => isset($search_settings['search_move_keywords_last']) ? $search_settings['search_move_keywords_last'] : FALSE,
     '#states' => array(
