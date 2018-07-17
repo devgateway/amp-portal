@@ -182,6 +182,43 @@ function ampapi_activity_search_settings_form($form, &$form_state) {
     '#description' => t('Please specify which global amount formatting option you would like to use.'),
   );
 
+  $form_elements['misc_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Misc'),
+    '#description' => t("All the miscellaneous settings can be found here."),
+
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#parents' => array('ampapi_activity_search_settings'), // Remove the fieldset from the submitted values structure.
+  );
+  $form_elements['misc_settings']['front_search_collapsed'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Front Search - Default to Collapsed'),
+    '#description' => t('If you wish to have an expanded search on the homepage, uncheck this box.'),
+    '#default_value' => isset($search_settings['front_search_collapsed']) ? $search_settings['front_search_collapsed'] : TRUE,
+  );
+
+  $filter_options = _ampapi_activity_search_get_exposed_filters();
+  $form_elements['misc_settings']['search_exposed_main_widget'] = array(
+    '#type' => 'select',
+    '#title' => t('Main Search Field'),
+    '#description' => t('This field will appear as first filter, and if the search form is collapsed, it will be the default field shown.'),
+    '#options' => $filter_options,
+    '#default_value' => isset($search_settings['search_exposed_main_widget']) ? $search_settings['search_exposed_main_widget'] : 'search',
+  );
+  $form_elements['misc_settings']['search_move_keywords_last'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Move Search Terms to the bottom'),
+    '#description' => t('If you check this box, the keyword search will actually be displayed as the last item.'),
+    '#default_value' => isset($search_settings['search_move_keywords_last']) ? $search_settings['search_move_keywords_last'] : FALSE,
+    '#states' => array(
+      'invisible' => array(
+        ":input[name=\"ampapi_activity_search_settings[search_exposed_main_widget]\"]" => array('value' => 'search'),
+      ),
+    )
+  );
+
+
   $form['ampapi_activity_search_settings'] += $form_elements;
   $form['#submit'][] = 'ampapi_activity_search_settings_form_submit';
 
@@ -247,4 +284,39 @@ function ampapi_activity_search_settings_form_ssc_submit($form, &$form_state) {
  */
 function ampapi_activity_search_settings_form_submit($form, &$form_state) {
   views_invalidate_cache();
+}
+
+/**
+ * Small helper function that returns an array of all exposed (available) filters.
+ */
+function _ampapi_activity_search_get_exposed_filters() {
+  $name = 'activities';
+  $display_id = 'search_page';
+  $view = views_get_view($name);
+  if (empty($view)) {
+    return array('' => '- Something went wrong -');
+  }
+
+  if (!$view->access($display_id)) {
+    return array('' => '- Something went wrong -');
+  }
+
+  $view->set_display($display_id);
+  $view->pre_execute();
+
+  // Let modules modify the view just prior to building it.
+  // @see Views::build();
+  foreach (module_implements('views_pre_build') as $module) {
+    $function = $module . '_views_pre_build';
+    $function($view);
+  }
+
+  $filters = $view->filter;
+  $output = array();
+  foreach ($filters as $filter_id => $filter) {
+    if ($filter->options['exposed'] === TRUE) {
+      $output[$filter->options['expose']['identifier']] = $filter->options['expose']['label'];
+    }
+  }
+  return $output;
 }

@@ -252,16 +252,27 @@ function helpertheme_preprocess_views_exposed_form(&$variables) {
   if ($variables['form']['#id'] != 'views-exposed-form-activities-search-page') {
     return;
   }
+  $settings = variable_get('ampapi_activity_search_settings', array());
 
   if (drupal_is_front_page()) {
     $variables['theme_hook_suggestions'][] = 'views_exposed_form__homepage_search';
 
     if (isset($variables['widgets']['filter-title'])) {
-      $variables['basewidget'] = clone $variables['widgets']['filter-title'];
-      unset($variables['widgets']['filter-title']);
+      $default_key = isset($settings['search_exposed_main_widget']) ? $settings['search_exposed_main_widget'] : 'search';
+      foreach ($variables['widgets'] as $filter_id => $widget) {
+        if ($widget->id === 'edit-' . $default_key) {
+          $variables['basewidget'] = clone $variables['widgets'][$filter_id];
+          unset($variables['widgets'][$filter_id]);
+        }
+      }
     }
 
-    $extra_widgets_toggle = '<input type="checkbox" name="vew" id="extra-widgets-toggle" class="extra-widgets-toggle" />';
+    if (isset($settings['front_search_collapsed']) && $settings['front_search_collapsed'] === 0) {
+      $extra_widgets_toggle = '<input type="checkbox" name="vew" id="extra-widgets-toggle" class="extra-widgets-toggle" checked="checked" />';
+    }
+    else {
+      $extra_widgets_toggle = '<input type="checkbox" name="vew" id="extra-widgets-toggle" class="extra-widgets-toggle" />';
+    }
 
     $extra_widgets_toggle .= '<label for="extra-widgets-toggle" class="extra-widgets-toggle-label">';
     $svgicon = helpertheme_get_svg_icons('arrow', array('width' => '1.2em', 'height' => '1.2em'));
@@ -272,5 +283,11 @@ function helpertheme_preprocess_views_exposed_form(&$variables) {
     $extra_widgets_toggle .= '</label>';
 
     $variables['extra_widgets_toggle'] = $extra_widgets_toggle;
+  }
+  if (isset($settings['search_exposed_main_widget']) && $settings['search_exposed_main_widget'] !== 'search' &&
+    isset($settings['search_move_keywords_last']) && $settings['search_move_keywords_last'] === 1) {
+    $search = clone ($variables['widgets']['filter-title']);
+    unset($variables['widgets']['filter-title']);
+    $variables['widgets']['filter-title'] = $search;
   }
 }
