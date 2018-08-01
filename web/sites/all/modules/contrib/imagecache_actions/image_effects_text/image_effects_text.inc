@@ -66,15 +66,6 @@ function image_effects_text_form_inc(array $data) {
   // - Change the 'PHP code' textarea.
   $allow_php = module_exists('php') && user_access('use PHP for settings');
   $defaults = array(
-    'size' => 50,
-    'angle' => 0,
-    'xpos' => '0',
-    'ypos' => '0',
-    'halign' => 'left',
-    'valign' => 'top',
-    'RGB' => array('HEX' => '#000000'),
-    'alpha' => 100,
-    'fontfile' => drupal_get_path('module', 'image_effects_text') . '/Komika_display.ttf',
     'text_source' => 'text',
     'text' => t('Hello World!'),
     'php' => 'if (!$image_context[\'entity\']) {
@@ -88,77 +79,21 @@ if ($field) {
   return isset($field[0][\'value\']) ? $field[0][\'value\'] : \'' . t('No field value') . '\';
 }
 ',
+    'text_case' => 'none',
+    'fontfile' => drupal_get_path('module', 'image_effects_text') . '/Komika_display.ttf',
+    'size' => 50,
+    'RGB' => array('HEX' => '#000000'),
+    'alpha' => 100,
+    'xpos' => '0',
+    'ypos' => '0',
+    'halign' => 'left',
+    'valign' => 'top',
+    'angle' => 0,
   );
   $data += $defaults;
   $tokens = token_info();
   $tokens = array_keys($tokens['types']);
   $form = array(
-    'size' => array(
-      '#type' => 'textfield',
-      '#title' => t('Font size'),
-      '#default_value' => $data['size'],
-      '#description' => t('The font size in points. Only in GD1 this is in pixels.'),
-      '#size' => 3,
-    ),
-    'xpos' => array(
-      '#type' => 'textfield',
-      '#title' => t('X offset'),
-      '#default_value' => $data['xpos'],
-      '#description' => t('Enter an offset in pixels or use a keyword: <em>left</em>, <em>center</em>, or <em>right</em>. Syntax like <em>right-20</em> is also valid.'),
-      '#size' => 10,
-    ),
-    'ypos' => array(
-      '#type' => 'textfield',
-      '#title' => t('Y offset'),
-      '#default_value' => $data['ypos'],
-      '#description' => t('Enter an offset in pixels or use a keyword: <em>top</em>, <em>center</em>, or <em>bottom</em>. Syntax like <em>bottom-20</em> is also valid.'),
-      '#size' => 10,
-    ),
-    'halign' => array(
-      '#type' => 'select',
-      '#title' => t('Horizontal alignment'),
-      '#default_value' => $data['halign'],
-      '#description' => t('The horizontal alignment of the text around the given %xpos.', array('%xpos' => t('X offset'))),
-      '#options' => array(
-        'left' => t('Left'),
-        'center' => t('Center'),
-        'right' => t('Right')
-      ),
-    ),
-    'valign' => array(
-      '#type' => 'select',
-      '#title' => t('Vertical alignment'),
-      '#default_value' => $data['valign'],
-      '#description' => t('The vertical alignment of the text around the given %ypos.', array('%ypos' => t('Y offset'))),
-      '#options' => array(
-        'top' => t('Top'),
-        'center' => t('Center'),
-        'bottom' => t('Bottom')
-      ),
-    ),
-    'RGB' => imagecache_rgb_form($data['RGB']),
-    'alpha' => array(
-      '#type' => 'textfield',
-      '#title' => t('Opacity'),
-      '#default_value' => $data['alpha'] ? $data['alpha'] : 100,
-      '#size' => 3,
-      '#description' => t('Opacity: 1-100.'),
-    ),
-    'angle' => array(
-      '#type' => 'textfield',
-      '#title' => t('Angle'),
-      '#default_value' => $data['angle'],
-      '#description' => t('Angle: The angle in degrees, with 0 degrees being left-to-right reading text. Higher values represent a counter-clockwise rotation. For example, a value of 90 would result in bottom-to-top reading text.'),
-      '#size' => 3,
-    ),
-    'fontfile' => array(
-      '#type' => 'textfield',
-      '#title' => t('Font file name'),
-      '#default_value' => $data['fontfile'],
-      '#description' => imagecache_actions_file_field_description(),
-      '#element_validate' => array('image_effects_text_validate_font'),
-      '#size' => 80,
-    ),
     'text_help' => array(
       '#type' => 'item',
       '#title' => t('Text'),
@@ -220,6 +155,85 @@ if ($field) {
         'visible' => array(':input[name="data[text_source]"]' => array('value' => 'php')),
       ),
       '#wysiwyg' => FALSE,
+    ),
+    'text_case' => array(
+      '#title' => t('Capitalization'),
+      '#type' => 'select',
+      '#options' => array(
+        'none' => t('No transform'),
+        'upper' => t('Upper case'),
+        'lower' => t('Lower case'),
+        'ucfirst' => t('Capitalize first letter'),
+        'ucwords' => t('Capitalize each word'),
+      ),
+      '#default_value' => $data['text_case'],
+      '#description' => t('Defines if and how to transform the case of the text to render.'),
+    ),
+    'fontfile' => array(
+      '#type' => 'textfield',
+      '#title' => t('Font file name'),
+      '#default_value' => $data['fontfile'],
+      '#description' => imagecache_actions_file_field_description(),
+      '#element_validate' => array('image_effects_text_validate_font'),
+      '#size' => 80,
+    ),
+    'size' => array(
+      '#type' => 'textfield',
+      '#title' => t('Font size'),
+      '#default_value' => $data['size'],
+      '#description' => t('The font size in points. Only in GD1 this is in pixels.'),
+      '#size' => 3,
+    ),
+    'RGB' => imagecache_rgb_form($data['RGB']),
+    'alpha' => array(
+      '#type' => 'textfield',
+      '#title' => t('Opacity'),
+      '#default_value' => $data['alpha'],
+      '#size' => 3,
+      '#description' => t('Opacity: 1-100.'),
+    ),
+    'xpos' => array(
+      '#type' => 'textfield',
+      '#title' => t('X offset'),
+      '#default_value' => $data['xpos'],
+      '#description' => t('Enter an offset in pixels or use a keyword: <em>left</em>, <em>center</em>, or <em>right</em>. Syntax like <em>right-20</em> is also valid.'),
+      '#size' => 10,
+    ),
+    'ypos' => array(
+      '#type' => 'textfield',
+      '#title' => t('Y offset'),
+      '#default_value' => $data['ypos'],
+      '#description' => t('Enter an offset in pixels or use a keyword: <em>top</em>, <em>center</em>, or <em>bottom</em>. Syntax like <em>bottom-20</em> is also valid.'),
+      '#size' => 10,
+    ),
+    'halign' => array(
+      '#type' => 'select',
+      '#title' => t('Horizontal alignment'),
+      '#default_value' => $data['halign'],
+      '#description' => t('The horizontal alignment of the text around the given %xpos.', array('%xpos' => t('X offset'))),
+      '#options' => array(
+        'left' => t('Left'),
+        'center' => t('Center'),
+        'right' => t('Right')
+      ),
+    ),
+    'valign' => array(
+      '#type' => 'select',
+      '#title' => t('Vertical alignment'),
+      '#default_value' => $data['valign'],
+      '#description' => t('The vertical alignment of the text around the given %ypos.', array('%ypos' => t('Y offset'))),
+      '#options' => array(
+        'top' => t('Top'),
+        'center' => t('Center'),
+        'bottom' => t('Bottom')
+      ),
+    ),
+    'angle' => array(
+      '#type' => 'textfield',
+      '#title' => t('Angle'),
+      '#default_value' => $data['angle'],
+      '#description' => t('Angle: The angle in degrees, with 0 degrees being left-to-right reading text. Higher values represent a counter-clockwise rotation. For example, a value of 90 would result in bottom-to-top reading text.'),
+      '#size' => 3,
     ),
   );
   if (!$allow_php && $data['text_source'] !== 'php') {
@@ -311,19 +325,20 @@ function image_effects_text_effect_inc(stdClass $image, array $data) {
   // Start with a straight copy.
   $params = $data;
 
+  // Get the text to overlay.
+  $params['text'] = image_effects_text_get_text($image, $params);
+  if (empty($params['text'])) {
+    // No text to overlay. This is a situation that can be expected with token
+    // replacement, or custom PHP code. Return immediately with success.
+    return TRUE;
+  }
+
   // Find out where the font file is located and if it is readable.
   $params['fontpath'] = imagecache_actions_find_file($data['fontfile']);
   if ($params['fontpath'] === FALSE) {
     // Pass the font on and let's hope that the toolkit knows where to find it.
     // We did warn on the effect form.
     $params['fontpath'] = $data['fontfile'];
-  }
-
-  // Get the text to overlay.
-  $params['text'] = image_effects_text_get_text($image, $params);
-  if ($params['text'] === FALSE) {
-    drupal_set_message(t("Failed to evaluate text (is the 'PHP Filter' module enabled?). Not overlaying text."), 'error');
-    return FALSE;
   }
 
   // Parse offsets.
@@ -340,7 +355,8 @@ function image_effects_text_effect_inc(stdClass $image, array $data) {
   $params['size'] = (int) $params['size'];
   $params['xpos'] = (int) $params['xpos'];
   $params['ypos'] = (int) $params['ypos'];
-  // Hand over to toolkit
+
+  // Hand over to toolkit.
   return image_toolkit_invoke('image_effects_text', $image, array($params));
 }
 
@@ -348,43 +364,43 @@ function image_effects_text_effect_inc(stdClass $image, array $data) {
  * GD toolkit specific implementation of the text effect.
  *
  * @param stdClass $image
- * @param array $params
+ * @param array $data
  *   The parameters for this effect.
  *
  * @return bool
  *   true on success, false otherwise.
  */
-function image_gd_image_effects_text(stdClass $image, array $params) {
+function image_gd_image_effects_text(stdClass $image, array $data) {
   // Convert color and alpha to GD alpha and color value.
   // GD alpha value: 0 = opaque, 127 = transparent.
-  $params['alpha'] = (int) ((1 - ($params['alpha'] / 100)) * 127);
-  $color = imagecolorallocatealpha($image->resource, $params['RGB']['red'], $params['RGB']['green'], $params['RGB']['blue'], $params['alpha']);
+  $data['alpha'] = (int) ((1 - ($data['alpha'] / 100)) * 127);
+  $color = imagecolorallocatealpha($image->resource, $data['RGB']['red'], $data['RGB']['green'], $data['RGB']['blue'], $data['alpha']);
   if ($color !== FALSE) {
     $bounds = NULL;
     // Adjust Y position for vertical alignment (if different from bottom).
-    if ($params['valign'] !== 'bottom') {
+    if ($data['valign'] !== 'bottom') {
       // Get bounding box.
       // PHP Manual: "This function requires both the GD library and the » FreeType library."
       // So it is not more demanding than imagettftext, which we need anyway.
-      $bounds = imagettfbbox($params['size'], 0, $params['fontpath'], $params['text']);
-      if ($bounds === FALSE) {
+      $bounds = imagettfbbox($data['size'], 0, $data['fontpath'], $data['text']);
+      if (!$bounds) {
         drupal_set_message(t('Failed to calculate text dimensions using GD toolkit. Ignoring the alignment settings.'), 'warning');
       }
       else {
         // Get height of bounding box.
         $height = $bounds[1] - $bounds[7];
         // Shift ypos down (full height on bottom, half the height on center).
-        $params['ypos'] += $params['valign'] === 'center' ? (int) ($height / 2) : $height;
+        $data['ypos'] += $data['valign'] === 'center' ? (int) ($height / 2) : $height;
       }
     }
     // Adjust X position for horizontal alignment (if different from left).
-    if ($params['halign'] !== 'left') {
+    if ($data['halign'] !== 'left') {
       // Get bounding box. PHP Manual: "This function requires both the GD
       // library and the » FreeType library.", so it is not more demanding than
       // imagettftext(), which we need anyway.
       if ($bounds === NULL) {
-        $bounds = imagettfbbox($params['size'], 0, $params['fontpath'], $params['text']);
-        if ($bounds === FALSE) {
+        $bounds = imagettfbbox($data['size'], 0, $data['fontpath'], $data['text']);
+        if (!$bounds) {
           drupal_set_message(t('Failed to calculate text dimensions using GD toolkit. Ignoring the alignment.'), 'warning');
         }
       }
@@ -392,12 +408,12 @@ function image_gd_image_effects_text(stdClass $image, array $params) {
         // Get width of bounding box.
         $width = $bounds[2] - $bounds[0];
         // Shift xpos to the left (full width on right, half the width on center).
-        $params['xpos'] -= $params['halign'] === 'center' ? (int) ($width / 2) : $width;
+        $data['xpos'] -= $data['halign'] === 'center' ? (int) ($width / 2) : $width;
       }
     }
 
     // PHP Manual: "This function requires both the GD library and the » FreeType library."
-    $bounds = imagettftext($image->resource, $params['size'], $params['angle'], $params['xpos'], $params['ypos'], $color, $params['fontpath'], $params['text']);
+    $bounds = imagettftext($image->resource, $data['size'], $data['angle'], $data['xpos'], $data['ypos'], $color, $data['fontpath'], $data['text']);
     return $bounds !== FALSE;
   }
   return FALSE;
@@ -407,25 +423,25 @@ function image_gd_image_effects_text(stdClass $image, array $params) {
  * Imagemagick toolkit specific implementation of the text effect.
  *
  * Text in Imagemagick:
- * @link http://www.imagemagick.org/script/command-line-options.php?#draw
- * @link http://www.imagemagick.org/script/command-line-options.php?#annotate
+ * - http://www.imagemagick.org/script/command-line-options.php?#draw
+ * - http://www.imagemagick.org/script/command-line-options.php?#annotate
  *
  * UTF-8/non-ascii characters:
  * To prevent problems with non-ASCII characters, the online manual suggests to
  * put the text in a file and use the @{file} syntax. This does not work with
  * the text primitive of the -draw command, so we use -annotate.
  * We put the text in a temporary file which will be deleted by our hook_exit().
- * @see: http://www.imagemagick.org/Usage/windows/#character_encoding
+ * http://www.imagemagick.org/Usage/windows/#character_encoding
  *
  * Alignment in Imagemagick:
  * This is not directly supported, though a justification option has been
- * proposed: @see http://www.imagemagick.org/Usage/bugs/future/#justification.
+ * proposed: http://www.imagemagick.org/Usage/bugs/future/#justification.
  *
  * What we do have is the gravity option:
  * Gravity is used to position a text, but it also automatically applies a
  * justification based on that placement. So we use gravity here for alignment,
  * but will thus have to rebase our positioning.
- * @see http://www.imagemagick.org/Usage/annotating/#gravity
+ * - http://www.imagemagick.org/Usage/annotating/#gravity
  *
  * Gravity  |halign|valign |hpos change|vpos change
  * ------------------------------------------------
@@ -438,8 +454,16 @@ function image_gd_image_effects_text(stdClass $image, array $params) {
  * SouthWest left   bottom  0           -height
  * South     center bottom  -width/2    -height
  * SouthEast right  bottom  -width      -height
+ *
+ * @param stdClass $image
+ * @param array $data
+ *   The parameters for this effect.
+ *
+ * @return bool
+ *   true on success, false otherwise.
+
  */
-function image_imagemagick_image_effects_text(stdClass $image, array $params) {
+function image_imagemagick_image_effects_text(stdClass $image, array $data) {
   static $alignments2gravity = array(
     'left' => array(
       'top' => array(
@@ -495,49 +519,49 @@ function image_imagemagick_image_effects_text(stdClass $image, array $params) {
   );
 
   // Convert color and alpha to Imagemagick rgba color argument.
-  $alpha = $params['alpha'] / 100;
-  $color = 'rgba(' . $params['RGB']['red'] . ',' . $params['RGB']['green'] . ',' . $params['RGB']['blue'] . ',' . $alpha . ')';
+  $alpha = $data['alpha'] / 100;
+  $color = 'rgba(' . $data['RGB']['red'] . ',' . $data['RGB']['green'] . ',' . $data['RGB']['blue'] . ',' . $alpha . ')';
 
   // Set gravity for the alignment and calculate the translation to the
   // requested x and y offset as starting from the gravity point.
-  $alignment_corrections = $alignments2gravity[$params['halign']][$params['valign']];
+  $alignment_corrections = $alignments2gravity[$data['halign']][$data['valign']];
   $gravity = $alignment_corrections['gravity'];
   if ($alignment_corrections['tx'] > 0) {
-    $params['xpos'] = (int) ($alignment_corrections['tx'] * $image->info['width'] - $params['xpos']);
+    $data['xpos'] = (int) ($alignment_corrections['tx'] * $image->info['width'] - $data['xpos']);
   }
   else {
-    $params['xpos'] += (int) ($alignment_corrections['tx'] * $image->info['width']);
+    $data['xpos'] += (int) ($alignment_corrections['tx'] * $image->info['width']);
   }
   if ($alignment_corrections['ty'] > 0) {
-    $params['ypos'] = (int) ($alignment_corrections['ty'] * $image->info['height'] - $params['ypos']);
+    $data['ypos'] = (int) ($alignment_corrections['ty'] * $image->info['height'] - $data['ypos']);
   }
   else {
-    $params['ypos'] += (int) ($alignment_corrections['ty'] * $image->info['height']);
+    $data['ypos'] += (int) ($alignment_corrections['ty'] * $image->info['height']);
   }
 
   // Add signs to translation, also when positive or 0.
-  if ($params['xpos'] >= 0) {
-    $params['xpos'] = '+' . $params['xpos'];
+  if ($data['xpos'] >= 0) {
+    $data['xpos'] = '+' . $data['xpos'];
   }
-  if ($params['ypos'] >= 0) {
-    $params['ypos'] = '+' . $params['ypos'];
+  if ($data['ypos'] >= 0) {
+    $data['ypos'] = '+' . $data['ypos'];
   }
 
   // Angle must be positive.
-  if ($params['angle'] < 0) {
-    $params['angle'] = $params['angle'] % 360 + 360;
+  if ($data['angle'] < 0) {
+    $data['angle'] = $data['angle'] % 360 + 360;
   }
 
-  // Set font file, size and color.
-  $image->ops[] = '-font ' . escapeshellarg($params['fontpath']);
-  $image->ops[] = "-pointsize {$params['size']}";
+  // Set font file, size and color. fontpath is the real path, not a wrapper.
+  $image->ops[] = '-font ' . escapeshellarg($data['fontpath']);
+  $image->ops[] = "-pointsize {$data['size']}";
   $image->ops[] = '-fill ' . escapeshellarg($color);
 
   // Add text to a temporary file,
   $tmp_file_name = drupal_tempnam('temporary://', 'image_effects_text');
   $tmp_file = fopen($tmp_file_name, 'w');
   if ($tmp_file) {
-    fwrite($tmp_file, $params['text']);
+    fwrite($tmp_file, $data['text']);
     fclose($tmp_file);
     // and inform our hook_exit about it.
     image_effects_text_exit($tmp_file_name);
@@ -547,13 +571,13 @@ function image_imagemagick_image_effects_text(stdClass $image, array $params) {
   else {
     // Fallback to pass the text via the command line, let's hope there are no
     // non-ASCII characters or that it works anyway (OS and locale dependent).
-    $text = $params['text'];
+    $text = $data['text'];
   }
 
   // Add gravity.
   $image->ops[] = "-gravity $gravity";
   // Add text angle, position and text (file) itself.
-  $image->ops[] = "-annotate {$params['angle']}x{$params['angle']}{$params['xpos']}{$params['ypos']} " . escapeshellarg($text);
+  $image->ops[] = "-annotate {$data['angle']}x{$data['angle']}{$data['xpos']}{$data['ypos']} " . escapeshellarg($text);
 
   return TRUE;
 }
@@ -582,14 +606,14 @@ function image_imagemagick_image_effects_text(stdClass $image, array $params) {
  * The algorithm will accept many more situations, though the result may be hard
  * to predict.
  *
+ * @param string $position
+ *   The string defining the position.
  * @param int $width
  *   The length of the horizontal dimension.
  * @param int $height
  *   The length of the vertical dimension.
  * @param int $length
  *   The length of the current dimension (should be either width or height).
- * @param string $position
- *   The string defining the position.
  *
  * @return number
  *   The computed offset in pixels.
@@ -707,12 +731,64 @@ function image_effects_text_get_text(stdClass $image, array $data) {
     // variables, so they can be passed successfully.
     $GLOBALS['image_context'] = $image_context;
     $GLOBALS['image'] = $image;
+
+    // Get (non-alterable) context about the image style and image effect.
+    $execution_info = imagecache_actions_get_image_effect_context();
+    $GLOBALS['image_style'] = $execution_info['image_style'];
+    $GLOBALS['image_effect_id'] = $execution_info['image_effect_id'];
+
     // We don't need to check_plain() the resulting text, as the text is not
     // rendered in a browser but processed on the server.
     $text = module_exists('php') ? php_eval('<' . '?php global $image, $image_context; ' . $data['php'] . ' ?' . '>') : '';
 
+    unset($GLOBALS['image_effect_id']);
+    unset($GLOBALS['image_style']);
     unset($GLOBALS['image']);
     unset($GLOBALS['image_context']);
   }
+
+  // Convert case.
+  $text = image_effect_text_case_transform($text, isset($data['text_case']) ? $data['text_case'] : 'none');
+
   return $text;
 }
+
+/**
+ * Transform a string by a certain method.
+ *
+ * Proudly copied from module://views/includes/handlers.inc.
+ *
+ * @param $string
+ *    The input you want to transform.
+ * @param $option
+ *    How do you want to transform it, possible values:
+ *      - upper: Uppercase the string.
+ *      - lower: lowercase the string.
+ *      - ucfirst: Make the first char uppercase.
+ *      - ucwords: Make each word in the string uppercase.
+ *
+ * @return string
+ *    The transformed string.
+ */
+function image_effect_text_case_transform($string, $option) {
+  global $multibyte;
+
+  switch ($option) {
+    default:
+      return $string;
+    case 'upper':
+      return drupal_strtoupper($string);
+    case 'lower':
+      return drupal_strtolower($string);
+    case 'ucfirst':
+      return drupal_strtoupper(drupal_substr($string, 0, 1)) . drupal_substr($string, 1);
+    case 'ucwords':
+      if ($multibyte == UNICODE_MULTIBYTE) {
+        return mb_convert_case($string, MB_CASE_TITLE);
+      }
+      else {
+        return ucwords($string);
+      }
+  }
+}
+
