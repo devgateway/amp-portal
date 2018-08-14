@@ -279,6 +279,9 @@ class activityMapperSubFilterAutocomplete extends activityMapperAutocompleteBase
       if (isset($info->filterId) && $info->filterId == $look_up_filter) {
         return $info->id;
       }
+      if (isset($info->name) && $info->name == $look_up_filter) {
+        return $info->id;
+      }
     }
 
     return NULL;

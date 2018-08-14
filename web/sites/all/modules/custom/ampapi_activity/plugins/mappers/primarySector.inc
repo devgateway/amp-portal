@@ -21,8 +21,7 @@ $plugin = array(
 
   // These are used to filter out entries:
   // When filterId is available, we'll try 'report sub-filter filter-id'.
-  'report sub-filter filter-id' => 'Primary Sector',
-
+  'report sub-filter filter-id' => 'Primary',
   'handler' => 'primarySectorMapper',
 );
 
