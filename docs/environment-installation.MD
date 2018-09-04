@@ -37,7 +37,7 @@ After you have installed you need to checkout the code from the git repositoring
 </VirtualHost>
 ```
 
-## PHP configuration that needs to be change
+## PHP configuration that needs to be changed
 ```bash
 ; Search for these settings and update the values.
 max_execution_time = 60
