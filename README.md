@@ -10,6 +10,3 @@ The Public Portal is a user-friendly extension of the AMP system. Users can sear
 * [Environment Upgrade Instructions](docs/environment-upgrade.md)
 
 * For more documentation you also should check [amp-deployer](https://github.com/devgateway/amp-deployer)
-
-## Issues:
-Please report issues in JIRA: https://jira.dgfoundation.org/browse/AMPPP
