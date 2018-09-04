@@ -2,8 +2,9 @@
 # AMP Portal v2.13.7
 
 ## Documentation:
-
+* [Environment Installation Instructions](docs/environment-installation.MD)
 * [Environment Upgrade Instructions](docs/environment-upgrade.md)
+
 * For more documentation you also should check [amp-deployer](https://github.com/devgateway/amp-deployer)
 
 ## Issues:
