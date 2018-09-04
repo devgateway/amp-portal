@@ -68,11 +68,8 @@ drush usr task/revert.features.php -y
 
 2. Log in with the oneUser username and Create a new user and give it the "admin user" role.
 4. Configure the AMP API in order to be able to retrieve AMP Date
-  1. Click in the upper right corner, the settings link 
-  (/docs/img/appi1.png?raw=true "settings")
-  2.Click on Appi Settings
-  (/docs/img/appi2.png?raw=true "settings")
-  3. Enter the AMP api URL
-  (/docs/img/appi3.png?raw=true "settings")
+  a. Click in the upper right corner, the settings link 
+  b. Click on API Settings
+  c. Enter the AMP api URL
 5. Log out and forget about the oneUser, you should not use that user ever again!
 6. est and see if your new environment is working, if you have any question feel free to contact us
