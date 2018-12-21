@@ -46,7 +46,8 @@ function ampapi_activity_views_data_alter(&$data) {
         $data[$efq_data_key][$property_name]['filter']['options arguments'] = array($plugin['name']);
       }
 
-      if (isset($plugin['report filter key'])) {
+      // @TODO: Remove after nifilter implemented.
+      if (isset($plugin['report filter key']) || isset($plugin['report filter endpoint'])) {
         // @TODO: Also override contextual filters (arguments) if necessary.
         switch($plugin['property info']['type']) {
           case 'boolean':

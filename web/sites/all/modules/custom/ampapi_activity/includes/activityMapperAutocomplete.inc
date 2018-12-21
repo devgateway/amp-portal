@@ -14,23 +14,25 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
       return array();
     }
 
-    $returned_data = ampAPIRestClient::get($info['endpoint']);
-    if (empty($returned_data)) {
+    $returned_filter = FALSE;
+
+    // Get the filter data, which contains filter definition(s) and filter data.
+    $returned_filter_data = ampAPIRestClient::get($info['endpoint']);
+    if (empty($returned_filter_data)) {
       return array();
     }
-
-    switch ($plugin['report filter endpoint']) {
-      case 'filters/locations':
-        // Include top level (the country name) in the autocomplete suggestions.
-        $returned_data = array($returned_data);
-        break;
-      case 'filters/programs':
-      case 'filters/sectors':
-        // Do not include top level option in the autocomplete suggestions.
-        /** @noinspection PhpUndefinedFieldInspection */
-        $returned_data = $returned_data->children;
-        break;
+    else {
+      foreach ($returned_filter_data->listDefinitions as $delta => $filter_definition) {
+        if ($filter_definition->name == $plugin['report filter name']) {
+          $returned_filter = $filter_definition;
+        }
+      }
     }
+
+    // Because we switched to nifilters we will figure out the data ourselves.
+    $returned_data = $returned_filter_data->items->{$returned_filter->items};
+    $info['filter details'] = $returned_filter;
+
     // Offer subclasses a possibility to filter-out the returned data.
     $returned_data = $this->filterData($info, $returned_data);
     return $this->getMatchedValues($info, $returned_data);
@@ -48,13 +50,12 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
 
     $info['plugin'] = $plugin;
     $info['type'] = $type;
-
     $info['endpoint'] = $plugin['report filter endpoint'];
 
     return $info;
   }
 
-  public function getMatchedValues(array $info, array $entries, $top_level = TRUE) {
+  public function getMatchedValues(array $info, array $entries, $level = 0) {
     global $language;
     $matches = array();
 
@@ -67,20 +68,21 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
         break;
       }
 
-      // Match full codes and codes starting with the provided string.
-      $prepend_entry = FALSE;
-      if ($info['plugin']['report filter endpoint'] == 'filters/sectors') {
-        if (isset($entry->code) && is_numeric($search_string) && $search_string == $entry->code) {
-          $prepend_entry = TRUE;
-        }
+      // Because $entry->filterId is missing now, we can grab it from $info.
+      if (!empty($info['field details'])) {
+        $filter_id = $info['field details']->filterIds[$level];
+        $entry->filter_id = $filter_id;
       }
 
+      // Match full codes and codes starting with the provided string.
+      $prepend_entry = FALSE;
       if (!$this->_valueMatches($info, $entry, $search_string)) {
         continue;
       }
 
       // Include parent Location Administrative Levels in name, if any.
       $name = '';
+//      dsm($info, 'info');
       if ($info['plugin']['report filter endpoint'] == 'filters/locations') {
         if (isset($info['parents'])) {
           foreach ($info['parents'] as $parent) {
@@ -126,11 +128,11 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
       if (!empty($entry->children)) {
         // We need to change the info only for the current children.
         $temp_info = $info;
-        if ($top_level) {
+        if ($level == 0) {
           $entry->top_level = TRUE;
         }
         $temp_info['parents'][] = $entry;
-        $matches = array_merge($matches, $this->getMatchedValues($temp_info, $entry->children, FALSE));
+        $matches = array_merge($matches, $this->getMatchedValues($temp_info, $entry->children, $level + 1));
       }
     }
 
