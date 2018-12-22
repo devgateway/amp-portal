@@ -23,5 +23,5 @@ $plugin = array(
   'handler' => 'nationalPlanObjectiveMapper',
 );
 
-class nationalPlanObjectiveMapper extends activityMapperSubFilterAutocomplete {
+class nationalPlanObjectiveMapper extends activityMapperAutocompleteBase {
 }

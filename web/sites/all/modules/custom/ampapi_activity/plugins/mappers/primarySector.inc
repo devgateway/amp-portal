@@ -13,12 +13,11 @@ $plugin = array(
     'type' => 'text',
   ),
 
-  'report filter endpoint' => 'nifilters/sectors',
-  'report filter name' => 'Primary Sectors',
-
   'report field group' => 'columns',
   'report field key' => 'Primary Sector',
-  //  'report filter key' => 'primary-sector',
+
+  'report filter endpoint' => 'nifilters/sectors',
+  'report filter name' => 'Primary Sectors',
 
   'handler' => 'primarySectorMapper',
 );
