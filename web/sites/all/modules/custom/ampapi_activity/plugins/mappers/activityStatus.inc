@@ -19,6 +19,7 @@ $plugin = array(
 
   'report filter endpoint' => 'nifilters/activityStatus',
   'report filter name' => 'Status',
+  'report filter key' => 'status',
 
   'handler' => 'activityStatusMapper',
 );

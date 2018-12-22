@@ -60,10 +60,15 @@ class activityMapperBase implements activityMapperInterface {
           // Let's override the $key for locations.
           foreach ($condition['value'] as $value) {
             if (strpos($value, ':') !== FALSE) {
-              list($location_key, $value_id) = explode(':', $value);
-              $request_body['filters'][$location_key][] = $value_id;
+              list($filter_key, $value_id) = explode(':', $value);
+              $request_body['filters'][$filter_key][] = $value_id;
             }
             else if ($key) {
+              $request_body['filters'][$key] = $condition['value'];
+            }
+            else {
+              // Last chance fallback.
+              $key = $plugin['property name'];
               $request_body['filters'][$key] = $condition['value'];
             }
           }
