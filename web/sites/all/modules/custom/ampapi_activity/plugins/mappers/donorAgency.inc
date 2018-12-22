@@ -15,10 +15,9 @@ $plugin = array(
 
   'report field group' => 'columns',
   'report field key' => 'Donor Agency',
-  'report filter key' => 'donor-agency',
 
-  'report filter endpoint' => 'filters/orgs',
-  'report filter endpoint extra' => 'filters/org-roles',
+  'report filter endpoint' => 'nifilters/organizations',
+  'report filter name' => 'Donor',
 
   'handler' => 'donorAgencyMapper',
 );

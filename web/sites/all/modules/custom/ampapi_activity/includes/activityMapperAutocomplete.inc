@@ -141,6 +141,25 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
    *   Filtered data.
    */
   public function filterData($info, $data) {
+    if (!empty($info['filter details'])) {
+      $needs_filtering = !$info['filter details']->filtered;
+      $filter_id = $info['filter details']->id;
+
+      // Check if the list is pre-filtered or not, if it's not, let's do it ourselves.
+      if ($needs_filtering) {
+        foreach ($data as $delta => $item) {
+          $data[$delta]->filtered = FALSE;
+          if ($item->listDefinitionIds !== NULL) {
+            $data[$delta]->filtered = !in_array($filter_id, $item->listDefinitionIds) ? TRUE : FALSE;
+          }
+
+          // Dive deeper.
+          if (!empty($item->children)) {
+            $data[$delta]->children = $this->filterData($info, $item->children);
+          }
+        }
+      }
+    }
     return $data;
   }
 
