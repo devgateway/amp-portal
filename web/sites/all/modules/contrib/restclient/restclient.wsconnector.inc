@@ -50,6 +50,10 @@ if (class_exists('WsConnector')) {
         $type = $options['create_method'];
       }
 
+      if (is_callable(array($this, 'setError')) and !isset($options['error_handling'])) {
+        $options['error_handling'] = __CLASS__;
+      }
+
       // If the arguments aren't a simple string, we need to get RESTClient to
       // process it into a string
       if (!empty($arguments) and !is_string($arguments)) {
@@ -105,10 +109,16 @@ if (class_exists('WsConnector')) {
       }
       $response = restclient_post($method, $variables);
       if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
-        if (isset($options['error_handling']) and $options['error_handling']) {
-          // don't cache error responses
-          $this->expires = 0;
-          return $response;
+        if (isset($options['error_handling'])) {
+          if ($options['error_handling'] == __CLASS__) {
+            $this->setError($response->code, $response->error);
+            return FALSE;
+          }
+          else {
+            // don't cache error responses
+            $this->expires = 0;
+            return $response;
+          }
         }
         else {
           return FALSE;
@@ -126,10 +136,16 @@ if (class_exists('WsConnector')) {
       $response = restclient_get($method, array('endpoint' => $endpoint) + $options);
       // @todo add support for more 200 class response codes
       if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
-        if (isset($options['error_handling']) and $options['error_handling']) {
-          // don't cache error responses
-          $this->expires = 0;
-          return $response;
+        if (isset($options['error_handling'])) {
+          if ($options['error_handling'] == __CLASS__) {
+            $this->setError($response->code, $response->error);
+            return FALSE;
+          }
+          else {
+            // don't cache error responses
+            $this->expires = 0;
+            return $response;
+          }
         }
         else {
           return FALSE;
@@ -153,10 +169,16 @@ if (class_exists('WsConnector')) {
       }
       $response = restclient_put($method, $variables);
       if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
-        if (isset($options['error_handling']) and $options['error_handling']) {
-          // don't cache error responses
-          $this->expires = 0;
-          return $response;
+        if (isset($options['error_handling'])) {
+          if ($options['error_handling'] == __CLASS__) {
+            $this->setError($response->code, $response->error);
+            return FALSE;
+          }
+          else {
+            // don't cache error responses
+            $this->expires = 0;
+            return $response;
+          }
         }
         else {
           return FALSE;
@@ -173,10 +195,16 @@ if (class_exists('WsConnector')) {
     protected function restclientDelete(&$type, &$endpoint, &$method, &$arguments, &$options) {
       $response = restclient_delete($method, array('endpoint' => $endpoint) + $options);
       if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
-        if (isset($options['error_handling']) and $options['error_handling']) {
-          // don't cache error responses
-          $this->expires = 0;
-          return $response;
+        if (isset($options['error_handling'])) {
+          if ($options['error_handling'] == __CLASS__) {
+            $this->setError($response->code, $response->error);
+            return FALSE;
+          }
+          else {
+            // don't cache error responses
+            $this->expires = 0;
+            return $response;
+          }
         }
         else {
           return FALSE;
@@ -194,10 +222,16 @@ if (class_exists('WsConnector')) {
       $response = restclient_get($method, array('endpoint' => $endpoint) + $options);
       // @todo add support for more 200 class response codes
       if (restclient_response_code($response) != RESTCLIENT_RESPONSE_SUCCESS) {
-        if (isset($options['error_handling']) and $options['error_handling']) {
-          // don't cache error responses
-          $this->expires = 0;
-          return $response;
+        if (isset($options['error_handling'])) {
+          if ($options['error_handling'] == __CLASS__) {
+            $this->setError($response->code, $response->error);
+            return FALSE;
+          }
+          else {
+            // don't cache error responses
+            $this->expires = 0;
+            return $response;
+          }
         }
         else {
           return FALSE;
@@ -263,6 +297,20 @@ if (class_exists('WsConnector')) {
     public function update ($id, $method, $object, $options = array()) {
       $this->expires = 0;
       return $this->wscall('update', $method, $object, $options);
+    }
+
+
+    public function isDegraded() {
+      $error = $this->getError();
+      if (!isset($error) or !isset($error['code'])) {
+        return FALSE;
+      }
+
+      if ($error['code'] == -1) {
+        return TRUE;
+      }
+
+      return FALSE;
     }
 
   }

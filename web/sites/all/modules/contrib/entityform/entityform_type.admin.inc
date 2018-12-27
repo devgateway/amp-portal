@@ -85,6 +85,7 @@ function entityform_type_form($form, &$form_state, $entityform_type, $op = 'edit
     '#title' => $labels['redirect_path'],
     '#default_value' => empty($entityform_type->data['redirect_path']) ? '' : $entityform_type->data['redirect_path'],
     '#description' => t('What relative path should the user be redirected to on a correct submission?  Leave blank for default action.'),
+    '#maxlength' => 500,
   );
   $form['data']['instruction_pre'] = array(
     '#type' => 'text_format',
@@ -377,7 +378,7 @@ function _entityform_type_settings_elements($entityform_type, $op) {
     '#type' => 'textfield',
     '#title' => $labels['submit_confirm_msg'],
     '#default_value' => empty($entityform_type->data['submit_confirm_msg']) ? '' : $entityform_type->data['submit_confirm_msg'],
-    '#description' => t('Text to use for Submission Conformation.') . $default_value_message,
+    '#description' => t('Text to use for Submission Confirmation.') . $default_value_message,
   );
   $form['data']['formoverride_set']['your_submissions'] = array(
     '#type' => 'textfield',
@@ -395,7 +396,7 @@ function _entityform_type_settings_elements($entityform_type, $op) {
     '#type' => 'textfield',
     '#title' => $labels['delete_confirm_msg'],
     '#default_value' => empty($entityform_type->data['delete_confirm_msg']) ? '' : $entityform_type->data['delete_confirm_msg'],
-    '#description' => t('Text to use for "Delete Conformation".') . $default_value_message,
+    '#description' => t('Text to use for "Delete Confirmation".') . $default_value_message,
   );
   $form['data']['formoverride_set']['page_title_view'] = array(
     '#type' => 'textfield',
@@ -496,7 +497,7 @@ function _entityform_type_settings_elements($entityform_type, $op) {
     '#title' => t('Form status'),
     '#options' => array(
       ENTITYFORM_STATUS_OPEN => t('Open for new submissions'),
-      ENTITYFORM_STATUS_CLOSED => t('Closed form new form submissions'),
+      ENTITYFORM_STATUS_CLOSED => t('Closed for new form submissions'),
     ),
     '#default_value' => empty($entityform_type->data['form_status']) ? 'open' : $entityform_type->data['form_status'],
     '#description' => t('Can users submit this form?  Open means the users can submit this form.  Closed means the user can not submit the form.'),
