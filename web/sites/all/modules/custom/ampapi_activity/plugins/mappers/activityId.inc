@@ -29,7 +29,7 @@ class activityIdMapper extends activityMapperBase {
   //   throw new ampAPIEntityQueryHelperException("Sort is not supported for \"{$plugin_title}\"");
   // }
 
-  public static function getValue($plugin, $column) {
+  public static function getValue($plugin, $column, $formatter = NULL) {
     if (isset($column->displayedValue)) {
       return $column->displayedValue;
     }
