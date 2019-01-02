@@ -14,10 +14,10 @@ $plugin = array(
   ),
 
   'report field group' => 'columns',
-  'report field key' => 'National Planning Objectives',
+  'report field key' => 'National Planning Objectives Level 1',
 
   'report filter endpoint' => 'nifilters/programs',
-  'report filter name' => 'National Planning Objectives',
+  'report filter name' => 'National Planning Objectives Level 1',
 
   'handler' => 'nationalPlanObjectiveMapper',
 );
