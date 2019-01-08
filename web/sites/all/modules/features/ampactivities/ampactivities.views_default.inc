@@ -64,6 +64,8 @@ function ampactivities_views_default_views() {
     'ssc_bilateral_disbursements' => 'ssc_bilateral_disbursements',
     'ssc_triangular_commitments' => 'ssc_triangular_commitments',
     'ssc_triangular_disbursements' => 'ssc_triangular_disbursements',
+    'disaster_response_marker' => 'disaster_response_marker',
+    'national_plan_objective' => 'national_plan_objective',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -249,6 +251,20 @@ function ampactivities_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'disaster_response_marker' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'national_plan_objective' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* No results behavior: Global: Unfiltered text */
   $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
@@ -395,6 +411,11 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['disaster_response_marker']['field'] = 'disaster_response_marker';
   $handler->display->display_options['fields']['disaster_response_marker']['not'] = 0;
   $handler->display->display_options['fields']['disaster_response_marker']['link_to_entity'] = 0;
+  /* Field: Activity: National Plan Objective */
+  $handler->display->display_options['fields']['national_plan_objective']['id'] = 'national_plan_objective';
+  $handler->display->display_options['fields']['national_plan_objective']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['national_plan_objective']['field'] = 'national_plan_objective';
+  $handler->display->display_options['fields']['national_plan_objective']['link_to_entity'] = 0;
   /* Sort criterion: Activity: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'efq_activity';
@@ -627,6 +648,7 @@ function ampactivities_views_default_views() {
     t('Triangular SSC Commitments'),
     t('Triangular SSC Disbursements'),
     t('Disaster Response Marker'),
+    t('National Plan Objective'),
     t('Search Terms'),
     t('search keywords within activities'),
     t('Donor Agency'),
@@ -636,7 +658,6 @@ function ampactivities_views_default_views() {
     t('filter activities by primary sector'),
     t('Secondary Sector'),
     t('filter activities by secondary sector'),
-    t('National Plan Objective'),
     t('filter activities by national plan objective'),
     t('Location'),
     t('filter activities by location'),
