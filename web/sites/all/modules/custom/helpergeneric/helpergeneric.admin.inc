@@ -260,7 +260,7 @@ function helpergeneric_settings_form($form, &$form_state) {
   $form['theme_settings']['favicon'] = array(
     '#type' => 'fieldset',
     '#title' => t('Shortcut icon settings'),
-    '#description' => t("Your shortcut icon, or 'favicon', is displayed in the address bar and bookmarks of most browsers.") . ' <strong>Not implemented yet!</strong>',
+    '#description' => t("Your shortcut icon, or 'favicon', is displayed in the address bar and bookmarks of most browsers."),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
