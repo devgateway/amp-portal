@@ -87,10 +87,7 @@ class EntityTranslationHandlerFactory {
     if (!isset($this->handlers[$entity_type][$id])) {
       $entity_info = entity_get_info($entity_type);
       $class = $entity_info['translation']['entity_translation']['class'];
-      // @todo Remove the fourth parameter once 3rd-party translation handlers
-      //   have been fixed and no longer require the deprecated entity_id
-      //   parameter.
-      $handler = new $class($entity_type, $entity_info, $entity, NULL);
+      $handler = new $class($entity_type, $entity_info, $entity);
       $handler->setFactory($this);
       $this->handlers[$entity_type][$id] = $handler;
     }
@@ -112,9 +109,10 @@ class EntityTranslationHandlerFactory {
    */
   public function getHandlerId($entity_type, $entity) {
     if (!isset($entity->entity_translation_handler_id)) {
-      list($id, $revision_id) = entity_extract_ids($entity_type, $entity);
+      list($id, $revision_id, $bundle) = entity_extract_ids($entity_type, $entity);
       $revision_id = isset($revision_id) ? $revision_id : 0;
-      $entity->entity_translation_handler_id = $entity_type . '-' . (!empty($id) ? 'eid-' . $id . '-' . $revision_id : 'new-' . self::$newId++);
+      $bundle = isset($bundle) ? $bundle : $entity_type;
+      $entity->entity_translation_handler_id = $entity_type . '-' . $bundle . '-' . (!empty($id) ? 'eid-' . $id . '-' . $revision_id : 'new-' . self::$newId++);
     }
     return $entity->entity_translation_handler_id;
   }

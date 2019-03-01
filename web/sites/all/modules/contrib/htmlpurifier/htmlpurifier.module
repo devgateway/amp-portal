@@ -85,6 +85,7 @@ function htmlpurifier_libraries_info() {
       'lines' => 1,
       'cols' => 8,
     ),
+    'version callback' => 'htmlpurifier_libraries_get_version',
     'versions' => array(
       '4.4.0' => array(
         'files' => array(
@@ -124,6 +125,32 @@ function htmlpurifier_libraries_info() {
   );
 
   return $libraries;
+}
+
+/**
+ * Gets the version information from the HTML Purifier library.
+ *
+ * @see libraries_get_path()
+ */
+function htmlpurifier_libraries_get_version($library, $options) {
+  // Try to detect if a "Standard" HTML Purifier distribution is installed.
+  $normal_version = libraries_get_version($library, $options);
+  if (!empty($normal_version)) {
+    return $normal_version;
+  }
+
+  // Try to detect if a "Lite" HTML Purifier distribution is installed.
+  // The "Lite Distribution" does not have a "VERSION" file.
+  $options = array(
+    'file' => 'library/HTMLPurifier/Config.php',
+    'pattern' => '@\s+\$version\s*=\s*\'([0-9\.]+)\'@',
+    'lines' => 40,
+    'cols' => 40,
+  );
+  $lite_version = libraries_get_version($library, $options);
+  if (!empty($lite_version)) {
+    return $lite_version;
+  }
 }
 
 /**
@@ -498,6 +525,10 @@ function _htmlpurifier_get_config($format_name, $config_name, $reset = FALSE) {
   }
   // {FALSE, TRUE, FALSE} = {no index, everything is allowed, don't do mq fix}
   $config->mergeArrayFromForm($config_data, FALSE, TRUE, FALSE);
+
+  // Allow other modules to alter the HTML definition.
+  $html_definition = $config->getHTMLDefinition(TRUE);
+  drupal_alter('htmlpurifier_html_definition', $html_definition);
 
   return $config;
 }
