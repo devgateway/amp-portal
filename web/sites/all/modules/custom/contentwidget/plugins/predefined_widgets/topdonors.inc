@@ -149,9 +149,9 @@ function contentwidget_topdonors_widget_render($plugin, $widget_settings, $entit
   }
 
   $rows = array();
-  if (isset($data->donorFunding)) {
+  if (isset($data->data)) {
     $number_format = isset($data->numberformat) ? $data->numberformat : NULL;
-    $rows = _contentwidget_topdonors_get_data_rows(array_keys($header), $data->donorFunding, $number_format);
+    $rows = _contentwidget_topdonors_get_data_rows(array_keys($header), $data->data, $number_format);
   }
 
   $build = array();

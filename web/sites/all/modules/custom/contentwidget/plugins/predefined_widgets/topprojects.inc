@@ -163,9 +163,9 @@ function contentwidget_topprojects_widget_render($plugin, $widget_settings, $ent
   }
 
   $rows = array();
-  if (isset($data->topprojects)) {
+  if (isset($data->data)) {
     $number_format = isset($data->numberformat) ? $data->numberformat : NULL;
-    $rows = _contentwidget_topprojects_get_data_rows($widget_settings['visible_columns'], $data->topprojects, $number_format);
+    $rows = _contentwidget_topprojects_get_data_rows($widget_settings['visible_columns'], $data->data, $number_format);
   }
 
   $build = array();

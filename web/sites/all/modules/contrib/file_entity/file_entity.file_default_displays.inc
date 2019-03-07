@@ -9,9 +9,6 @@
  * Implements hook_file_default_displays().
  */
 function file_entity_file_default_displays() {
-  // @HACK: Temporary change: there is no need for default file displays if they are set up properly.
-  return;
-
   $file_displays = array();
 
   $file_display = new stdClass();
@@ -21,6 +18,10 @@ function file_entity_file_default_displays() {
   $file_display->status = TRUE;
   $file_display->settings = array(
     'controls' => 1,
+    'controls_list' => array(
+      'download' => 'download',
+      'remote_playback' => 'remote_playback',
+    ),
     'autoplay' => 0,
     'loop' => 0,
     'multiple_file_behavior' => 'tags',
@@ -42,6 +43,10 @@ function file_entity_file_default_displays() {
   $file_display->status = TRUE;
   $file_display->settings = array(
     'controls' => 1,
+    'controls_list' => array(
+      'download' => 'download',
+      'remote_playback' => 'remote_playback',
+    ),
     'autoplay' => 0,
     'loop' => 0,
     'multiple_file_behavior' => 'tags',
@@ -102,7 +107,7 @@ function file_entity_file_default_displays() {
     $file_display = new stdClass();
     $file_display->api_version = 1;
     $file_display->name = 'image__default__file_field_image';
-    $file_display->weight = 49;
+    $file_display->weight = 48;
     $file_display->status = TRUE;
     $file_display->settings = array(
       'image_style' => '',
@@ -114,7 +119,7 @@ function file_entity_file_default_displays() {
     $file_display = new stdClass();
     $file_display->api_version = 1;
     $file_display->name = 'image__preview__file_field_image';
-    $file_display->weight = 49;
+    $file_display->weight = 48;
     $file_display->status = TRUE;
     $file_display->settings = array(
       'image_style' => 'thumbnail',
@@ -126,7 +131,7 @@ function file_entity_file_default_displays() {
     $file_display = new stdClass();
     $file_display->api_version = 1;
     $file_display->name = 'image__teaser__file_field_image';
-    $file_display->weight = 49;
+    $file_display->weight = 48;
     $file_display->status = TRUE;
     $file_display->settings = array(
       'image_style' => 'medium',
@@ -142,6 +147,11 @@ function file_entity_file_default_displays() {
   $file_display->status = TRUE;
   $file_display->settings = array(
     'controls' => 1,
+    'controls_list' => array(
+      'fullscreen' => 'fullscreen',
+      'download' => 'download',
+      'remote_playback' => 'remote_playback',
+    ),
     'autoplay' => 0,
     'loop' => 0,
     'width' => '',
@@ -165,6 +175,11 @@ function file_entity_file_default_displays() {
   $file_display->status = TRUE;
   $file_display->settings = array(
     'controls' => 1,
+    'controls_list' => array(
+      'fullscreen' => 'fullscreen',
+      'download' => 'download',
+      'remote_playback' => 'remote_playback',
+    ),
     'autoplay' => 0,
     'loop' => 0,
     'width' => '',

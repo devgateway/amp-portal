@@ -147,7 +147,7 @@ class ampAPIEntityController extends EntityAPIController implements ampAPISchema
    * @see entity_delete().
    * @see EntityAPIControllerInterface::delete().
    */
-  public function delete($ids) {
+  public function delete($ids, DatabaseTransaction $transaction = NULL) {
     // We use a read-only API.
     return FALSE;
   }
@@ -158,7 +158,7 @@ class ampAPIEntityController extends EntityAPIController implements ampAPISchema
    * @see entity_save().
    * @see EntityAPIControllerInterface::save().
    */
-  public function save($entity) {
+  public function save($entity, DatabaseTransaction $transaction = NULL) {
     // We use a read-only API.
     return FALSE;
   }

@@ -64,6 +64,8 @@ function ampactivities_views_default_views() {
     'ssc_bilateral_disbursements' => 'ssc_bilateral_disbursements',
     'ssc_triangular_commitments' => 'ssc_triangular_commitments',
     'ssc_triangular_disbursements' => 'ssc_triangular_disbursements',
+    'disaster_response_marker' => 'disaster_response_marker',
+    'national_plan_objective' => 'national_plan_objective',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -249,6 +251,20 @@ function ampactivities_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'disaster_response_marker' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'national_plan_objective' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* No results behavior: Global: Unfiltered text */
   $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
@@ -274,27 +290,32 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['fields']['primary_program']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_program']['field'] = 'primary_program';
   $handler->display->display_options['fields']['primary_program']['link_to_entity'] = 0;
-  /* Field: Activity: Beneficiary Agency */
+  /* Field: Activity: Agence Bénéficiaire */
   $handler->display->display_options['fields']['beneficiary_agency']['id'] = 'beneficiary_agency';
   $handler->display->display_options['fields']['beneficiary_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['beneficiary_agency']['field'] = 'beneficiary_agency';
   $handler->display->display_options['fields']['beneficiary_agency']['link_to_entity'] = 0;
-  /* Field: Activity: Partenaire technique et financier */
+  /* Field: Activity: Agence Donatrice */
   $handler->display->display_options['fields']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['donor_agency']['field'] = 'donor_agency';
   $handler->display->display_options['fields']['donor_agency']['link_to_entity'] = 0;
+  /* Field: Activity: National Plan Objective */
+  $handler->display->display_options['fields']['national_plan_objective']['id'] = 'national_plan_objective';
+  $handler->display->display_options['fields']['national_plan_objective']['table'] = 'efq_activity';
+  $handler->display->display_options['fields']['national_plan_objective']['field'] = 'national_plan_objective';
+  $handler->display->display_options['fields']['national_plan_objective']['link_to_entity'] = 0;
   /* Field: Activity: Organization Roles */
   $handler->display->display_options['fields']['organization_roles']['id'] = 'organization_roles';
   $handler->display->display_options['fields']['organization_roles']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['organization_roles']['field'] = 'organization_roles';
   $handler->display->display_options['fields']['organization_roles']['link_to_entity'] = 0;
-  /* Field: Activity: Secteur primaire */
+  /* Field: Activity: Secteur Primaire */
   $handler->display->display_options['fields']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['primary_sector']['field'] = 'primary_sector';
   $handler->display->display_options['fields']['primary_sector']['link_to_entity'] = 0;
-  /* Field: Activity: Secteur secondaire */
+  /* Field: Activity: Secteur Secondaire */
   $handler->display->display_options['fields']['secondary_sector']['id'] = 'secondary_sector';
   $handler->display->display_options['fields']['secondary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['fields']['secondary_sector']['field'] = 'secondary_sector';
@@ -410,7 +431,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['description'] = 'search keywords within activities';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'search';
-  /* Filter criterion: Activity: Partenaire technique et financier */
+  /* Filter criterion: Activity: Agence Donatrice */
   $handler->display->display_options['filters']['donor_agency']['id'] = 'donor_agency';
   $handler->display->display_options['filters']['donor_agency']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['donor_agency']['field'] = 'donor_agency';
@@ -423,7 +444,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['donor_agency']['expose']['operator'] = 'donor_agency_op';
   $handler->display->display_options['filters']['donor_agency']['expose']['identifier'] = 'da';
   $handler->display->display_options['filters']['donor_agency']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Beneficiary Agency */
+  /* Filter criterion: Activity: Agence Bénéficiaire */
   $handler->display->display_options['filters']['beneficiary_agency']['id'] = 'beneficiary_agency';
   $handler->display->display_options['filters']['beneficiary_agency']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['beneficiary_agency']['field'] = 'beneficiary_agency';
@@ -436,7 +457,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['beneficiary_agency']['expose']['operator'] = 'beneficiary_agency_op';
   $handler->display->display_options['filters']['beneficiary_agency']['expose']['identifier'] = 'ba';
   $handler->display->display_options['filters']['beneficiary_agency']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Secteur primaire */
+  /* Filter criterion: Activity: Secteur Primaire */
   $handler->display->display_options['filters']['primary_sector']['id'] = 'primary_sector';
   $handler->display->display_options['filters']['primary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['primary_sector']['field'] = 'primary_sector';
@@ -449,7 +470,7 @@ function ampactivities_views_default_views() {
   $handler->display->display_options['filters']['primary_sector']['expose']['operator'] = 'primary_sector_op';
   $handler->display->display_options['filters']['primary_sector']['expose']['identifier'] = 'psec';
   $handler->display->display_options['filters']['primary_sector']['type'] = 'tokeninput';
-  /* Filter criterion: Activity: Secteur secondaire */
+  /* Filter criterion: Activity: Secteur Secondaire */
   $handler->display->display_options['filters']['secondary_sector']['id'] = 'secondary_sector';
   $handler->display->display_options['filters']['secondary_sector']['table'] = 'efq_activity';
   $handler->display->display_options['filters']['secondary_sector']['field'] = 'secondary_sector';
@@ -603,11 +624,12 @@ function ampactivities_views_default_views() {
     t('No activities matching search criteria.'),
     t('Title'),
     t('Primary Program'),
-    t('Beneficiary Agency'),
-    t('Partenaire technique et financier'),
+    t('Agence Bénéficiaire'),
+    t('Agence Donatrice'),
+    t('National Plan Objective'),
     t('Organization Roles'),
-    t('Secteur primaire'),
-    t('Secteur secondaire'),
+    t('Secteur Primaire'),
+    t('Secteur Secondaire'),
     t('Localisation'),
     t('Actual Approval Date'),
     t('Actual Start Date'),
@@ -631,12 +653,12 @@ function ampactivities_views_default_views() {
     t('search keywords within activities'),
     t('Donor Agency'),
     t('filter activities by donor agency'),
+    t('Beneficiary Agency'),
     t('filter activities by beneficiary agency'),
     t('Primary Sector'),
     t('filter activities by primary sector'),
     t('Secondary Sector'),
     t('filter activities by secondary sector'),
-    t('National Plan Objective'),
     t('filter activities by national plan objective'),
     t('Location'),
     t('filter activities by location'),

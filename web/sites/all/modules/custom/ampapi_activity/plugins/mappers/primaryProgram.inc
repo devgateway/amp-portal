@@ -14,7 +14,7 @@ $plugin = array(
   ),
 
   'report field group' => 'columns',
-  'report field key' => 'Primary Program',
+  'report field key' => 'Primary Program Level 1',
 
   'handler' => 'primaryProgramMapper',
 );
