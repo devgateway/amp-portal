@@ -60,7 +60,7 @@ function ampapi_activity_search_settings_form($form, &$form_state) {
       continue;
     }
 
-    if (!empty($plugin['report filter key'])) {
+    if (!empty($plugin['report filter key']) || !empty($plugin['report filter endpoint'])) {
       // Add to the list of available filters.
       $full_filters_list[$plugin['property name']] = $plugin['title'];
     }

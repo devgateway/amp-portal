@@ -15,12 +15,13 @@ $plugin = array(
 
   'report field group' => 'columns',
   'report field key' => 'Primary Sector',
-  'report filter key' => 'primary-sector',
 
-  'report filter endpoint' => 'filters/sectors',
+  'report filter endpoint' => 'nifilters/sectors',
+  'report filter name' => 'Primary Sectors',
 
   'handler' => 'primarySectorMapper',
 );
 
-class primarySectorMapper extends activityMapperSubFilterAutocomplete {
+class primarySectorMapper extends activityMapperAutocompleteBase {
+
 }

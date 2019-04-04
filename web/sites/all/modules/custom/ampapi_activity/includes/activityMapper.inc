@@ -48,12 +48,8 @@ class activityMapperBase implements activityMapperInterface {
       $condition['operator'] = is_array($condition['value']) ? 'IN' : '=';
     }
 
-    if (empty($plugin['report filter key'])) {
-      $plugin_title = check_plain($plugin['title']);
-      throw new ampAPIEntityQueryHelperException("The {$plugin_title} plugin can not be used to filter activities.");
-    }
-
-    $key = $plugin['report filter key'];
+    // We now don't hardcode the key into the plugin itself, we expect it to be a part of the value.
+    $key = !empty($plugin['report filter key']) ? $plugin['report filter key'] : FALSE;
 
     switch ($condition['operator']) {
       case 'IN':
@@ -62,14 +58,19 @@ class activityMapperBase implements activityMapperInterface {
         // @TODO: Requests for the API to change this behavior.
         if ($plugin['report field group'] == 'columns') {
           // Let's override the $key for locations.
-          if ($plugin['report filter endpoint'] == 'filters/locations') {
-            foreach ($condition['value'] as $value) {
-              list($location_key, $value_id) = explode(':', $value);
-              $request_body['filters'][$location_key][] = $value_id;
+          foreach ($condition['value'] as $value) {
+            if (strpos($value, ':') !== FALSE) {
+              list($filter_key, $value_id) = explode(':', $value);
+              $request_body['filters'][$filter_key][] = $value_id;
             }
-          }
-          else {
-            $request_body['filters'][$key] = $condition['value'];
+            else if ($key) {
+              $request_body['filters'][$key] = $condition['value'];
+            }
+            else {
+              // Last chance fallback.
+              $key = $plugin['property name'];
+              $request_body['filters'][$key] = $condition['value'];
+            }
           }
         }
         else if ($plugin['report field group'] == 'others') {
