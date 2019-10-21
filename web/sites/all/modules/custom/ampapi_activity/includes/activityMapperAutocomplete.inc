@@ -29,7 +29,7 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
       }
     }
 
-    // Because we switched to nifilters we will figure out the data ourselves.
+    // Because we switched to filters we will figure out the data ourselves.
     $returned_data = $returned_filter_data->items->{$returned_filter->items};
     $info['filter details'] = $returned_filter;
 
@@ -81,7 +81,7 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
 
       // Include all parent items in name, if any.
       $name = '';
-      if (strpos($info['plugin']['report filter endpoint'], 'nifilters') !== FALSE) {
+      if (strpos($info['plugin']['report filter endpoint'], 'filters') !== FALSE) {
         if (isset($info['parents'])) {
           foreach ($info['parents'] as $parent) {
             $name .= filter_xss_admin($parent->name) . ' > ';
@@ -223,7 +223,7 @@ class activityMapperAutocompleteBase extends activityMapperBase implements activ
         $id = $entry->id;
 
         // Slight adjustment for locations.
-        if (strpos($info['plugin']['report filter endpoint'], 'nifilters') !== FALSE) {
+        if (strpos($info['plugin']['report filter endpoint'], 'filters') !== FALSE) {
           $id = $entry->filterId . ':' . intval($entry->id);
         }
 

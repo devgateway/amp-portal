@@ -17,7 +17,7 @@ $plugin = array(
   'report field group' => 'columns',
   'report field key' => 'Status',
 
-  'report filter endpoint' => 'nifilters/activityStatus',
+  'report filter endpoint' => 'filters/activityStatus',
   'report filter name' => 'Status',
   'report filter key' => 'status',
 

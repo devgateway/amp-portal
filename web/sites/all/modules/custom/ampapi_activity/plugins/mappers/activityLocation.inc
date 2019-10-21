@@ -16,7 +16,7 @@ $plugin = array(
   'report field group' => 'columns',
   'report field key' => 'Location',
 
-  'report filter endpoint' => 'nifilters/locations',
+  'report filter endpoint' => 'filters/locations',
   'report filter name' => 'Locations',
 
   'handler' => 'activityLocationMapper',

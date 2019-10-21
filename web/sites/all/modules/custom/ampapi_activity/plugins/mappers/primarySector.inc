@@ -16,7 +16,7 @@ $plugin = array(
   'report field group' => 'columns',
   'report field key' => 'Primary Sector',
 
-  'report filter endpoint' => 'nifilters/sectors',
+  'report filter endpoint' => 'filters/sectors',
   'report filter name' => 'Primary Sectors',
 
   'handler' => 'primarySectorMapper',
