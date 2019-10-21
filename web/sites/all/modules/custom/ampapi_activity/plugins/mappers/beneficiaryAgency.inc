@@ -16,7 +16,7 @@ $plugin = array(
   'report field group' => 'columns',
   'report field key' => 'Beneficiary Agency',
 
-  'report filter endpoint' => 'nifilters/organizations',
+  'report filter endpoint' => 'filters/organizations',
   'report filter name' => 'Beneficiary Agency',
 
   'handler' => 'beneficiaryAgencyMapper',
