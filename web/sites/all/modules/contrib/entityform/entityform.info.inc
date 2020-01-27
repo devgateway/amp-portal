@@ -65,7 +65,10 @@ class EntityformTypeMetadataController extends EntityDefaultMetadataController {
     // Add properties for translatable fields.
     $labels = entity_get_controller('entityform_type')->get_text_labels();
     foreach ($labels as $text_prop => $label) {
-      $properties[$text_prop] = array(
+      if (!isset($properties[$text_prop])) {
+        $properties[$text_prop] = array();
+      }
+      $properties[$text_prop] += array(
         'label' => $label,
         'getter callback' => 'entityformtype_metadata_get_properties',
         'setter callback' => 'entityformtype_metadata_set_properties',

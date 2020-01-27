@@ -17,8 +17,9 @@ $plugin = array(
   'report field group' => 'columns',
   'report field key' => 'Status',
 
-  'report filter key' => 'status',
   'report filter endpoint' => 'filters/activityStatus',
+  'report filter name' => 'Status',
+  'report filter key' => 'status',
 
   'handler' => 'activityStatusMapper',
 );
@@ -27,17 +28,25 @@ class activityStatusMapper extends activityMapperBase {
   public static function optionsList($plugin) {
     // Small sanity check.
     if (!is_array($plugin)) {
-      $plugin = ampapi_get_mapper($plugin);
+      $plugin = ampapi_get_mapper('activityStatus');
     }
 
-    $response_data = ampAPIRestClient::get($plugin['report filter endpoint']);
-    if (empty($response_data) || empty($response_data->values)) {
+    $filter_details = FALSE;
+    $response_filter_data = ampAPIRestClient::get($plugin['report filter endpoint']);
+    foreach ($response_filter_data->listDefinitions as $listDefinition) {
+      if ($listDefinition->name == $plugin['report filter name']) {
+        $filter_details = $listDefinition;
+      }
+    }
+    $response_data = $response_filter_data->items->{$filter_details->items};
+
+    if (empty($response_data)) {
       return array();
     }
 
     $options = array();
     /** @noinspection PhpUndefinedFieldInspection */
-    foreach ($response_data->values as $value) {
+    foreach ($response_data as $value) {
       $options[intval($value->id)] = filter_xss_admin($value->name);
     }
 

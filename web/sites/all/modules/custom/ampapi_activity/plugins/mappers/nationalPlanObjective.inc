@@ -18,10 +18,10 @@ $plugin = array(
   'report filter key' => 'national-planning-objectives-level-1',
 
   'report filter endpoint' => 'filters/programs',
-  'report filter endpoint extra' => 'filters/programs',
+  'report filter name' => 'National Planning Objectives Level 1',
 
   'handler' => 'nationalPlanObjectiveMapper',
 );
 
-class nationalPlanObjectiveMapper extends activityMapperSubFilterAutocomplete {
+class nationalPlanObjectiveMapper extends activityMapperAutocompleteBase {
 }

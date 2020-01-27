@@ -15,12 +15,12 @@ $plugin = array(
 
   'report field group' => 'columns',
   'report field key' => 'Secondary Sector',
-  'report filter key' => 'secondary-sector',
 
   'report filter endpoint' => 'filters/sectors',
+  'report filter name' => 'Secondary Sectors',
 
   'handler' => 'secondarySectorMapper',
 );
 
-class secondarySectorMapper extends activityMapperSubFilterAutocomplete {
+class secondarySectorMapper extends activityMapperAutocompleteBase {
 }

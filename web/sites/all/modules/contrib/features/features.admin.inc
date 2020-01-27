@@ -874,7 +874,7 @@ function features_export_build_form_submit($form, &$form_state) {
   $feature = $form['#feature'];
   $export = _features_export_build($feature, $form_state);
   $export = _features_export_generate($export, $form_state, $feature);
-  $generate = ($form_state['values']['op'] == $form_state['values']['generate']);
+  $generate = isset($form_state['values']['generate']) && ($form_state['values']['op'] == $form_state['values']['generate']);
   $module_name = $form_state['values']['module_name'];
 
   if ($generate && !user_access('generate features')) {

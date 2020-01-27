@@ -285,12 +285,7 @@ function contentwidget_totalpledges_widget_retrieve_activities_data($plugin, $wi
 
   if ((isset($widget_settings['enable_totalactivities']) && $widget_settings['enable_totalactivities'] == TRUE)
     || !isset($widget_settings['enable_totalactivities'])) {
-    if (isset($response_data->ActivitiesWithPledgesCount)) {
-      $pledge_activities['pledge_activities'] = '<span class="amount">' . intval($response_data->ActivitiesWithPledgesCount) . '</span>';
-    }
-    else {
-      $pledge_activities = '<span class="amount">' . 0 . '</span>';
-    }
+    $pledge_activities['pledge_activities'] = '<span class="amount">' . intval($response_data) . '</span>';
   }
 
   // 1 hours cache life time for requests should be plenty for now.

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * amppermissions.strongarm.inc

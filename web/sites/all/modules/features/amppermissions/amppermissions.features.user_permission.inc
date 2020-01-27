@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * amppermissions.features.user_permission.inc
@@ -186,13 +187,6 @@ function amppermissions_user_default_permissions() {
     'name' => 'administer media browser',
     'roles' => array(),
     'module' => 'media',
-  );
-
-  // Exported permission: 'administer media wysiwyg view mode'.
-  $permissions['administer media wysiwyg view mode'] = array(
-    'name' => 'administer media wysiwyg view mode',
-    'roles' => array(),
-    'module' => 'media_wysiwyg_view_mode',
   );
 
   // Exported permission: 'administer menu'.
@@ -535,6 +529,16 @@ function amppermissions_user_default_permissions() {
     'name' => 'use ipe with page manager',
     'roles' => array(),
     'module' => 'panels',
+  );
+
+  // Exported permission: 'use media wysiwyg'.
+  $permissions['use media wysiwyg'] = array(
+    'name' => 'use media wysiwyg',
+    'roles' => array(
+      'admin user' => 'admin user',
+      'editor user' => 'editor user',
+    ),
+    'module' => 'media_wysiwyg',
   );
 
   // Exported permission: 'use page manager'.
