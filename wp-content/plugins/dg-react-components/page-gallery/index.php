@@ -7,7 +7,7 @@
  * Version: 1.0.2
  * Author: Sebastian Dimunzio
  *
- * @package tcdi-components
+ * @package dg-components
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 add_action( 'init', 'tcdi_page_gallery' );
 
 function tcdi_page_gallery() {
-	load_plugin_textdomain( 'tcdi-components', false, basename( __DIR__ ) . '/languages' );
+	load_plugin_textdomain( 'dg-components', false, basename( __DIR__ ) . '/languages' );
 }
 
 /**
@@ -50,13 +50,13 @@ function tcdi_page_gallery_register_block() {
 		filemtime( plugin_dir_path( __FILE__ ) . 'style.css' )
 	);
 
-	register_block_type( 'tcdi-components/'.$name , array(
+	register_block_type( 'dg-components/'.$name , array(
 		'style' => $name ,
 		'editor_script' => $name ,
 	) );
 
   if ( function_exists( 'wp_set_script_translations' ) ) {
-       wp_set_script_translations( $name , 'tcdi-components' );
+       wp_set_script_translations( $name , 'dg-components' );
   }
 
 }

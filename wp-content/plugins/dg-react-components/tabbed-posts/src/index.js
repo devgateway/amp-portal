@@ -4,11 +4,11 @@ import BlockSave from "./BlockSave";
 import BlockEdit from "./BlockEdit";
 
 
-registerBlockType('tcdi-components/tabbed-posts',
+registerBlockType('dg-components/tabbed-posts',
     {
-        title: __('Tabbed Posts', 'tcdi-components'),
+        title: __('Tabbed Posts', 'dg-components'),
         icon: 'admin-site-alt',
-        category: 'tcdi-blocks',
+        category: 'react-blocks',
         attributes: {
             count: {
                 type: 'number',

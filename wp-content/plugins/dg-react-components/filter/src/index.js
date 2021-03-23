@@ -3,11 +3,11 @@ import {registerBlockType} from '@wordpress/blocks';
 import BlockSave from "./BlockSave";
 import BlockEdit from "./BlockEdit";
 
-registerBlockType('tcdi-components/filter',
+registerBlockType('dg-components/filter',
     {
-        title: __('Data Filter', 'tcdi-components'),
+        title: __('Data Filter', 'dg-components'),
         icon: 'admin-site-alt',
-        category: 'tcdi-blocks',
+        category: 'react-blocks',
         apiVersion: 2,
         attributes: {
             placeHolder:{

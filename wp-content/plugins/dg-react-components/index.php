@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Plugin Name: Tobacco Control Data Initiative UI Components
- * Plugin URI:
+ * Plugin Name: Development Gateway React Components
+ * Plugin URI: https://github.com/devgateway/dg-wp-react
  * Description: Custom UI Components.
  * Version: 1.0.0
  * Author: Sebastian Dimunzio
  *
- * @package gutenberg-examples
+ * @package dg
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,8 +17,8 @@ function add_custom_block_categories( $categories, $post ) {
 		$categories,
 		array(
 			array(
-				'slug' => 'tcdi-blocks',
-				'title' => __( 'TCDI Blocks', 'React Blocks' ),
+				'slug' => 'react-blocks',
+				'title' => __( 'React Blocks', 'React Blocks' ),
 			),
 		)
 	);

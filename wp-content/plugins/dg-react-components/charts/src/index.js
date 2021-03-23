@@ -3,11 +3,11 @@ import {registerBlockType} from '@wordpress/blocks';
 import BlockSave from "./BlockSave";
 import BlockEdit from "./BlockEdit";
 
-registerBlockType('tcdi-components/chart',
+registerBlockType('dg-components/chart',
     {
-        title: __('Data Chart', 'tcdi-components'),
+        title: __('Data Chart', 'dg-components'),
         icon: 'admin-site-alt',
-        category: 'tcdi-blocks',
+        category: 'react-blocks',
         apiVersion: 2,
         attributes: {
             height: {

@@ -4,11 +4,11 @@ import BlockSave from "./BlockSave";
 import BlockEdit from "./BlockEdit";
 
 
-registerBlockType('tcdi-components/post-carousel',
+registerBlockType('dg-components/post-carousel',
     {
-        title: __('Posts Carousel', 'tcdi-components'),
+        title: __('Posts Carousel', 'dg-components'),
         icon: 'admin-site-alt',
-        category: 'tcdi-blocks',
+        category: 'react-blocks',
         attributes: {
             count: {
                 type: 'number',

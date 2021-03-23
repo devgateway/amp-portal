@@ -63,11 +63,11 @@ const SaveComponent = (props) => {
         );
 }
 
-registerBlockType('tcdi-components/page-modules',
+registerBlockType('dg-components/page-modules',
     {
-        title: __('Page Modules', 'tcdi-components'),
+        title: __('Page Modules', 'dg-components'),
         icon: 'images-alt2',
-        category: 'tcdi-blocks',
+        category: 'react-blocks',
         attributes: {
             count: {
                 type: 'number',
