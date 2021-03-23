@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <polyline fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12.989 50.892 24.69 50.892 32.058 34.64 40.942 56.742 48.309 43.524 52.751 50.892 58.602 22.831 63.044 50.892 80.812 50.892" style="stroke: rgb(255, 255, 255);"/>
+  <circle fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="20.357" cy="72.994" r="5.851" style="stroke: rgb(255, 255, 255);"/>
+  <rect x="57.194" y="67.034" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="20.693" height="11.809" style="stroke: rgb(255, 255, 255);"/>
+  <rect x="57.194" y="67.034" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="7.368" height="11.809" style="stroke: rgb(255, 255, 255);"/>
+  <line fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="20.357" y1="72.994" x2="26.207" y2="72.994" style="stroke: rgb(255, 255, 255);"/>
+  <circle fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="40.942" cy="72.994" r="5.851" style="stroke: rgb(255, 255, 255);"/>
+  <line fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="40.942" y1="72.994" x2="40.942" y2="67.034" style="stroke: rgb(255, 255, 255);"/>
+  <rect x="4.105" y="62.593" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="85.483" height="20.693" style="stroke: rgb(255, 255, 255);"/>
+  <rect x="7.03" y="83.286" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="8.884" height="5.851" style="stroke: rgb(255, 255, 255);"/>
+  <rect x="77.779" y="83.286" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="8.884" height="5.851" style="stroke: rgb(255, 255, 255);"/>
+  <rect x="4.105" y="6.579" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="85.483" height="56.014" style="stroke: rgb(255, 255, 255);"/>
+  <path fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M 21.765 16.114 C 22.631 14.272 24.473 12.538 26.64 12.538 C 29.674 12.538 31.732 14.921 32.058 17.847 C 32.058 17.847 32.166 18.605 31.841 19.905 C 31.407 21.638 30.324 23.263 29.024 24.456 L 21.873 30.631 C 21.765 30.631 21.765 30.631 21.657 30.631 L 14.506 24.456 C 13.098 23.263 12.122 21.747 11.689 19.905 C 11.364 18.605 11.473 17.847 11.473 17.847 C 11.689 14.921 13.855 12.538 16.89 12.538 C 19.056 12.538 20.898 14.272 21.765 16.114 Z" style="stroke: rgb(255, 255, 255);"/>
+  <line fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="76.37" y1="13.947" x2="82.22" y2="13.947" style="stroke: rgb(255, 255, 255);"/>
+  <line fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="71.928" y1="19.905" x2="83.737" y2="19.905" style="stroke: rgb(255, 255, 255);"/>
+  <line fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="82.22" y1="25.756" x2="76.37" y2="25.756" style="stroke: rgb(255, 255, 255);"/>
+</svg>
