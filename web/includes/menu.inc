@@ -317,7 +317,7 @@ define('MENU_PREFERRED_LINK', '1cf698d64d1aa4b83907cf6ed55db3a7f8e92c91');
  * actually exists. This list of 'masks' is built in menu_rebuild().
  *
  * @param $parts
- *   An array of path parts; for the above example, 
+ *   An array of path parts; for the above example,
  *   array('node', '12345', 'edit').
  *
  * @return
@@ -645,6 +645,10 @@ function _menu_check_access(&$item, $map) {
       $item['access'] = (count($arguments) == 1) ? user_access($arguments[0]) : user_access($arguments[0], $arguments[1]);
     }
     elseif (function_exists($callback)) {
+      if(!isset($arguments[1])) {
+        global $user; // current user object
+        $arguments[1] = $user; // the default value which the function passess if this value is not available
+      }
       $item['access'] = call_user_func_array($callback, $arguments);
     }
   }
