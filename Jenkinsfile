@@ -69,7 +69,7 @@ stage('Build') {
                     // Build AMP Public Portal UI
                     sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
                     sh "cd ui && npm install"
-                    sh "cd ui && npm build"
+                    sh "cd ui && npm run build"
 
                     sh returnStatus: true, script: "tar -cf ../amp-node-cache.tar --remove-files" +
                             " ./ui/node_modules"
