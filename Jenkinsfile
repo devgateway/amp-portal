@@ -26,12 +26,13 @@ def codeVersion
 def countries
 
 stage('Build') {
-  // Find AMP version
-  //codeVersion = readMavenPom(file: 'amp/pom.xml').version
-  codeVersion = 4.0;
-  println "AMP Public Portal Version: ${codeVersion}"
+  node {
+    // Find AMP version
+    //codeVersion = readMavenPom(file: 'amp/pom.xml').version
+    codeVersion = 4.0;
+    println "AMP Public Portal Version: ${codeVersion}"
 
-  countries = sh(returnStdout: true,
+    countries = sh(returnStdout: true,
           script: "ssh sulfur.migrated.devgateway.org 'cd /opt/amppp_dbs && amppp-db ls ${codeVersion} | sort'")
           .trim()
           if (countries == "") {
@@ -52,7 +53,6 @@ stage('Build') {
 
     println "ampUrl: ${ampUrl}"
 
-    node {
         checkout scm
 
         def format = branch != null ? "%H" : "%P"
