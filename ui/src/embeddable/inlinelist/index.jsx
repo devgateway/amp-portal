@@ -7,7 +7,7 @@ import TheIntro from "../../wp/template-parts/TheIntro";
 import MediaProvider from "../../wp/providers/MediaProvider";
 import MediaConsumer from "../../wp/consumers/MediaConsumer";
 import TheIcon from "../../wp/template-parts/TheIcon";
-import Icon from "../body/Heart";
+//import Icon from "../body/Heart";
 
 
 class ListOfPost extends React.Component {
