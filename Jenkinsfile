@@ -58,9 +58,9 @@ stage('Build') {
 
         def format = branch != null ? "%H" : "%P"
         def hash = sh(returnStdout: true, script: "git log --pretty=${format} -n 1").trim()
-        sh(returnStatus: true, script: "docker pull phosphorus.migrated.devgateway.org:5000/am ppp-webapp:${tag} > /dev/null")
+        //sh(returnStatus: true, script: "docker pull phosphorus.migrated.devgateway.org:5000/am ppp-webapp:${tag} > /dev/null")
         def imageIds = sh(returnStdout: true, script: "docker images -q -f \"label=git-hash=${hash}\"").trim()
-        sh(returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-webapp:${tag} > /dev/null")
+        //sh(returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-webapp:${tag} > /dev/null")
 
         if (imageIds.equals("")) { //If not found we build
           withEnv(["PATH+NODE=${tool name: 'node-12.16.3', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'}/bin"]) {
@@ -82,7 +82,7 @@ stage('Build') {
                 } finally {
 
                     // Cleanup after Docker & Maven
-                    sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-webapp:${tag}"
+                    //sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-webapp:${tag}"
                 }
             }
         }
