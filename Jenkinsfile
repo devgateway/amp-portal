@@ -24,6 +24,7 @@ println "Tag: ${tag}"
 def launchedByUser = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').size() > 0
 def codeVersion
 def countries
+def country
 
 stage('Build') {
   node {
