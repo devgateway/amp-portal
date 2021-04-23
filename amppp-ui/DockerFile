@@ -1,0 +1,9 @@
+FROM nginx:alpine
+ARG AMPPP_UI
+ARG AMPPP_PULL_REQUEST
+ARG AMPPP_BRANCH
+
+LABEL "pull-request"=$AMP_PULL_REQUEST
+LABEL "branch"=$AMP_BRANCH
+
+ADD $AMPPP_UI /var/www/ui

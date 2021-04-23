@@ -58,9 +58,9 @@ stage('Build') {
 
         def format = branch != null ? "%H" : "%P"
         def hash = sh(returnStdout: true, script: "git log --pretty=${format} -n 1").trim()
-        //sh(returnStatus: true, script: "docker pull phosphorus.migrated.devgateway.org:5000/am ppp-webapp:${tag} > /dev/null")
+        sh(returnStatus: true, script: "docker pull phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null")
         def imageIds = sh(returnStdout: true, script: "docker images -q -f \"label=git-hash=${hash}\"").trim()
-        //sh(returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-webapp:${tag} > /dev/null")
+        sh(returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null")
 
         if (imageIds.equals("")) { //If not found we build
           withEnv(["PATH+NODE=${tool name: 'node-12.16.3', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'}/bin"]) {
@@ -77,14 +77,17 @@ stage('Build') {
 
 
                     // Build Docker images & push it
-                    //sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amp-webapp:${tag} --build-arg AMP_EXPLODED_WAR=target/amp --build-arg AMP_PULL_REQUEST='${pr}' --build-arg AMP_BRANCH='${branch}' --build-arg AMP_REGISTRY_PRIVATE_KEY='${registryKey}' --label git-hash='${hash}' amp"
-                    //sh "docker push phosphorus.migrated.devgateway.org:5000/amp-webapp:${tag} > /dev/null"
+                    sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=target/amp --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --build-arg  --label git-hash='${hash}' amppp-ui"
+                    sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null"
                 } finally {
 
                     // Cleanup after Docker & Maven
-                    //sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-webapp:${tag}"
+                    sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
                 }
             }
+        }else{
+          println "Image already foound skiping build ${imageIds}"
+
         }
     }
 }
