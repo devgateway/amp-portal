@@ -50,9 +50,9 @@ stage('Build') {
         }
     }
 
-    ampUrl = "http://amp-${country}-${tag}-tc9.ampsite.net/"
+    ampppUrl = "http://amppp-${country}-${tag}-tc9.ampsite.net/"
 
-    println "ampUrl: ${ampUrl}"
+    println "ampppUrl: ${ampppUrl}"
 
         checkout scm
 
@@ -71,7 +71,7 @@ stage('Build') {
                     sh "cd ui && npm install"
                     sh "cd ui && npm run build"
 
-                    sh returnStatus: true, script: "tar -cf ../amp-node-cache.tar --remove-files" +
+                    sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
                             " ./ui/node_modules"
 
 
@@ -99,7 +99,7 @@ stage('Deploy') {
             // Deploy AMPP
             //sh "ssh sulfur.migrated.devgateway.org 'cd /opt/docker/amp && ./up.sh ${tag} ${country} ${dbVersion}'"
 
-            slackSend(channel: 'amp-ci', color: 'good', message: "Deploy AMP Public Portal - Success\nDeployed ${changePretty} will be ready for testing at ${ampUrl} in about 3 minutes")
+            slackSend(channel: 'amp-ci', color: 'good', message: "Deploy AMP Public Portal - Success\nDeployed ${changePretty} will be ready for testing at ${ampppUrl} in about 3 minutes")
 
             deployed = true
         } catch (e) {
