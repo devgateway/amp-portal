@@ -102,7 +102,7 @@ stage('Deploy') {
     node {
         try {
             // Find latest database version compatible with ${codeVersion}
-            dbVersion = sh(returnStdout: true, script: "ssh sulfur.migrated.devgateway.org 'cd /opt/amppp_dbs && amp-db find ${codeVersion} ${country}'").trim()
+            dbVersion = sh(returnStdout: true, script: "ssh sulfur.migrated.devgateway.org 'cd /opt/amppp_dbs && amppp-db find ${codeVersion} ${country}'").trim()
 
             // Deploy AMPP
             println "Deploying amp"
