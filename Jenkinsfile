@@ -105,7 +105,8 @@ stage('Deploy') {
             dbVersion = sh(returnStdout: true, script: "ssh sulfur.migrated.devgateway.org 'cd /opt/amppp_dbs && amp-db find ${codeVersion} ${country}'").trim()
 
             // Deploy AMPP
-            //sh "ssh sulfur.migrated.devgateway.org 'cd /opt/docker/amp && ./up.sh ${tag} ${country} ${dbVersion}'"
+            println "Deploying amp"
+            sh "ssh sulfur.migrated.devgateway.org 'cd /opt/docker/amppp && ./up.sh ${tag} ${country} ${dbVersion}'"
 
             slackSend(channel: 'amp-ci', color: 'good', message: "Deploy AMP Public Portal - Success\nDeployed ${changePretty} will be ready for testing at ${ampppUrl} in about 3 minutes")
 
