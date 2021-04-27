@@ -82,7 +82,7 @@ stage('Build') {
                     println "branch:${branch}"
                     println "hash:${hash}"
 
-                    sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=ui/build --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' amppp-ui"
+                    sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=ui/build --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' ."
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null"
                 } finally {
 
