@@ -11,6 +11,7 @@ RUN apk add --update bash && rm -rf /var/cache/apk/*
 
 RUN  mkdir /var/www && mkdir /var/www/ui
 add ./amppp-ui/nginx/ui.conf /etc/nginx/conf.d/ui.conf
+add ./amppp-ui/nginx/wordpress.conf /etc/nginx/conf.d/wordpress.conf
 add ./amppp-ui/nginx/nginx.conf /etc/nginx/nginx.conf
 ADD ./amppp-ui/wait-for-it.sh bin/
 ADD $AMPPP_UI /var/www/ui
