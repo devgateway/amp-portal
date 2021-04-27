@@ -87,11 +87,12 @@ stage('Build') {
                     sh "cd amppp-wp && ln -s ../wp-content wp_content"
                     sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' amppp-wp"
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} > /dev/null"
-                    sh "cd amppp-wp && rm wp_content"
                 } finally {
 
                     // Cleanup after Docker & Maven
+                    sh "cd amppp-wp && rm wp_content"
                     sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
+                    sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag}"
                 }
             }
         }else{
