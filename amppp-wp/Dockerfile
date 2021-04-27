@@ -7,4 +7,4 @@ LABEL "pull-request"=$AMPPP_PULL_REQUEST
 LABEL "branch"=$AMPPP_BRANCH
 #RUN apk add --update bash && rm -rf /var/cache/apk/*
 
-ADD ./wp_content:/var/www/html/wp-content
+ADD ./wp_content /var/www/html/wp-content
