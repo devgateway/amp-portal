@@ -60,6 +60,7 @@ stage('Build') {
         def hash = sh(returnStdout: true, script: "git log --pretty=${format} -n 1").trim()
         sh(returnStatus: true, script: "docker pull phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null")
         def imageIds = sh(returnStdout: true, script: "docker images -q -f \"label=git-hash=${hash}\"").trim()
+        println "imageIds:${imageIds}"
         sh(returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null")
 
         if (imageIds.equals("")) { //If not found we build
