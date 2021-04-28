@@ -88,8 +88,9 @@ stage('Build') {
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null"
                     sh "cp -R wp-content amppp-wp"
                     //This should be moved to our own wp image
-                    sh "cd amppp-wp && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
-                    sh "cd amppp-wp && chmod +x wp-cli.phar"
+                    sh "cp ../wp-cli.phar amppp-wp/"
+                    //sh "cd amppp-wp && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
+                    //sh "cd amppp-wp && chmod +x wp-cli.phar"
 
                     sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' amppp-wp"
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} > /dev/null"
