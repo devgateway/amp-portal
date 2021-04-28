@@ -25,7 +25,8 @@ def launchedByUser = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause
 def codeVersion
 def countries
 def country
-
+def ampppHost
+def ampppUrl
 stage('Build') {
   node {
     // Find AMP version
@@ -49,7 +50,7 @@ stage('Build') {
             milestone()
         }
     }
-
+    ampppHost="http://wp.amppp-${country}-${tag}-tc9.ampsite.net"
     ampppUrl = "http://amppp-${country}-${tag}-tc9.ampsite.net/"
 
     println "ampppUrl: ${ampppUrl}"
@@ -70,7 +71,7 @@ stage('Build') {
                     // Build AMP Public Portal UI
                     sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
                     sh "cd ui && npm install"
-                    sh "cd ui && npm run build"
+                    sh "cd ui && npm run build --host=${ampppHost}"
 
                     sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
                             " ./ui/node_modules"
@@ -96,7 +97,7 @@ stage('Build') {
 
                     // Cleanup after Docker & Maven
                     sh "rm -fr amppp-wp/wp-content"
-                    sh "rm amppp-wp/wp-cli.phar" 
+                    sh "rm amppp-wp/wp-cli.phar"
 
                     sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
                     sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag}"
