@@ -5,8 +5,4 @@ ARG AMPPP_BRANCH
 
 LABEL "pull-request"=$AMPPP_PULL_REQUEST
 LABEL "branch"=$AMPPP_BRANCH
-COPY wp-cli.phar /bin
-RUN mv /bin/wp-cli.phar /bin/wp
-COPY update_host.sh /bin
-run chmod +x /bin/update_host.sh
 ADD ./wp-content /var/www/html/wp-content
