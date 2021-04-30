@@ -8,8 +8,10 @@
 /.project
 /.settings
 /*.sublime*
-/console
-/tmp*
+/wp-content/themes/twentynineteen/
+/wp-content/themes/twentyseventeen/
+/wp-content/themes/twentytwenty/
+/wp-content/themes/twentytwentyone/
 /xdebug
 
 # Ignore archives and database dumps.
