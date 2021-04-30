@@ -1,15 +1,16 @@
-FROM node:12.16.3 AS compiler
-WORKDIR /tmp/ui
-COPY package*.json ./
-RUN npm install
-RUN npm rebuild node-sass
-COPY public ./public/
-COPY src ./src/
-RUN npm run build \
-  && tar -C build -czf /tmp/ui.tgz .
+#UI image
+FROM nginx:alpine
+ARG AMPPP_UI
+ARG AMPPP_PULL_REQUEST
+ARG AMPPP_BRANCH
 
-FROM alpine:latest
-COPY --from=compiler /tmp/ui.tgz /usr/src/ui.tgz
-COPY update.sh /usr/local/bin
-VOLUME /var/www/ui
-CMD ["/usr/local/bin/update.sh"]
+
+LABEL "pull-request"=$AMPPP_PULL_REQUEST
+LABEL "branch"=$AMPPP_BRANCH
+RUN apk add --update bash && rm -rf /var/cache/apk/*
+
+RUN  mkdir /var/www && mkdir /var/www/ui
+add ./amppp-ui/nginx/ui.conf /etc/nginx/conf.d/ui.conf
+add ./amppp-ui/nginx/nginx.conf /etc/nginx/nginx.conf
+ADD ./amppp-ui/wait-for-it.sh bin/
+ADD $AMPPP_UI /var/www/ui
