@@ -98,7 +98,6 @@ stage('Build') {
 
                     // Cleanup after Docker & Maven
                     sh "rm -fr amppp-wp/wp-content"
-                    sh "rm amppp-wp/wp-cli.phar"
 
                     sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
                     sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag}"
