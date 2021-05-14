@@ -53,14 +53,6 @@ const Header = ({intl, match}) => {
                             <a href="/"><img className="brand logo" size="large" src='/logo_full.png'/></a>
                         </Menu.Item>
 
-                        <Menu.Item className={"divider"}>
-                            <div></div>
-                        </Menu.Item>
-
-                        <Menu.Item fitted>
-                            <Flag name="za"/> <b>South Africa</b>
-                        </Menu.Item>
-
                         <Menu.Menu className={"pages"}>
                             <MenuConsumer>
                                 <MyMenuItems active={slug} locale={intl.locale} selected={selected}
