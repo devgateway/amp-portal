@@ -81,7 +81,7 @@ class ResponsiveContainer extends Component {
 
 
     render() {
-        const {children, fixed, locale} = this.props
+        const {children, fixed, locale, match} = this.props
         return (<div>
             <style>
                 {Media.mediaStyles}
@@ -90,7 +90,7 @@ class ResponsiveContainer extends Component {
             <DesktopContainer fixed={fixed}>
                 {children}
             </DesktopContainer>
-            <Footer></Footer>
+            <Footer match={match}/>
 
         </div>)
     }

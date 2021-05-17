@@ -34,7 +34,8 @@ const messages = {
 
 
 const InjectTitle = injectIntl(({intl}) => {
-    document.title = intl.formatMessage({id: 'app.title', defaultMessage: "Tobacco"})
+    // TODO make it translatable
+    document.title = intl.formatMessage({id: 'app.title', defaultMessage: "Aid Management Platform"})
     return null
 })
 
@@ -62,7 +63,7 @@ class IntlRoutes extends Component {
         const self = this;
         const props = this.props;
         const locale=this.props.match.params.lan
-
+        // TODO see if passing entire match is the best way to go
         return (<IntlProvider key={locale} locale={locale} messages={messages[locale]}>
             <style type="text/css">${mediaStyle}</style>
             <InjectTitle/>
@@ -72,8 +73,7 @@ class IntlRoutes extends Component {
                         <Category/>
                     </ResponsiveContainer>
                 </Route>
-                <Route path="/:lan" exact render={props => (<ResponsiveContainer>
-
+                <Route path="/:lan" exact render={props => (<ResponsiveContainer match={props.match}>
                     <PageProvider slug={"home"} store={"home"}>
                         <PageConsumer>
                             <WPContent {...props} defaultTemplate={Page}></WPContent>

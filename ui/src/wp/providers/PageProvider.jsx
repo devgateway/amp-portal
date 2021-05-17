@@ -42,14 +42,15 @@ class PageProvider extends React.Component {
 
     componentWillUnmount(){
 
-        const {before, perPage, page, fields, parent, slug, store, intl: {locale}} = this.props
+        const { before, perPage, page, fields, parent, slug, store, intl: {locale}} = this.props
         if(this.props.debugger){
 
         }
         this.props.onClean({store})
     }
     render() {
-        const {pages, loading, error} = this.props
+      // TODO use PageFailBackConsumer instead of passing the fallback by props
+        const {pages, loading, error, fallbackComponent} = this.props
         if (pages && pages.length > 0) {
             return <PageContext.Provider value={pages}>{this.props.children}</PageContext.Provider>
         } else if (error) {
@@ -60,12 +61,16 @@ class PageProvider extends React.Component {
                         <Loader inverted content='Loading'/>
                    </Container>)
         } else if (loading == false) {
+          if (fallbackComponent) {
+            return <>{fallbackComponent}</>
+          } else {
             return <Container>
-                <Segment color={"red"}>
-                    <h1>404</h1>
-                    <p>Can't find this page</p>
-                </Segment>
+              <Segment color={"red"}>
+                <h1>404</h1>
+                <p>Can't find this page</p>
+              </Segment>
             </Container>
+          }
         }
         return null
     }

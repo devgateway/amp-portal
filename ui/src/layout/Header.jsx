@@ -42,7 +42,6 @@ const Header = ({intl, match}) => {
 
     const [selected, setSelected] = useState()
     const {slug} = match.params
-    debugger;
 
     return <React.Fragment>
         <Container fluid={true} className="header">
