@@ -1,5 +1,10 @@
 $font-family: 'Roboto', sans-serif;
 
+$header-bg: #ffffff;
+$menu-border: #dfe2e5;
+$menu-text-color: #7f8fa4;
+$login-blue: #2da0f8;
+
 $blue: #3e53a6;
 $light-blue: #5089a6;
 $dark-gray: #5c5d63;
@@ -17,11 +22,27 @@ $light-green: #31ba1a;
 $charts-options-height: 66px;
 $charts-options-font-size: 1.02rem;
 
+// Spacing Units
+$base-unit: 10px;
+$base-unit-md: 20px;
+$base-unit-lg: 30px;
+$base-unit-xlg: 100px;
+
+$extend: 100%;
+
+// Font sizes
+$menu-font-size: 15px;
+
+// Mixing and helpers
 @mixin gray-raleway-font {
   font-size: $charts-options-font-size;
   color: $gray;
   font-weight: 500;
   font-family: "Raleway";
 }
-
-$base-unit: 10px;
+@mixin menu-icon{
+  background-repeat: no-repeat;
+  background-size: $base-unit + 5 $base-unit + 5;
+  background-position: 0 1px;
+  padding-left: $base-unit-md;
+}

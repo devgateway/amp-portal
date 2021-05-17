@@ -1,4 +1,4 @@
-import {Container, Flag, Menu} from "semantic-ui-react";
+import {Container, Flag, Menu, Button} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import MenuProvider from "../wp/providers/MenuProvider";
 import MenuConsumer from "../wp/consumers/MenuConsumer";
@@ -50,7 +50,7 @@ const Header = ({intl, match}) => {
                 <MenuProvider slug={"main"}>
                     <Menu className={"branding"} text>
                         <Menu.Item>
-                            <a href="/"><img className="brand logo" size="large" src='/logo_full.png'/></a>
+                            <a href="/"><img className="brand logo" size="large" src='/amp-logo.svg'/></a>
                         </Menu.Item>
 
                         <Menu.Menu className={"pages"}>
@@ -60,8 +60,13 @@ const Header = ({intl, match}) => {
                             </MenuConsumer>
                         </Menu.Menu>
 
-                        <Menu.Item fitted>
-                            <Search/>
+                        <span className="lang">
+                          <Button attached='left' className="selected">EN</Button>
+                          <Button attached='right'>FR</Button>
+                        </span>
+
+                        <Menu.Item fitted className="login">
+                            <img src='/login.svg'/> Login to AMP
                         </Menu.Item>
                     </Menu>
                 </MenuProvider>
