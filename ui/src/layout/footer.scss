@@ -1,12 +1,24 @@
-.container.tcdi.footer {
-  margin-top: 100px;
-  background-color: #5089a6;
-  line-height: 16px !important;
-
-  .column {
-    padding-bottom: 1.5rem;
-    padding-top: 1.5rem;
+.container.amp.footer {
+  background: #FFFFFF;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  position: absolute;
+  bottom: 0px;
+  .ui.container {
+    width: 100% !important;
+    .contact-us{
+      color:#616160;
+    }
   }
+
+}
+
+.container.default.footer {
+  margin-top: 100px;
+  padding: 15px;
+  background-color: #FFFFFF;
+
   .header {
     font-weight: 400;
     color: white;
@@ -14,21 +26,33 @@
     margin: 0px;
   }
 
+  .dg-logo {
+    width: 135px;
+    height: 50.63px;
+  }
+
+  .usaid-logo {
+    width: 160px;
+    height: 50px;
+  }
+
   p {
     font-weight: 400;
     font-size: 15px;
-    color: white;
+    color: #289df4;
     padding: 1rem 0;
-    a{
+
+    .haiti-img {
+      width: 20px;
+      height: 12px;
+    }
+
+    a {
       color: #ffffff;
+
       &:hover {
         color: #f0f0f0;
       }
     }
-  }
-
-  .tcdi.secondary-menu.container {
-    background-color: #175372;
-    text-align: center;
   }
 }
