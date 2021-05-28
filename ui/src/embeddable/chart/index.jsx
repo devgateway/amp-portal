@@ -9,6 +9,7 @@ import './charts.scss'
 import HalfPie from "../../charts/HalfPie";
 import TheContent from "../../wp/template-parts/TheContent";
 import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
+import TopList from "../../charts/TopList/TopList";
 
 const BarChar = (props) => {
   const { data, legends, colors, height, groupMode } = props
@@ -26,6 +27,10 @@ const PieChart = (props) => {
 
 const DonorScoreCardChart = (props) => {
   return <DonorScoreCard />;
+}
+
+const TopListsChart = (props) => {
+  return <TopList />;
 }
 const Diverging = (props) => {
   const { data, legends, colors, height } = props
@@ -74,9 +79,15 @@ const Chart = (props) => {
   if (type == 'diverging1') {
     child = <h1>Soon</h1>
   }
-  if(type==='donorScorecard'){
-    child = <DonorScoreCardChart/>
+
+  if (type === 'donorScorecard') {
+    child = <DonorScoreCardChart />
   }
+
+  if (type === 'topLists') {
+    child = <TopListsChart />;
+  }
+
   const dual = (dualMode === 'true')
 
   return <Container className={"chart container"} fluid={true}>

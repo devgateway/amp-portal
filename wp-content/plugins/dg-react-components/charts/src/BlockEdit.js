@@ -119,6 +119,7 @@ class BlockEdit extends Component {
                                     label: 'Half Pie',
                                     value: 'halfPie'
                                 }, {label: 'Diverging', value: 'diverging'},
+                                    {label: 'Top Lists', value: 'topLists'},
                                     {label: 'Donor Scorecard', value: 'donorScorecard'}]}
                             />
 
