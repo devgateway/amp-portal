@@ -118,7 +118,8 @@ class BlockEdit extends Component {
                                 options={[{label: 'Bar', value: 'bar'}, {
                                     label: 'Half Pie',
                                     value: 'halfPie'
-                                }, {label: 'Diverging', value: 'diverging'}]}
+                                }, {label: 'Diverging', value: 'diverging'},
+                                    {label: 'Donor Scorecard', value: 'donorScorecard'}]}
                             />
 
                         </PanelRow>
