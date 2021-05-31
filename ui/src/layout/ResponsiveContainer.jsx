@@ -22,7 +22,7 @@ class DesktopContainer extends Component {
         return (
             <Container fluid>
                 <Header></Header>
-                <Container className="desktop">
+                <Container className="desktop amp">
                     {children}
                 </Container>
             </Container>

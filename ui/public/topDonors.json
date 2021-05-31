@@ -1,0 +1,41 @@
+{
+  "values": [
+    {
+      "id": 90,
+      "name": "USG-USAID",
+      "amount": 2778286669.974026000000,
+      "formattedAmount": "2 778 286 670"
+    },
+    {
+      "id": 12,
+      "name": "MAECD - Canada",
+      "amount": 1775386750.685487000000,
+      "formattedAmount": "1 775 386 751"
+    },
+    {
+      "id": 110,
+      "name": "BID",
+      "amount": 1611439897.389611000000,
+      "formattedAmount": "1 611 439 897"
+    },
+    {
+      "id": 868,
+      "name": "Ambassade du Vénézuela",
+      "amount": 842671281.000000000000,
+      "formattedAmount": "842 671 281"
+    },
+    {
+      "id": 111,
+      "name": "UE",
+      "amount": 669021361.103893000000,
+      "formattedAmount": "669 021 361"
+    }
+  ],
+  "total": 1.3815225141255095E10,
+  "sumarizedTotal": "13,8B",
+  "currency": "USD",
+  "maxLimit": 278,
+  "totalPositive": 13870794055.255095000000,
+  "name": "Top Donor Agencies",
+  "title": "Top Donor Agencies"
+}

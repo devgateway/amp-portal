@@ -42,16 +42,13 @@ export const getCategories = () => (dispatch, getState) => {
 
 export const getData = ({source, store, params}) => (dispatch, getState) => {
     let params;
-
     const filters = getState().get('data').getIn(['filters'])
 
     if (filters) {
-
         params = {...filters.toJS()}
     }
 
     dispatch({type: LOAD_DATA, params, store})
-
     api.getData(source, params)
         .then(data => dispatch({type: LOAD_DATA_DONE, store, data}))
         .catch(error => dispatch({type: LOAD_DATA_ERROR, store, error}))

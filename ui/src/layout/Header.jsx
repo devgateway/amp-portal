@@ -11,7 +11,6 @@ import Search from '../wp/Search'
 
 const BreadCrumbs = ({pages}) => {
 
-    debugger;
     return <React.Fragment>
         {pages && pages.map(p => <p>{p.slug != 'home' ?
             <span><a href={"/#"}> Home</a> / <TheTitle as={"span"} post={p}></TheTitle></span> : ''}</p>)}
@@ -80,13 +79,12 @@ const Header = ({intl, match}) => {
         </Container>
 
 
-        <Container className={"url breadcrumbs"}>
+{     /*   <Container className={"url breadcrumbs"}>
             <PageConsumer>
                 <BreadCrumbs></BreadCrumbs>
             </PageConsumer>
-
         </Container>
-
+*/}
     </React.Fragment>
 
 }
