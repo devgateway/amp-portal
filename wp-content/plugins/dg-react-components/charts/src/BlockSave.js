@@ -13,7 +13,6 @@ const SaveComponent = (props) => {
             colorBy,
             level1,
             level2,
-            level3,
             dualMode
         }
     } = props;
@@ -23,9 +22,8 @@ const SaveComponent = (props) => {
 
     const divClass = {}
     const divStyles = {}
-    const levels = [level1, level2, level3];
+    const levels = [level1, level2];
     const source = levels.filter(l => l != 'none' && l != null).join('/')
-
 
     return (
             <div className={"tcdi-component"}
