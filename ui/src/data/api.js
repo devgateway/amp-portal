@@ -1,6 +1,6 @@
 import { get, post } from '../api/commons'
 
-const API_ROOT = 'https://amp-haiti-pr-3770-tc9.ampsite.net/rest/dashboard';
+const API_ROOT = process.env.REACT_APP_API_URL;
 const TOP_API = '/tops';
 const URL_TAXONOMY = API_ROOT + '/categories'
 const URL_STATS = API_ROOT;//+ '/stats'
