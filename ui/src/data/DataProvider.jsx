@@ -22,7 +22,6 @@ class DataProvider extends React.Component {
 
     render() {
         const {data, loading, error} = this.props
-
         if (data) {
             return <DataContext.Provider value={data}>{this.props.children}</DataContext.Provider>
         } else if (error) {

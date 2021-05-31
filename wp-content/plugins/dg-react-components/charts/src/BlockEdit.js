@@ -25,16 +25,20 @@ class BlockEdit extends Component {
             {value: "set2", label: 'set2'},
             {value: "set3", label: 'set3'}]
         this.dimensions = [
-            {value: 'none', label: 'None'},
-            {value: "gender", label: 'Gender'},
-            {value: "age", label: 'Age'},
-            {value: "area", label: 'Area'},
-            {value: "gender", label: 'Poverty'},
-            {value: "race", label: 'Race'},
-            {value: "education", label: 'Education'},
-            {value: "poverty", label: 'Poverty'},
-            {value: "smoke", label: 'Smoke'}
+            {value: 'do', label: 'Donor Agency'},
+            {value: "ro", label: 'Responsible Organization'},
+            {value: "ba", label: 'Beneficiary Agency'},
+            {value: "ia", label: 'Implementing Agency'},
+            {value: "ea", label: 'Executing Agency'},
+            {value: "re", label: 'Administrative Level 1'},
+            {value: "ps", label: 'Primary Sector'},
+            {value: "dg", label: 'Donor Group'}
         ]
+      this.columns = [
+        {value: 3, label: '3'},
+        {value: 4, label: '4'},
+        {value: 5, label: '5'}
+      ]
 
     }
 
@@ -69,7 +73,7 @@ class BlockEdit extends Component {
 
     render() {
         const {
-            className, isSelected,
+            isSelected,
             toggleSelection, setAttributes, attributes: {
                 height,
                 width,
@@ -81,13 +85,12 @@ class BlockEdit extends Component {
                 colorBy,
                 level1,
                 level2,
-                level3,
                 mode,
                 dualMode,
             }
         } = this.props;
 
-        const levels = [level1, level2, level3];
+        const levels = [level1, level2];
         const source = levels.filter(l => l != 'none' && l != null).join('/')
 
         // 'data-legends-left': left = 'Left Legend',
@@ -115,15 +118,15 @@ class BlockEdit extends Component {
                                 onChange={(value) => {
                                     setAttributes({type: value})
                                 }}
-                                options={[{label: 'Bar', value: 'bar'}, {
-                                    label: 'Half Pie',
-                                    value: 'halfPie'
-                                }, {label: 'Diverging', value: 'diverging'},
-                                    {label: 'Donor Scorecard', value: 'donorScorecard'}]}
+                                options={[{label: 'Bar', value: 'bar'},
+                                  {label:'Top Chart',value: 'TopChart'},
+                                  {label: 'Half Pie',value: 'halfPie'},
+                                  {label: 'Donor Scorecard', value: 'donorScorecard'},
+                                  {label: 'Diverging', value: 'diverging'}]}
                             />
 
                         </PanelRow>
-                        <PanelRow>
+                      <PanelRow>
                             <SelectControl
                                 label={__('Group Mode')}
                                 value={[groupMode]} // e.g: value = [ 'a', 'c' ]
@@ -137,7 +140,7 @@ class BlockEdit extends Component {
                         </PanelRow>
                         <PanelRow>
                             <SelectControl
-                                label={__('First Dimension')}
+                                label={__('Datasource')}
                                 value={[this.props.attributes.level1]} // e.g: value = [ 'a', 'c' ]
                                 onChange={(value) => {
                                     setAttributes({level1: value})
@@ -148,22 +151,12 @@ class BlockEdit extends Component {
 
                         <PanelRow>
                             <SelectControl
-                                label={__('Second Dimension')}
+                                label={__('Bar count')}
                                 value={[this.props.attributes.level2]} // e.g: value = [ 'a', 'c' ]
                                 onChange={(value) => {
                                     setAttributes({level2: value})
                                 }}
-                                options={this.dimensions}
-                            />
-                        </PanelRow>
-                        <PanelRow>
-                            <SelectControl
-                                label={__('Third dimension')}
-                                value={[this.props.attributes.level3]} // e.g: value = [ 'a', 'c' ]
-                                onChange={(value) => {
-                                    setAttributes({level3: value})
-                                }}
-                                options={this.dimensions}
+                                options={this.columns}
                             />
                         </PanelRow>
                         <PanelRow>
@@ -207,7 +200,7 @@ class BlockEdit extends Component {
                         </PanelRow>
                         <PanelRow>
                             <TextControl
-                                label={__('Bottom Legend')}
+                                label={__('Chart title')}
                                 value={bottomLegend}
                                 onChange={(bottomLegend) => setAttributes({bottomLegend})}
                             />
@@ -217,8 +210,8 @@ class BlockEdit extends Component {
             </InspectorControls>),
 
                 (<ResizableBox
-                        size={{height, width}}
-                        style={{"margin": "auto"}}
+                        size={{height}}
+                        style={{"margin": "auto", width:"100%"}}
                         minHeight="50"
                         minWidth="50"
                         enable={{
@@ -242,7 +235,7 @@ class BlockEdit extends Component {
                             toggleSelection(false);
                         }}
                     >
-                        <div className={className} style={divStyles} >
+                        <div className="chart container" style={divStyles} >
                             <div>
                                 {dualMode&&<Checkbox toggle defaultChecked={true}
                                            onChange={e => setAttributes({mode: (mode == 'chart' ? 'info' : 'chart')})}/>}
