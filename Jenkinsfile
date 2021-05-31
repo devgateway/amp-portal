@@ -63,7 +63,7 @@ stage('Build') {
         def imageIds = sh(returnStdout: true, script: "docker images -q -f \"label=git-hash=${hash}\"").trim()
         println "imageIds:${imageIds}"
         sh(returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null")
-        imageIds=""
+        imageIds = ""
         //Force build in the meantime
         if (imageIds.equals("")) { //If not found we build
           withEnv(["PATH+NODE=${tool name: 'node-12.16.3', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'}/bin"]) {
