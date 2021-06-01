@@ -9,7 +9,7 @@ import './charts.scss'
 import HalfPie from "../../charts/HalfPie";
 import TheContent from "../../wp/template-parts/TheContent";
 import Top from "../../charts/Top";
-
+import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
 const BarChar = (props) => {
   const { data, legends, colors, height, groupMode } = props
   const options = buildTopsData(data, true)
@@ -30,7 +30,9 @@ const PieChart = (props) => {
                   format={{ style: "percent", currency: "EUR" }}></HalfPie>
 }
 
-
+const DonorScoreCardChart = (props) => {
+  return <DonorScoreCard />;
+}
 const Diverging = (props) => {
   const { data, legends, colors, height } = props
   const options = buildDivergingOptions(data, true)
@@ -59,7 +61,7 @@ const Chart = (props) => {
     'data-toggle-info-label': toggleInfoLabel = "Info Graphic",
     'data-toggle-chart-label': toggleChartLabel = "Chart",
   } = props;
-  console.log(props);
+  let newSource = source;
   const [mode, setMode] = useState(editing ? "chart" : 'info')
 
   const legends = {
@@ -80,13 +82,19 @@ const Chart = (props) => {
   if (type == 'diverging1') {
     child = <h1>Soon</h1>
   }
+  
+  if(type==='donorScorecard'){
+    child = <DonorScoreCardChart/>;
+    newSource = 'DG/5';
+  }
+  
   if (type === 'TopChart') {
     child = <TopChart height={`${height}px`} legends={legends} colors={colors} groupMode={groupMode}></TopChart>
   }
   const dual = (dualMode === 'true')
   return <Container className={"chart container"} fluid={true}>
 
-    <DataProvider store={source.split("/")} source={source}>
+    <DataProvider store={newSource.split("/")} source={newSource}>
 
       {(!dual || mode == 'chart') && <Container className={"body"} fluid={true}><DataConsumer>
         {child}

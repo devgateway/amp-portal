@@ -1,0 +1,28 @@
+@import "../../vars";
+
+.donor-scorecard-chart {
+  @include module-container($module-bg);
+  h3{
+    @include module-title;
+  }
+  .description{
+    @include module-description;
+  }
+  .data-wrapper{
+    margin-top: $base-unit-md;
+  }
+  .data-item{
+    margin-bottom: $base-unit-md - 5;
+    overflow: hidden;
+  }
+  .label{
+    font-size: $module-font-size - 1;
+    font-weight: 600;
+    float: left;
+    line-height: 190%;
+    margin-right: $base-unit;
+  }
+  .chart-wrapper{
+    float: right;
+  }
+}
