@@ -60,17 +60,16 @@ $module-letter-spacing: 0.04em;
 @mixin module-container($bg-color){
   background-color: $bg-color;
   border: 1px solid $menu-border;
+  font-family: $font-family-secondary;
   padding: $base-unit * 2;
   width: $extend;
 }
 @mixin module-title{
-  font-family: $font-family-secondary;
   font-size: $chart-font-size !important;
   color: $body-text-color;
   font-weight: 500;
 }
 @mixin module-description{
-  font-family: $font-family-secondary;
   font-size: $module-font-size;
   letter-spacing: $module-letter-spacing;
   line-height: 150%;
