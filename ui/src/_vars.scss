@@ -1,9 +1,14 @@
 $font-family: 'Roboto', sans-serif;
+$font-family-secondary:'Raleway', sans-serif;
 
 $header-bg: #ffffff;
+$module-bg: #fafbfc;
 $menu-border: #dfe2e5;
 $menu-text-color: #7f8fa4;
 $login-blue: #2da0f8;
+
+$body-text-color: #354052;
+
 
 $blue: #3e53a6;
 $light-blue: #5089a6;
@@ -32,12 +37,16 @@ $extend: 100%;
 
 // Font sizes
 $menu-font-size: 15px;
+$chart-font-size: 18px;
+$module-font-size: 13px;
+
+$module-letter-spacing: 0.04em;
 
 // Mixing and helpers
 @mixin gray-raleway-font {
   font-size: $charts-options-font-size;
   color: $gray;
-  font-weight: 500;
+  font-weight: 600;
   font-family: "Raleway";
 }
 @mixin menu-icon{
@@ -45,4 +54,24 @@ $menu-font-size: 15px;
   background-size: $base-unit + 5 $base-unit + 5;
   background-position: 0 1px;
   padding-left: $base-unit-md;
+}
+
+// side modules mixing
+@mixin module-container($bg-color){
+  background-color: $bg-color;
+  border: 1px solid $menu-border;
+  padding: $base-unit * 2;
+  width: $extend;
+}
+@mixin module-title{
+  font-family: $font-family-secondary;
+  font-size: $chart-font-size !important;
+  color: $body-text-color;
+  font-weight: 500;
+}
+@mixin module-description{
+  font-family: $font-family-secondary;
+  font-size: $module-font-size;
+  letter-spacing: $module-letter-spacing;
+  line-height: 150%;
 }

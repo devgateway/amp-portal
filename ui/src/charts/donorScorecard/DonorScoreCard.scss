@@ -1,4 +1,11 @@
+@import "../../vars";
+
 .donor-scorecard-chart {
-  width: 100%;
-  border: 1px solid pink;
+  @include module-container($module-bg);
+  h3{
+    @include module-title;
+  }
+  .description{
+    @include module-description;
+  }
 }

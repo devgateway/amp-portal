@@ -41,3 +41,4 @@ __MACOSX
 # Ignore configuration files that may contain sensitive information.
 /web/sites/*/drushrc.custom.php
 /web/sites/*/settings.custom.php
+ui/node_modules/
