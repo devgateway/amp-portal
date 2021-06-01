@@ -61,7 +61,7 @@ const Chart = (props) => {
     'data-toggle-info-label': toggleInfoLabel = "Info Graphic",
     'data-toggle-chart-label': toggleChartLabel = "Chart",
   } = props;
-  console.log(props);
+  let newSource = source;
   const [mode, setMode] = useState(editing ? "chart" : 'info')
 
   const legends = {
@@ -84,7 +84,8 @@ const Chart = (props) => {
   }
   
   if(type==='donorScorecard'){
-    child = <DonorScoreCardChart/>
+    child = <DonorScoreCardChart/>;
+    newSource = 'DG/5';
   }
   
   if (type === 'TopChart') {
@@ -93,7 +94,7 @@ const Chart = (props) => {
   const dual = (dualMode === 'true')
   return <Container className={"chart container"} fluid={true}>
 
-    <DataProvider store={source.split("/")} source={source}>
+    <DataProvider store={newSource.split("/")} source={newSource}>
 
       {(!dual || mode == 'chart') && <Container className={"body"} fluid={true}><DataConsumer>
         {child}
