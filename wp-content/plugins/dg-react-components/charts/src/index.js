@@ -28,7 +28,7 @@ registerBlockType('dg-components/chart',
             },
             bottomLegend: {
                 type: 'string',
-                default: "Bottom Legends",
+                default: "Chart Title",
             }
             ,
             leftLegend: {

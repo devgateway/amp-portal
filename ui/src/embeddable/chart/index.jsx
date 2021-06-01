@@ -4,18 +4,24 @@ import DataProvider from "../../data/DataProvider";
 import { connect } from "react-redux";
 import Bar from "../../charts/Bar";
 import DataConsumer from "../../data/DataConsumer";
-import { buildBarOptions, buildDivergingOptions, buildPieOptions } from './chartOptionsBuilder'
+import { buildBarOptions, buildDivergingOptions, buildPieOptions, buildTopsData } from './chartOptionsBuilder'
 import './charts.scss'
 import HalfPie from "../../charts/HalfPie";
 import TheContent from "../../wp/template-parts/TheContent";
+import Top from "../../charts/Top";
 import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
 import TopList from "../../charts/TopList/TopList";
-
 const BarChar = (props) => {
   const { data, legends, colors, height, groupMode } = props
-  const options = buildBarOptions(data, true)
+  const options = buildTopsData(data, true)
   return <Bar groupMode={groupMode} height={height} legends={legends} colors={colors} options={options}
               format={{ style: "percent", currency: "EUR" }}></Bar>
+}
+const TopChart = (props) => {
+  const { data, legends, colors, height, groupMode } = props
+  const options = buildTopsData(data)
+  return <Top groupMode={groupMode} height={height} legends={legends} colors={colors} options={options}
+              format={{ style: "percent", currency: "EUR" }}></Top>
 }
 
 const PieChart = (props) => {
@@ -42,14 +48,15 @@ const Diverging = (props) => {
 
 const Chart = (props) => {
   const { filters } = props
+  console.log(props);
   const {
     editing = false,
     childContent,
     "data-height": height = 500,
     "data-chart-type": type = 'bar',
-    'data-source': source = 'gender/smoke',
+    'data-source': source = 'DG/5',
     'data-legends-left': left = 'Left Legend',
-    'data-legends-bottom': bottom = 'Bottom Legend',
+    'data-legends-bottom': title = 'chartTitle',
     'data-color-scheme': scheme = 'nivo',
     'data-color-by': colorBy = 'index',
     'data-group-mode': groupMode = 'stacked',
@@ -58,12 +65,13 @@ const Chart = (props) => {
     'data-chart-data-source': dataSource = "NDIS",
     'data-toggle-info-label': toggleInfoLabel = "Info Graphic",
     'data-toggle-chart-label': toggleChartLabel = "Chart",
-  } = props
+  } = props;
+  let newSource = source;
   const [mode, setMode] = useState(editing ? "chart" : 'info')
 
   const legends = {
-    left: left,
-    bottom: bottom
+    title,
+    left
   }
   const colors = {
     scheme: scheme,
@@ -79,20 +87,23 @@ const Chart = (props) => {
   if (type == 'diverging1') {
     child = <h1>Soon</h1>
   }
-
-  if (type === 'donorScorecard') {
-    child = <DonorScoreCardChart />
+  
+  if(type==='donorScorecard'){
+    child = <DonorScoreCardChart/>;
+    newSource = 'DG/5';
   }
-
-  if (type === 'topLists') {
+   if (type === 'topLists') {
+    newSource = 'DG/5';
     child = <TopListsChart />;
   }
-
+  
+  if (type === 'TopChart') {
+    child = <TopChart height={`${height}px`} legends={legends} colors={colors} groupMode={groupMode}></TopChart>
+  }
   const dual = (dualMode === 'true')
-
   return <Container className={"chart container"} fluid={true}>
 
-    <DataProvider store={source.split("/")} source={source}>
+    <DataProvider store={newSource.split("/")} source={newSource}>
 
       {(!dual || mode == 'chart') && <Container className={"body"} fluid={true}><DataConsumer>
         {child}

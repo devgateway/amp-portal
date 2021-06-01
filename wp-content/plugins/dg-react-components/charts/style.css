@@ -1,5 +1,11 @@
 @import "semantic.css";
+
 .wp-block-dg-components-chart {
-    padding:20px;
+    padding: 20px;
+}
+
+.chart.container {
+    margin: 0px;
+    padding: 5px;
 }
 

@@ -108,9 +108,10 @@ const Chart = ({legends, options, intl, format, colors, groupMode, height}) => {
         }
         setFilter(newFilter)
     }
-
-
+    //TODO remove
+    groupMode = null;
     return (
+
         <div style={{height:height}}>
             {options && options.data && <ResponsiveBar
                 colorBy={"index"}
@@ -120,9 +121,9 @@ const Chart = ({legends, options, intl, format, colors, groupMode, height}) => {
                 motionDamping={11}
                 {...options}
                 minValue="auto"
-                keys={applyFilter(options.keys)}
-                data={applyFilter(options.data)}
-                groupMode={groupMode ? groupMode : "grouped"}
+                keys={options.keys}
+                data={options.data}
+
                 margin={{top: 30, right: 200, bottom: 50, left: 50}}
                 padding={0.3}
                 colors={d => getColor(d.id, d.data)}
