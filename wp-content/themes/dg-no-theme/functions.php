@@ -5,18 +5,13 @@ if (! function_exists('tdi_setup')) :
     function tdi_setup()
     {
 
-        add_theme_support('post-thumbnails');
-        add_theme_support('wp-block-styles');
-
-        add_theme_support('editor-styles');
-        add_editor_style( 'editor-style.css' );
-
         register_nav_menus(array(
             'main' => esc_html__('Desktop', 'tdi'),
         ));
 
         //add_theme_support( 'disable-custom-font-sizes' );
 
+        add_theme_support( 'post-thumbnails' );
         add_theme_support( 'editor-font-sizes', array(
             array(
                 'name'      => __( 'Breadcrumbs (12px)', 'tcdi' ),
@@ -205,13 +200,16 @@ function create_prevalence_category()
 
     function jr3_enqueue_gutenberg()
     {
+        // This font is enqueued for the demo only.  You probably won't need this.
+
         // Make sure you link this to your actual file.
         wp_register_style('fonts', get_stylesheet_directory_uri() . '/css/editor.css');
         wp_enqueue_style('fonts');
-        // This font is enqueued for the demo only.  You probably won't need this.
-        wp_register_style('jr3-webfonts', 'https://fonts.googleapis.com/css?family=Roboto');
-        wp_enqueue_style('jr3-webfonts');
+
+
     }
+
+
 
 
  function add_illicit_post_types(){
@@ -308,8 +306,7 @@ function create_prevalence_category()
  }
 
 
- function create_health_category()
- {
+ function create_health_category() {
      register_taxonomy('health_category', 'health', array(
           'hierarchical' => true,
           'labels' =>array(
@@ -349,6 +346,14 @@ function cc_mime_types($mimes)
 }
 
 
+function add_post_meta_field() {
+	register_rest_field( get_post_types(),
+						  'meta_fields',
+						  array(
+						  	'get_callback' => 'callback_read_meta_data'
+							)
+						);
+}
 
 function add_page_meta_field() {
 	register_rest_field( 'page',
@@ -372,45 +377,13 @@ add_action('after_setup_theme', 'tdi_setup');
 //add_action('after_setup_theme', 'create_illicit_category');
 //add_action('after_setup_theme', 'add_health_post_types');
 //add_action('after_setup_theme', 'create_health_category');
-add_action('enqueue_block_editor_assets', 'jr3_enqueue_gutenberg');
+
+add_action('admin_enqueue_scripts', 'jr3_enqueue_gutenberg');
 add_action( 'rest_api_init', 'add_page_meta_field' );
+add_action( 'rest_api_init', 'add_post_meta_field' );
 
 
 
-
-
-
-add_action('rest_api_init',taxonomies_custom_fields);
-
-add_action('admin_init',taxonomies_custom_fields);
-
-
-function taxonomies_custom_fields(){
- $args = array(
-  'public'   => true,
-   '_builtin' => false
-    );
-    $output = 'names'; // names or objects, note names is the default
-    $operator = 'and'; // 'and' or 'or'
-    $post_types = get_post_types( $args, $output, $operator );
-    $taxonomies = get_object_taxonomies($post_types);
-        foreach ( $taxonomies  as $taxonomy ) {
-                add_action( $taxonomy.'_add_form_fields', 'add_disable_header' );
-                add_action( $taxonomy.'_edit_form_fields', 'edit_disable_header', 10, 2 );
-                add_action( $taxonomy.'_add_form_fields', 'add_sub_title_field' );
-                add_action( $taxonomy.'_edit_form_fields', 'edit_sub_title_field', 10, 2 );
-                add_action( $taxonomy.'_add_form_fields', 'add_per_page_field' );
-                add_action( $taxonomy.'_edit_form_fields', 'edit_per_page_fields', 10, 2 );
-                add_action( $taxonomy.'_add_form_fields', 'add_component_field' );
-                add_action( $taxonomy.'_edit_form_fields', 'edit_component_fields', 10, 2 );
-                add_action( 'created_'.$taxonomy, 'save_fields' );
-                add_action( 'edited_'.$taxonomy, 'save_fields' );
-                add_filter( 'rest_prepare_'.$taxonomy, prepare_rest_taxonomy_metadata, 10, 3);
-       }
-
-
-
-}
 
 
 
@@ -622,35 +595,3 @@ function get_post_meta_for_api( $object ) {
 
 
 
-
-function my_custom_styles( $init_array ) {
-
-    $style_formats = array(
-        // These are the custom styles
-        array(
-            'title' => 'Red Button',
-            'block' => 'span',
-            'classes' => 'red-button',
-            'wrapper' => true,
-        ),
-        array(
-            'title' => 'Content Block',
-            'block' => 'span',
-            'classes' => 'content-block',
-            'wrapper' => true,
-        ),
-        array(
-            'title' => 'Highlighter',
-            'block' => 'span',
-            'classes' => 'highlighter',
-            'wrapper' => true,
-        ),
-    );
-    // Insert the array, JSON ENCODED, into 'style_formats'
-    $init_array['style_formats'] = json_encode( $style_formats );
-
-    return $init_array;
-
-}
-// Attach callback to 'tiny_mce_before_init'
-add_filter( 'tiny_mce_before_init', 'my_custom_styles' );
