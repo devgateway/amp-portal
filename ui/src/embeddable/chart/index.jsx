@@ -11,6 +11,8 @@ import TheContent from "../../wp/template-parts/TheContent";
 import Top from "../../charts/Top";
 import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
 import TopList from "../../charts/TopList/TopList";
+import LoginWidget from "../../charts/login/LoginWidget";
+
 const BarChar = (props) => {
   const { data, legends, colors, height, groupMode } = props
   const options = buildTopsData(data, true)
@@ -37,6 +39,10 @@ const DonorScoreCardChart = (props) => {
 
 const TopListsChart = (props) => {
   return <TopList />;
+}
+
+const LoginWidgetComponent = (props) => {
+  return <LoginWidget />;
 }
 const Diverging = (props) => {
   const { data, legends, colors, height } = props
@@ -87,16 +93,22 @@ const Chart = (props) => {
   if (type == 'diverging1') {
     child = <h1>Soon</h1>
   }
-  
-  if(type==='donorScorecard'){
-    child = <DonorScoreCardChart/>;
+
+  if (type === 'donorScorecard') {
+    child = <DonorScoreCardChart />;
     newSource = 'DG/5';
   }
-   if (type === 'topLists') {
+  if (type === 'topLists') {
     newSource = 'DG/5';
     child = <TopListsChart />;
   }
-  
+
+  if (type === 'loginWidget') {
+    newSource = 'DG/5';
+    child = <LoginWidgetComponent />;
+  }
+
+
   if (type === 'TopChart') {
     child = <TopChart height={`${height}px`} legends={legends} colors={colors} groupMode={groupMode}></TopChart>
   }

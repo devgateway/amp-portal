@@ -122,6 +122,8 @@ class BlockEdit extends Component {
                                   {label:'Top Chart',value: 'TopChart'},
                                   {label: 'Half Pie',value: 'halfPie'},
                                   {label: 'Donor Scorecard', value: 'donorScorecard'},
+                                  {label: 'Login Widget', value: 'loginWidget'},
+                                  {label: 'Top List', value: 'topLists'},
                                   {label: 'Diverging', value: 'diverging'}]}
                             />
 
