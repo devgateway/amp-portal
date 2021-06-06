@@ -62,7 +62,7 @@ ToolTip.propTypes = {
   titleLabel: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
-  formattedValue: PropTypes.object.isRequired,
+  formattedValue: PropTypes.number,
   total: PropTypes.number.isRequired,
   minWidth: PropTypes.number,
   isYearTotal: PropTypes.bool,
@@ -72,6 +72,7 @@ ToolTip.propTypes = {
 ToolTip.defaultProps = {
   minWidth: null,
   isYearTotal: false,
+  formattedValue: 0
 };
 
 export default injectIntl(ToolTip);
