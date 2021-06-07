@@ -201,7 +201,8 @@ class BlockEdit extends Component {
                     { label: 'Top', value: 'top' },
                     { label: 'Funding', value: 'funding' },
                     { label: 'Donor scorecard', value: 'donorScoreCard' },
-                    { label: 'Top List', value: 'topList' }
+                    { label: 'Top List', value: 'topList' },
+                    { label: 'Login', value: 'login' }
                   ]}
                 />
               </PanelRow>

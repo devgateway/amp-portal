@@ -8,6 +8,9 @@ $menu-text-color: #7f8fa4;
 $login-blue: #2da0f8;
 $link-color: #2789d9;
 $theme-blue: #2a9ef6;
+$body-text-color: #354052;
+$input-bg: #f8fafc;
+$theme-green: #557e3f;
 $theme-green: #557e3f;
 $theme-light-green: #93b233;
 $body-text-color: #354052;
@@ -32,6 +35,7 @@ $charts-options-height: 66px;
 $charts-options-font-size: 1.02rem;
 
 // Spacing Units
+$base-unit-sm: 5px;
 $base-unit: 10px;
 $base-unit-md: 20px;
 $base-unit-lg: 30px;
@@ -85,4 +89,22 @@ $module-letter-spacing: 0.04em;
   font-size: $module-font-size;
   letter-spacing: $module-letter-spacing;
   line-height: 150%;
+}
+@mixin primary-button{
+  background-color: $login-blue;
+  color: $header-bg;
+  font-size: $module-font-size;
+  &:hover{
+    background-color: $theme-green;
+    color: $header-bg;
+  }
+}
+@mixin text-button{
+  background-color: transparent;
+  color: $link-color;
+  padding: 0;
+  text-decoration: underline;
+  &:hover{
+    color: $theme-green;
+  }
 }
