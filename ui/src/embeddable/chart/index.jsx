@@ -10,24 +10,27 @@ import HalfPie from "../../charts/HalfPie";
 import TheContent from "../../wp/template-parts/TheContent";
 import Top from "../../charts/Top";
 import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
+import { useIntl } from 'react-intl'
+
 const BarChar = (props) => {
-  const { data, legends, colors, height, groupMode } = props
-  const options = buildTopsData(data, true)
-  return <Bar groupMode={groupMode} height={height} legends={legends} colors={colors} options={options}
-              format={{ style: "percent", currency: "EUR" }}></Bar>
+  const intl = useIntl();
+  const { data } = props
+  const options = buildBarOptions(data, true, intl);
+  return <Bar {...props} options={options}
+              format={{ style: "percent", currency: "EUR" }}/>
 }
 const TopChart = (props) => {
   const { data, legends, colors, height, groupMode } = props
   const options = buildTopsData(data)
   return <Top groupMode={groupMode} height={height} legends={legends} colors={colors} options={options}
-              format={{ style: "percent", currency: "EUR" }}></Top>
+              format={{ style: "percent", currency: "EUR" }}/>
 }
 
 const PieChart = (props) => {
   const { data, legends, colors, height } = props
   const options = buildPieOptions(data, true)
   return <HalfPie height={height} legends={legends} colors={colors} options={options}
-                  format={{ style: "percent", currency: "EUR" }}></HalfPie>
+                  format={{ style: "percent", currency: "EUR" }}/>
 }
 
 const DonorScoreCardChart = (props) => {
@@ -37,66 +40,102 @@ const Diverging = (props) => {
   const { data, legends, colors, height } = props
   const options = buildDivergingOptions(data, true)
   return <Diverging height={height} legends={legends} colors={colors} options={options}
-                    format={{ style: "percent", currency: "EUR" }}></Diverging>
+                    format={{ style: "percent", currency: "EUR" }}/>
 }
 
 
 const Chart = (props) => {
   const { filters } = props
-  console.log(props);
   const {
-    editing = false,
+    parent,
+    "data-editing": editing = false,
+    unique,
     childContent,
+    "data-app": app = "funding",
     "data-height": height = 500,
     "data-chart-type": type = 'bar',
-    'data-source': source = 'DG/5',
-    'data-legends-left': left = 'Left Legend',
-    'data-legends-bottom': title = 'chartTitle',
-    'data-color-scheme': scheme = 'nivo',
+    'data-source': source = 'ftype',
     'data-color-by': colorBy = 'index',
-    'data-group-mode': groupMode = 'stacked',
+    'data-color-scheme': scheme = 'nivo',
+    'data-group-mode': groupMode = 'grouped',
+    'data-legends-left': left = 'Left Legend',
+    'data-legends-bottom': bottom = 'Bottom Legend',
     'data-dualmode': dualMode,
-    'data-chart-source-label': dataSourceLabel = "Source",
-    'data-chart-data-source': dataSource = "NDIS",
+
+    'data-legend-position': legendPosition = "right",
+    'data-show-legends': showLegends = "true",
+
+    'data-chart-title': title = "Chart title",
+    'data-chart-data-source': dataSource = "Data Source",
+
     'data-toggle-info-label': toggleInfoLabel = "Info Graphic",
     'data-toggle-chart-label': toggleChartLabel = "Chart",
+    'data-params': params = '{}',
+    'data-number-format': format = '{"style":"percent", "minimumFractionDigits": 1, "maximumFractionDigits": 1}',
+    'data-tick-rotation': tickRotation = 0,
+    'data-tick-color': tickColor = "rgb(92,93,99)",
+    'data-keys': keys = null,
+    'data-style': style = "decimal",
+    "data-decimals": decimals = "2",
+    'data-currency': currency = "",
+    'data-chart-measure': measure = "Actual Commitments",
+    'data-chart-date-from': dateFrom = "2010",
+    'data-chart-date-to': dateTo = "2030"
   } = props;
   let newSource = source;
+  const itemWidth = props["data-legends-width"] ? parseInt(props["data-legends-width"]) : 180
   const [mode, setMode] = useState(editing ? "chart" : 'info')
-
   const legends = {
     title,
     left
-  }
+  };
   const colors = {
     scheme: scheme,
-    colorBy: colorBy
+    colorBy: 'keys'
   }
-  let child = null
-  if (type === 'bar') {
-    child = <BarChar height={`${height}px`} legends={legends} colors={colors} groupMode={groupMode}></BarChar>
-  }
-  if (type == 'halfPie') {
-    child = <PieChart height={`${height}px`} legends={legends} colors={colors} groupMode={groupMode}></PieChart>
-  }
-  if (type == 'diverging1') {
-    child = <h1>Soon</h1>
-  }
-  
-  if(type==='donorScorecard'){
-    child = <DonorScoreCardChart/>;
-    newSource = 'DG/5';
-  }
-  
-  if (type === 'TopChart') {
-    child = <TopChart height={`${height}px`} legends={legends} colors={colors} groupMode={groupMode}></TopChart>
+  let child = null;
+  if (app === 'top') {
+    if (type === 'bar') {
+      const contentHeight = (editing ? height - 180 : height - 60);
+      child =
+        <TopChart height={contentHeight} legends={legends} colors={colors} groupMode={groupMode}></TopChart>;
+    } else {
+      child = <h1>Soon</h1>;
+    }
+  } else {
+    const contentHeight = (editing ? height - 100 : height);
+    if (app === 'funding') {
+      if (type === 'bar') {
+        const chartProps = {
+          tickColor: decodeURIComponent(tickColor),
+          tickRotation: tickRotation,
+          showLegends: showLegends == "true",
+          itemWidth: itemWidth,
+          height: `${contentHeight}px`,
+          legendPosition: legendPosition,
+          legends: legends,
+          colors: colors,
+          groupMode: groupMode,
+          measure
+        }
+        child =
+          <BarChar {...chartProps} ></BarChar>
+      } else {
+        child = <h1>Soon</h1>;
+      }
+    }
   }
   const dual = (dualMode === 'true')
+  const dateFilter = {};
+  dateFilter.from = dateFrom;
+  dateFilter.to = dateTo;
+
   return <Container className={"chart container"} fluid={true}>
 
-    <DataProvider store={newSource.split("/")} source={newSource}>
+    <DataProvider store={newSource.split("/")} source={newSource} app={app} measure={measure} dateFilter={dateFilter}>
 
-      {(!dual || mode == 'chart') && <Container className={"body"} fluid={true}><DataConsumer>
+      {(!dual || mode == 'chart') &&
+      <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
         {child}
       </DataConsumer></Container>}
 
@@ -114,10 +153,7 @@ const Chart = (props) => {
         <Button className={(mode === 'chart') ? "active" : ""}
                 onClick={e => setMode('chart')}>{toggleChartLabel}</Button>
       </Grid.Column>
-      <Grid.Column textAlign={"right"} width={7}>
-        <p>{dataSourceLabel} : {dataSource}</p>
-      </Grid.Column>
-      <Grid.Column width={1}></Grid.Column>
+      <Grid.Column width={8}></Grid.Column>
     </Grid>}
   </Container>
 }
