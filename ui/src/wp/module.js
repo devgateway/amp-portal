@@ -105,8 +105,7 @@ export const getPages = (params) => (dispatch, getState) => {
 /*
 Gt WP Menus  (WP-REST-API V2 Menus plugin requiered)
 */
-export const getMenu = (slug) => (dispatch, getState) => {
-    const locale = getState().getIn(['intl', 'locale'])
+export const getMenu = ({slug,locale}) => (dispatch, getState) => {
 
     dispatch({
         type: LOAD_MENU, slug

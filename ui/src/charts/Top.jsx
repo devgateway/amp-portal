@@ -31,13 +31,14 @@ class Top extends Component {
   }
 
   render() {
-    const { options, legends } = this.props;
+    const { options, legends, height } = this.props;
     const globalSettings = {};
     globalSettings.groupSeparator = ',';
     globalSettings.numberDivider = 1
     globalSettings.numberDividerDescriptionKey = '';
     globalSettings.precision = 3;
     globalSettings.decimalSeparator = '.';
+    const barHeight =`${height}px`;
     return (
       <Grid className={"container top-chart"}>
         <Grid.Row>
@@ -50,7 +51,7 @@ class Top extends Component {
             title={legends.title}
             getColor={this.getColor.bind(this)}
           />
-          <div style={{ height: '200px' }}>
+          <div style={{ height: barHeight }}>
             <ResponsiveBar
               data={options.values}
               colors={this.getColor.bind(this)}
@@ -106,7 +107,6 @@ const colors = ['rgba(90, 153, 199, 1)',
   'rgba(206, 189, 218, 1)',
 
 ];
-//TopChart.contextType = NDDTranslationContext;
 
 Top.propTypes = {
   data: PropTypes.object.isRequired,
