@@ -6,8 +6,12 @@ $module-bg: #fafbfc;
 $menu-border: #dfe2e5;
 $menu-text-color: #7f8fa4;
 $login-blue: #2da0f8;
-
+$link-color: #2789d9;
+$theme-blue: #2a9ef6;
+$theme-green: #557e3f;
+$theme-light-green: #93b233;
 $body-text-color: #354052;
+$table-cell-bg: #f3f3f3;
 
 
 $blue: #3e53a6;
@@ -49,6 +53,13 @@ $module-letter-spacing: 0.04em;
   font-weight: 600;
   font-family: "Raleway";
 }
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+  background-clip: padding-box;  /* stops bg color from leaking outside the border: */
+}
+
 @mixin menu-icon{
   background-repeat: no-repeat;
   background-size: $base-unit + 5 $base-unit + 5;
@@ -70,6 +81,7 @@ $module-letter-spacing: 0.04em;
   font-weight: 500;
 }
 @mixin module-description{
+  color: $body-text-color;
   font-size: $module-font-size;
   letter-spacing: $module-letter-spacing;
   line-height: 150%;

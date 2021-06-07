@@ -11,6 +11,7 @@ import TheContent from "../../wp/template-parts/TheContent";
 import Top from "../../charts/Top";
 import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
 import { useIntl } from 'react-intl'
+import TopList from "../../charts/TopList/TopList";
 
 const BarChar = (props) => {
   const intl = useIntl();
@@ -35,6 +36,10 @@ const PieChart = (props) => {
 
 const DonorScoreCardChart = (props) => {
   return <DonorScoreCard />;
+}
+
+const TopListsChart = (props) => {
+  return <TopList />;
 }
 const Diverging = (props) => {
   const { data, legends, colors, height } = props
@@ -104,7 +109,10 @@ const Chart = (props) => {
     }
   }
   if (app === 'donorScoreCard') {
-    child = <DonorScoreCardChart/>
+    child = <DonorScoreCardChart />
+  }
+  if (app === 'topList') {
+    child = <TopListsChart />
   } else {
     const contentHeight = (editing ? height - 100 : height);
     if (app === 'funding') {

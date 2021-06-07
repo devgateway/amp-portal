@@ -200,7 +200,8 @@ class BlockEdit extends Component {
                   options={[
                     { label: 'Top', value: 'top' },
                     { label: 'Funding', value: 'funding' },
-                    { label: 'Donor scorecard', value: 'donorScoreCard' }
+                    { label: 'Donor scorecard', value: 'donorScoreCard' },
+                    { label: 'Top List', value: 'topList' }
                   ]}
                 />
               </PanelRow>
