@@ -23,7 +23,7 @@ import { Page, Post, PostConsumer } from "./wp";
 import WPContent from "./wp/WPContent";
 import PageProvider from "./wp/providers/PageProvider";
 import PageConsumer from "./wp/consumers/PageConsumer";
-
+import ScrollToTop from './ScrollTop'
 
 const Embeddables = asyncComponent(() => import("./embeddable/"));
 // kick off the polyfill!
@@ -76,7 +76,7 @@ class IntlRoutes extends Component {
           </ResponsiveContainer>
         </Route>
         <Route path="/:lan" exact render={props => (<ResponsiveContainer match={props.match}>
-          <PageProvider slug={"home"} store={"home"}>
+          <PageProvider slug={"home"} store={"homw"}>
             <PageConsumer>
               <WPContent {...props} defaultTemplate={Page}></WPContent>
             </PageConsumer>
@@ -90,7 +90,7 @@ class IntlRoutes extends Component {
 
 
         <Route path="/:lan/:slug/" exact render={props => {
-          return (<ResponsiveContainer>
+          return (<ResponsiveContainer match={props.match}>
             <PageProvider slug={props.match.params.slug} store={props.match.params.slug}>
               <PageConsumer>
                 <WPContent visibility={{ intro: false }} {...props} defaultTemplate={Page}></WPContent>
