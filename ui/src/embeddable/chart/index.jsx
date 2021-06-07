@@ -17,20 +17,20 @@ const BarChar = (props) => {
   const { data } = props
   const options = buildBarOptions(data, true, intl);
   return <Bar {...props} options={options}
-              format={{ style: "percent", currency: "EUR" }}/>
+              format={{ style: "percent", currency: "EUR" }} />
 }
 const TopChart = (props) => {
   const { data, legends, colors, height, groupMode } = props
   const options = buildTopsData(data)
   return <Top groupMode={groupMode} height={height} legends={legends} colors={colors} options={options}
-              format={{ style: "percent", currency: "EUR" }}/>
+              format={{ style: "percent", currency: "EUR" }} />
 }
 
 const PieChart = (props) => {
   const { data, legends, colors, height } = props
   const options = buildPieOptions(data, true)
   return <HalfPie height={height} legends={legends} colors={colors} options={options}
-                  format={{ style: "percent", currency: "EUR" }}/>
+                  format={{ style: "percent", currency: "EUR" }} />
 }
 
 const DonorScoreCardChart = (props) => {
@@ -40,7 +40,7 @@ const Diverging = (props) => {
   const { data, legends, colors, height } = props
   const options = buildDivergingOptions(data, true)
   return <Diverging height={height} legends={legends} colors={colors} options={options}
-                    format={{ style: "percent", currency: "EUR" }}/>
+                    format={{ style: "percent", currency: "EUR" }} />
 }
 
 
@@ -102,6 +102,9 @@ const Chart = (props) => {
     } else {
       child = <h1>Soon</h1>;
     }
+  }
+  if (app === 'donorScoreCard') {
+    child = <DonorScoreCardChart/>
   } else {
     const contentHeight = (editing ? height - 100 : height);
     if (app === 'funding') {
