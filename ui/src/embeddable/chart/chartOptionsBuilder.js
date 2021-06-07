@@ -1,78 +1,53 @@
-export const buildBarOptions = (data, includeTotal) => {
+export const buildBarOptions = (data, includeTotal, intl) => {
   const usePercents = true
-  if (data && data.children) {
+  if (data && data.values) {
     const series = []
     const vals = []
     const totalCount = data.count;
-    const totalSum = data.sum;
-    const indexBy = data.children[0].type
-    const keys = new Set();
-    var total = 0;
-    data.children.forEach(d => {
+    const totalSum = data.total;
+    const indexBy = 'Year';
+    const keysAndLegends = new Map();
+    const total = 0;
+    const others = new Map();
+    //calculate others
+    data.values.forEach(y => {
+      y.values.forEach(f => {
+        const subtotal = others.get(f.id);
+        others.set(f.id, (subtotal ? subtotal : 0) + f.amount);
+      })
+    })
+    const nonOthers = Array.from((new Map([...others.entries()].sort((a, b) => b[1] - a[1]))).keys()).slice(0, 3);
+    const othersLabel = intl.formatMessage({ id: 'amp.others', defaultMessage: "Others" })
+    data.values.forEach(d => {
       const row = {}
-      row[d.type] = d.value //Male /African ect (dimension value)
-      //row[d.value + '_count'] = d.count // count
-      //row[d.value + '_sum'] = d.sum
-      //keys.add(d.value)
-      if (d.children) {
-        d.children.forEach(d1 => {
-          if (d1.children) {
-            if (d1.value != 'No Data') {
-
-              keys.add(d1.value)
-              row[d.type] = d.value //Male /African ect (dimension value)
-              //row[d.value + '_count'] = d.count // count
-              //row[d.value + '_sum'] = d.sum
-
-              d1.children.forEach(d2 => {
-                if (d2.value != 'No Data') {
-
-                  if (d2.value == true) {
-                    row[d1.value] = (d2.sum / d1.sum) * 100;
-                    vals.push((d2.sum / d1.sum) * 100)
-                  }
-                  row[d1.value + '_' + d2.value] = (d2.sum / d1.sum) * 100
-
-                  //row[d1.value + '_' + d2.value + '_count'] = d2.count
-                  //row[d1.value + '_' + d2.value + '_sum'] = d2.count
-                }
-
-              })
-            }
+      row['Year'] = d.Year
+      if (d.values) {
+        d.values.forEach(d1 => {
+          if (nonOthers.includes(d1.id)) {
+            row[d1.id] = d1.amount;
+            row[`item_legend_${d1.id}`] = d1.type;
+            keysAndLegends.set(d1.id, d1.type);
           } else {
-            if (d1.value == true) {
-              keys.add("Yes")
-              total += d1.sum
-              vals.push((d1.sum / d.sum) * 100)
-            }
-            row[d1.value == true ? 'Yes' : 'No'] = (d1.sum / d.sum) * 100
-
-            //row[d1.value+'_sum']=d1.sum
-            //row[d1.value+'_count']=d1.count
+            //TODO make configurable
+            row[`item_legend_999999`] = othersLabel;
+            keysAndLegends.set(999999, othersLabel);
+            row[999999] = (row[999999] ? row[999999] : 0) + d1.amount;
           }
+
+
+          vals.push(d1.amount);
         })
       }
       series.push(row)
 
-    })
-
-    if (includeTotal) {
-      if (total > 0) {
-        const tot = {}
-        tot[indexBy] = 'Total'
-        tot['Yes'] = (total / data.sum) * 100
-        vals.push((total / data.sum) * 100)
-        series.push(tot)
-      }
-    }
-
+    });
     return {
       maxValue: Math.max(...vals) + 5,
       indexBy,
-      keys: Array.from(keys),
-      data: series.filter(v => v[data.children[0].type] != 'No Data')
+      keysAndLegends: keysAndLegends,
+      data: series,
+      total: totalSum
     }
-
   } else {
     return null
   }

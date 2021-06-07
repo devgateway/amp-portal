@@ -1,0 +1,674 @@
+{
+  "name": "Funding Type",
+  "title": "Type de financement",
+  "total": 13815225141.255095,
+  "sumarizedTotal": "13,8B",
+  "currency": "USD",
+  "values": [
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 5303123.991935,
+          "formattedAmount": "5 303 124"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2001"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 12096774.193548,
+          "formattedAmount": "12 096 774"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2002"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 8323090.459677,
+          "formattedAmount": "8 323 090"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 33515127,
+          "formattedAmount": "33 515 127"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2003"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 48843342,
+          "formattedAmount": "48 843 342"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2004"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 282422165.137933,
+          "formattedAmount": "282 422 165"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 29604655,
+          "formattedAmount": "29 604 655"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 295000,
+          "formattedAmount": "295 000"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2005"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 146471130.106095,
+          "formattedAmount": "146 471 130"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 16000,
+          "formattedAmount": "16 000"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 1565740,
+          "formattedAmount": "1 565 740"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2006"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 330439481.197319,
+          "formattedAmount": "330 439 481"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 147453,
+          "formattedAmount": "147 453"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 25732248,
+          "formattedAmount": "25 732 248"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 4671103.896104,
+          "formattedAmount": "4 671 104"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2007"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 409520636.295145,
+          "formattedAmount": "409 520 636"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 651730,
+          "formattedAmount": "651 730"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 5312905.194805,
+          "formattedAmount": "5 312 905"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2008"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 552750212.468371,
+          "formattedAmount": "552 750 212"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 34508781.415585,
+          "formattedAmount": "34 508 781"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 54000000,
+          "formattedAmount": "54 000 000"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 2612402.597403,
+          "formattedAmount": "2 612 403"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2009"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 3888120370.843611,
+          "formattedAmount": "3 888 120 371"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 142145673.044206,
+          "formattedAmount": "142 145 673"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 61220741,
+          "formattedAmount": "61 220 741"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 114515803.168831,
+          "formattedAmount": "114 515 803"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2010"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 1594232554.512631,
+          "formattedAmount": "1 594 232 555"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 36289484.558442,
+          "formattedAmount": "36 289 485"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 71935064.935065,
+          "formattedAmount": "71 935 065"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 49969769.077922,
+          "formattedAmount": "49 969 769"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 0,
+          "formattedAmount": "0"
+        }
+      ],
+      "Year": "Année fiscale 2011"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 770766324.663176,
+          "formattedAmount": "770 766 325"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 8325430.872009,
+          "formattedAmount": "8 325 431"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 15361,
+          "formattedAmount": "15 361"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 6002116.516548,
+          "formattedAmount": "6 002 117"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 1230583,
+          "formattedAmount": "1 230 583"
+        }
+      ],
+      "Year": "Année fiscale 2012"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 2449321041.951082,
+          "formattedAmount": "2 449 321 042"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 14944493.792208,
+          "formattedAmount": "14 944 494"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 10389610.38961,
+          "formattedAmount": "10 389 610"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 474441,
+          "formattedAmount": "474 441"
+        }
+      ],
+      "Year": "Année fiscale 2013"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 855871014.219681,
+          "formattedAmount": "855 871 014"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 166019681.329852,
+          "formattedAmount": "166 019 681"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 62826420.890937,
+          "formattedAmount": "62 826 421"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 412977,
+          "formattedAmount": "412 977"
+        }
+      ],
+      "Year": "Année fiscale 2014"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 566100272.827602,
+          "formattedAmount": "566 100 273"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 5086152.128372,
+          "formattedAmount": "5 086 152"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 979269.153226,
+          "formattedAmount": "979 269"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 766716,
+          "formattedAmount": "766 716"
+        }
+      ],
+      "Year": "Année fiscale 2015"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 355534665.03467,
+          "formattedAmount": "355 534 665"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 5665629.032258,
+          "formattedAmount": "5 665 629"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 5040322.580645,
+          "formattedAmount": "5 040 323"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 1052901,
+          "formattedAmount": "1 052 901"
+        }
+      ],
+      "Year": "Année fiscale 2016"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 282656585.730205,
+          "formattedAmount": "282 656 586"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 1678427.419355,
+          "formattedAmount": "1 678 427"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 2037436,
+          "formattedAmount": "2 037 436"
+        }
+      ],
+      "Year": "Année fiscale 2017"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 280178226.98387,
+          "formattedAmount": "280 178 227"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 1116396,
+          "formattedAmount": "1 116 396"
+        }
+      ],
+      "Year": "Année fiscale 2018"
+    },
+    {
+      "values": [
+        {
+          "id": 80,
+          "type": "Don en argent",
+          "amount": 13463816.645161,
+          "formattedAmount": "13 463 817"
+        },
+        {
+          "id": 81,
+          "type": "Don en nature",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 82,
+          "type": "Prêt concessionnel",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 172,
+          "type": "Trésor public (payé sur Budget de l'Etat)",
+          "amount": 0,
+          "formattedAmount": "0"
+        },
+        {
+          "id": 173,
+          "type": "Investissement Direct Etranger (privé)",
+          "amount": 36265,
+          "formattedAmount": "36 265"
+        }
+      ],
+      "Year": "Année fiscale 2019"
+    }
+  ]
+}
