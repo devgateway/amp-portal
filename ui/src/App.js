@@ -76,7 +76,7 @@ class IntlRoutes extends Component {
           </ResponsiveContainer>
         </Route>
         <Route path="/:lan" exact render={props => (<ResponsiveContainer match={props.match}>
-          <PageProvider slug={"about"} store={"about"}>
+          <PageProvider slug={"home"} store={"home"}>
             <PageConsumer>
               <WPContent {...props} defaultTemplate={Page}></WPContent>
             </PageConsumer>
