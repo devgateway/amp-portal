@@ -13,6 +13,7 @@ import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
 import { useIntl } from 'react-intl'
 import TopList from "../../charts/TopList/TopList";
 import LoginWidget from "../../charts/login/LoginWidget";
+import TotalWidget from "../../charts/totalWidget/TotalWidget";
 
 const BarChar = (props) => {
   const intl = useIntl();
@@ -118,6 +119,9 @@ const Chart = (props) => {
   }
   if (app === 'topList') {
     child = <TopListsChart />
+  }
+  if (app === 'totalWidget') {
+    child = <TotalWidget/>;
   }
   if (app === 'login') {
     child = <LoginWidget />;
