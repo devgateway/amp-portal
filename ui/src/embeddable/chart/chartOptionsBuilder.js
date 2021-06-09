@@ -119,11 +119,12 @@ export const buildDivergingOptions = (data, includeTotal) => {
 export const buildTopsData = (data) => {
   const result = {};
 
-  result.values = data.values.slice(0, 5).map(v => ({
+  result.values = data.values.slice(0, 5).map((v, index) => ({
     id: v.id.toString(),
     formattedAmount: v.amount,
     name: v.name,
     value: v.amount,
+    index: index
   }));
   const others = data.total - data.values.reduce((acc, cur) => (acc + cur.amount), 0);
   if (others > 0) {
@@ -131,7 +132,8 @@ export const buildTopsData = (data) => {
       id: '-9999',
       name: 'Others',
       value: others,
-      formattedAmount: 99999
+      formattedAmount: 99999,
+      index: 5
     };
     result.values.push(o);
   }

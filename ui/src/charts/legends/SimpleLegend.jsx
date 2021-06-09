@@ -2,8 +2,9 @@ import React, { Component, useEffect, useRef } from 'react';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import './SimpleLegend.scss';
+import { getColor } from '../TopChartUtils';
 
-const SimpleLegend = ({ data, getColor }) => {
+const SimpleLegend = ({ data, toggle, colors, filter }) => {
   let index = 0;
   return (
     <div className="simple-legend">
@@ -12,21 +13,23 @@ const SimpleLegend = ({ data, getColor }) => {
           {data.map(d => {
             d.index = index;
             const ret = (
-              <li key={getColor(d)}>
+              <li key={getColor(d, colors)}>
                   <span
                     className="symbol"
                     style={{
-                      border: `2px solid ${getColor(d)}`,
-                      backgroundColor: `${getColor(d)}`
+                      border: `2px solid ${getColor(d, colors, filter)}`,
+                      backgroundColor: `${getColor(d, colors, filter)}`
                     }}
                     data-tip={d.name}
                     data-for={index.toString()}
                   />
-                <span className="label" data-tip={d.name}
-                      data-for={index.toString()}>
+                <span className={`label ${toggle ? 'cursor' : ''}`} data-tip={d.name}
+                      data-for={index.toString()}
+                      onClick={e => toggle ? toggle(d.id) : null}>
                     {d.name.substring(0, 10)}
                   </span>
-                <ReactTooltip place="top" effect="float" backgroundColor={getColor(d)} id={index.toString()} />
+                <ReactTooltip place="top" effect="float" backgroundColor={getColor(d, colors, filter)}
+                              id={index.toString()} />
               </li>
             );
             index += 1;

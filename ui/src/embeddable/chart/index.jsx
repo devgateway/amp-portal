@@ -6,7 +6,7 @@ import Bar from "../../charts/Bar";
 import DataConsumer from "../../data/DataConsumer";
 import { buildBarOptions, buildDivergingOptions, buildPieOptions, buildTopsData } from './chartOptionsBuilder'
 import './charts.scss'
-import HalfPie from "../../charts/HalfPie";
+import TopPie from "../../charts/TopPie";
 import TheContent from "../../wp/template-parts/TheContent";
 import Top from "../../charts/Top";
 import DonorScoreCard from "../../charts/donorScorecard/DonorScoreCard";
@@ -30,10 +30,10 @@ const TopChart = (props) => {
 }
 
 const PieChart = (props) => {
-  const { data, legends, colors, height } = props
-  const options = buildPieOptions(data, true)
-  return <HalfPie height={height} legends={legends} colors={colors} options={options}
-                  format={{ style: "percent", currency: "EUR" }} />
+  const { data, legends, colors, height, measure } = props
+  const options = buildTopsData(data, true)
+  return <TopPie height={height} legends={legends} colors={colors} options={options} measure={measure}
+                 format={{ style: "percent", currency: "EUR" }} />
 }
 
 const DonorScoreCardChart = (props) => {
@@ -106,12 +106,12 @@ const Chart = (props) => {
   }
   let child = null;
   if (app === 'top') {
+    const contentHeight = (editing ? height - 180 : height - 60);
     if (type === 'bar') {
-      const contentHeight = (editing ? height - 180 : height - 60);
       child =
         <TopChart height={contentHeight} legends={legends} colors={colors} groupMode={groupMode}></TopChart>;
     } else {
-      child = <h1>Soon</h1>;
+      child = <PieChart height={contentHeight} legends={legends} colors={colors} groupMode={groupMode} />;
     }
   }
   if (app === 'donorScoreCard') {
@@ -121,7 +121,7 @@ const Chart = (props) => {
     child = <TopListsChart />
   }
   if (app === 'totalWidget') {
-    child = <TotalWidget/>;
+    child = <TotalWidget />;
   }
   if (app === 'login') {
     child = <LoginWidget />;
