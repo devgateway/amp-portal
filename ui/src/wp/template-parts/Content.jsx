@@ -55,7 +55,7 @@ class Content extends React.Component {
             }
 
             return <EmbeddedGateway parent={post.id}>
-                <Enhance className={"entry-content"} {...this.props}>
+                <Enhance className={"fluid entry-content"} {...this.props}>
                     {showDate &&
                     <Container fluid className="date"><FormattedDate value={post.date} day="numeric" month="long"
                                                                      year="numeric"/></Container>}

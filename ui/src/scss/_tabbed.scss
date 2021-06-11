@@ -82,7 +82,7 @@
   .active {
     button {
       color: #FFF;
-      background-color: $health-color ;
+      background-color: $login-blue;
     }
   }
 }
@@ -90,23 +90,22 @@
 
 .ui.menu.tabbed.posts {
 
-  padding: 0px;
-  margin: 0px;
-
+  padding: 0;
+  margin: 0 0 0 -10px;
 
   .item {
-
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     color: $gray !important;
-    border: 0px;
+    border: 0;
     font-size: 18px;
+    margin-left: $base-unit;
 
     .label {
-      background-color: transparent !important;
-      color: $gray;
-      padding: 0px;
-
+      @include tabbed-post-label;
+      &:hover{
+        @include tabbed-post-label-active;
+      }
     }
     &:last-child {
       &:after {
@@ -116,13 +115,9 @@
   }
 
   .item.active {
-
+    margin-left: 0;
     .label {
-      background-color: transparent !important;
-      color: $green;
-      font-weight: bold;
-      padding: 0px;
-
+      @include tabbed-post-label-active;
     }
     color: $green !important;
     font-weight: 700;
@@ -132,21 +127,6 @@
       color: $gray;
       font-weight: normal;
     }
-  }
-
-  a.item.active::before {
-    content: '';
-    background-image: url('/green_arrow_active.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 18px !important;
-    height: 20px !important;
-    background-color: transparent !important;
-    display: block !important;
-    position: relative !important;
-    margin-left: -18px;
-    margin-right: $base-unit - 2;
-
   }
 
   .item::after {

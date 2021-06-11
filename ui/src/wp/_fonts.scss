@@ -1,8 +1,12 @@
 p {
-  color: $gray;
+  color: $body-text-color;
   line-height: 1.5;
   font-weight: 400;
   font-size: 1rem;
+  a{
+    color: $login-blue;
+    text-decoration: underline;
+  }
 }
 
 b, strong {
@@ -11,33 +15,33 @@ b, strong {
 
 
 h1 {
-  color: $gray;
+  color: $body-text-color;
   font-size: 30px;
 }
 
 h2 {
   font-size: 1.9rem !important;
-  color: $gray;
+  color: $body-text-color;
 }
 
 h3 {
   font-size: 1.3rem !important;
-  color: $gray;
+  color: $body-text-color;
 }
 
 h4 {
   font-size: 1.07rem !important;
-  color: $gray;
+  color: $body-text-color;
 }
 
 h5 {
   font-size: 1rem !important;
-  color: $gray;
+  color: $body-text-color;
 }
 
 h6 {
   font-size: .7rem !important;
-  color: $gray;
+  color: $body-text-color;
 }
 
 /* Styles */
@@ -88,6 +92,3 @@ h6 {
 .has-weight-700 {
   font-weight: 700;
 }
-
-
-
