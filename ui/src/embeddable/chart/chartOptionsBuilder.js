@@ -1,3 +1,23 @@
+export const buildDonorScoreCardOptions = (donorScoreCardData) => {
+
+  const data = {
+    "values": [{
+      "id": 3,
+      "value": donorScoreCardData.noUpdates,
+      "index": 2
+    }, {
+      "id": 2,
+      "value": donorScoreCardData.late,
+      "index": 1
+    },
+      {
+        "id": 1,
+        "value": donorScoreCardData.onTime,
+        "index": 0
+      }]
+  }
+  return data;
+}
 export const buildBarOptions = (data, includeTotal, intl) => {
   const usePercents = true
   if (data && data.values) {
@@ -33,8 +53,6 @@ export const buildBarOptions = (data, includeTotal, intl) => {
             keysAndLegends.set(999999, othersLabel);
             row[999999] = (row[999999] ? row[999999] : 0) + d1.amount;
           }
-
-
           vals.push(d1.amount);
         })
       }

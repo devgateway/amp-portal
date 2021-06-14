@@ -81,9 +81,10 @@ registerBlockType('dg-components/chart',
         type: 'String',
         default: "Chart title"
       },
-      dataSource: {
+      chartDescription: {
         type: 'String',
-        default: "NIDS"
+        default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet lectus ut " +
+          "neque blandit ultricies."
       },
 
       legendPosition: {

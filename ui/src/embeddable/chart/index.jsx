@@ -4,7 +4,13 @@ import DataProvider from "../../data/DataProvider";
 import { connect } from "react-redux";
 import Bar from "../../charts/Bar";
 import DataConsumer from "../../data/DataConsumer";
-import { buildBarOptions, buildDivergingOptions, buildPieOptions, buildTopsData } from './chartOptionsBuilder'
+import {
+  buildBarOptions,
+  buildDivergingOptions,
+  buildDonorScoreCardOptions,
+  buildPieOptions,
+  buildTopsData
+} from './chartOptionsBuilder'
 import './charts.scss'
 import TopPie from "../../charts/TopPie";
 import TheContent from "../../wp/template-parts/TheContent";
@@ -37,7 +43,11 @@ const PieChart = (props) => {
 }
 
 const DonorScoreCardChart = (props) => {
-  return <DonorScoreCard />;
+  const intl = useIntl();
+  const { data } = props
+  const options = buildDonorScoreCardOptions(data);
+  return <DonorScoreCard {...props} options={options}
+                         format={{ style: "percent", currency: "EUR" }} />;
 }
 
 const TopListsChart = (props) => {
@@ -77,7 +87,7 @@ const Chart = (props) => {
     'data-show-legends': showLegends = "true",
 
     'data-chart-title': title = "Chart title",
-    'data-chart-data-source': dataSource = "Data Source",
+    'data-chart-description': chartDescription = "Chart description",
 
     'data-toggle-info-label': toggleInfoLabel = "Info Graphic",
     'data-toggle-chart-label': toggleChartLabel = "Chart",
@@ -98,7 +108,8 @@ const Chart = (props) => {
   const [mode, setMode] = useState(editing ? "chart" : 'info')
   const legends = {
     title,
-    left
+    left,
+    chartDescription
   };
   const colors = {
     scheme: scheme,
@@ -115,7 +126,20 @@ const Chart = (props) => {
     }
   }
   if (app === 'donorScoreCard') {
-    child = <DonorScoreCardChart />
+    const contentHeight = (editing ? height - 100 : height);
+    const chartProps = {
+      tickColor: decodeURIComponent(tickColor),
+      tickRotation: tickRotation,
+      showLegends: showLegends == "true",
+      itemWidth: itemWidth,
+      height: `${contentHeight}px`,
+      legendPosition: legendPosition,
+      legends: legends,
+      colors: colors,
+      groupMode: groupMode,
+      measure
+    }
+    child = <DonorScoreCardChart height={80} legends={legends} colors={colors} groupMode={groupMode} />
   }
   if (app === 'topList') {
     child = <TopListsChart />

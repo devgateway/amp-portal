@@ -13,7 +13,8 @@ import {
   ResizableBox,
   SelectControl,
   TextControl,
-  ToggleControl
+  ToggleControl,
+  TextareaControl
 } from '@wordpress/components';
 
 import { InnerBlocks } from '@wordpress/editor'; // or wp.editor
@@ -119,7 +120,7 @@ class BlockEdit extends Component {
         toggleInfoLabel,
         toggleChartLabel,
         chartTitle,
-        dataSource,
+        chartDescription,
         showLegends,
         legendPosition,
         legendsWidth,
@@ -147,7 +148,7 @@ class BlockEdit extends Component {
       params["year"] = year
     }
 
-    let queryString = `data-editing=true&data-style=${formatStyle}&data-decimals=${decimalPoints}&data-currency=${currency}&data-params=${encodeURIComponent(JSON.stringify(params))}${tickColor != null ? `&data-tick-color=${tickColor}` : ""}&data-tick-rotation=${tickRotation}&data-keys=${keys.join(',')}&data-app=${app}&data-height=${height}&data-chart-type=${type}&data-source=${source}&data-color-by=${colorBy}&data-color-scheme=${scheme}&data-group-mode=${groupMode}&data-legends-left=${leftLegend}&data-legends-bottom=${bottomLegend}&data-dualmode=${dualMode}&editing=true&data-legend-position=${legendPosition}&data-edit-mode=${mode}&data-legends-width=${legendsWidth}&data-show-legends=${showLegends}&data-toggle-info-label=${toggleInfoLabel}&data-toggle-chart-label=${toggleChartLabel}&data-chart-title=${chartTitle}&data-chart-data-source=${dataSource}`
+    let queryString = `data-editing=true&data-style=${formatStyle}&data-decimals=${decimalPoints}&data-currency=${currency}&data-params=${encodeURIComponent(JSON.stringify(params))}${tickColor != null ? `&data-tick-color=${tickColor}` : ""}&data-tick-rotation=${tickRotation}&data-keys=${keys.join(',')}&data-app=${app}&data-height=${height}&data-chart-type=${type}&data-source=${source}&data-color-by=${colorBy}&data-color-scheme=${scheme}&data-group-mode=${groupMode}&data-legends-left=${leftLegend}&data-legends-bottom=${bottomLegend}&data-dualmode=${dualMode}&editing=true&data-legend-position=${legendPosition}&data-edit-mode=${mode}&data-legends-width=${legendsWidth}&data-show-legends=${showLegends}&data-toggle-info-label=${toggleInfoLabel}&data-toggle-chart-label=${toggleChartLabel}&data-chart-title=${chartTitle}&data-chart-description=${chartDescription}`
     queryString += `&data-chart-measure=${measure}&data-chart-date-from=${dateFrom}&data-chart-date-to=${dateTo}`;
     const divStyles = { height: height - 85 + 'px', width: '100%' }
     return ([isSelected && (
@@ -207,7 +208,7 @@ class BlockEdit extends Component {
                   ]}
                 />
               </PanelRow>
-              <PanelRow>
+              {(app === 'top' || app === 'funding') && <PanelRow>
                 <SelectControl
                   label={__('Funding measure')}
                   value={[measure]} // e.g: value = [ 'a', 'c' ]
@@ -217,6 +218,8 @@ class BlockEdit extends Component {
                   options={this.measures}
                 />
               </PanelRow>
+              }
+              {(app === 'top' || app === 'funding') &&
               <PanelRow>
                 <RangeControl
                   label={__('Date from')}
@@ -226,6 +229,8 @@ class BlockEdit extends Component {
                   max={2030}
                 />
               </PanelRow>
+              }
+              {(app === 'top' || app === 'funding') &&
               <PanelRow>
                 <RangeControl
                   label={__('Date To')}
@@ -235,6 +240,7 @@ class BlockEdit extends Component {
                   max={2030}
                 />
               </PanelRow>
+              }
 
 
             </PanelBody>
@@ -255,7 +261,7 @@ class BlockEdit extends Component {
               fundingType={fundingType}>
             </FundingConfiguration>}
 
-
+            {(app === 'top' || app === 'funding') &&
             <PanelBody initialOpen={false} title={__("Chart Type")}>
               <PanelRow>
                 <SelectControl
@@ -283,8 +289,9 @@ class BlockEdit extends Component {
                   }]}
                 />
               </PanelRow>
-
             </PanelBody>
+            }
+            {(app === 'top' || app === 'funding') &&
             <PanelBody initialOpen={false} title={__("Colors")}>
               {type != 'line' && <PanelRow>
                 <SelectControl
@@ -307,8 +314,8 @@ class BlockEdit extends Component {
                 />
               </PanelRow>
             </PanelBody>
-
-
+            }
+            {(app === 'top' || app === 'funding') &&
             <PanelBody initialOpen={false} title={__("Format")}>
               <PanelRow>
                 <SelectControl
@@ -325,7 +332,6 @@ class BlockEdit extends Component {
                   }
                 />
               </PanelRow>
-
               <PanelRow>
                 <TextControl
                   label={__("Decimal Points")}
@@ -341,7 +347,8 @@ class BlockEdit extends Component {
                 />
               </PanelRow>
             </PanelBody>
-
+            }
+            {(app === 'top' || app === 'funding') &&
             <PanelBody initialOpen={false} title={__("Legends")}>
               <PanelRow>
                 <ToggleControl
@@ -378,6 +385,8 @@ class BlockEdit extends Component {
                 />
               </PanelRow>}
             </PanelBody>
+            }
+            {(app === 'top' || app === 'funding') &&
             <PanelBody initialOpen={false} title={"Tick Config"}>
               <PanelRow>
                 <AnglePickerControl value={tickRotation}
@@ -401,8 +410,8 @@ class BlockEdit extends Component {
                   ]}
                 />
               </PanelRow>}
-
             </PanelBody>
+            }
             <PanelBody initialOpen={false} title={__("Labels")}>
               <PanelRow>
                 <TextControl
@@ -418,8 +427,6 @@ class BlockEdit extends Component {
                   onChange={(bottomLegend) => setAttributes({ bottomLegend })}
                 />
               </PanelRow>
-
-
               <PanelRow>
                 <TextControl
                   label={__('Chart title')}
@@ -428,10 +435,10 @@ class BlockEdit extends Component {
                 />
               </PanelRow>
               <PanelRow>
-                <TextControl
-                  label={__('DataSource')}
-                  value={dataSource}
-                  onChange={(dataSource) => setAttributes({ dataSource })}
+                <TextareaControl
+                  label={__('Chart description')}
+                  value={chartDescription}
+                  onChange={(chartDescription) => setAttributes({ chartDescription })}
                 />
               </PanelRow>
             </PanelBody>

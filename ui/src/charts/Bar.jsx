@@ -72,10 +72,10 @@ const Chart = ({
                  legendPosition,
                  tickRotation,
                  tickColor,
-                 measure
+                 measure,
+                 layout = "vertical"
                }) => {
   const keys = Array.from(options.keysAndLegends.keys());
-
   const [filter, setFilter] = useState([])
   const applyFilter = (values) => {
 
@@ -166,7 +166,6 @@ const Chart = ({
           containerWidth={width}
         />
       ))}
-
     </React.Fragment>
   );
 
@@ -260,7 +259,6 @@ const Chart = ({
       fontFamily: "Roboto",
       fontSize: "16px"
     };
-    console.log(width)
     return (
       <g g transform={`translate(-${textWIth / 2},0)`}>
         <text
@@ -279,12 +277,13 @@ const Chart = ({
   globalSettings.numberDividerDescriptionKey = '';
   globalSettings.precision = 3;
   globalSettings.decimalSeparator = '.';
-
+  console.log(JSON.stringify(legendsConfig));
   return (
     <div style={{ height: height }}>
       {options && options.data && <ResponsiveBar
         colorBy={colors.colorBy}
         animate={true}
+        layout={layout}
         enableLabel={true}
         motionStiffness={55}
         motionDamping={11}

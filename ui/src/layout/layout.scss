@@ -1,3 +1,9 @@
+@import '../vars';
+
 .amp {
-  width: 100% !important;
+  width: $total-width !important;
+
+  .inner{
+    width: 1350px;
+  }
 }

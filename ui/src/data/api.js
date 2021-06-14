@@ -1,7 +1,8 @@
 import { get, post } from '../api/commons'
 
 const API_ROOT = process.env.REACT_APP_API_URL;
-const TOP_API = '/tops';
+const TOP_API = '/dashboard/tops';
+const SCORECARD_API= '/scorecard/stats';
 const URL_TAXONOMY = API_ROOT + '/categories'
 const URL_STATS = API_ROOT;//+ '/stats'
 const filters_data = {
@@ -30,6 +31,7 @@ export const getCategories = (params) => {
 export const getData = (path, params, app, measure, dateFilter) => {
   const route = path.split('/');
   let url;
+  let isPost = true;
   let filters = filters_data;
   if (app === 'top') {
     url = API_ROOT + TOP_API + '/' + route[0] + '?limit=' + route[1];
@@ -37,6 +39,9 @@ export const getData = (path, params, app, measure, dateFilter) => {
     if (app === 'funding') {
       url = API_ROOT + "/" + route[0];
       filters = filters_dataFT;
+    } else if (app === 'donorScoreCard') {
+      url = API_ROOT + SCORECARD_API;
+      isPost = false;
     } else {
       url = API_ROOT + "/ftype";
     }
@@ -51,8 +56,12 @@ export const getData = (path, params, app, measure, dateFilter) => {
   }
   if (measure) {
     filters.settings['funding-type'] = measure;
-    console.log(filters);
   }
+
+  if(isPost){
   return post(url, filters);
+  }else{
+    return get(url);
+  }
 }
 
