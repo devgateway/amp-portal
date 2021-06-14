@@ -1,7 +1,9 @@
+@import '../vars';
+
 .entry-content {
   margin: 0;
   display: block;
-  width: $extend;
+  width: 1270px!important;
   .date {
     font-size: 14px;
     color: $gray;

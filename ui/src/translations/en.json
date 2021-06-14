@@ -5,5 +5,8 @@
   "amp.dashboard:chart-trillion": "T",
   "amp.dashboard:chart-peta": "P",
   "amp.dashboard:chart-exa": "E",
-  "amp.others": "Others"
+  "amp.others": "Others",
+  "amp.on-time": "On time",
+  "amp.no-updates": "No updates",
+  "amp.late": "Late"
 }

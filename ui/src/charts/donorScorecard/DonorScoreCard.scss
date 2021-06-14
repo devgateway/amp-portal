@@ -11,18 +11,10 @@
   .data-wrapper{
     margin-top: $base-unit-md;
   }
-  .data-item{
-    margin-bottom: $base-unit-md - 5;
-    overflow: hidden;
+  .inner{
+    padding: 0px;
   }
-  .label{
-    font-size: $module-font-size - 1;
-    font-weight: 600;
-    float: left;
-    line-height: 190%;
-    margin-right: $base-unit;
-  }
-  .chart-wrapper{
-    float: right;
+  .top-chart{
+    background-color: $module-bg;
   }
 }

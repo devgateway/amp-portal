@@ -9,7 +9,7 @@
 
   .background {
     border-bottom: 1px solid $menu-border;
-    background-color: #f9f9f9;
+    background-color: #FFFFFF;
   }
 
   .menu.branding {
@@ -24,7 +24,7 @@
   .menu, .branding {
     padding: 0;
     margin: 0;
-    max-width: $extend;
+    max-width: $total-width;
     margin: auto;
 
     .divider {
