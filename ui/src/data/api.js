@@ -43,7 +43,7 @@ export const getData = (path, params, app, measure, dateFilter) => {
       url = API_ROOT + SCORECARD_API;
       isPost = false;
     } else {
-      url = API_ROOT + "/ftype";
+      url = API_ROOT + "/dashboard/ftype";
     }
   }
   if (dateFilter) {
