@@ -9,6 +9,7 @@ import {injectIntl, IntlProvider} from "react-intl";
 import messages_en from "../translations/en.json";
 import Chart from "../embeddable/chart/index";
 import Filter from "../embeddable/filter";
+import Map from "../embeddable/map/index";
 
 
 const TabbedPosts = asyncComponent(() => import("../embeddable/tabbedposts/"));
@@ -27,6 +28,7 @@ const components = {
     pageGallery: PageGallery,
     postsCarousel: PostsCarousel,
     chart: Chart,
+    map:Map,
     filter: Filter,
     tabbedPosts: TabbedPosts,
     pageModules: PageModules,

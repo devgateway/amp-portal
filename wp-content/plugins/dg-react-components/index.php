@@ -27,6 +27,7 @@ add_filter( 'block_categories', 'add_custom_block_categories', 10, 2);
 include 'post-carousel/index.php';
 include 'page-gallery/index.php';
 include 'charts/index.php';
+include 'map/index.php';
 include 'filter/index.php';
 include 'tabbed-posts/index.php';
 
