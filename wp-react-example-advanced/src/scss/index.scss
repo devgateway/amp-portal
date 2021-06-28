@@ -20,6 +20,26 @@ body {
   font-size: 18px !important;
 }
 
+.ui {
+  .container {
+
+  }
+}
+
+.content {
+  width: $total-width !important;
+}
+
+.entry-content {
+}
+
+.amp {
+  width: $total-width !important;
+  .inner {
+    width: 1350px;
+  }
+}
+
 
 iframe {
   margin: 0px;

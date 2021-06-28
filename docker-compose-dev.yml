@@ -18,8 +18,6 @@ services:
 
     networks:
       - frontend  #for dev purpose we use a bridged network
-    logging:
-      driver: journald
     ports:
       - 9090:80
 
@@ -39,8 +37,6 @@ services:
       - frontend
     ports:
       - 80:8082
-    logging:
-      driver: journald
 
   mysql:
     image: mariadb
@@ -56,8 +52,6 @@ services:
       MYSQL_PASSWORD: wordpress
     networks:
       - frontend #for dev purpose we use a bridged network
-    logging:
-      driver: journald
 
 networks:
   frontend:

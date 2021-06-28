@@ -3,7 +3,7 @@
   &.desktop {
     h2 {
       .title {
-        padding-top: $base-unit + 40;
+         padding-top: $base-unit + 40;
       }
     }
   }
@@ -35,7 +35,6 @@
 .container.section {
   margin-left: 0px;
   margin-bottom: 50px;
-
   .ui.menu.header {
     margin: 0;
     background-color: #FFF;
@@ -43,16 +42,12 @@
     background: $health-color;
 
     h1 {
-      font-family: 'Roboto', sans-serif;
-      font-size: 2rem;
       font-weight: 300 !important;
       padding: 0;
       margin: 0;
     }
 
     h2 {
-      font-family: 'Roboto', sans-serif;
-      font-size: 1.5rem !important;
       margin: 0;
       padding: 0;
       font-weight: 300 !important;
@@ -62,6 +57,7 @@
       padding: 1.5rem;
       background: $health-color;
       width: 20vw;
+
       max-height: 160px !important;
       max-width: 191px !important;
     }
@@ -72,7 +68,7 @@
     }
 
     .header {
-      padding: 2%;
+      padding: 2vh;
       background: #FFF;
       width: 100%;
       font-weight: 300;
