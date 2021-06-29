@@ -32,6 +32,7 @@
     "history": "^4.10.1",
     "html-to-image": "^0.1.3",
     "immutable": "^4.0.0-rc.12",
+    "leaflet": "^1.7.1",
     "locutus": "^2.0.14",
     "node-sass": "^4.14.1",
     "papaparse": "^5.3.1",
@@ -49,6 +50,7 @@
     "react-google-recaptcha": "^2.1.0",
     "react-intl": "^5.18.1",
     "react-intl-redux": "^2.2.0",
+    "react-leaflet": "^3.2.0",
     "react-redux": "^7.2.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2",
@@ -70,18 +72,11 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "css-loader": "^5.2.6",
     "dotenv-webpack": "^7.0.2",

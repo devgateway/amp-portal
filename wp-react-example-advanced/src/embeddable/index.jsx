@@ -16,30 +16,32 @@ const ShowcaseForm = asyncComponent(() => import("./showcase/"));
 const Body = asyncComponent(() => import("./body/"));
 const Filter = asyncComponent(() => import("./filter/"));
 const Download = asyncComponent(() => import("./download/"));
+const Map = asyncComponent(() => import("./map/"));
 
 export const reducers = {
-    data,
-    embeddable
+  data,
+  embeddable
 }
 
 
 const components = {
-    pageGallery: PageGallery,
-    postsCarousel: PostsCarousel,
-    chart: Chart,
-    filter: Filter,
-    showCaseForm: ShowcaseForm,
-    newsLetter: NewsLetter,
-    body: Body,
-    tabbedPosts: TabbedPosts,
-    pageModules: PageModules,
-    featuredTabs: FeaturedTabs,
-    inlineList: InlineList,
-    download: Download
+  pageGallery: PageGallery,
+  postsCarousel: PostsCarousel,
+  chart: Chart,
+  filter: Filter,
+  showCaseForm: ShowcaseForm,
+  newsLetter: NewsLetter,
+  body: Body,
+  tabbedPosts: TabbedPosts,
+  pageModules: PageModules,
+  featuredTabs: FeaturedTabs,
+  inlineList: InlineList,
+  download: Download,
+  map: Map
 }
 
 export const getComponentByNameIgnoreCase = (name) => {
-    console.log("name" + name)
-    const k = Object.keys(components).filter(value => value.toLowerCase() == name.toLowerCase())
-    return components[k]
+  console.log("name" + name)
+  const k = Object.keys(components).filter(value => value.toLowerCase() == name.toLowerCase())
+  return components[k]
 }

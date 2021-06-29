@@ -1,4 +1,6 @@
+@import '../vars';
 .entry-content {
+  width: $inner-width !important;
   margin: 0;
   display: block;
 

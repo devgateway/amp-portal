@@ -1,6 +1,7 @@
 require("./tabbed-posts")
 require("./block-styles")
 require("./charts")
+require("./map")
 require("./featured-tabs")
 require("./filter")
 require("./inline-list")
