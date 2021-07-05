@@ -3,7 +3,7 @@ version: '3'
 services:
   ui:
     build:
-      context: ./ui/
+      context: ./
     volumes:
       - ui:/var/www/ui
     restart: "no"
@@ -22,8 +22,6 @@ services:
       - ./wp-content:/var/www/html/wp-content
     networks:
       - frontend  #for dev purpose we use a bridged network
-    logging:
-      driver: journald
     ports:
       - 9090:80
 
@@ -41,8 +39,6 @@ services:
       - frontend
     ports:
       - 80:8082
-    logging:
-      driver: journald
 
   mysql:
     image: mariadb
@@ -58,8 +54,6 @@ services:
       MYSQL_PASSWORD: wordpress
     networks:
       - frontend #for dev purpose we use a bridged network
-    logging:
-      driver: journald
 
 networks:
   frontend:

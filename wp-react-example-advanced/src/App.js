@@ -93,7 +93,7 @@ class IntlRoutes extends Component {
                             let params = queryString.parse(props.location.search)
                             const UIComponent = getComponentByNameIgnoreCase(props.match.params.name)
 
-                            return (<Container fluid={true}>
+                            return (<Container fluid={true} className={"embeddable"}>
                                 {UIComponent ? <UIComponent {...params}></UIComponent> :
                                     <Segment color={"red"} textAlign={"center"}><h1>Wrong Component Name</h1></Segment>}
                             </Container>)

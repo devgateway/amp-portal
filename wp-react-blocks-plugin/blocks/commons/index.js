@@ -28,6 +28,7 @@ export class BaseBlockEdit extends Component {
 
     componentDidMount() {
         apiFetch({path: '/wp/v2/settings'}).then((data) => {
+            console.log(data);
             this.setState({
                 react_ui_url: data["react_ui_url"],
                 site_language: data["site_language"],

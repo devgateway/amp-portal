@@ -1,5 +1,6 @@
-import {useBlockProps} from '@wordpress/block-editor';
-import {InnerBlocks} from '@wordpress/editor'; // or wp.editor
+/* eslint-disable react/react-in-jsx-scope */
+import { useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/editor'; // or wp.editor
 const SaveComponent = (props) => {
     const {
         toggleSelection, setAttributes, attributes: {
@@ -11,15 +12,14 @@ const SaveComponent = (props) => {
             leftLegend,
             scheme,
             colorBy,
-            policyLevel1,
-            prevalenceLevel1,
-            prevalenceLevel2,
-            prevalenceLevel3,
+            fundingType,
+            topChartType,
+            topChartColumnCount,
             dualMode,
             toggleInfoLabel,
             toggleChartLabel,
-            dataSourceLabel,
-            dataSource,
+            chartTitle,
+            chartDescription,
             legendPosition,
             legendsWidth,
             showLegends,
@@ -31,7 +31,9 @@ const SaveComponent = (props) => {
             decimalPoints,
             currency,
             yearFilter,
-            csv
+            measure,
+            dateFrom,
+            dateTo
         }
     } = props;
     const blockProps = useBlockProps.save({
@@ -40,55 +42,60 @@ const SaveComponent = (props) => {
 
     const divClass = {}
     const divStyles = {}
-
-    const levels = app == 'prevalence' ? [prevalenceLevel1, prevalenceLevel2, prevalenceLevel3] : [policyLevel1];
-    const source = levels.filter(l => l != 'none' && l != null).join('/')
-
+    const levels = app == 'top' ? [topChartType, topChartColumnCount] : [fundingType];
+    let source = levels.filter(l => l != 'none' && l != null).join('/')
 
 
-    let params={}
-    if (yearFilter!=null&&yearFilter.trim()!=="" && app==='policy'){
-        const year=yearFilter.split(",").map(d=>parseInt(d))
-        params["year"]=year
+    let params = {}
+    if (yearFilter != null && yearFilter.trim() !== "" && app === 'policy') {
+        const year = yearFilter.split(",").map(d => parseInt(d))
+        params["year"] = year
     }
+    console.log(source);
+    if(app==='donorScoreCard'){
+        source='donorScoreCard';
+    }
+    return (
+      <div className={"tcdi-component"}
+           data-component={"chart"}
+           data-height={height}
+           data-chart-type={type}
+           data-source={source}
+           data-color-by={colorBy}
+           data-color-scheme={scheme}
+           data-scheme={scheme}
+           data-group-mode={groupMode}
+           data-legends-left={leftLegend}
+           data-dualMode={dualMode}
+           data-legends-bottom={bottomLegend}
+           data-toggle-info-label={toggleInfoLabel}
+           data-toggle-chart-label={toggleChartLabel}
 
-        return (
-            <div className={"tcdi-component"}
-                 data-component={"chart"}
-                 data-height={height}
-                 data-chart-type={type}
-                 data-source={source}
-                 data-color-by={colorBy}
-                 data-color-scheme={scheme}
-                 data-scheme={scheme}
-                 data-group-mode={groupMode}
-                 data-legends-left={leftLegend}
-                 data-dualMode={dualMode}
-                 data-legends-bottom={bottomLegend}
-                 data-toggle-info-label={toggleInfoLabel}
-                 data-toggle-chart-label={toggleChartLabel}
-                 data-chart-source-label={dataSourceLabel}
-                 data-chart-data-source={dataSource}
-                 data-legends-width={legendsWidth}
-                 data-show-legends={showLegends}
-                 data-legend-position={legendPosition}
-                 data-app={app}
-                 data-tick-rotation={tickRotation}
-                 data-tick-color={tickColor}
-                 data-keys={keys.join(',')}
-                 data-style={formatStyle}
-                 data-decimals={decimalPoints}
-                 data-currency={currency}
-                 data-csv={csv}
-                 data-params={encodeURIComponent(JSON.stringify(params))}>
-                 <div className={"csv"}  dangerouslySetInnerHTML={{ __html: `<!-- ${csv} -->` }}>
+           data-chart-title={chartTitle}
+           data-chart-description={chartDescription}
 
-                 </div>
-                 <InnerBlocks.Content/>
-            </div>
+           data-legends-width={legendsWidth}
+           data-show-legends={showLegends}
+           data-legend-position={legendPosition}
+           data-app={app}
+
+           data-tick-rotation={tickRotation}
+           data-tick-color={tickColor}
+           data-keys={keys.join(',')}
+           data-style={formatStyle}
+           data-decimals={decimalPoints}
+           data-currency={currency}
+           data-params={encodeURIComponent(JSON.stringify(params))}
+           data-chart-measure={measure}
+           data-chart-date-from={dateFrom}
+           data-chart-date-to={dateTo}
+
+      >
+          <InnerBlocks.Content />
+      </div>
 
 
-        );
+    );
 }
 
 

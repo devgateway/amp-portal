@@ -60,7 +60,7 @@ class EmbeddedGateway extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {parent} = this.props
-        if (parent != prevProps.parent) {
+        if (parent !== prevProps.parent) {
             this.renderEmbeddedComponents()
         }
     }
@@ -79,12 +79,13 @@ const WithContext = (props) => {
         {
             (data) => {
                 if (data) {
-                    return<EmbeddedGateway locale={data.locale} store={data.store} getComponent={data.getComponent} {...props}>
-                            {props.children}
-                        </EmbeddedGateway>
+                    return <EmbeddedGateway locale={data.locale} store={data.store}
+                                            getComponent={data.getComponent} {...props}>
+                        {props.children}
+                    </EmbeddedGateway>
 
                 } else {
-                    return  <React.Fragment>{props.children} </React.Fragment>
+                    return <React.Fragment>{props.children} </React.Fragment>
                 }
             }
         }

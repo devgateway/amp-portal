@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {injectIntl} from 'react-intl';
-import {ResponsiveSunburst} from '@nivo/sunburst'
+
 
 const Chart = ({colors, options, intl, format}) => {
 

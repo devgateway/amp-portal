@@ -26,12 +26,25 @@ body {
   }
 }
 
+.ui.container.embeddable {
+  margin: 0px !important;
+
+  .chart {
+    margin: 0px !important;
+  }
+  .container{
+    margin: 0px !important;
+  }
+
+}
+
 .content {
   width: $total-width !important;
 }
 
 .amp {
   width: $total-width !important;
+
   .inner {
     width: 1350px;
   }
