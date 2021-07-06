@@ -73,6 +73,7 @@ stage('Build') {
                     // We build react lib
                     sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
                     sh returnStatus: true, script: 'tar -xf ../amppp-lib-node-cache.tar'
+                    sh returnStatus: true, script: 'tar -xf ../amppp-plugin-node-cache.tar'
                     sh "cd wp-react-lib && npm install"
                     sh "cd wp-react-lib && npm run dist"
                     sh "rm -f ./portal-ui/.env.production"
@@ -83,8 +84,10 @@ stage('Build') {
 
                     sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
                             " ./portal-ui/node_modules"
+                     sh returnStatus: true, script: "tar -cf ../amppp-plugin-node-cache.tar --remove-files" +
+                            " ./wp-react-blocks-plugin/blocks/node_modules"
                     sh returnStatus: true, script: "tar -cf ../amppp-lib-node-cache.tar --remove-files" +
-                                                " ./wp-react-lib/node_modules"
+                            " ./wp-react-lib/node_modules"
 
 
                     // Build Docker images & push it
@@ -105,23 +108,23 @@ stage('Build') {
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks'
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build'
 
-                    sh "cd ./wp-react-blocks-plugin/blocks/build/* ./wp-content/plugins/wp-react-blocks-plugin/blocks/build"
-                    sh 'cp ./wp-react-blocks-plugin/index.php ./wp-content/plugins/wp-react-blocks-plugin'
+                    sh "cp ./wp-react-blocks-plugin/blocks/build/* ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build"
+                    sh 'cp ./wp-react-blocks-plugin/index.php ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
 
                     //This should be moved to our own wp image
                     //sh "cp ../wp-cli.phar amppp-wp/"
                     //sh "cd amppp-wp && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
                     //sh "cd amppp-wp && chmod +x wp-cli.phar"
 
-                    //sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' amppp-wp"
-                    //sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} > /dev/null"
+                    sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' amppp-wp"
+                    sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag} > /dev/null"
                 } finally {
 
                     // Cleanup after Docker & Maven
-                    //sh "rm -fr amppp-wp/wp-content"
+                    sh "rm -fr amppp-wp/wp-content"
 
-                    //sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
-                    //sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag}"
+                    sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
+                    sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag}"
                 }
             }
         }else{
@@ -136,11 +139,11 @@ stage('Deploy') {
     node {
         try {
             // Find latest database version compatible with ${codeVersion}
-            //dbVersion = sh(returnStdout: true, script: "ssh sulfur.migrated.devgateway.org 'cd /opt/amppp_dbs && amppp-db find ${codeVersion} ${country}'").trim()
+            dbVersion = sh(returnStdout: true, script: "ssh sulfur.migrated.devgateway.org 'cd /opt/amppp_dbs && amppp-db find ${codeVersion} ${country}'").trim()
 
             // Deploy AMPP
             println "Deploying amp"
-            //sh "ssh sulfur.migrated.devgateway.org 'cd /opt/docker/amppp && ./up.sh ${tag} ${country} ${dbVersion}'"
+            sh "ssh sulfur.migrated.devgateway.org 'cd /opt/docker/amppp && ./up.sh ${tag} ${country} ${dbVersion}'"
 
             slackSend(channel: 'amp-ci', color: 'good', message: "Deploy AMP Public Portal - Success\nDeployed ${changePretty} will be ready for testing at ${ampppUrl} in about 3 minutes")
 
