@@ -94,7 +94,7 @@ stage('Build') {
                     println "hash:${hash}"
 
                     //replace to build in
-                    sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=portal-ui/build --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' amppp-ui"
+                    sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=portal-ui/build --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' ."
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null"
 
                     sh "cd wp-react-blocks-plugin/blocks && npm install"
