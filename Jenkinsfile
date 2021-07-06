@@ -96,17 +96,18 @@ stage('Build') {
                     //replace to build in
                     sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=portal-ui/build --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' ."
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null"
+                    sh "cp -R wp-content amppp-wp"
 
                     sh "cd wp-react-blocks-plugin/blocks && npm install"
                     sh "cd wp-react-blocks-plugin/blocks && npm run build"
 
-                    sh 'mkdir ./wp-content/plugins/wp-react-blocks-plugin'
-                    sh 'mkdir ./wp-content/plugins/wp-react-blocks-plugin/blocks'
-                    sh 'mkdir ./wp-content/plugins/wp-react-blocks-plugin/blocks/build'
+                    sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
+                    sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks'
+                    sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build'
 
-                    sh "cd wp-react-blocks-plugin/blocks/build/* ./wp-content/plugins/wp-react-blocks-plugin/blocks/build"
+                    sh "cd ./wp-react-blocks-plugin/blocks/build/* ./wp-content/plugins/wp-react-blocks-plugin/blocks/build"
                     sh 'cp ./wp-react-blocks-plugin/index.php ./wp-content/plugins/wp-react-blocks-plugin'
-                    sh "cp -R wp-content amppp-wp"
+
                     //This should be moved to our own wp image
                     //sh "cp ../wp-cli.phar amppp-wp/"
                     //sh "cd amppp-wp && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
