@@ -71,8 +71,8 @@ stage('Build') {
                 try {
                     // Build AMP Public Portal UI
                     //sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
-                    sh "cd wp-react-lib && && npm install"
-                    sh "cd wp-react-lib && && npm run dist"
+                    sh "cd wp-react-lib && npm install"
+                    sh "cd wp-react-lib && npm run dist"
                     sh "rm -f ./portal-ui/.env.production"
                     sh "echo \"REACT_APP_API_URL='https://amp-haiti-pr-3770-tc9.ampsite.net/rest\" >> ./portal-ui/.env.production"
                     sh "echo \"REACT_APP_WP_URL='https:/wp./amp-haiti-pr-3770-tc9.ampsite.net\" >> ./portal-ui/.env.production"
