@@ -70,18 +70,16 @@ stage('Build') {
           sh 'node -v'
                 try {
                     // Build AMP Public Portal UI
-                    sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
+                    //sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
                     sh "rm -f ./portal-ui/.env.production"
-                    //REACT_APP_API_URL='https://amp-haiti-pr-3770-tc9.ampsite.net/rest'
-                    //REACT_APP_WP_URL='http://wp._hostname_'
                     sh "echo \"REACT_APP_API_URL='https://amp-haiti-pr-3770-tc9.ampsite.net/rest\" >> ./portal-ui/.env.production"
-                    sh "echo \"REACT_APP_WP_URL='https://amp-haiti-pr-3770-tc9.ampsite.net/rest\" >> ./portal-ui/.env.production"
+                    sh "echo \"REACT_APP_WP_URL='https:/wp./amp-haiti-pr-3770-tc9.ampsite.net\" >> ./portal-ui/.env.production"
                     echo "line 2" >> greetings.txt
                     sh "cd portal-ui && npm install"
                     sh "cd portal-ui && npm run build --host=${ampppHost}"
 
-                    sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
-                            " ./portal-ui/node_modules"
+                    //sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
+                    //        " ./portal-ui/node_modules"
 
 
 
@@ -105,10 +103,10 @@ stage('Build') {
                 } finally {
 
                     // Cleanup after Docker & Maven
-                    sh "rm -fr amppp-wp/wp-content"
+                    //sh "rm -fr amppp-wp/wp-content"
 
-                    sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
-                    sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag}"
+                    //sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag}"
+                    //sh returnStatus: true, script: "docker rmi phosphorus.migrated.devgateway.org:5000/amppp-wp:${tag}"
                 }
             }
         }else{
