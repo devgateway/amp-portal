@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  plugins:
+    build:
+      context: ./wp-react-blocks-plugin/
+    volumes:
+      - ./wp-react-blocks-plugin/blocks/build:/tmp/plugins
+    restart: "no"
   wordpress:
     image: library/wordpress:5.7-fpm-alpine
     depends_on:
@@ -30,7 +36,7 @@ services:
       - ./wp-react-blocks-plugin:/var/www/html/wp-content/plugins/wp-react-blocks-plugin
       - ./wp-content:/var/www/html/wp-content
       - ./wp-theme:/var/www/html/wp-content/themes/wp-react-theme
-      -  ui:/var/www/ui:ro
+      - ui:/var/www/ui:ro
     depends_on:
       - wordpress
     networks:
