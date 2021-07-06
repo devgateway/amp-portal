@@ -70,7 +70,9 @@ stage('Build') {
           sh 'node -v'
                 try {
                     // Build AMP Public Portal UI
-                    //sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
+                    // We build react lib
+                    sh returnStatus: true, script: 'tar -xf ../amppp-node-cache.tar'
+                    sh returnStatus: true, script: 'tar -xf ../amppp-lib-node-cache.tar'
                     sh "cd wp-react-lib && npm install"
                     sh "cd wp-react-lib && npm run dist"
                     sh "rm -f ./portal-ui/.env.production"
@@ -79,9 +81,10 @@ stage('Build') {
                     sh "cd portal-ui && npm install"
                     sh "cd portal-ui && npm run build --host=${ampppHost}"
 
-                    //sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
-                    //        " ./portal-ui/node_modules"
-
+                    sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
+                            " ./portal-ui/node_modules"
+                    sh returnStatus: true, script: "tar -cf ../amppp-lib-node-cache.tar --remove-files" +
+                                                " ./wp-react-lib/node_modules"
 
 
                     // Build Docker images & push it
@@ -89,11 +92,21 @@ stage('Build') {
                     println "PR:${pr}"
                     println "branch:${branch}"
                     println "hash:${hash}"
+
                     //replace to build in
                     sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=portal-ui/build --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' ."
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null"
 
-                    //sh "cp -R wp-content amppp-wp"
+                    sh "cd wp-react-blocks-plugin/blocks && npm install"
+                    sh "cd wp-react-blocks-plugin/blocks && npm run build"
+
+                    sh 'mkdir ./wp-content/plugins/wp-react-blocks-plugin'
+                    sh 'mkdir ./wp-content/plugins/wp-react-blocks-plugin/blocks'
+                    sh 'mkdir ./wp-content/plugins/wp-react-blocks-plugin/blocks/build'
+
+                    sh "cd wp-react-blocks-plugin/blocks/build/* ./wp-content/plugins/wp-react-blocks-plugin/blocks/build"
+                    sh 'cp ./wp-react-blocks-plugin/index.php ./wp-content/plugins/wp-react-blocks-plugin'
+                    sh "cp -R wp-content amppp-wp"
                     //This should be moved to our own wp image
                     //sh "cp ../wp-cli.phar amppp-wp/"
                     //sh "cd amppp-wp && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
