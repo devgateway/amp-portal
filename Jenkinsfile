@@ -74,7 +74,6 @@ stage('Build') {
                     sh "rm -f ./portal-ui/.env.production"
                     sh "echo \"REACT_APP_API_URL='https://amp-haiti-pr-3770-tc9.ampsite.net/rest\" >> ./portal-ui/.env.production"
                     sh "echo \"REACT_APP_WP_URL='https:/wp./amp-haiti-pr-3770-tc9.ampsite.net\" >> ./portal-ui/.env.production"
-                    echo "line 2" >> greetings.txt
                     sh "cd portal-ui && npm install"
                     sh "cd portal-ui && npm run build --host=${ampppHost}"
 
