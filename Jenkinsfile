@@ -84,8 +84,6 @@ stage('Build') {
 
                     sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
                             " ./portal-ui/node_modules"
-                     sh returnStatus: true, script: "tar -cf ../amppp-plugin-node-cache.tar --remove-files" +
-                            " ./wp-react-blocks-plugin/blocks/node_modules"
                     sh returnStatus: true, script: "tar -cf ../amppp-lib-node-cache.tar --remove-files" +
                             " ./wp-react-lib/node_modules"
 
@@ -100,14 +98,20 @@ stage('Build') {
                     sh "docker build -q -t phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} --build-arg AMPPP_UI=portal-ui/build --build-arg AMPPP_PULL_REQUEST='${pr}' --build-arg AMPPP_BRANCH='${branch}' --label git-hash='${hash}' ."
                     sh "docker push phosphorus.migrated.devgateway.org:5000/amppp-ui:${tag} > /dev/null"
                     sh "cp -R wp-content amppp-wp"
-
+                    sh "cp -R wp-theme/ amppp-wp/wp-content/themes/"
+                    sh "mv amppp-wp/wp-content/themes/wp-theme amppp-wp/wp-content/themes/dg-semantic"
+                    
                     sh "cd wp-react-blocks-plugin/blocks && npm install"
                     sh "cd wp-react-blocks-plugin/blocks && npm run build"
+
+                    sh returnStatus: true, script: "tar -cf ../amppp-plugin-node-cache.tar --remove-files" +
+                            " ./wp-react-blocks-plugin/blocks/node_modules"
 
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks'
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build'
-
+                    sh 'mkdir ./amppp-wp/wp-content/themes/dg-semantic'
+                    sh 'cp -R ./wp-theme ./amppp-wp/wp-content/themes/dg-semantic'
                     sh "cp ./wp-react-blocks-plugin/blocks/build/* ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build"
                     sh 'cp ./wp-react-blocks-plugin/index.php ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
 
