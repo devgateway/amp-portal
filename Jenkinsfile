@@ -112,7 +112,7 @@ stage('Build') {
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks'
                     sh 'mkdir ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build'
-               
+
                     sh "cp ./wp-react-blocks-plugin/blocks/build/* ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build"
                     sh 'cp ./wp-react-blocks-plugin/index.php ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
 
