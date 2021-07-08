@@ -119,6 +119,7 @@ stage('Build') {
 
                     sh "cp ./wp-react-blocks-plugin/blocks/build/* ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build"
                     sh 'cp ./wp-react-blocks-plugin/index.php ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
+                    sh 'cp ./wp-react-blocks-plugin/blocks/index.php ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks'
 
                     //This should be moved to our own wp image
                     //sh "cp ../wp-cli.phar amppp-wp/"
