@@ -49,10 +49,15 @@ stage('Build') {
             //country = input(
               //      message: "Proceed with build and deploy?",
                 //    parameters: [choice(choices: countries, name: 'country')])
-                    parameters {
-                    string(name: 'apiserver', defaultValue: 'https://amp-haiti-pr-3770-tc9.ampsite.net/rest', description: 'AMP Instance to link to')
-                    choice(name: 'country', choices: countries, description: 'Select the country to deploy')
-                    }
+                    //parameters {
+                    //string(name: 'apiserver', defaultValue: 'https://amp-haiti-pr-3770-tc9.ampsite.net/rest', description: 'AMP Instance to link to')
+                    //choice(name: 'country', choices: countries, description: 'Select the country to deploy')
+                    //}
+                    deployParams = input message: 'Ready to go?', parameters: [
+                                    string(name: 'AMP_HOST', defaultValue: 'amp-haiti-pr-3770-tc9.ampsite.net',
+                                            description: 'The url of the AMP to link to. Must start with \'amp\' ' +
+                                                    'and end with \'-tc9.ampsite.net\'.', trim: true),
+                                    choice(name: 'COUNTRY', choices: countries, description: 'Select the country to deploy')]
             milestone()
         }
     }
