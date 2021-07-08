@@ -63,8 +63,8 @@ stage('Build') {
     }
     ampppHost="http://wp.amppp-${country}-${tag}-tc9.ampsite.net"
     ampppUrl = "http://amppp-${country}-${tag}-tc9.ampsite.net/"
-    //echo "COUNTRY: ${params.country}"
-    //echo "APISERVER: ${params.apiserver}"
+    echo "COUNTRY: ${deployParams.COUNTRY}"
+    echo "APISERVER: ${deployParams.AMP_HOST}"
     println "ampppUrl: ${ampppUrl}"
 
         checkout scm
