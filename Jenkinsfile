@@ -84,7 +84,7 @@ stage('Build') {
 
                     sh "cd portal-ui && npm install"
                     sh "cd portal-ui && REACT_APP_NOT_SECRET_CODE=https://${deployParams.AMP_HOST}/rest "+
-                    " REACT_APP_WP_URL=http://wp.${ampppHost} npm run build"
+                    " REACT_APP_WP_URL=${ampppHost} npm run build"
 
                     sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
                             " ./portal-ui/node_modules"
@@ -119,7 +119,7 @@ stage('Build') {
 
                     sh "cp ./wp-react-blocks-plugin/blocks/build/* ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin/blocks/build"
                     sh 'cp ./wp-react-blocks-plugin/index.php ./amppp-wp/wp-content/plugins/wp-react-blocks-plugin'
-                    
+
                     //This should be moved to our own wp image
                     //sh "cp ../wp-cli.phar amppp-wp/"
                     //sh "cd amppp-wp && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
