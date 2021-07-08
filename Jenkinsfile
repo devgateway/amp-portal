@@ -49,10 +49,9 @@ stage('Build') {
             //country = input(
               //      message: "Proceed with build and deploy?",
                 //    parameters: [choice(choices: countries, name: 'country')])
-
                     parameters {
                     string(name: 'apiserver', defaultValue: 'https://amp-haiti-pr-3770-tc9.ampsite.net/rest', description: 'AMP Instance to link to')
-                    choice(name: 'country', choices: countries, description: 'Select the country to deploy'
+                    choice(name: 'country', choices: countries, description: 'Select the country to deploy')
                     }
             milestone()
         }
