@@ -45,19 +45,12 @@ stage('Build') {
     if (country == null) {
         timeout(15) {
             milestone()
-            country = "haiti"
-            //country = input(
-              //      message: "Proceed with build and deploy?",
-                //    parameters: [choice(choices: countries, name: 'country')])
-                    //parameters {
-                    //string(name: 'apiserver', defaultValue: 'https://amp-haiti-pr-3770-tc9.ampsite.net/rest', description: 'AMP Instance to link to')
-                    //choice(name: 'country', choices: countries, description: 'Select the country to deploy')
-                    //}
                     deployParams = input message: 'Ready to go?', parameters: [
                                     string(name: 'AMP_HOST', defaultValue: 'amp-haiti-pr-3770-tc9.ampsite.net',
                                             description: 'The url of the AMP to link to. Must start with \'amp\' ' +
                                                     'and end with \'-tc9.ampsite.net\'.', trim: true),
                                     choice(name: 'COUNTRY', choices: countries, description: 'Select the country to deploy')]
+                    country=deployParams.COUNTRY;
             milestone()
         }
     }
@@ -89,10 +82,11 @@ stage('Build') {
                     sh "cd wp-react-lib && npm install"
                     sh "cd wp-react-lib && npm run dist"
                     sh "rm -f ./portal-ui/.env.production"
-                    sh "echo \"REACT_APP_API_URL='https://amp-haiti-pr-3770-tc9.ampsite.net/rest\" >> ./portal-ui/.env.production"
-                    sh "echo \"REACT_APP_WP_URL='https:/wp./amp-haiti-pr-3770-tc9.ampsite.net\" >> ./portal-ui/.env.production"
+                    sh "echo \"REACT_APP_API_URL='https://${deployParams.AMP_HOST}/rest\" >> ./portal-ui/.env.production"
+                    sh "echo \"REACT_APP_WP_URL='https://\" >> ./portal-ui/.env.production"
                     sh "cd portal-ui && npm install"
-                    sh "cd portal-ui && npm run build --host=${ampppHost}"
+                    sh "cd portal-ui && REACT_APP_NOT_SECRET_CODE=https://${deployParams.AMP_HOST}/rest "+
+                    " REACT_APP_WP_URL=http://wp.${ampppHost} npm run build"
 
                     sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +
                             " ./portal-ui/node_modules"
