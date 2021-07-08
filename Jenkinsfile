@@ -27,6 +27,7 @@ def countries
 def country
 def ampppHost
 def ampppUrl
+def parameters
 stage('Build') {
   node {
     // Find AMP version
@@ -44,15 +45,22 @@ stage('Build') {
     if (country == null) {
         timeout(15) {
             milestone()
-            country = input(
-                    message: "Proceed with build and deploy?",
-                    parameters: [choice(choices: countries, name: 'country')])
+            country = "haiti"
+            //country = input(
+              //      message: "Proceed with build and deploy?",
+                //    parameters: [choice(choices: countries, name: 'country')])
+
+                    parameters {
+                    string(name: 'apiserver', defaultValue: 'https://amp-haiti-pr-3770-tc9.ampsite.net/rest', description: 'AMP Instance to link to')
+                    choice(name: 'country', choices: countries, description: 'Select the country to deploy'
+                    }
             milestone()
         }
     }
     ampppHost="http://wp.amppp-${country}-${tag}-tc9.ampsite.net"
     ampppUrl = "http://amppp-${country}-${tag}-tc9.ampsite.net/"
-
+    echo "COUNTRY: ${params.country}"
+    echo "APISERVER: ${params.apiserver}"
     println "ampppUrl: ${ampppUrl}"
 
         checkout scm
