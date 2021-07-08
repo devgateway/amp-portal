@@ -39,7 +39,6 @@ export const getCategories = (params) => {
 }
 
 export const getData = (path, params, app, measure, dateFilter) => {
-  debugger;
   const route = path.split('/');
   let url;
   let isPost = true;

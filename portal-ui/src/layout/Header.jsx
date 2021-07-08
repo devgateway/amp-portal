@@ -62,17 +62,20 @@ const MyMenuItems = injectIntl(withRouter(({
 
   return menu && <React.Fragment>
 
-    {menu.items.map(i => (
-      <Menu.Item
-        className={`divided ${i.child_items ? 'has-child-items' : ''} 
-                 ${selected && selected.ID == i.ID ? 'selected' : ''}  ${active == i.slug ? "active" : ""}`}
-      >
+    {menu.items.map(i => {
+      return (
+        <Menu.Item
+          className={`divided ${i.child_items ? 'has-child-items' : ''} 
+                   ${selected && selected.ID == i.ID ? 'selected' : ''}  ${active == i.slug ? "active" : ""}`}
+        >
 
-        {withIcons && <div className={"mark"}></div>} {i.child_items ?
-        <span onMouseOver={e => onSetSelected(i)}>{i.title}</span> :
-        <a onMouseOver={e => onSetSelected(i)} href={utils.replaceLink(i.url, locale)}>{i.title}</a>}
+          {withIcons && <div className={"mark"}></div>} {i.child_items ?
+          <span onMouseOver={e => onSetSelected(i)}>{i.title}</span> :
+          <a onMouseOver={e => onSetSelected(i)} href={utils.replaceLink(i.url, locale)}
+             target={i.type_label === 'Custom Link' ? "_blank" : "_self"}>{i.title}</a>}
 
-      </Menu.Item>))}
+        </Menu.Item>);
+    })}
 
   </React.Fragment>
 }))
