@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl';
 import DataContext from './DataContext'
-import { getData, setData } from "./module";
 import { Container, Loader, Segment } from "semantic-ui-react";
+import { getData, setData } from "../reducers/data";
 
 class DataProvider extends React.Component {
 
@@ -20,7 +20,7 @@ class DataProvider extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { filters, app, source, store, params, csv } = this.props
 
-    if (filters != prevProps.filters || app != prevProps.app || prevProps.source != source || csv != prevProps.csv) {
+    if (filters !== prevProps.filters || app !== prevProps.app || prevProps.source !== source || csv !== prevProps.csv) {
       if (app === "csv") {
         this.props.onSetData({ app, csv, store, params })
       } else {

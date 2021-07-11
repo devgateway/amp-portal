@@ -10,9 +10,7 @@ class Footer extends Component {
   }
 
   render() {
-    const { children, fixed, location } = this.props
     return (<Container fluid className={"amp footer"}>
-
       <PageProvider slug={"footer"} store={"footer"}>
         <PageConsumer>
           <Page></Page>

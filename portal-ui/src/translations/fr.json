@@ -1,0 +1,18 @@
+{
+  "app.title": "Plateforme de gestion de l'aide",
+  "amp.dashboard:chart-thousand": "k",
+  "amp.dashboard:chart-million": "M",
+  "amp.dashboard:chart-billion": "B",
+  "amp.dashboard:chart-trillion": "T",
+  "amp.dashboard:chart-peta": "P",
+  "amp.dashboard:chart-exa": "E",
+  "amp.others": "Outre",
+  "amp.on-time": "À temps",
+  "amp.no-updates": "Aucune mise à jour",
+  "amp.late": "En retard",
+  "amp.chart.dashboard:of-total": "Du total",
+  "amp.chart.dashboard:of-year-total": "de l'année Total",
+  "amp.chart.dashboard:inunits": "En unités",
+  "amp.chart.dashboard:inthousands": "En milliers",
+  "amp.chart.dashboard:inmillions": "En millions"
+}

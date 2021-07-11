@@ -1,1 +1,18 @@
-{}
+{
+  "app.title": "Aid Management Platform",
+  "amp.dashboard:chart-thousand": "k",
+  "amp.dashboard:chart-million": "M",
+  "amp.dashboard:chart-billion": "B",
+  "amp.dashboard:chart-trillion": "T",
+  "amp.dashboard:chart-peta": "P",
+  "amp.dashboard:chart-exa": "E",
+  "amp.others": "Others",
+  "amp.on-time": "On time",
+  "amp.no-updates": "No updates",
+  "amp.late": "Late",
+  "amp.chart.dashboard:of-total": "of Total",
+  "amp.chart.dashboard:of-year-total": "of Year Total",
+  "amp.chart.dashboard:inunits": "In units",
+  "amp.chart.dashboard:inthousands": "In thousands",
+  "amp.chart.dashboard:inmillions": "In millions"
+}

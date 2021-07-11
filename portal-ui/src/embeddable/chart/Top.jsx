@@ -1,8 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import PropTypes from 'prop-types';
 import { injectIntl } from "react-intl";
-import { formatKMB } from "./utils";
+import { formatKMB, getGlobalSettings } from "./utils";
 import SimpleLegend from "./legends/SimpleLegend";
 import { Grid } from "semantic-ui-react";
 import './Top.scss';
@@ -10,13 +9,14 @@ import ToolTip from "./legends/ToolTip";
 import { getColor } from './TopChartUtils';
 import { BoxLegendSvg } from "@nivo/legends";
 import { linearGradientDef } from "@nivo/core";
+import { connect } from "react-redux";
 
 
 const Top = ({
-               colors, height, options, intl, f, legends, measure, layout = "vertical", showLegend = true,
-               padding = 0.1, isDonorScoreCard = false, barHeight
+               colors, options, intl, legends, layout = "vertical", showLegend = true,
+               padding = 0.1, isDonorScoreCard = false, barHeight, settings
              }) => {
-  console.log(barHeight);
+  const globalSettings = getGlobalSettings(settings);
   const getLabel = (item) => {
     return formatValue(item.data.value);
   }
@@ -31,18 +31,17 @@ const Top = ({
         return '#FF0000';
       case 3:
         return '#0000FF';
+      default:
+        return '#000000'
 
     }
   }
 
   const formatValue = (value) => {
-    const globalSettings = {};
-    // TODO integrate with amp settings
-    globalSettings.precision = 3;
-    globalSettings.decimalSeparator = '.';
     const formatter = formatKMB(intl, globalSettings.precision, globalSettings.decimalSeparator, false, null);
     return formatter(value);
   }
+
   const [filter, setFilter] = useState([])
   const toggle = (id) => {
     const newFilter = filter.slice();
@@ -61,12 +60,6 @@ const Top = ({
       return values
     }
   }
-  const globalSettings = {};
-  globalSettings.groupSeparator = ',';
-  globalSettings.numberDivider = 1
-  globalSettings.numberDividerDescriptionKey = '';
-  globalSettings.precision = 3;
-  globalSettings.decimalSeparator = '.';
   const BarLegend = ({ height, legends, width }) => (
     <React.Fragment>
       {legends.map(legend => (
@@ -197,12 +190,13 @@ const Top = ({
     </Grid>
   );
 }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    settings: state.getIn(['data', ...['amp-settings'], 'data'])
+  }
+}
 
-Top.propTypes = {
-  data: PropTypes.object.isRequired,
-  globalSettings: PropTypes.object.isRequired,
-  translations: PropTypes.object.isRequired,
-  settings: PropTypes.object.isRequired
-};
 
-export default injectIntl(Top)
+const mapActionCreators = {};
+
+export default connect(mapStateToProps, mapActionCreators)(injectIntl(Top));

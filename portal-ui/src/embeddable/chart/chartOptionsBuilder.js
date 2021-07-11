@@ -1,6 +1,6 @@
 export const buildDonorScoreCardOptions = (donorScoreCardData) => {
 
-  const data = {
+  return {
     "values": [{
       "id": 3,
       "value": donorScoreCardData.noUpdates,
@@ -16,7 +16,6 @@ export const buildDonorScoreCardOptions = (donorScoreCardData) => {
         "index": 0
       }]
   }
-  return data;
 }
 export const buildBarOptions = (data, includeTotal, intl) => {
   const usePercents = true

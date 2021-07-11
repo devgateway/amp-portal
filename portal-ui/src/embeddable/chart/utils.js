@@ -86,7 +86,7 @@ const getSuffixForLang = (prefix, lang) => {
 
 export const formatNumber = (currency, intl, value, precision, decimalSeparator, groupSeparator, numberDivider,
                              numberDividerDescriptionKey) => {
-  const formatString = `${decimalSeparator ? decimalSeparator : '.'}${precision}f`;
+  const formatString = `,${precision >= 0 ? `.${precision}` : ''}f`;
   const dividedValue = (numberDivider && numberDividerDescriptionKey) ? value / numberDivider : value;
   // eslint-disable-next-line max-len
   const txtVal =
@@ -110,5 +110,35 @@ export const formatNumberWithSettings = (currency, intl, settings, value, useUni
   }
   return formatNumber(currency, intl, value, settings.precision, settings.decimalSeparator,
     settings.groupSeparator);
+}
+export const getGlobalSettings = (settings) => {
+  const globalSettings = {};
+
+  globalSettings.numberglobalSettings = settings['number-globalSettings'] || '#,#.#';
+  globalSettings.precision = 0;
+  if (globalSettings.numberglobalSettings.indexOf('.') !== -1) {
+    globalSettings.precision = globalSettings.numberglobalSettings.length - globalSettings.numberglobalSettings.indexOf('.') - 1;
+  }
+  if (globalSettings.numberglobalSettings.indexOf(',') !== -1) {
+    globalSettings.groupSeparator = settings['number-group-separator'] || ',';
+  } else {
+    globalSettings.groupSeparator = '';
+  }
+  globalSettings.decimalSeparator = settings['number-decimal-separator'] || '.';
+  globalSettings.numberDivider = settings['number-divider'];
+  if (globalSettings.numberDivider === 1) {
+    globalSettings.numberDividerDescriptionKey = 'inunits';
+  } else if (globalSettings.numberDivider === 1000) {
+    globalSettings.numberDividerDescriptionKey = 'inthousands';
+  } else if (globalSettings.numberDivider === 1000000) {
+    globalSettings.numberDividerDescriptionKey = 'inmillions';
+  } else if (globalSettings.numberDivider === 1000000000) {
+    globalSettings.numberDividerDescriptionKey = 'inbillions';
+  }
+
+  globalSettings.dateglobalSettings = settings['default-date-globalSettings'];
+  globalSettings.defaultMinDate = settings['dashboard-default-min-date'];
+  globalSettings.defaultMaxDate = settings['dashboard-default-max-date'];
+  return globalSettings;
 }
 

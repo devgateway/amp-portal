@@ -65,6 +65,7 @@ const MyMenuItems = injectIntl(withRouter(({
     {menu.items.map(i => {
       return (
         <Menu.Item
+          key={i.ID}
           className={`divided ${i.child_items ? 'has-child-items' : ''} 
                    ${selected && selected.ID == i.ID ? 'selected' : ''}  ${active == i.slug ? "active" : ""}`}
         >

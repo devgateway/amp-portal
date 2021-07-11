@@ -114,7 +114,6 @@ class BlockEdit extends BaseBlockEdit {
     let queryString = `data-editing=true&data-params=${encodeURIComponent(JSON.stringify(params))}${tickColor != null ? `&data-tick-color=${tickColor}` : ""}&data-tick-rotation=${tickRotation}&data-keys=${keys.join(',')}&data-app=${app}&data-height=${height}&data-chart-type=${type}&data-source=${source}&data-color-by=${colorBy}&data-color-scheme=${scheme}&data-group-mode=${groupMode}&data-legends-left=${leftLegend}&data-legends-bottom=${bottomLegend}&data-dualmode=${dualMode}&editing=true&data-legend-position=${legendPosition}&data-edit-mode=${mode}&data-legends-width=${legendsWidth}&data-show-legends=${showLegends}&data-toggle-info-label=${toggleInfoLabel}&data-toggle-chart-label=${toggleChartLabel}&data-chart-title=${chartTitle}&data-chart-description=${chartDescription}`
     queryString += `&data-chart-measure=${measure}&data-chart-date-from=${dateFrom}&data-chart-date-to=${dateTo}`;
     const divStyles = { height: `${height}px`, width: '100%!important' }
-    console.log(this.state.react_ui_url);
     return ([isSelected && (
         <InspectorControls>
           <Panel header={__("Chart Configuration")}>

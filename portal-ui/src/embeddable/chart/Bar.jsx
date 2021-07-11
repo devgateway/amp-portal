@@ -10,8 +10,9 @@ import {
   sequentialColorInterpolators
 } from '@nivo/colors'
 import * as d3 from 'd3';
-import { formatKMB } from "./utils";
+import { formatKMB, getGlobalSettings } from "./utils";
 import ToolTip from "./legends/ToolTip";
+import { connect } from "react-redux";
 
 /**
  * Base code taken from TCDI project
@@ -73,9 +74,11 @@ const Chart = ({
                  tickRotation,
                  tickColor,
                  measure,
-                 layout = "vertical"
+                 layout = "vertical",
+                 settings
                }) => {
   const keys = Array.from(options.keysAndLegends.keys());
+  const globalSettings = getGlobalSettings(settings);
   const [filter, setFilter] = useState([])
   const applyFilter = (values) => {
 
@@ -138,10 +141,6 @@ const Chart = ({
     }
   }
   const formatValue = (value) => {
-    const globalSettings = {};
-    // TODO integrate with amp settings
-    globalSettings.precision = 3;
-    globalSettings.decimalSeparator = '.';
     const formatter = formatKMB(intl, globalSettings.precision, globalSettings.decimalSeparator, false, null);
     return formatter(value);
   }
@@ -271,12 +270,6 @@ const Chart = ({
       </g>
     )
   }
-  const globalSettings = {};
-  globalSettings.groupSeparator = ',';
-  globalSettings.numberDivider = 1
-  globalSettings.numberDividerDescriptionKey = '';
-  globalSettings.precision = 3;
-  globalSettings.decimalSeparator = '.';
   return (
     <div style={{ height: height }}>
       {options && options.data && <ResponsiveBar
@@ -398,4 +391,14 @@ const Chart = ({
   )
 }
 
-export default injectIntl(Chart)
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    settings: state.getIn(['data', ...['amp-settings'], 'data'])
+  }
+}
+
+
+const mapActionCreators = {};
+
+export default connect(mapStateToProps, mapActionCreators)(injectIntl(Chart));

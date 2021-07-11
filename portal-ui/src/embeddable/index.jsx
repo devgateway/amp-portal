@@ -41,7 +41,7 @@ const components = {
 }
 
 export const getComponentByNameIgnoreCase = (name) => {
-  console.log("name" + name)
+
   const k = Object.keys(components).filter(value => value.toLowerCase() == name.toLowerCase())
   return components[k]
 }

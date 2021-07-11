@@ -51,7 +51,6 @@ const SaveComponent = (props) => {
         const year = yearFilter.split(",").map(d => parseInt(d))
         params["year"] = year
     }
-    console.log(source);
     if(app==='donorScoreCard'){
         source='donorScoreCard';
     }

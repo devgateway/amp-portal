@@ -13,10 +13,9 @@ import {
 } from './chartOptionsBuilder'
 import './charts.scss'
 import TopPie from "./TopPie";
-//import TheContent from "../../wp/template-parts/TheContent";
 import Top from "./Top";
 import DonorScoreCard from "./donorScorecard/DonorScoreCard";
-import { useIntl } from 'react-intl'
+import { injectIntl, useIntl } from 'react-intl'
 import TopList from "./TopList/TopList";
 import LoginWidget from "./login/LoginWidget";
 import TotalWidget from "./totalWidget/TotalWidget";
@@ -103,7 +102,8 @@ const Chart = (props) => {
     'data-currency': currency = "",
     'data-chart-measure': measure = "Actual Commitments",
     'data-chart-date-from': dateFrom = "2010",
-    'data-chart-date-to': dateTo = "2030"
+    'data-chart-date-to': dateTo = "2030",
+    intl
   } = props;
   let newSource = source;
   const itemWidth = props["data-legends-width"] ? parseInt(props["data-legends-width"]) : 180
@@ -179,6 +179,8 @@ const Chart = (props) => {
   const dateFilter = {};
   dateFilter.from = dateFrom;
   dateFilter.to = dateTo;
+  console.log(intl);
+  console.log(intl.formatMessage({ id: "app.title", defaultMessage: "aca va el titulo" }));
   return <Container className={"chart container"} fluid={true}>
     <DataProvider store={newSource.split("/")} source={newSource} app={app} measure={measure} dateFilter={dateFilter}>
       <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
@@ -195,4 +197,4 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapActionCreators = {};
 
-export default connect(mapStateToProps, mapActionCreators)(Chart)
+export default connect(mapStateToProps, mapActionCreators)(injectIntl(Chart))
