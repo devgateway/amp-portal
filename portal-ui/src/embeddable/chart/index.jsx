@@ -179,8 +179,6 @@ const Chart = (props) => {
   const dateFilter = {};
   dateFilter.from = dateFrom;
   dateFilter.to = dateTo;
-  console.log(intl);
-  console.log(intl.formatMessage({ id: "app.title", defaultMessage: "aca va el titulo" }));
   return <Container className={"chart container"} fluid={true}>
     <DataProvider store={newSource.split("/")} source={newSource} app={app} measure={measure} dateFilter={dateFilter}>
       <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>

@@ -80,24 +80,25 @@ class IntlRoutes extends Component {
             {
               //default route (home)
             }
-            <Route path="/:lan" exact render={props => (
-              <PageProvider
-                slug={"home"}
-                locale={locale}
-                store={"home"}>
-                <ResponsiveContainer>
-                  <PageConsumer>
-                    <Page></Page>
-                  </PageConsumer>
-                </ResponsiveContainer>
-              </PageProvider>
+            <Route path="/:lan" exact render={(props) => {
+              return (
+                <PageProvider
+                  slug={"home"}
+                  locale={locale}
+                  store={"home"}>
+                  <ResponsiveContainer>
+                    <PageConsumer>
+                      <Page></Page>
+                    </PageConsumer>
+                  </ResponsiveContainer>
+                </PageProvider>
 
-            )}>
+              );
+            }}>
             </Route>
             <Route exact={true} path="/:lan/embeddable/:name" render={(props) => {
               let params = queryString.parse(props.location.search)
               const UIComponent = getComponentByNameIgnoreCase(props.match.params.name)
-
               return (<Container fluid={true} className={"embeddable"}>
                 {UIComponent ? <UIComponent {...params}></UIComponent> :
                   <Segment color={"red"} textAlign={"center"}><h1>Wrong Component Name</h1></Segment>}

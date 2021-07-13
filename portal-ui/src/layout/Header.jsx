@@ -111,7 +111,13 @@ const Header = ({ intl, match }) => {
         <Container fluid={true} className={"background"}>
           <Menu className={"branding"} text>
             <Menu.Item>
-              <a href="/"><img className="brand logo" size="large" src='/amp-logo.svg' /></a>
+              <a href="/">
+                <img className="logo" loading="lazy" src="https://amp-haiti-develop-tc9.ampsite.net/aim/default/displayFlag.do"/>
+                  <span className="label">{intl.formatMessage({
+                    id: 'app.title-small',
+                    defaultMessage: "AMP Portal"
+                  })}</span></a>
+
             </Menu.Item>
             <Menu.Menu className={"pages"}>
               <MenuConsumer>
@@ -157,4 +163,4 @@ const Header = ({ intl, match }) => {
 }
 
 
-export default injectIntl(withRouter(Header))
+export default injectIntl(withRouter(injectIntl(Header)))
