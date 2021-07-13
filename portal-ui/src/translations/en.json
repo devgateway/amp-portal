@@ -1,5 +1,6 @@
 {
   "app.title": "Aid Management Platform",
+  "app.title-small": "AMP Portal",
   "amp.dashboard:chart-thousand": "k",
   "amp.dashboard:chart-million": "M",
   "amp.dashboard:chart-billion": "B",

@@ -130,7 +130,7 @@ const Header = ({ intl, match }) => {
                             attached='left' className={intl.locale === 'en' ? 'selected' : ''}
                             onClick={goToEng}
                           >EN</Button>
-                          <Button attached='right' className={intl.locale === 'fr' ? 'selected' : ''}
+                          <Button attached='left' className={intl.locale === 'fr' ? 'selected' : ''}
                                   onClick={goToFrench}
                           >FR</Button>
                         </span>
