@@ -1,0 +1,42 @@
+.simple-legend {
+  display: inline-block;
+  width: 100%;
+
+  ul {
+    padding: 0;
+    margin: 0;
+
+    > li {
+      display: inline-block;
+      zoom: 1;
+      *display: inline;
+      margin-right: 3px;
+    }
+
+    li {
+      .label {
+        margin-left: 5px;
+        color: black;
+        font-size: 8pt;
+      }
+
+      .cursor {
+        cursor: pointer;
+      }
+
+      .symbol {
+        display: inline-block;
+        border-radius: 100%;
+        background-color: transparent;
+        background-clip: padding-box;
+        margin-top: 3px;
+        height: 8px;
+        width: 8px;
+      }
+    }
+  }
+}
+
+.simple-legend-inner {
+  text-align: left;
+}

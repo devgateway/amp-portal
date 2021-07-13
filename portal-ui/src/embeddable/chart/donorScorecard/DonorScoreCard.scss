@@ -1,0 +1,20 @@
+@import "../../../scss/vars";
+
+.donor-scorecard-chart {
+  @include module-container($module-bg);
+  h3{
+    @include module-title;
+  }
+  .description{
+    @include module-description;
+  }
+  .data-wrapper{
+    margin-top: $base-unit-md;
+  }
+  .inner{
+    padding: 0px;
+  }
+  .top-chart{
+    background-color: $module-bg;
+  }
+}
