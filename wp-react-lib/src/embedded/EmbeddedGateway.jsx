@@ -32,18 +32,18 @@ class EmbeddedGateway extends React.Component {
                         props[attrs[i].name] = attrs[i].value;
                     }
                     const C = getComponent(component);
-                    if (C){
-                    ReactDOM.render(
-                        <Provider store={store}>
-                            <IntlProvider locale={locale}>
-                                <AppContextProvider getComponent={getComponent} store={store} locale={locale}>
-                                 <C unique={"embeddable_" + index} {...props} childContent={element.innerHTML}/>
-                                </AppContextProvider>
-                            </IntlProvider>
-                        </Provider>, element);
-                    }else{
+                    if (C) {
                         ReactDOM.render(
-                            <span style={{"color":"red"}}>{component} not found </span>, element);
+                            <Provider store={store}>
+                                <IntlProvider locale={locale}>
+                                    <AppContextProvider getComponent={getComponent} store={store} locale={locale}>
+                                        <C unique={"embeddable_" + index} {...props} childContent={element.innerHTML}/>
+                                    </AppContextProvider>
+                                </IntlProvider>
+                            </Provider>, element);
+                    } else {
+                        ReactDOM.render(
+                            <span style={{"color": "red"}}>{component} not found </span>, element);
                     }
 
 
@@ -60,7 +60,7 @@ class EmbeddedGateway extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {parent} = this.props
-        if (parent !== prevProps.parent) {
+        if (parent != prevProps.parent) {
             this.renderEmbeddedComponents()
         }
     }
@@ -68,7 +68,7 @@ class EmbeddedGateway extends React.Component {
 
     render() {
         return <React.Fragment>
-                {this.props.children}
+            {this.props.children}
         </React.Fragment>
     }
 }
