@@ -83,7 +83,7 @@ stage('Build') {
                     sh "cd wp-react-lib && npm run dist"
 
                     sh "cd portal-ui && npm install"
-                    sh "cd portal-ui && REACT_APP_API_URL=https://${deployParams.AMP_HOST}/rest "+
+                    sh "cd portal-ui && REACT_APP_AMP_URL=https://${deployParams.AMP_HOST} "+
                     " REACT_APP_WP_URL=${ampppHost} npm run build"
 
                     sh returnStatus: true, script: "tar -cf ../amppp-node-cache.tar --remove-files" +

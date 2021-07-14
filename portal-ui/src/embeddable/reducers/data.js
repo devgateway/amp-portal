@@ -20,14 +20,14 @@ const LOAD_AMP_SETTINGS_ERROR = 'LOAD_AMP_SETTINGS_ERROR'
 const initialState = Immutable.Map({ mode: 'info' })
 
 
-export const setFilter = (type, value) => (dispatch, getState) => {
+export const setFilter = (type, value) => (dispatch) => {
 
   dispatch({ type: SET_FILTER, param: type, value })
 
 }
 
 
-export const getCategories = () => (dispatch, getState) => {
+export const getCategories = () => (dispatch) => {
   dispatch({
     type: LOAD_CATEGORIES
   })
@@ -44,7 +44,7 @@ export const getCategories = () => (dispatch, getState) => {
   })
 }
 
-export const setData = ({ app, csv, store, params }) => (dispatch, getState) => {
+export const setData = ({ csv, store, params }) => (dispatch, getState) => {
   const filters = getState().get('data').getIn(['filters'])
   if (filters) {
     params = { ...params, ...filters.toJS() }
@@ -67,7 +67,7 @@ export const getData = ({ app, source, store, params, measure, dateFilter }) => 
 }
 
 
-export const loadAmpSettings = () => (dispatch, getState) => {
+export const loadAmpSettings = () => (dispatch) => {
   dispatch({ type: LOAD_AMP_SETTINGS })
   return api.loadAMpSettings()
     .then(data => {
@@ -81,8 +81,8 @@ export const loadAmpSettings = () => (dispatch, getState) => {
 export default (state = initialState, action) => {
   switch (action.type) {
     case LOAD_AMP_SETTINGS: {
-      const store = 'amp-settings';
-      return state.deleteIn(['amp-settings', 'error']).setIn(['amp-settings', 'loading'], true)
+      const store = ['amp-settings'];
+      return state.deleteIn([...store, 'error']).setIn(['amp-settings', 'loading'], true)
     }
 
     case LOAD_AMP_SETTINGS_ERROR: {
@@ -132,7 +132,7 @@ export default (state = initialState, action) => {
       return state
     case SET_FILTER: {
       const { param, value } = action
-      if (value.length == 0) {
+      if (value.length === 0) {
         return state.deleteIn(['filters', param], value)
       }
       return state.setIn(['filters', param], value)

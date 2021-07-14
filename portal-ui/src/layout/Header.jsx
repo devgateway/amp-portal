@@ -112,11 +112,12 @@ const Header = ({ intl, match }) => {
           <Menu className={"branding"} text>
             <Menu.Item>
               <a href="/">
-                <img className="logo" loading="lazy" src="https://amp-haiti-develop-tc9.ampsite.net/aim/default/displayFlag.do"/>
-                  <span className="label">{intl.formatMessage({
-                    id: 'app.title-small',
-                    defaultMessage: "AMP Portal"
-                  })}</span></a>
+                <img className="logo" loading="lazy"
+                     src={`${process.env.REACT_APP_AMP_URL}/aim/default/displayFlag.do`} />
+                <span className="label">{intl.formatMessage({
+                  id: 'app.title-small',
+                  defaultMessage: "AMP Portal"
+                })}</span></a>
 
             </Menu.Item>
             <Menu.Menu className={"pages"}>
