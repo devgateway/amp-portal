@@ -49,7 +49,7 @@ const GriNavigator = ({posts, activeItem, setActive, showIcons, showLabels}) => 
 
 const TabContent = ({posts, activeItem}) => {
 
-    return posts ? posts.filter(p => p.slug === activeItem).map(p => <PostIntro as={Container} fluid key={p.id}
+    return posts ? posts.filter(p => p.slug === activeItem).map(p => <PostIntro as={Container} showContent fluid key={p.id}
                                                                                 post={p}/>) : null
 
 
