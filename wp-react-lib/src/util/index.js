@@ -2,13 +2,16 @@ const useHash = process.env.REACT_APP_USE_HASH_LINKS.toLowerCase() === "true"
 
 
 export const replaceLink = (url, locale) => {
+    debugger;
+    let theUrl;
     const replacementTarget = process.env.REACT_APP_WP_HOSTS.split(",")
     let all = new RegExp("^(http|https)://(" + replacementTarget.join('|') + ")", "ig");
     if (useHash) {
-        return url.replaceAll(all, "#" + locale)
+        theUrl= url.replaceAll(all, "#" + locale)
     } else {
-        return url.replaceAll(all, "" + locale)
+        theUrl = url.replaceAll(all, "" + locale)
     }
+    return theUrl;
 }
 
 export const replaceHTMLinks = (html, locale) => {
