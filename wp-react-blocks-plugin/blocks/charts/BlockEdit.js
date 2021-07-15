@@ -1,5 +1,4 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Component } from '@wordpress/element'
 import { InspectorControls, PanelColorSettings, useBlockProps } from '@wordpress/block-editor';
 import {
   __experimentalNumberControl as NumberControl,
@@ -12,9 +11,9 @@ import {
   RangeControl,
   ResizableBox,
   SelectControl,
+  TextareaControl,
   TextControl,
-  ToggleControl,
-  TextareaControl
+  ToggleControl
 } from '@wordpress/components';
 
 import { InnerBlocks } from '@wordpress/editor'; // or wp.editor
@@ -69,7 +68,7 @@ class BlockEdit extends BaseBlockEdit {
 
   render() {
     const {
-      className, isSelected,
+      isSelected,
       toggleSelection, setAttributes, attributes: {
         height,
         type,
@@ -98,21 +97,32 @@ class BlockEdit extends BaseBlockEdit {
         tickColor,
         tickRotation,
         yearFilter,
+        onTime,
+        validation,
+        late,
+        noUpdates,
+        ampSize
 
       }
     } = this.props;
 
-    const levels = app == 'top' ? [topChartType, topChartColumnCount,] : [fundingType];
-    const source = levels.filter(l => l != 'none' && l != null).join('/')
+    const levels = app === 'top' ? [topChartType, topChartColumnCount,] : [fundingType];
+    const source = levels.filter(l => l !== 'none' && l != null).join('/')
 
     let params = {}
     if (yearFilter != null && yearFilter.trim() !== "" && app === 'policy') {
-      const year = yearFilter.split(",").map(d => parseInt(d))
-      params["year"] = year
+      params["year"] = yearFilter.split(",").map(d => parseInt(d))
     }
 
     let queryString = `data-editing=true&data-params=${encodeURIComponent(JSON.stringify(params))}${tickColor != null ? `&data-tick-color=${tickColor}` : ""}&data-tick-rotation=${tickRotation}&data-keys=${keys.join(',')}&data-app=${app}&data-height=${height}&data-chart-type=${type}&data-source=${source}&data-color-by=${colorBy}&data-color-scheme=${scheme}&data-group-mode=${groupMode}&data-legends-left=${leftLegend}&data-legends-bottom=${bottomLegend}&data-dualmode=${dualMode}&editing=true&data-legend-position=${legendPosition}&data-edit-mode=${mode}&data-legends-width=${legendsWidth}&data-show-legends=${showLegends}&data-toggle-info-label=${toggleInfoLabel}&data-toggle-chart-label=${toggleChartLabel}&data-chart-title=${chartTitle}&data-chart-description=${chartDescription}`
     queryString += `&data-chart-measure=${measure}&data-chart-date-from=${dateFrom}&data-chart-date-to=${dateTo}`;
+    queryString += `&data-chart-amp-on-time=${onTime}`;
+    queryString += `&data-chart-amp-validation=${validation}`;
+    queryString += `&data-chart-amp-late=${late}`;
+    queryString += `&data-chart-amp-no-updates=${noUpdates}`;
+    queryString += `&data-chart-amp-size=${ampSize}`;
+
+
     const divStyles = { height: `${height}px`, width: '100%!important' }
     return ([isSelected && (
         <InspectorControls>
@@ -168,15 +178,15 @@ class BlockEdit extends BaseBlockEdit {
               </PanelRow>
               }
             </PanelBody>
-            <SizeConfig initialOpen={false} setAttributes={setAttributes} height={height}></SizeConfig>
-            {app == 'top' &&
+            <SizeConfig initialOpen={false} setAttributes={setAttributes} height={height} />
+            {app === 'top' &&
             <TopConfiguration
               setAttributes={setAttributes}
               topChartType={topChartType}
               topChartColumnCount={topChartColumnCount}
             >
             </TopConfiguration>}
-            {app == 'funding' &&
+            {app === 'funding' &&
             <FundingConfiguration
               yearFilter={yearFilter}
               keys={keys}
@@ -238,17 +248,17 @@ class BlockEdit extends BaseBlockEdit {
               </PanelRow>
               {showLegends && <PanelRow>
                 <ButtonGroup>
-                  <Button isPrimary={legendPosition == 'left'} isSecondary={legendPosition != 'left'}
+                  <Button isPrimary={legendPosition === 'left'} isSecondary={legendPosition !== 'left'}
                           onClick={e => setAttributes({ legendPosition: "left" })}>
                     Left
                   </Button>
-                  <Button isPrimary={legendPosition == 'right'}
-                          isSecondary={legendPosition != 'right'}
+                  <Button isPrimary={legendPosition === 'right'}
+                          isSecondary={legendPosition !== 'right'}
                           onClick={e => setAttributes({ legendPosition: "right" })}>
                     Right
                   </Button>
-                  <Button isPrimary={legendPosition == 'bottom'}
-                          isSecondary={legendPosition != 'bottom'}
+                  <Button isPrimary={legendPosition === 'bottom'}
+                          isSecondary={legendPosition !== 'bottom'}
                           onClick={e => setAttributes({ legendPosition: "bottom" })}>
                     Bottom
                   </Button>
@@ -271,7 +281,7 @@ class BlockEdit extends BaseBlockEdit {
                 <AnglePickerControl value={tickRotation}
                                     onChange={value => setAttributes({ tickRotation: value })} />
               </PanelRow>
-              {(colorBy == 'id' || type == 'line') && <PanelRow>
+              {(colorBy === 'id' || type === 'line') && <PanelRow>
                 <PanelColorSettings
                   title={__('Color settings')}
                   colorSettings={[
@@ -300,13 +310,46 @@ class BlockEdit extends BaseBlockEdit {
                 />
               </PanelRow>
               {app === 'donorScoreCard' && (
-                <PanelRow>
-                  <TextareaControl
-                    label={__('Chart description')}
-                    value={chartDescription}
-                    onChange={(chartDescription) => setAttributes({ chartDescription })}
-                  />
-                </PanelRow>)  }
+                <>
+                  <PanelRow>
+                    <TextareaControl
+                      label={__('Chart description')}
+                      value={chartDescription}
+                      onChange={(chartDescription) => setAttributes({ chartDescription })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <TextControl
+                      label={__('On Time label')}
+                      value={onTime}
+                      onChange={(onTime) => setAttributes({ onTime })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <TextControl
+                      label={__('Validation period label')}
+                      value={validation}
+                      onChange={(validation) => setAttributes({ validation })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <TextControl
+                      label={__('Late label')}
+                      value={late}
+                      onChange={(late) => setAttributes({ late })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <TextControl
+                      label={__('No updates label')}
+                      value={noUpdates}
+                      onChange={(noUpdates) => setAttributes({ noUpdates })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <NumberControl
+                      isShiftStepEnabled={true}
+                      onChange={(ampSize) => setAttributes({ ampSize })}
+                      shiftStep={11}
+                      value={ampSize}
+                    /></PanelRow>
+                </>
+              )}
             </PanelBody>
           </Panel>
         </InspectorControls>),
@@ -336,9 +379,9 @@ class BlockEdit extends BaseBlockEdit {
             }}
           >
             <div className={"chart container"} style={divStyles}>
-              {mode == "chart" && <iframe scrolling={"no"} style={divStyles}
-                                          src={this.state.react_ui_url + "/en/embeddable/chart?" + queryString} />}
-              {mode == "info" && <div><InnerBlocks /></div>}
+              {mode === "chart" && <iframe scrolling={"no"} style={divStyles}
+                                           src={this.state.react_ui_url + "/en/embeddable/chart?" + queryString} />}
+              {mode === "info" && <div><InnerBlocks /></div>}
 
             </div>
           </ResizableBox>

@@ -2,12 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ToolTip.scss';
 import * as d3 from 'd3-format';
-import { formatNumberWithSettings } from "../utils";
+import { formatNumberWithSettings, getGlobalSettings } from "../utils";
 import { injectIntl } from "react-intl";
+import { connect } from "react-redux";
 
 
 const ToolTip = ({
-                   titleLabel, color, value, total, minWidth, isYearTotal, globalSettings, intl, currencyCode
+                   titleLabel,
+                   color,
+                   value,
+                   total,
+                   minWidth,
+                   isYearTotal,
+                   settings,
+                   intl,
+                   currencyCode,
+                   amountsIn = true
                  }) => {
   const getActualWidth = (inputText) => {
     const font = '16px times new roman';
@@ -17,6 +27,7 @@ const ToolTip = ({
     const { width } = context.measureText(inputText);
     return Math.ceil(width);
   }
+  const globalSettings = getGlobalSettings(settings);
   const percentage = total > 0 ? (value * 100) / total : 0;
   const headerStyle = { backgroundColor: color };
   const containerStyle = {};
@@ -26,7 +37,7 @@ const ToolTip = ({
   }
   return (
     <div className="generic-tooltip" style={containerStyle}>
-      <div className="tooltip-header" style={headerStyle}>
+      <div className="tooltip-header tooltip-color" style={headerStyle}>
         {titleLabel}
       </div>
       <div className="inner">
@@ -34,9 +45,9 @@ const ToolTip = ({
           <div className="element">
               <span className="formattedValue">
                 {formatNumberWithSettings(currencyCode, intl, globalSettings, value)}
-                {globalSettings.numberDividerDescriptionKey ? ` (${intl.formatMessage({
+                {globalSettings.numberDividerDescriptionKey && amountsIn ? ` (${intl.formatMessage({
                   id: `amp.chart.dashboard:${globalSettings.numberDividerDescriptionKey}`
-                })})` : ''}
+                })})` : ' %'}
               </span>
           </div>
           {percentage > 0 ? (
@@ -72,5 +83,12 @@ ToolTip.defaultProps = {
   isYearTotal: false,
   formattedValue: 0
 };
+const mapStateToProps = (state) => {
+  return {
+    settings: state.getIn(['data', ...['amp-settings'], 'data'])
+  }
+}
+const mapActionCreators = {};
 
-export default injectIntl(ToolTip);
+export default connect(mapStateToProps, mapActionCreators)(injectIntl(ToolTip));
+

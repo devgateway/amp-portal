@@ -8,21 +8,26 @@
   min-width: max-content;
   text-align: left !important;
   border: 1px solid #DDD;
+
   .formattedValue {
     .generic-tooltip {
       .currency {
         font-size: 14px;
       }
     }
+
     margin-left: 10px;
     margin-right: 10px;
   }
+
   .currency {
     margin-left: 5px;
   }
+
   .of-total {
     margin-left: 10px;
   }
+
   .tooltip-header {
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
@@ -31,17 +36,24 @@
     font-weight: bold;
     padding: 7px;
   }
+
+  .tooltip-header.tooltip-color {
+    color: #0c0c0c;
+  }
+
   .grey {
     background-color: #F5F5F5;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top: 1px solid #DDD;
   }
+
   .inner {
     color: black;
     font-size: 14px;
     line-height: 2.2em;
   }
+
   .element {
     padding: 5px;
   }

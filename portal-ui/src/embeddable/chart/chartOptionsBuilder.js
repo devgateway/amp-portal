@@ -1,21 +1,32 @@
 export const buildDonorScoreCardOptions = (donorScoreCardData) => {
-
   return {
-    "values": [{
-      "id": 3,
-      "value": donorScoreCardData.noUpdates,
-      "index": 2
-    }, {
-      "id": 2,
-      "value": donorScoreCardData.late,
-      "index": 1
-    },
+    values: [
       {
-        "id": 1,
-        "value": donorScoreCardData.onTime,
-        "index": 0
-      }]
-  }
+        id: "amp.on-time",
+        one: donorScoreCardData.onTime,
+        two: 100 - donorScoreCardData.onTime,
+        index: 0
+      },
+      {
+        id: "amp.validation",
+        one: donorScoreCardData.validationPeriod,
+        two: 100 - donorScoreCardData.validationPeriod,
+        index: 1
+      },
+      {
+        id: "amp.late",
+        one: donorScoreCardData.late,
+        two: 100 - donorScoreCardData.late,
+        index: 2
+      },
+      {
+        id: "amp.no-updates",
+        one: donorScoreCardData.noUpdates,
+        two: 100 - donorScoreCardData.noUpdates,
+        index: 3
+      }
+    ]
+  };
 }
 export const buildBarOptions = (data, includeTotal, intl) => {
   const usePercents = true
@@ -67,68 +78,6 @@ export const buildBarOptions = (data, includeTotal, intl) => {
     }
   } else {
     return null
-  }
-}
-const noDataFilter = (c) => c.value != 'No Data'
-export const buildPieOptions = (data, includeTotal) => {
-  if (data && data.children) {
-    const values = []
-    let row;
-    data.children.filter(noDataFilter)
-      .forEach(d => {
-        //first level example gender
-
-        d.children.filter(noDataFilter).forEach(d1 => {
-          //second level
-          row = {}
-          if (d1.children) {
-
-
-            row.id = d.value + ' - ' + d1.value //Male /African ect (dimension value)
-            row.parent = d.value
-            row.child = d1.value
-
-            row.label = d.value + ' - ' + d1.value  //Male /African ect (dimension value)
-            d1.children.filter(c => c.value === true).forEach(d2 => {
-              row.value = (d2.sum / d1.sum) * 100
-            })
-          } else {
-            row = {}
-            //no next level thi is smoke
-            row.id = d.value //Male - fmale
-            row.label = d.value //Male - fmale
-            row.parent = d.value
-            row.child = d.value
-            if (d1.value == true) {
-              row.value = (d1.sum / d.sum) * 100
-            }
-          }
-          values.push(row)
-
-        })
-
-
-      })
-
-
-    return {
-      data: values.sort((d1, d2) => d2.value - d1.value)
-    }
-  }
-
-}
-export const buildDivergingOptions = (data, includeTotal) => {
-  const options = buildBarOptions(data, false)
-  if (options) {
-    const keys = options.keys;
-    const divergingData = options.data.map(d => {
-      d[keys[0]] = d[keys[0]] * -1
-      d[keys[1]] = d[keys[1]]
-      return d
-    })
-    return { ...options, data: divergingData }
-  } else {
-    return null;
   }
 }
 

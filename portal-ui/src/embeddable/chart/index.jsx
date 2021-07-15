@@ -6,9 +6,7 @@ import Bar from "./Bar";
 import DataConsumer from "../data/DataConsumer";
 import {
   buildBarOptions,
-  buildDivergingOptions,
   buildDonorScoreCardOptions,
-  buildPieOptions,
   buildTopsData
 } from './chartOptionsBuilder'
 import './charts.scss'
@@ -44,7 +42,6 @@ const PieChart = (props) => {
 }
 
 const DonorScoreCardChart = (props) => {
-  const intl = useIntl();
   const { data } = props
   const options = buildDonorScoreCardOptions(data);
   return <DonorScoreCard {...props} options={options}
@@ -57,12 +54,6 @@ const TopListsChart = (props) => {
 
 const LoginWidgetComponent = (props) => {
   return <LoginWidget />;
-}
-const Diverging = (props) => {
-  const { data, legends, colors, height } = props
-  const options = buildDivergingOptions(data, true)
-  return <Diverging height={height} legends={legends} colors={colors} options={options}
-                    format={{ style: "percent", currency: "EUR" }} />
 }
 
 
@@ -103,6 +94,12 @@ const Chart = (props) => {
     'data-chart-measure': measure = "Actual Commitments",
     'data-chart-date-from': dateFrom = "2010",
     'data-chart-date-to': dateTo = "2030",
+
+    'data-chart-amp-on-time': onTime = 'On time',
+    'data-chart-amp-validation': validation = 'Validation period',
+    'data-chart-amp-late': late = 'Late',
+    'data-chart-amp-no-updates': noUpdate = 'No Updates',
+    'data-chart-amp-size': ampSize = 11,
     intl
   } = props;
   let newSource = source;
@@ -131,18 +128,13 @@ const Chart = (props) => {
   }
   if (app === 'donorScoreCard') {
     const contentHeight = (editing ? height - 100 : height);
-    const chartProps = {
-      tickColor: decodeURIComponent(tickColor),
-      tickRotation: tickRotation,
-      showLegends: showLegends == "true",
-      itemWidth: itemWidth,
-      height: `${contentHeight}px`,
-      legendPosition: legendPosition,
-      legends: legends,
-      colors: colors,
-      groupMode: groupMode,
-      measure
-    }
+    legends.scoreCardLegends = {}
+    legends.scoreCardLegends['amp.on-time'] = onTime;
+    legends.scoreCardLegends['amp.validation'] = validation;
+    legends.scoreCardLegends['amp.late'] = late;
+    legends.scoreCardLegends['amp.no-updates'] = noUpdate;
+    legends.scoreCardLegendsSize = ampSize;
+
     child = <DonorScoreCardChart barHeight={80} legends={legends} colors={colors} groupMode={groupMode} />
   }
   if (app === 'topList') {

@@ -14,27 +14,11 @@ import { connect } from "react-redux";
 
 const Top = ({
                colors, options, intl, legends, layout = "vertical", showLegend = true,
-               padding = 0.1, isDonorScoreCard = false, barHeight, settings
+               padding = 0.1, barHeight, settings
              }) => {
   const globalSettings = getGlobalSettings(settings);
   const getLabel = (item) => {
     return formatValue(item.data.value);
-  }
-  const getPercentageLabel = (item) => {
-    return `${item.data.value ? item.data.value : 0} %`;
-  }
-  const getPercentageColor = (item) => {
-    switch (item.data.id) {
-      case 1:
-        return '#3bc225';
-      case 2:
-        return '#FF0000';
-      case 3:
-        return '#0000FF';
-      default:
-        return '#000000'
-
-    }
   }
 
   const formatValue = (value) => {
@@ -73,20 +57,6 @@ const Top = ({
 
     </React.Fragment>
   );
-
-  const legendsConfig = {
-    "anchor": "bottom-left",
-    "direction": "column",
-    "justify": false,
-    "translateX": -75,
-    "translateY": 0,
-    "itemsSpacing": 0,
-    "itemWidth": 100,
-    "itemHeight": 20,
-    "itemDirection": "left-to-right",
-    "itemOpacity": 1,
-    "symbolSize": 0
-  };
   return (
     <Grid className={"container top-chart"}>
       {showLegend && <Grid.Row>
@@ -104,9 +74,9 @@ const Top = ({
         />}
         <div style={{ height: barHeight }}>
           <ResponsiveBar
-            data={isDonorScoreCard ? options.values.sort((d1, d2) => d2.id - d1.id) : applyFilter(options.values)}
-            colors={item => isDonorScoreCard ? getPercentageColor(item) : getColor(item, colors)}
-            label={isDonorScoreCard ? getPercentageLabel : getLabel}
+            data={applyFilter(options.values)}
+            colors={item => getColor(item, colors)}
+            label={getLabel}
             layers={["grid", "axes", "bars", "markers", BarLegend, 'annotations']}
             enableGridY={false}
             axisTop={null}
@@ -115,14 +85,10 @@ const Top = ({
             axisRight={null}
             axisBottom={null}
             axisLeft={null}
-            margin={isDonorScoreCard ? {
-              top: 20, right: 35, bottom: 0, left: 70
-            } : {
+            margin={{
               top: 20, right: 10, bottom: 0, left: 10
             }}
-            labelFormat={d => {
-              return isDonorScoreCard ? (<tspan y={4} x={'68%'}>{`${d}`}</tspan>) : (<tspan y={-5}>{`${d}`}</tspan>);
-            }
+            labelFormat={d => <tspan y={-5}>{`${d}`}</tspan>
             }
             defs={[
               linearGradientDef('gradientA', [
@@ -130,39 +96,7 @@ const Top = ({
                 { offset: 100, color: 'inherit', opacity: 0 },
               ])
             ]}
-            fill={isDonorScoreCard ? [
-              { match: '*', id: 'gradientA' },
-            ] : []
-            }
-            legends={isDonorScoreCard ? [
-              {
-                data: [{
-                  color: "#00FF00",
-                  id: 1,
-                  label: intl.formatMessage({ id: 'amp.on-time', defaultMessage: "On Time" })
-                },
-                  {
-                    color: "#FF0000",
-                    id: 2,
-                    label: intl.formatMessage({ id: 'amp.late', defaultMessage: "Late" })
-                  },
-                  {
-                    color: "#0000FF",
-                    id: 3,
-                    label: intl.formatMessage({ id: 'amp.no-updates', defaultMessage: "No updates" })
-                  }],
-                ...legendsConfig,
-                effects: [
-                  {
-                    on: 'hover',
-                    style: {
-                      itemOpacity: .6
-                    }
-                  }
-                ]
-              }
-            ] : []}
-            tooltip={isDonorScoreCard ? null : (e) => (
+            tooltip={(e) => (
               <ToolTip
                 color={e.color}
                 titleLabel={e.data.name}
@@ -174,7 +108,6 @@ const Top = ({
                 globalSettings={globalSettings}
               />
             )}
-
             theme={{
               tooltip: {
                 container: {
@@ -190,7 +123,7 @@ const Top = ({
     </Grid>
   );
 }
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     settings: state.getIn(['data', ...['amp-settings'], 'data'])
   }
