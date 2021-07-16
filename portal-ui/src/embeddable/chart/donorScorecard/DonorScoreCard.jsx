@@ -61,7 +61,7 @@ const DonorScoreCard = (props) => {
           indexBy="id"
           margin={{
             top: 0,
-            right: 10,
+            right: 25,
             bottom: 30,
             left: 90
           }}
@@ -87,6 +87,8 @@ const DonorScoreCard = (props) => {
                            x,
                            y
                          }) => {
+              console.log(legends.scoreCardLegends[value]);
+              debugger;
               return (
                 <g transform={`translate(${x},${y})`}>
                   <text
@@ -95,7 +97,37 @@ const DonorScoreCard = (props) => {
                     transform={`translate(${textX},${textY})`}
                   >
                     <tspan
-                      style={{ fontSize: `${legends.scoreCardLegendsSize}px` }}>{legends.scoreCardLegends[value]}</tspan>
+                      style={{ fontSize: `${legends.scoreCardLegendsSize}px` }}>{legends.scoreCardLegends[value].label}</tspan>
+                  </text>
+                </g>
+              );
+            }
+          }}
+
+
+          axisRight={{
+            tickSize: 2,
+            tickPadding: 2,
+            tickRotation: 0,
+            legend: "",
+            legendPosition: "middle",
+            renderTick: ({ textAnchor,
+                           textBaseline,
+                           textX,
+                           textY,
+                           value,
+                           x,
+                           y }) => {
+              return (
+                <g transform={`translate(${x},${y})`}>
+                  <text
+                    alignmentBaseline={textBaseline}
+                    textAnchor={textAnchor}
+                    transform={`translate(${textX},${textY})`}
+                  >
+                    <tspan
+                      style={{ fontSize: `${legends.scoreCardLegendsSize}px` }}>
+                      {`${options.values.find(o => o.id === value).one}%`}</tspan>
                   </text>
                 </g>
               );
@@ -107,8 +139,8 @@ const DonorScoreCard = (props) => {
             return (
               <ToolTip
                 color={getPercentageColor(item)}
-                titleLabel={legends.scoreCardLegends[e.indexValue]}
-                value={e.id === 'one' ? e.value : (100 - e.value)}
+                titleLabel={legends.scoreCardLegends[e.indexValue].label}
+                value={legends.scoreCardLegends[e.indexValue].tooltip}
                 id={e.data.id}
                 currencyCode={options.currency}
                 amountsIn={false}

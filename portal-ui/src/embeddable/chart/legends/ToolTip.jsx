@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ToolTip.scss';
-import * as d3 from 'd3-format';
 import { formatNumberWithSettings, getGlobalSettings } from "../utils";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
@@ -36,19 +35,21 @@ const ToolTip = ({
     containerStyle.minWidth = minWidth;
   }
   return (
-    <div className="generic-tooltip" style={containerStyle}>
+    <div className={`generic-tooltip${!amountsIn ? ' wide' : ''}`} style={containerStyle}>
       <div className="tooltip-header tooltip-color" style={headerStyle}>
         {titleLabel}
       </div>
       <div className="inner">
         <div className="">
           <div className="element">
+            {amountsIn ?
               <span className="formattedValue">
                 {formatNumberWithSettings(currencyCode, intl, globalSettings, value)}
-                {globalSettings.numberDividerDescriptionKey && amountsIn ? ` (${intl.formatMessage({
+                {globalSettings.numberDividerDescriptionKey ? ` (${intl.formatMessage({
                   id: `amp.chart.dashboard:${globalSettings.numberDividerDescriptionKey}`
-                })})` : ' %'}
-              </span>
+                })})` : ''}
+              </span> : <span>{value}</span>
+            }
           </div>
           {percentage > 0 ? (
             <div className="element grey">

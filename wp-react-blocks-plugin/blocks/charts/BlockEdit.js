@@ -98,9 +98,13 @@ class BlockEdit extends BaseBlockEdit {
         tickRotation,
         yearFilter,
         onTime,
+        onTimeTooltip,
         validation,
+        validationTooltip,
         late,
+        lateTooltip,
         noUpdates,
+        noUpdatesTooltip,
         ampSize
 
       }
@@ -117,9 +121,13 @@ class BlockEdit extends BaseBlockEdit {
     let queryString = `data-editing=true&data-params=${encodeURIComponent(JSON.stringify(params))}${tickColor != null ? `&data-tick-color=${tickColor}` : ""}&data-tick-rotation=${tickRotation}&data-keys=${keys.join(',')}&data-app=${app}&data-height=${height}&data-chart-type=${type}&data-source=${source}&data-color-by=${colorBy}&data-color-scheme=${scheme}&data-group-mode=${groupMode}&data-legends-left=${leftLegend}&data-legends-bottom=${bottomLegend}&data-dualmode=${dualMode}&editing=true&data-legend-position=${legendPosition}&data-edit-mode=${mode}&data-legends-width=${legendsWidth}&data-show-legends=${showLegends}&data-toggle-info-label=${toggleInfoLabel}&data-toggle-chart-label=${toggleChartLabel}&data-chart-title=${chartTitle}&data-chart-description=${chartDescription}`
     queryString += `&data-chart-measure=${measure}&data-chart-date-from=${dateFrom}&data-chart-date-to=${dateTo}`;
     queryString += `&data-chart-amp-on-time=${onTime}`;
+    queryString += `&data-chart-amp-on-time-tooltip=${onTimeTooltip}`;
     queryString += `&data-chart-amp-validation=${validation}`;
+    queryString += `&data-chart-amp-validation-tooltip=${validationTooltip}`;
     queryString += `&data-chart-amp-late=${late}`;
+    queryString += `&data-chart-amp-late-tooltip=${lateTooltip}`;
     queryString += `&data-chart-amp-no-updates=${noUpdates}`;
+    queryString += `&data-chart-amp-no-updates-tooltip=${noUpdatesTooltip}`;
     queryString += `&data-chart-amp-size=${ampSize}`;
 
 
@@ -325,9 +333,21 @@ class BlockEdit extends BaseBlockEdit {
                     /></PanelRow>
                   <PanelRow>
                     <TextControl
+                      label={__('On Time tooltip')}
+                      value={onTimeTooltip}
+                      onChange={(onTimeTooltip) => setAttributes({ onTimeTooltip })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <TextControl
                       label={__('Validation period label')}
                       value={validation}
                       onChange={(validation) => setAttributes({ validation })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <TextControl
+                      label={__('Validation period tooltip')}
+                      value={validationTooltip}
+                      onChange={(validationTooltip) => setAttributes({ validationTooltip })}
                     /></PanelRow>
                   <PanelRow>
                     <TextControl
@@ -337,9 +357,22 @@ class BlockEdit extends BaseBlockEdit {
                     /></PanelRow>
                   <PanelRow>
                     <TextControl
+                      label={__('Late tooltip')}
+                      value={lateTooltip}
+                      onChange={(lateTooltip) => setAttributes({ lateTooltip })}
+                    /></PanelRow>
+                  <PanelRow>
+                    <TextControl
                       label={__('No updates label')}
                       value={noUpdates}
                       onChange={(noUpdates) => setAttributes({ noUpdates })}
+                    /></PanelRow>
+
+                  <PanelRow>
+                    <TextControl
+                      label={__('No updates tooltip')}
+                      value={noUpdatesTooltip}
+                      onChange={(noUpdatesTooltip) => setAttributes({ noUpdatesTooltip })}
                     /></PanelRow>
                   <PanelRow>
                     <NumberControl

@@ -158,17 +158,33 @@ registerBlockType(process.env.BLOCKS_NS + '/chart',
         type: "String",
         default: "On Time"
       },
+      onTimeTooltip: {
+        type: "String",
+        default: "Donor has updated projects within the quarter (not during validation period)"
+      },
       late: {
         type: "String",
         default: "Late"
+      },
+      lateTooltip: {
+        type: "String",
+        default: "Donor did not update any projects within the quarter"
       },
       validation: {
         type: "String",
         default: "Validation period"
       },
+      validationTooltip: {
+        type: "String",
+        default: "Donor has updated projects within the validation period for the specified quarter"
+      },
       noUpdates: {
         type: "String",
         default: "No updates"
+      },
+      noUpdatesTooltip: {
+        type: "String",
+        default: "Donor was configured as “Donor with no updates” within the quarter"
       },
       ampSize: {
         type: "numeric",

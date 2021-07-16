@@ -94,11 +94,14 @@ const Chart = (props) => {
     'data-chart-measure': measure = "Actual Commitments",
     'data-chart-date-from': dateFrom = "2010",
     'data-chart-date-to': dateTo = "2030",
-
     'data-chart-amp-on-time': onTime = 'On time',
+    'data-chart-amp-on-time-tooltip': onTimeTooltip = 'Donor has updated projects within the quarter (not during validation period)',
     'data-chart-amp-validation': validation = 'Validation period',
+    'data-chart-amp-validation-tooltip': validationTooltip = 'Donor has updated projects within the validation period for the specified quarter',
     'data-chart-amp-late': late = 'Late',
+    'data-chart-amp-late-tooltip': lateTooltip = 'Donor did not update any projects within the quarter',
     'data-chart-amp-no-updates': noUpdate = 'No Updates',
+    'data-chart-amp-no-updates-tooltip': noUpdateTooltip = 'Donor was configured as “Donor with no updates” within the quarter',
     'data-chart-amp-size': ampSize = 11,
     intl
   } = props;
@@ -129,10 +132,10 @@ const Chart = (props) => {
   if (app === 'donorScoreCard') {
     const contentHeight = (editing ? height - 100 : height);
     legends.scoreCardLegends = {}
-    legends.scoreCardLegends['amp.on-time'] = onTime;
-    legends.scoreCardLegends['amp.validation'] = validation;
-    legends.scoreCardLegends['amp.late'] = late;
-    legends.scoreCardLegends['amp.no-updates'] = noUpdate;
+    legends.scoreCardLegends['amp.on-time'] = { label: onTime, tooltip: onTimeTooltip };
+    legends.scoreCardLegends['amp.validation'] = { label: validation, tooltip: validationTooltip };
+    legends.scoreCardLegends['amp.late'] = { label: late, tooltip: lateTooltip };
+    legends.scoreCardLegends['amp.no-updates'] = { label: noUpdate, tooltip: noUpdateTooltip };
     legends.scoreCardLegendsSize = ampSize;
 
     child = <DonorScoreCardChart barHeight={80} legends={legends} colors={colors} groupMode={groupMode} />

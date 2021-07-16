@@ -4,11 +4,10 @@
   border-radius: 5px;
   background-color: #ffffff;
   padding: 0px;
-  max-width: 400px;
-  min-width: max-content;
   text-align: left !important;
   border: 1px solid #DDD;
-
+  max-width: 400px;
+  min-width: max-content;
   .formattedValue {
     .generic-tooltip {
       .currency {
@@ -57,4 +56,7 @@
   .element {
     padding: 5px;
   }
+}
+.generic-tooltip.wide {
+  min-width: auto;
 }

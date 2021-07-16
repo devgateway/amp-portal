@@ -35,9 +35,13 @@ const SaveComponent = (props) => {
       dateFrom,
       dateTo,
       onTime,
+      onTimeTooltip,
       late,
+      lateTooltip,
       validation,
+      validationTooltip,
       noUpdates,
+      noUpdatesTooltip,
       ampSize
     }
   } = props;
@@ -94,9 +98,13 @@ const SaveComponent = (props) => {
          data-chart-date-from={dateFrom}
          data-chart-date-to={dateTo}
          data-chart-amp-on-time={onTime}
+         data-chart-amp-on-time-tooltip={onTimeTooltip}
          data-chart-amp-validation={validation}
+         data-chart-amp-validation-tooltip={validationTooltip}
          data-chart-amp-late={late}
+         data-chart-amp-late-tooltip={lateTooltip}
          data-chart-amp-no-updates={noUpdates}
+         data-chart-amp-no-updates-tooltip={noUpdatesTooltip}
          data-chart-amp-size={ampSize}
     >
       <InnerBlocks.Content />
