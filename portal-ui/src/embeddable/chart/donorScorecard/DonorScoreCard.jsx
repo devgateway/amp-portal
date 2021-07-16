@@ -1,10 +1,7 @@
 import React from 'react';
 import './DonorScoreCard.scss';
-import Top from "../Top";
 import { ResponsiveBar } from "@nivo/bar";
 import { injectIntl } from "react-intl";
-import { linearGradientDef } from "@nivo/core";
-import { BoxLegendSvg } from "@nivo/legends";
 import ToolTip from "../legends/ToolTip";
 
 const DonorScoreCard = (props) => {
@@ -12,9 +9,9 @@ const DonorScoreCard = (props) => {
 
 
   const getPercentageColor = (item) => {
-    const GREEN = '#3bc225';
-    const YELLOW = '#FFFF00';
-    const RED = '#FF0000';
+    const GREEN = '#52a963';
+    const YELLOW = '#fadd45';
+    const RED = '#eb6468';
     const GREY = '#808080';
     const SHADE = 30;
     const DISABLED = '#e2e7ee';
@@ -48,7 +45,7 @@ const DonorScoreCard = (props) => {
 
     }
   }
-  const { legends, intl } = props;
+  const { legends } = props;
   return (<div className={"donor-scorecard-chart"}>
     <h3>{legends.title}</h3>
     <div className="description">{legends.chartDescription}
@@ -111,13 +108,15 @@ const DonorScoreCard = (props) => {
             tickRotation: 0,
             legend: "",
             legendPosition: "middle",
-            renderTick: ({ textAnchor,
+            renderTick: ({
+                           textAnchor,
                            textBaseline,
                            textX,
                            textY,
                            value,
                            x,
-                           y }) => {
+                           y
+                         }) => {
               return (
                 <g transform={`translate(${x},${y})`}>
                   <text

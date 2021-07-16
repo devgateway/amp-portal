@@ -615,6 +615,15 @@ function add_setting_section(){
             'general',                    // Settings page slug
             'wp-react-section'               // Section ID
         );
+
+     /* Create settings field AMP URL*/
+        add_settings_field(
+            'amp_url-field-id',       // Field ID
+            'AMP Server URL',       // Field title
+            'amp_url_field_callback', // Field callback function
+            'general',                    // Settings page slug
+            'wp-react-section'               // Section ID
+        );
    }
 
 /* Settings Init */
@@ -625,6 +634,15 @@ function my_settings_init(){
         register_setting(
             'general',             // Options group
             'react_ui_url',      // Option name/database
+         array(
+                 'show_in_rest' => true,
+                 'type' => 'string'
+               )
+        );
+    /* Register Settings */
+        register_setting(
+            'general',             // Options group
+            'react_amp_url',      // Option name/database
          array(
                  'show_in_rest' => true,
                  'type' => 'string'
@@ -648,6 +666,14 @@ function my_settings_field_callback(){
     <label for="droid-identification">
 
         <input id="react_ui_url" class="regular-text" type="text"  name="react_ui_url" value="<?php echo(get_option( 'react_ui_url' )) ?>">
+    </label>
+    <?php
+}
+function amp_url_field_callback(){
+    ?>
+    <label for="droid-identification">
+
+        <input id="react_amp_url" class="regular-text" type="text"  name="react_amp_url" value="<?php echo(get_option( 'react_amp_url' )) ?>">
     </label>
     <?php
 }

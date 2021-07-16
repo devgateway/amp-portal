@@ -53,6 +53,10 @@ class BlockEdit extends BaseBlockEdit {
       return 0;
     });
   }
+componentDidMount() {
+  super.componentDidMount();
+  console.log(this.state.react_amp_url)
+}
 
   render() {
     const {
