@@ -84,8 +84,6 @@ const DonorScoreCard = (props) => {
                            x,
                            y
                          }) => {
-              console.log(legends.scoreCardLegends[value]);
-              debugger;
               return (
                 <g transform={`translate(${x},${y})`}>
                   <text

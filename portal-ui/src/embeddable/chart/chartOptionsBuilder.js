@@ -28,7 +28,7 @@ export const buildDonorScoreCardOptions = (donorScoreCardData) => {
     ]
   };
 }
-export const buildBarOptions = (data, includeTotal, intl) => {
+export const buildBarOptions = (data, intl) => {
   const usePercents = true
   if (data && data.values) {
     const series = []
@@ -70,7 +70,7 @@ export const buildBarOptions = (data, includeTotal, intl) => {
 
     });
     return {
-      maxValue: Math.max(...vals) + 5,
+      maxValue: Math.max(...vals) * 1.10,
       indexBy,
       keysAndLegends: keysAndLegends,
       data: series,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { injectIntl } from 'react-intl';
 import { BoxLegendSvg } from "@nivo/legends";
@@ -23,10 +23,10 @@ import { connect } from "react-redux";
 
 const getTextWidth = (text, font) => {
   // re-use canvas object for better performance
-  var canvas = document.createElement("canvas");
-  var context = canvas.getContext("2d");
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
   context.font = font;
-  var metrics = context.measureText(text);
+  const metrics = context.measureText(text);
   return metrics.width;
 }
 
@@ -34,24 +34,24 @@ const lightenDarkenColor = (col, amt) => {
 
   var usePound = false;
 
-  if (col[0] == "#") {
+  if (col[0] === "#") {
     col = col.slice(1);
     usePound = true;
   }
 
-  var num = parseInt(col, 16);
+  const num = parseInt(col, 16);
 
-  var r = (num >> 16) + amt;
+  let r = (num >> 16) + amt;
 
   if (r > 255) r = 255;
   else if (r < 0) r = 0;
 
-  var b = ((num >> 8) & 0x00FF) + amt;
+  let b = ((num >> 8) & 0x00FF) + amt;
 
   if (b > 255) b = 255;
   else if (b < 0) b = 0;
 
-  var g = (num & 0x0000FF) + amt;
+  let g = (num & 0x0000FF) + amt;
 
   if (g > 255) g = 255;
   else if (g < 0) g = 0;
@@ -67,12 +67,12 @@ const Chart = ({
                  options,
                  intl,
                  colors,
-                 groupMode,
+                 defaultGroupMode,
                  height,
                  showLegends,
                  legendPosition,
                  tickRotation,
-                 tickColor,
+                 //tickColor,
                  measure,
                  layout = "vertical",
                  settings
@@ -83,43 +83,33 @@ const Chart = ({
   const applyFilter = (values) => {
 
     if (filter) {
-      if (colors.colorBy === 'index') {
-        return values.filter(d => filter.indexOf(d[options.indexBy]) === -1);
-      } else {
-        return values.filter(d => filter.indexOf(d) === -1);
-      }
+      return values.filter(d => filter.indexOf(d) === -1);
     } else {
-      return values
+      return values;
     }
   }
+  const [groupMode, setGroupMode] = useState('grouped')
+  useEffect(() => {
+    setGroupMode(defaultGroupMode)
+  }, [defaultGroupMode]);
 
-  const getColor = (id, d) => {
-
-    if (colors.colorBy == 'id') {
-      if (id) {
-        return getColorByKey(id)
-      }
-    } else {
-      return getColorByIndex(d[options.indexBy])
-    }
+  const getColor = (id) => {
+    return getColorByKey(id)
   }
-
   const getColorByPosition = (position) => {
     if (colors.scheme) {
-
       const color = colorSchemes[colors.scheme]
       if (isSequentialColorScheme(colors.scheme)) {
         const interpolator = sequentialColorInterpolators[colors.scheme]
-        const pos = position - (9 * parseInt((position / 9)))
+        const pos = position - (9 * Math.trunc((position / 9)))
         const scale = d3.scaleSequential(interpolator).domain([0, 8])
-
         return scale(pos)
       }
 
       if (isCategoricalColorScheme(colors.scheme)) {
         if (position > color.length - 1) {
 
-          const pos = position - (color.length * parseInt((position / color.length)))
+          const pos = position - (color.length * Math.trunc((position / color.length)))
 
           return colorSchemes[colors.scheme][pos]
         } else {
@@ -133,28 +123,16 @@ const Chart = ({
 
   const getColorByKey = (id) => {
     if (colors && colors.scheme) {
-      const index = keys.findIndex(k => k == id)
+      const index = keys.findIndex(k => k === id)
       return getColorByPosition(index)
     } else {
-
-      return colors.colors[keys.findIndex(k => k == id)]
+      return colors.colors[keys.findIndex(k => k === id)]
     }
   }
   const formatValue = (value) => {
     const formatter = formatKMB(intl, globalSettings.precision, globalSettings.decimalSeparator, false, null);
     return formatter(value);
   }
-
-  const getColorByIndex = (id) => {
-
-    if (colors && colors.scheme) {
-      const index = options.data.findIndex(f => f[options.indexBy] == id)
-      return getColorByPosition(index)
-    } else {
-      return colors.colors[options.data.findIndex(f => f[options.indexBy] == id)]
-    }
-  }
-
   const BarLegend = ({ height, legends, width }) => (
     <React.Fragment>
       {legends.map(legend => (
@@ -170,32 +148,33 @@ const Chart = ({
 
   const CustomTick = tick => {
     const theme = useTheme()
+    const tickConfig = {
+      color: '#FFFFFF',
+      fontColor: '#000000',
+      fontSize: 10
+    };
+    const width = getTextWidth(tick.value, `${tickConfig.fontSize}px Roboto`) + 15;
 
-    const width = getTextWidth(tick.value, "12px Roboto") + 15
-    return (<g transform={`translate(${tick.x},${tick.y + 30})`}>
-      <line stroke={colors.colorBy == 'id' ? tickColor : getColorByIndex(tick.value)} strokeWidth={1.5} y1={-32}
+    return (<g transform={`translate(${tick.x - 20},${tick.y + 45})`}>
+      <line stroke={tickConfig.color}
             y2={-12} />
-
       <rect transform={`rotate(${tickRotation})`}
             x={(-1 * (width) / 2 + 2)}
             y={-6} rx={3} ry={3}
             width={(width) + 2} height={22}
             fill="rgba(0, 0, 0, .03)" />
-
       <rect transform={`rotate(${tickRotation})`}
             x={(-1 * (width) / 2)}
             y={-12}
             rx={2}
             ry={2} width={width} height={22}
-            fill={colors.colorBy == 'id' ? tickColor : getColorByIndex(tick.value)} />
-
-
+            fill={tickConfig.color} />
       <text transform={`rotate(${tickRotation})`}
             textAnchor="middle"
             dominantBaseline="middle"
             style={{
               ...theme.axis.ticks.text,
-              fill: '#FFF',
+              fill: tickConfig.fontColor,
               fontSize: "12px",
             }}
       >
@@ -234,35 +213,56 @@ const Chart = ({
 
   let margin = { top: 0, right: 25, bottom: 60, left: 50 }
 
-  if (legendPosition == 'right' && showLegends) {
+  if (legendPosition === 'right' && showLegends) {
     Object.assign(legendsConfig, { anchor: "bottom-right", translateX: 40 + itemWidth, translateY: 0, })
     margin = { top: 0, right: 20 + itemWidth, bottom: 60, left: 50 }
   }
-  if (legendPosition == 'bottom' && showLegends) {
+  if (legendPosition === 'bottom' && showLegends) {
     Object.assign(legendsConfig, { anchor: "bottom" })
     Object.assign(legendsConfig, { direction: "row" })
     Object.assign(legendsConfig, { anchor: "bottom-right", translateX: 0, translateY: 90 })
     margin = { top: 0, right: 25, bottom: 100, left: 50 }
   }
-  if (legendPosition == 'left' && showLegends) {
+  if (legendPosition === 'left' && showLegends) {
     Object.assign(legendsConfig, { anchor: "bottom-left", translateX: (40 + itemWidth) * -1, translateY: 0 })
     margin = { top: 0, right: 25, bottom: 60, left: itemWidth + 40 }
   }
-  margin.top = 40;
+  margin.top = 70;
+  margin.bottom = 100;
   const ChartTitle = (data) => {
-    // You can console.log(data) to see what other properties are available
-    const { width, height } = data;
+    const { width } = data;
     const textWIth = getTextWidth(legends.title + " / " + measure, "16px Roboto") + 15
+    const groupedWIth = getTextWidth('grouped', "10px Roboto") + 15;
+    const commonStyle =
+      {
+        fill: "rgb(51, 51, 51)",
+        fontFamily: "Roboto"
+      }
     const style = {
-      fill: "rgb(51, 51, 51)",
-      fontFamily: "Roboto",
-      fontSize: "16px"
+      ...commonStyle,
+      fontSize: "16px",
+
     };
+    const styleSwitcher = { ...style, fontSize: '10px', cursor: 'pointer' }
     return (
-      <g g transform={`translate(-${textWIth / 2},0)`}>
+      <g transform={`translate(-${textWIth / 2},0)`}>
+        <text
+          x={(width / 2) - (100)}
+          y={0}
+          style={{ ...styleSwitcher, fontWeight: `${groupMode === 'stacked' ? 'bold' : 'normal'}` }}
+          onClick={(e) => groupMode === 'grouped' ? setGroupMode('stacked') : e.preventDefault()}
+        >stacked
+        </text>
+        <text
+          x={(width / 2) - (100 - groupedWIth)}
+          y={0}
+          style={{ ...styleSwitcher, fontWeight: `${groupMode === 'grouped' ? 'bold' : 'normal'}` }}
+          onClick={(e) => groupMode === 'stacked' ? setGroupMode('grouped') : e.preventDefault()}
+        >grouped
+        </text>
         <text
           x={width / 2}
-          y={-20}
+          y={-40}
           style={style}
         >
           {legends.title + " / " + measure}
@@ -280,7 +280,6 @@ const Chart = ({
         motionStiffness={55}
         motionDamping={11}
         {...options}
-
         minValue="auto"
         keys={applyFilter(keys)}
         data={applyFilter(options.data)}
@@ -298,7 +297,6 @@ const Chart = ({
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          /*legend: legends.left,*/
           legendPosition: 'middle',
           legendOffset: -40
 
@@ -306,24 +304,10 @@ const Chart = ({
         labelSkipWidth={40}
         labelSkipHeight={12}
         labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        //label={(l) => intl.formatNumber(format.style === 'percent' ? l.value / 100 : l.value, format)}
         layers={["grid", "axes", "bars", "markers", BarLegend, 'annotations', ChartTitle]}
         legends={showLegends ? [
           {
-            data: colors.colorBy === 'index' ? options.data.map((d, index) => {
-
-              let theColor;
-              if (filter.indexOf(d[options.indexBy]) > -1) {
-                theColor = '#EEE'
-              } else {
-                theColor = getColor(d.id, d)
-              }
-              return {
-                color: theColor,
-                id: d[options.indexBy],
-                label: d[options.indexBy]
-              }
-            }) : keys.map((k) => {
+            data: keys.map((k) => {
               let theColor;
               if (filter.indexOf(k) > -1) {
                 theColor = '#EEE'
@@ -337,9 +321,7 @@ const Chart = ({
               }
             }),
             ...legendsConfig,
-            onClick: (d) => {
-              toggle(d.id)
-            },
+            onClick: (d) => toggle(d.id),
             effects: [
               {
                 on: 'hover',
@@ -350,29 +332,20 @@ const Chart = ({
             ]
           }
         ] : []}
-        onMouseEnter={(_data, event) => {
-          event.target.style.fill = lightenDarkenColor(getColor(_data.id, _data.data), 30)
-        }}
-        onMouseLeave={(_data, event) => {
-          event.target.style.fill = getColor(_data.id, _data.data)
-        }}
-        animate={true}
-        motionStiffness={130}
-        motionDamping={15}
-
-        tooltip={(e) => {
-          return (
+        onMouseEnter={(_data, event) => event.target.style.fill = lightenDarkenColor(getColor(_data.id, _data.data), 30)}
+        onMouseLeave={(_data, event) => event.target.style.fill = getColor(_data.id, _data.data)}
+        tooltip={(e) =>
+          (
             <ToolTip
               color={e.color}
-              titleLabel={options.keysAndLegends.get(e.id)}
+              titleLabel={`${options.keysAndLegends.get(e.id)} / ${e.indexValue}`}
               formattedValue={e.data.formattedAmount}
               value={e.value}
               total={options.total}
               id={e.data.id}
               currencyCode={options.currency}
               globalSettings={globalSettings}
-            />);
-        }}
+            />)}
 
         theme={{
           tooltip: {
@@ -392,13 +365,15 @@ const Chart = ({
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-  return {
+const mapStateToProps = (state) => (
+  {
     settings: state.getIn(['data', ...['amp-settings'], 'data'])
   }
-}
+)
 
 
-const mapActionCreators = {};
+const mapActionCreators =
+  {}
+;
 
 export default connect(mapStateToProps, mapActionCreators)(injectIntl(Chart));

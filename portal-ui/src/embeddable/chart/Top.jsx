@@ -22,8 +22,10 @@ const Top = ({
   }
 
   const formatValue = (value) => {
-    const formatter = formatKMB(intl, globalSettings.precision, globalSettings.decimalSeparator, false, null);
-    return formatter(value);
+    debugger;
+    const formatter = formatKMB(intl, 3, globalSettings.decimalSeparator, false, null);
+    const formattedValue = formatter(value);
+    return formattedValue;
   }
 
   const [filter, setFilter] = useState([])
@@ -88,7 +90,10 @@ const Top = ({
             margin={{
               top: 20, right: 10, bottom: 0, left: 10
             }}
-            labelFormat={d => <tspan y={-5}>{`${d}`}</tspan>
+            labelFormat={d => {
+              debugger;
+              return <tspan y={-5}>{`${d}`}</tspan>;
+            }
             }
             defs={[
               linearGradientDef('gradientA', [

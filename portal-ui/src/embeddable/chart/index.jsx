@@ -21,9 +21,8 @@ import TotalWidget from "./totalWidget/TotalWidget";
 const BarChar = (props) => {
   const intl = useIntl();
   const { data } = props
-  const options = buildBarOptions(data, true, intl);
-  return <Bar {...props} options={options}
-              format={{ style: "percent", currency: "EUR" }} />
+  const options = buildBarOptions(data, intl);
+  return <Bar {...props} options={options} />
 }
 const TopChart = (props) => {
   const { data, legends, colors, height, groupMode, barHeight } = props
@@ -70,7 +69,7 @@ const Chart = (props) => {
     'data-source': source = 'ftype',
     'data-color-by': colorBy = 'index',
     'data-color-scheme': scheme = 'nivo',
-    'data-group-mode': groupMode = 'grouped',
+    'data-group-mode': defaultGroupMode = 'grouped',
     'data-legends-left': left = 'Left Legend',
     'data-legends-bottom': bottom = 'Bottom Legend',
     'data-dualmode': dualMode,
@@ -86,7 +85,8 @@ const Chart = (props) => {
     'data-params': params = '{}',
     'data-number-format': format = '{"style":"percent", "minimumFractionDigits": 1, "maximumFractionDigits": 1}',
     'data-tick-rotation': tickRotation = 0,
-    'data-tick-color': tickColor = "rgb(92,93,99)",
+    'data-tick-color': tickColor = "rgb(255,255,255)",
+    'data-tick-color': tickFontColor = "rgb(92,93,99)",
     'data-keys': keys = null,
     'data-style': style = "decimal",
     "data-decimals": decimals = "2",
@@ -122,11 +122,11 @@ const Chart = (props) => {
     const chartHeight = `${height - (editing ? 86 + 15 : 86)}px`;
     if (type === 'bar') {
       child =
-        <TopChart height={height} legends={legends} colors={colors} groupMode={groupMode}
+        <TopChart height={height} legends={legends} colors={colors} groupMode={defaultGroupMode}
                   barHeight={chartHeight}></TopChart>;
     } else {
       child =
-        <PieChart height={height} legends={legends} colors={colors} groupMode={groupMode} pieHeight={chartHeight} />;
+        <PieChart height={height} legends={legends} colors={colors} groupMode={defaultGroupMode} pieHeight={chartHeight} />;
     }
   }
   if (app === 'donorScoreCard') {
@@ -138,7 +138,7 @@ const Chart = (props) => {
     legends.scoreCardLegends['amp.no-updates'] = { label: noUpdate, tooltip: noUpdateTooltip };
     legends.scoreCardLegendsSize = ampSize;
 
-    child = <DonorScoreCardChart barHeight={80} legends={legends} colors={colors} groupMode={groupMode} />
+    child = <DonorScoreCardChart barHeight={80} legends={legends} colors={colors} groupMode={defaultGroupMode} />
   }
   if (app === 'topList') {
     child = <TopListsChart />
@@ -161,7 +161,7 @@ const Chart = (props) => {
           legendPosition: legendPosition,
           legends: legends,
           colors: colors,
-          groupMode: groupMode,
+          defaultGroupMode: defaultGroupMode,
           measure
         }
         child =
