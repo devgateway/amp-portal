@@ -7,7 +7,7 @@ import DataConsumer from "../data/DataConsumer";
 import {
   buildBarOptions,
   buildDonorScoreCardOptions,
-  buildTopsData
+  buildTopsData, buildTotalWidgetOptions
 } from './chartOptionsBuilder'
 import './charts.scss'
 import TopPie from "./TopPie";
@@ -47,6 +47,11 @@ const DonorScoreCardChart = (props) => {
                          format={{ style: "percent", currency: "EUR" }} />;
 }
 
+const TotalsWidgetComponent = (props) => {
+  const { data } = props
+  const options = buildTotalWidgetOptions(data);
+  return <TotalWidget {...props} options={options} />;
+}
 const TopListsChart = (props) => {
   return <TopList />;
 }
@@ -126,7 +131,8 @@ const Chart = (props) => {
                   barHeight={chartHeight}></TopChart>;
     } else {
       child =
-        <PieChart height={height} legends={legends} colors={colors} groupMode={defaultGroupMode} pieHeight={chartHeight} />;
+        <PieChart height={height} legends={legends} colors={colors} groupMode={defaultGroupMode}
+                  pieHeight={chartHeight} />;
     }
   }
   if (app === 'donorScoreCard') {
@@ -144,7 +150,9 @@ const Chart = (props) => {
     child = <TopListsChart />
   }
   if (app === 'totalWidget') {
-    child = <TotalWidget />;
+    const { 'data-chart-measure': measure = "Actual Commitments" } = props;
+    newSource = newSource + '/' + measure;
+    child = <TotalsWidgetComponent measure={measure} />;
   }
   if (app === 'login') {
     child = <LoginWidget />;

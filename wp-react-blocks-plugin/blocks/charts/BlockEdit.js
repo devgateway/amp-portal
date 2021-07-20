@@ -63,8 +63,12 @@ class BlockEdit extends BaseBlockEdit {
       { value: 'Actual Commitments', label: 'Actual Commitments' },
       { value: 'Actual Disbursements', label: 'Actual Disbursements' },
       { value: 'Actual Expenditures', label: 'Actual Expenditures' },
-    ]
+    ];
+    this.totalMeasure = [
+      { value: 'Total Activities', label: 'Total Activities' }
+    ];
   }
+
 
   render() {
     const {
@@ -146,20 +150,21 @@ class BlockEdit extends BaseBlockEdit {
                     { label: 'Top', value: 'top' },
                     { label: 'Funding', value: 'funding' },
                     { label: 'Donor scorecard', value: 'donorScoreCard' },
+                    { label: 'Total Widget', value: 'totalWidget' },
                     { label: 'Top List', value: 'topList' },
-                    { label: 'Login', value: 'login' },
-                    { label: 'Total Widget', value: 'totalWidget' }
+                    { label: 'Login', value: 'login' }
+
                   ]}
                 />
               </PanelRow>
-              {(app === 'top' || app === 'funding') && <PanelRow>
+              {(app === 'top' || app === 'funding' || app === 'totalWidget') && <PanelRow>
                 <SelectControl
                   label={__('Funding measure')}
                   value={[measure]} // e.g: value = [ 'a', 'c' ]
                   onChange={(measure) => {
                     setAttributes({ measure })
                   }}
-                  options={this.measures}
+                  options={[...this.measures, ...this.totalMeasure]}
                 />
               </PanelRow>
               }

@@ -1,3 +1,6 @@
+export const buildTotalWidgetOptions = (totalWidgetData) => {
+  return totalWidgetData;
+}
 export const buildDonorScoreCardOptions = (donorScoreCardData) => {
   return {
     values: [

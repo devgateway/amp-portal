@@ -90,10 +90,7 @@ const Top = ({
             margin={{
               top: 20, right: 10, bottom: 0, left: 10
             }}
-            labelFormat={d => {
-              debugger;
-              return <tspan y={-5}>{`${d}`}</tspan>;
-            }
+            labelFormat={d => <tspan y={-5}>{`${d}`}</tspan>
             }
             defs={[
               linearGradientDef('gradientA', [

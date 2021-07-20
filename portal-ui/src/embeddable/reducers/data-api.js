@@ -3,6 +3,8 @@ import { get, post } from '../../api/commons';
 const API_ROOT = process.env.REACT_APP_API_URL;
 const TOP_API = '/dashboard/tops';
 const GIS_API = '/gis/cluster'
+const TOTAL_API = '/public/totalByMeasure'
+const COUNT_API = '/public/projectCount'
 
 const SCORECARD_API = '/scorecard/stats';
 const URL_TAXONOMY = API_ROOT + '/categories'
@@ -25,6 +27,7 @@ const filters_GIS = {
     "adminLevel": "Administrative Level 1"
   }, "include-location-children": true, "settings": {}
 };
+
 
 //TODO settings came from settings
 export const getCategories = (params) => {
@@ -57,11 +60,20 @@ export const getData = (path, params, app, measure, dateFilter) => {
         filters.filters.adminLevel = route[0];
       }
       break;
+    case 'totalWidget':
+      if (measure === 'Total Activities') {
+        url = API_ROOT + COUNT_API;
+
+      } else {
+        url = API_ROOT + TOTAL_API;
+      }
+      filters = filters_data
+      break;
     default:
       url = API_ROOT + "/dashboard/ftype";
       break;
   }
-  if (dateFilter) {
+  if (dateFilter && filters) {
     if (dateFilter.from) {
       filters.filters.date.start = `${dateFilter.from}-01-01`;
     }
@@ -69,8 +81,10 @@ export const getData = (path, params, app, measure, dateFilter) => {
       filters.filters.date.end = `${dateFilter.to}-12-31`;
     }
   }
-  if (measure) {
-    filters.settings['funding-type'] = measure;
+  if (filters) {
+    if (measure) {
+      filters.settings['funding-type'] = measure;
+    }
   }
 
   if (isPost) {

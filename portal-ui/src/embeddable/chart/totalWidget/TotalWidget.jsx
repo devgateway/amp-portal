@@ -1,11 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './TotalWidget.scss';
-export default class TotalWidget extends Component {
-  render() {
-    return <div className={"top-widget-chart"}>
-      <h3>Total Disbursements</h3>
-      <span className="indicator down"></span>
-      <span className="value">94,867,568,000</span>
-    </div>;
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import { formatNumberWithSettings, getGlobalSettings } from "../utils";
+
+const TotalWidget = (props) => {
+  console.log(props);
+  const { measure, intl, settings, data } = props;
+  const globalSettings = getGlobalSettings(settings);
+  return (<div className={"top-widget-chart"}>
+    <h3>{measure}</h3>
+    <span className="indicator up"></span>
+    <span className="value">{data.total !== null && formatNumberWithSettings('USD', intl, globalSettings, data.total)}
+      {data.count !== null && data.count}</span>
+  </div>);
+}
+const mapStateToProps = (state) => {
+  return {
+    settings: state.getIn(['data', ...['amp-settings'], 'data'])
   }
 }
+const mapActionCreators = {};
+
+export default connect(mapStateToProps, mapActionCreators)(injectIntl(TotalWidget));
