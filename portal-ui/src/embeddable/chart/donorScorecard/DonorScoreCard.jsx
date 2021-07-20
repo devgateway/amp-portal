@@ -3,6 +3,7 @@ import './DonorScoreCard.scss';
 import { ResponsiveBar } from "@nivo/bar";
 import { injectIntl } from "react-intl";
 import ToolTip from "../legends/ToolTip";
+import { TooltipWrapper } from '@nivo/tooltip';
 
 const DonorScoreCard = (props) => {
   const { options } = props;
@@ -58,7 +59,7 @@ const DonorScoreCard = (props) => {
           indexBy="id"
           margin={{
             top: 0,
-            right: 25,
+            right: 32,
             bottom: 30,
             left: 90
           }}
@@ -124,7 +125,7 @@ const DonorScoreCard = (props) => {
                   >
                     <tspan
                       style={{ fontSize: `${legends.scoreCardLegendsSize}px` }}>
-                      {`${options.values.find(o => o.id === value).one}%`}</tspan>
+                      {`${/*options.values.find(o => o.id === value).one*/100}%`}</tspan>
                   </text>
                 </g>
               );
@@ -134,22 +135,26 @@ const DonorScoreCard = (props) => {
             const item = { ...e };
             item.id = 'one';
             return (
-              <ToolTip
-                color={getPercentageColor(item)}
-                titleLabel={legends.scoreCardLegends[e.indexValue].label}
-                value={legends.scoreCardLegends[e.indexValue].tooltip}
-                id={e.data.id}
-                currencyCode={options.currency}
-                amountsIn={false}
-              />
+              <TooltipWrapper anchor="top" position={[100, 0]}>
+                <ToolTip
+                  color={getPercentageColor(item)}
+                  titleLabel={legends.scoreCardLegends[e.indexValue].label}
+                  value={legends.scoreCardLegends[e.indexValue].tooltip}
+                  id={e.data.id}
+                  currencyCode={options.currency}
+                  amountsIn={false}
+                />
+              </TooltipWrapper>
             );
           }}
           theme={{
             tooltip: {
               container: {
+                width: "200px",
                 padding: '1px',
-                borderRadius: '5px',
-                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.25)'
+                borderRadius: 'none',
+                boxShadow: 'none',
+                background: 'none'
               }
             },
             axis: {
@@ -171,6 +176,14 @@ const DonorScoreCard = (props) => {
         />
       </div>
     </div>
+
+    {/*<div
+      style="background: white none repeat scroll 0% 0%; color: inherit; font-size: inherit; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px; padding: 1px; width: 200px;">
+      <div
+        style="pointer-events: none; position: absolute; z-index: 10; top: 0px; left: 0px; transform: translate(0px);">
+        <div>hola hola</div>
+      </div>
+    </div>*/}
   </div>)
 }
 export default injectIntl(DonorScoreCard);

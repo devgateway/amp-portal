@@ -22,7 +22,6 @@ const Top = ({
   }
 
   const formatValue = (value) => {
-    debugger;
     const formatter = formatKMB(intl, 3, globalSettings.decimalSeparator, false, null);
     const formattedValue = formatter(value);
     return formattedValue;
