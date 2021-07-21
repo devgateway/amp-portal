@@ -27,6 +27,15 @@ registerBlockType(process.env.BLOCKS_NS + '/top-lists',
         type: 'string',
         default: 'top5'
       },
+      topCurrency: {
+        type: 'string',
+        default: 'USD'
+      },
+      topShowDonorGroup: {
+        type: 'boolean',
+        default: false
+      },
+
       topTitle: {
         type: 'string',
         dafault: 'Top 5 donors'

@@ -1,19 +1,16 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Component } from '@wordpress/element'
-import { InspectorControls, PanelColorSettings, useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, PanelColorSettings, useBlockProps, } from '@wordpress/block-editor';
 import {
   __experimentalNumberControl as NumberControl,
-  AnglePickerControl,
-  Button,
-  ButtonGroup,
+  CheckboxControl,
   Panel,
   PanelBody,
   PanelRow,
-  RangeControl,
   ResizableBox,
   SelectControl,
   TextControl,
-  ToggleControl,
+
   TextareaControl
 } from '@wordpress/components';
 
@@ -36,6 +33,13 @@ class BlockEdit extends BaseBlockEdit {
       { value: "top5", label: 'Top 5' },
       { value: "top10", label: 'Top 10' }
     ];
+    this.topCurrencies = [
+      { value: "USD", label: 'United States Dollar' },
+      { value: "EUR", label: 'Euro' },
+      { value: "JPY", label: 'Yen' },
+      { value: "HTG", label: 'The gourde' }
+    ];
+
   }
 
   componentDidMount() {
@@ -52,7 +56,9 @@ class BlockEdit extends BaseBlockEdit {
         topSize,
         topTitle,
         topDescription,
-        topMonth
+        topMonth,
+        topCurrency,
+        topShowDonorGroup
       }
     } = this.props;
 
@@ -60,6 +66,8 @@ class BlockEdit extends BaseBlockEdit {
     queryString += `&data-top-title=${topTitle}`;
     queryString += `&data-top-description=${topDescription}`;
     queryString += `&data-top-month=${topMonth}`;
+    queryString += `&data-top-currency=${topCurrency}`;
+    queryString += `&data-top-show-donor-group=${topShowDonorGroup}`;
     const divStyles = { height: height + 'px', width: '100%' }
     return ([isSelected && (
         <InspectorControls>
@@ -76,11 +84,20 @@ class BlockEdit extends BaseBlockEdit {
                 />
               </PanelRow>
               <PanelRow>
+                <CheckboxControl
+                  label={__('Show Donor group?')}
+                  checked={topShowDonorGroup}
+                  onChange={(topShowDonorGroup) => {
+                    setAttributes({ topShowDonorGroup})
+                  }}
+                />
+              </PanelRow>
+              <PanelRow>
                 <SelectControl
                   label={__('Top list size')}
                   value={[topSize]}
-                  onChange={(value) => {
-                    setAttributes({ topSize: value })
+                  onChange={(topSize) => {
+                    setAttributes({ topSize })
                   }}
                   options={this.topsize}
                 />
@@ -91,6 +108,16 @@ class BlockEdit extends BaseBlockEdit {
                 shiftStep={36}
                 value={topMonth}
               /></PanelRow>
+              <PanelRow>
+                <SelectControl
+                  label={__('Top list currency')}
+                  value={[topCurrency]}
+                  onChange={(topCurrency) => {
+                    setAttributes({ topCurrency })
+                  }}
+                  options={this.topCurrencies}
+                />
+              </PanelRow>
             </PanelBody>
             <SizeConfig initialOpen={false} setAttributes={setAttributes} height={height}></SizeConfig>
             <PanelBody initialOpen={false} title={__("Labels")}>

@@ -13,14 +13,16 @@ const TopLists = (props) => {
     'data-top-currency': topCurrency = 'USD',
     'data-top-FundingType': topFundingType = 'Actual Commitments',
     'data-top-title': topTitle = 'Top Donor',
-    'data-top-description': topDescription = 'Top donor description'
+    'data-top-description': topDescription = 'Top donor description',
+    'data-top-show-donor-group': topShowDonorGroup = 'false'
 
   }
     = props;
   const labels = { title: topTitle, description: topDescription };
   const child = (<TopList
-    height={height} topType={topType} topSize={topSize} labels={labels} currency={topCurrency} />);
-  const newSource = `${topType}/${topSize}/${topMonth}/${topCurrency}`;
+    height={height} topType={topType} topSize={topSize} labels={labels} currency={topCurrency}
+    topShowDonorGroup={topShowDonorGroup === 'true'} />);
+  const newSource = `${topType}/${topSize}/${topMonth}/${topCurrency}/${topShowDonorGroup}`;
   return <DataProvider source={newSource} app={'topLists'} store={newSource} measure={topFundingType}>
     <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
       {child}

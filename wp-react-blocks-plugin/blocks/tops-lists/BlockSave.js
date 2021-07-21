@@ -9,7 +9,9 @@ const SaveComponent = (props) => {
       topSize,
       topTitle,
       topDescription,
-      topMonth
+      topMonth,
+      topCurrency,
+      topShowDonorGroup
     }
   } = props;
   const blockProps = useBlockProps.save({
@@ -26,6 +28,8 @@ const SaveComponent = (props) => {
          data-top-title={topTitle}
          data-top-description={topDescription}
          data-top-month={topMonth}
+         data-top-currency={topCurrency}
+         data-top-show-donor-group={topShowDonorGroup}
     >
       <InnerBlocks.Content />
     </div>

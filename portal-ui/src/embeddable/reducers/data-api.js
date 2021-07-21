@@ -89,6 +89,7 @@ export const getData = (path, params, app, measure, dateFilter) => {
       if (route[0] === "topDonors") {
         url = `${API_ROOT}${TOP_DONORS_API}?count=${route[1] === 'top5' ? '5' : 10}`
         url += `&months=${route[2]}&fundingType=${measure === 'Actual Commitments' ? '1' : '2'}`;
+        url += `&showDonorGroup=${route[4]}`;
         topDonorsFilters.settings['currency-code'] = route[3];
         measure = null;
         filters = topDonorsFilters;
