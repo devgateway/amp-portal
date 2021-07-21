@@ -5,6 +5,7 @@ const TOP_API = '/dashboard/tops';
 const GIS_API = '/gis/cluster'
 const TOTAL_API = '/public/totalByMeasure'
 const COUNT_API = '/public/projectCount'
+const TOP_DONORS_API = '/public/donorFunding';
 
 const SCORECARD_API = '/scorecard/stats';
 const URL_TAXONOMY = API_ROOT + '/categories'
@@ -27,7 +28,22 @@ const filters_GIS = {
     "adminLevel": "Administrative Level 1"
   }, "include-location-children": true, "settings": {}
 };
-
+const topDonorsFilters = {
+  "reportType": "D",
+  "projectType": [
+    "string"
+  ],
+  "settings": {
+    "calendar-id": "4",
+    "currency-code": "USD"
+  },
+  "filters": {
+    "date": {
+      "start": "2000-01-01",
+      "end": "2030-01-01"
+    }
+  }
+};
 
 //TODO settings came from settings
 export const getCategories = (params) => {
@@ -69,6 +85,18 @@ export const getData = (path, params, app, measure, dateFilter) => {
       }
       filters = filters_data
       break;
+    case "topLists":
+      if (route[0] === "topDonors") {
+        url = `${API_ROOT}${TOP_DONORS_API}?count=${route[1] === 'top5' ? '5' : 10}`
+        url += `&months=${route[2]}&fundingType=${measure === 'Actual Commitments' ? '1' : '2'}`;
+        topDonorsFilters.settings['currency-code'] = route[3];
+        measure = null;
+        filters = topDonorsFilters;
+      } else {
+        url = null;
+      }
+      break;
+
     default:
       url = API_ROOT + "/dashboard/ftype";
       break;

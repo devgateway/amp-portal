@@ -17,6 +17,7 @@ const Body = asyncComponent(() => import("./body/"));
 const Filter = asyncComponent(() => import("./filter/"));
 const Download = asyncComponent(() => import("./download/"));
 const Map = asyncComponent(() => import("./map/"));
+const TopLists = asyncComponent(() => import("./top-lists/"));
 
 export const reducers = {
   data,
@@ -37,7 +38,8 @@ const components = {
   featuredTabs: FeaturedTabs,
   inlineList: InlineList,
   download: Download,
-  map: Map
+  map: Map,
+  topLists: TopLists
 }
 
 export const getComponentByNameIgnoreCase = (name) => {

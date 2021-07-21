@@ -1,4 +1,4 @@
-@import "../../../scss/vars";
+@import "../../scss/vars";
 
 .top-list{
   @include module-container($module-bg);
@@ -40,7 +40,7 @@
       @include border-radius(0);
       background-color: $theme-blue;
       color: $header-bg;
-      font-size: 13px;
+      font-size: 10px;
       &:first-child{
         @include border-radius(0);
       }

@@ -1,0 +1,36 @@
+import React, { Component } from 'react';
+import { Button, Table, Menu, Icon } from "semantic-ui-react";
+import './TopList.scss';
+import hash from 'object-hash';
+
+const TopList = (props) => {
+  console.log(props);
+  const { labels, data, currency } = props;
+  return <div className={"top-list"}>
+    <div className="list-header">
+      <h3>{labels.title}</h3>
+      <Button floated='right'>Download XLS</Button>
+    </div>
+    <div className="description">{labels.description}</div>
+
+    <Table celled>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>{data.headers['donor-agency']}</Table.HeaderCell>
+          <Table.HeaderCell>{data.headers['actual-commitments']}({currency})</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+
+      <Table.Body>
+        {data.data.map((d) => {
+          return (<Table.Row key={hash(d['donor-agency'])}>
+            <Table.Cell>{d['donor-agency']}</Table.Cell>
+            <Table.Cell>{d['actual-commitments']}</Table.Cell>
+          </Table.Row>)
+        })}
+      </Table.Body>
+    </Table>
+    <Button className="full-list-link">View Full List</Button>
+  </div>;
+}
+export default TopList;

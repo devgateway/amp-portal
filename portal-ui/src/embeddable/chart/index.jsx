@@ -14,7 +14,6 @@ import TopPie from "./TopPie";
 import Top from "./Top";
 import DonorScoreCard from "./donorScorecard/DonorScoreCard";
 import { injectIntl, useIntl } from 'react-intl'
-import TopList from "./TopList/TopList";
 import LoginWidget from "./login/LoginWidget";
 import TotalWidget from "./totalWidget/TotalWidget";
 
@@ -52,10 +51,6 @@ const TotalsWidgetComponent = (props) => {
   const options = buildTotalWidgetOptions(data);
   return <TotalWidget {...props} options={options} />;
 }
-const TopListsChart = (props) => {
-  return <TopList />;
-}
-
 const LoginWidgetComponent = (props) => {
   return <LoginWidget />;
 }
@@ -145,9 +140,6 @@ const Chart = (props) => {
     legends.scoreCardLegendsSize = ampSize;
 
     child = <DonorScoreCardChart barHeight={80} legends={legends} colors={colors} groupMode={defaultGroupMode} />
-  }
-  if (app === 'topList') {
-    child = <TopListsChart />
   }
   if (app === 'totalWidget') {
     const { 'data-chart-measure': measure = "Actual Commitments" } = props;

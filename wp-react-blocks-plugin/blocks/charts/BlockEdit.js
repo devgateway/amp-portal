@@ -151,7 +151,6 @@ class BlockEdit extends BaseBlockEdit {
                     { label: 'Funding', value: 'funding' },
                     { label: 'Donor scorecard', value: 'donorScoreCard' },
                     { label: 'Total Widget', value: 'totalWidget' },
-                    { label: 'Top List', value: 'topList' },
                     { label: 'Login', value: 'login' }
 
                   ]}
