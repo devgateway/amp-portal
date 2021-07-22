@@ -58,7 +58,8 @@ class BlockEdit extends BaseBlockEdit {
         topDescription,
         topMonth,
         topCurrency,
-        topShowDonorGroup
+        topShowDonorGroup,
+        topTooltip
       }
     } = this.props;
 
@@ -68,6 +69,7 @@ class BlockEdit extends BaseBlockEdit {
     queryString += `&data-top-month=${topMonth}`;
     queryString += `&data-top-currency=${topCurrency}`;
     queryString += `&data-top-show-donor-group=${topShowDonorGroup}`;
+    queryString += `&data-top-tooltip=${topTooltip}`;
     const divStyles = { height: height + 'px', width: '100%' }
     return ([isSelected && (
         <InspectorControls>
@@ -135,6 +137,13 @@ class BlockEdit extends BaseBlockEdit {
                   onChange={(topDescription) => setAttributes({ topDescription })}
                 />
               </PanelRow>
+              <PanelRow>
+              <TextControl
+                label={__('Tooltip')}
+                value={topTooltip}
+                onChange={(topTooltip) => setAttributes({ topTooltip })}
+              />
+            </PanelRow>
             </PanelBody>
           </Panel>
         </InspectorControls>),

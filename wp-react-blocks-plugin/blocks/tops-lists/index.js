@@ -35,7 +35,10 @@ registerBlockType(process.env.BLOCKS_NS + '/top-lists',
         type: 'boolean',
         default: false
       },
-
+      topTooltip: {
+        type: 'string',
+        dafault: ''
+      },
       topTitle: {
         type: 'string',
         dafault: 'Top 5 donors'

@@ -11,7 +11,8 @@ const SaveComponent = (props) => {
       topDescription,
       topMonth,
       topCurrency,
-      topShowDonorGroup
+      topShowDonorGroup,
+      topTooltip
     }
   } = props;
   const blockProps = useBlockProps.save({
@@ -26,6 +27,7 @@ const SaveComponent = (props) => {
          data-top-type={topType}
          data-top-size={topSize}
          data-top-title={topTitle}
+         data-top-tooltip={topTooltip}
          data-top-description={topDescription}
          data-top-month={topMonth}
          data-top-currency={topCurrency}

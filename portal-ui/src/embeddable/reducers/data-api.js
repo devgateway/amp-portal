@@ -6,6 +6,7 @@ const GIS_API = '/gis/cluster'
 const TOTAL_API = '/public/totalByMeasure'
 const COUNT_API = '/public/projectCount'
 const TOP_DONORS_API = '/public/donorFunding';
+const TOP_PROJECTS_API = '/public/topprojects';
 
 const SCORECARD_API = '/scorecard/stats';
 const URL_TAXONOMY = API_ROOT + '/categories'
@@ -31,7 +32,7 @@ const filters_GIS = {
 const topDonorsFilters = {
   "reportType": "D",
   "projectType": [
-    "string"
+    "A"
   ],
   "settings": {
     "calendar-id": "4",
@@ -87,15 +88,21 @@ export const getData = (path, params, app, measure, dateFilter) => {
       break;
     case "topLists":
       if (route[0] === "topDonors") {
-        url = `${API_ROOT}${TOP_DONORS_API}?count=${route[1] === 'top5' ? '5' : 10}`
-        url += `&months=${route[2]}&fundingType=${measure === 'Actual Commitments' ? '1' : '2'}`;
-        url += `&showDonorGroup=${route[4]}`;
-        topDonorsFilters.settings['currency-code'] = route[3];
-        measure = null;
-        filters = topDonorsFilters;
+        url = `${API_ROOT}${TOP_DONORS_API}`;
       } else {
-        url = null;
+        url = `${API_ROOT}${TOP_PROJECTS_API}`;
       }
+      url += `?count=${route[1] === 'top5' ? '5' : 10}`
+      url += `&months=${route[2]}&fundingType=${measure === 'Actual Commitments' ? '1' : '2'}`;
+      url += `&showDonorGroup=${route[4]}`
+      if (route[0] === 'topUpdatedProjects') {
+        url += `&lastUpdated=true`
+
+      }
+      topDonorsFilters.settings['currency-code'] = route[3];
+      measure = null;
+      filters = topDonorsFilters;
+
       break;
 
     default:
