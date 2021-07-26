@@ -64,10 +64,11 @@ class IntlRoutes extends Component {
     const self = this;
     const props = this.props;
     const locale = this.props.match.params.lan
+    const theParams = new URLSearchParams(this.props.location.search);
     return (
       <IntlProvider key={locale} locale={locale} messages={messages[locale]}>
         <InjectTitle />
-        <AppContextProvider getComponent={getComponentByNameIgnoreCase} store={store} locale={locale}>
+        <AppContextProvider getComponent={getComponentByNameIgnoreCase} store={store} locale={locale} theParams={theParams}>
           <Switch>
             {
               //Category Route
@@ -146,13 +147,13 @@ class IntlRoutes extends Component {
               //page route
             }
             <Route path="/:lan/:slug/" exact render={props => {
-
               return (
-
                 <PageProvider
                   locale={locale}
                   slug={props.match.params.slug}
-                  store={props.match.params.slug}>
+                  store={props.match.params.slug}
+                  theParams={theParams}
+                >
                   <ResponsiveContainer>
                     <PageConsumer>
                       <Page></Page>

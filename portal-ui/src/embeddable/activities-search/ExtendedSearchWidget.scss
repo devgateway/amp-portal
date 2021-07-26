@@ -1,0 +1,64 @@
+@import "../../scss/vars";
+
+.search-widget {
+  @include module-container($module-bg);
+
+  .list-header {
+    overflow: hidden;
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    @include module-title;
+    float: left;
+    margin-bottom: 0;
+  }
+
+  .ui.button {
+    @include primary-button;
+    width: $extend;
+
+    &.text-button {
+      @include text-button;
+      margin-top: $base-unit + 5;
+      text-align: left;
+    }
+  }
+
+  .ui.form {
+    input[type=password],
+    input[type=text] {
+      background-color: $input-bg;
+      font-size: $module-font-size + 1;
+      padding: $base-unit-sm + 2 $base-unit-sm $base-unit $base-unit;
+
+      &::placeholder {
+        font-size: $module-font-size;
+        font-weight: 200;
+        color: grey;
+      }
+    }
+    .selection {
+      width: 100%!important;
+      font-size: 10px;
+    }
+
+    .field {
+      &.field input:-webkit-autofill {
+        background-color: $input-bg !important;
+        border-color: darken($separator-grey, 5%) !important;
+        box-shadow: 0 0 0 $base-unit-xlg $input-bg inset !important;
+
+        &::placeholder {
+          font-size: $module-font-size + 1;
+          font-weight: 800;
+        }
+      }
+
+      > label {
+        font-size: $menu-font-size;
+        color: $menu-text-color;
+      }
+    }
+  }
+}

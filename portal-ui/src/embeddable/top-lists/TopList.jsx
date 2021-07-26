@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Table, Menu, Icon, Popup } from "semantic-ui-react";
 import EllipsisText from 'react-ellipsis-text';
+import PropTypes from 'prop-types';
 import './TopList.scss';
 import hash from 'object-hash';
 import { formatKMB, getGlobalSettings } from "../chart/utils";
@@ -9,8 +10,20 @@ import { connect } from "react-redux";
 import { AMP_PREVIEW_URL } from "../Constants";
 
 const TopList = (props) => {
-  const { labels, data, currency, fields, topSize, intl, settings, numberFields, linkFields, identity } = props;
-  const isBigTable = topSize === "top10";
+  const {
+    labels,
+    data,
+    currency,
+    fields,
+    topSize,
+    intl,
+    settings,
+    numberFields,
+    linkFields,
+    identity,
+    linkOwnColumn,
+    isBigTable
+  } = props;
   const globalSettings = getGlobalSettings(settings);
   const formatter = formatKMB(intl, globalSettings.precision + 1, globalSettings.decimalSeparator, false, null);
   const ellipsis = (d, f, ellipsisLength) => {
@@ -38,12 +51,22 @@ const TopList = (props) => {
   const header = () =>
     labels.tooltip && labels.tooltip.length > 0 ?
       <Popup basic content={labels.tooltip} trigger={<h3>{labels.title}</h3>} /> : <h3>{labels.title}</h3>;
-  const body = () => {
-    return data.data.map((d) =>
+  const tableBody = () =>
+    data.data.map((d) =>
       (
         <Table.Row key={hash(d[identity])}>
           {fields.map(f => <Table.Cell> {rowCell(d, f)} </Table.Cell>)}
         </Table.Row>))
+
+  const tableHeaders = () => {
+    const header = [];
+    if (linkOwnColumn) {
+      header.push(['']);
+    }
+    const mergedHeader = [...header, ...fields.map(f => {
+      return <Table.HeaderCell>{data.headers[f]}</Table.HeaderCell>
+    })];
+    return mergedHeader;
   }
   return <div className={"top-list"}>
     <div className="list-header">
@@ -56,14 +79,12 @@ const TopList = (props) => {
       {isBigTable && (
         <Table.Header>
           <Table.Row>
-            {fields.map(f => {
-              return <Table.HeaderCell>{data.headers[f]}</Table.HeaderCell>
-            })}
+            {tableHeaders()}
           </Table.Row>
         </Table.Header>
       )}
       <Table.Body>
-        {body()}
+        {tableBody()}
       </Table.Body>
     </Table>
     <Button className="full-list-link">View Full List</Button>
@@ -77,4 +98,10 @@ const mapStateToProps = (state) => {
 }
 const mapActionCreators = {};
 export default connect(mapStateToProps, mapActionCreators)(injectIntl(TopList));
+TopList.propTypes = {
+  numberFields: PropTypes.array,
+  linkOwnColumn: PropTypes.bool,
+  isBigTable: PropTypes.bool,
+}
+TopList.defaultProps = { numberFields: [], linkOwnColumn: false, isBigTable: false }
 

@@ -18,7 +18,7 @@ const Filter = asyncComponent(() => import("./filter/"));
 const Download = asyncComponent(() => import("./download/"));
 const Map = asyncComponent(() => import("./map/"));
 const TopLists = asyncComponent(() => import("./top-lists/"));
-
+const ActivitiesSearch = asyncComponent(() => import("./activities-search/"));
 export const reducers = {
   data,
   embeddable
@@ -39,7 +39,8 @@ const components = {
   inlineList: InlineList,
   download: Download,
   map: Map,
-  topLists: TopLists
+  topLists: TopLists,
+  activitiesSearch: ActivitiesSearch
 }
 
 export const getComponentByNameIgnoreCase = (name) => {

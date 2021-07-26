@@ -10,6 +10,7 @@ class Footer extends Component {
   }
 
   render() {
+    if (true) return null;
     return (<Container fluid className={"amp footer"}>
       <PageProvider slug={"footer"} store={"footer"}>
         <PageConsumer>

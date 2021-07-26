@@ -5,7 +5,6 @@ import { injectIntl } from "react-intl";
 import { formatNumberWithSettings, getGlobalSettings } from "../utils";
 
 const TotalWidget = (props) => {
-  console.log(props);
   const { measure, intl, settings, data } = props;
   const globalSettings = getGlobalSettings(settings);
   return (<div className={"top-widget-chart"}>

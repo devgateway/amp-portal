@@ -15,7 +15,7 @@ export default class LoginWidget extends Component {
         <label>Password</label>
         <input placeholder='password' type='password' />
       </Form.Field>
-      <Button clasName="primary-button" type='submit'>Sign In</Button>
+      <Button className="primary-button" type='submit'>Sign In</Button>
     </Form>
 
     <Button className="text-button">Forgot Password?</Button>

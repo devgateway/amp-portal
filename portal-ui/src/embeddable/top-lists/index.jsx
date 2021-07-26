@@ -24,7 +24,7 @@ const TopLists = (props) => {
     const fields = [];
     const numberFields = [];
     const linkFields = [];
-    let identity ;
+    let identity;
     if (topType === 'topDonors') {
       if (topShowDonorGroup) {
         fields.push('donor-group');
@@ -70,9 +70,11 @@ const TopLists = (props) => {
 
 
     }
+
     const child = (<TopList
       height={height} topType={topType} topSize={topSize} labels={labels} currency={topCurrency} fields={fields}
-      topShowDonorGroup={topShowDonorGroup} numberFields={numberFields} linkFields={linkFields} identity={identity}/>);
+      topShowDonorGroup={topShowDonorGroup} numberFields={numberFields} linkFields={linkFields} identity={identity}
+      isBigTable={topSize === "top10"} />);
     const newSource = `${topType}/${topSize}/${topMonth}/${topCurrency}/${topShowDonorGroup}`;
     return <DataProvider source={newSource} app={'topLists'} store={newSource} measure={topFundingType}>
       <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>

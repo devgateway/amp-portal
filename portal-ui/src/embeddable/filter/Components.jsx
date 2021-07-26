@@ -11,7 +11,7 @@ const delay = (time) => {
 
 const getItems = (categories, type) => {
     if (categories) {
-        const items = categories.find(i => i.get('type') == type);
+        const items = categories.find(i => i.get('type') === type);
         return items ? items.get('items').toJS() : null
     }
     return [];
@@ -91,19 +91,17 @@ export const PngExport = ({id, icon, name, filters = [], includes = [], size}) =
 
     return (<Icon name={icon} size={size} onClick={e => {
 
-        var node = document.getElementById(id);
+        const node = document.getElementById(id);
 
-        var exportable = id ? node.getElementsByClassName("png exportable")[0] : node
+        const exportable = id ? node.getElementsByClassName("png exportable")[0] : node;
 
         const doFilter = (node) => {
             node.srcset = ''
-            if (node.classList && ([...node.classList].map(l => filters.indexOf(l) > -1).filter(n => n).length > 0) && !([...node.classList].map(l => includes.indexOf(l) > -1).filter(n => n).length > 0)) {
-                return false
-            }
-            return true
+            return !(node.classList && ([...node.classList].map(l => filters.indexOf(l) > -1).filter(n => n).length > 0) && !([...node.classList].map(l => includes.indexOf(l) > -1).filter(n => n).length > 0));
+
         }
         //  exportable=exportable.cloneNode()
-        var imgs = exportable.getElementsByTagName('img')
+        const imgs = exportable.getElementsByTagName('img');
         for (let item of imgs) {
             item.srcset_back = item.srcset
             item.srcset = ''
