@@ -125,7 +125,7 @@ const DonorScoreCard = (props) => {
                   >
                     <tspan
                       style={{ fontSize: `${legends.scoreCardLegendsSize}px` }}>
-                      {`${/*options.values.find(o => o.id === value).one*/100}%`}</tspan>
+                      {`${options.values.find(o => o.id === value).one}%`}</tspan>
                   </text>
                 </g>
               );
