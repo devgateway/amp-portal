@@ -1,3 +1,5 @@
+@import '../scss/vars';
+
 .container.amp.footer {
   background: #FFFFFF;
   padding-left: 20px;
@@ -12,6 +14,10 @@
     .contact-us {
       color: #616160;
     }
+  }
+
+  a{
+    color: $link-color;
   }
 
 }
@@ -56,5 +62,14 @@
         color: #f0f0f0;
       }
     }
+  }
+}
+
+.footer-text{
+  color: $darkest-gray;
+  display: flex;
+  border-right: 2px solid $darkest-gray;
+  img{
+    margin-left: $base-unit-md + 10;
   }
 }

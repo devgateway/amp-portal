@@ -13,7 +13,7 @@
   }
   .value{
     color: $body-text-color;
-    font-size: 16px;
+    font-size: $menu-font-size;
   }
   .indicator{
     background-size: $extend $extend;

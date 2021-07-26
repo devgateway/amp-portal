@@ -50,6 +50,7 @@
         color: $login-blue;
         cursor: pointer;
         font-weight: 700;
+        margin-top: $base-unit-sm;
 
         img {
           height: $base-unit-md + 3;
@@ -64,7 +65,7 @@
     }
 
     .lang {
-      margin-top: $base-unit-md;
+      margin-top: $base-unit-md + 5;
       width: $base-unit-xlg + 10;
 
       .ui.button {

@@ -5,8 +5,9 @@
   padding: 0px 20px;
 
   .ui.container.entry-content {
-    margin: 0px;
-    padding: 20px 0px;
+    margin: $base-unit-md 0 0 0;
+    padding: $base-unit-md;
+    border: 1px solid $menu-border;
   }
 
   .label {
