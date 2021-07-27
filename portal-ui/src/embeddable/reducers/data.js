@@ -54,7 +54,23 @@ export const setData = ({ csv, store, params }) => (dispatch, getState) => {
   dispatch({ type: LOAD_DATA_DONE, store, data })
 
 }
+export const loadSearchData = ({ filters, keyword, page, pageSize, store }) => (dispatch, getState) => {
+  dispatch({ type: LOAD_DATA, store })
+  api.searchActivities(filters, keyword, page, pageSize)
+    .then(data => dispatch({ type: LOAD_DATA_DONE, store, data }))
+    .catch(error => dispatch({ type: LOAD_DATA_ERROR, store, error }))
+}
+export const loadFilters = ({ filterArray, store }) => (dispatch, getState) => {
+  filterArray.forEach(filter => {
+    const newStore = store + filter;
+    dispatch({ type: LOAD_DATA, store: newStore })
+    api.loadAmpFilters(filter)
+      .then(data => dispatch({ type: LOAD_DATA_DONE, store: newStore, data }))
+      .catch(error => dispatch({ type: LOAD_DATA_ERROR, store: newStore, error }))
 
+  })
+
+}
 export const getData = ({ app, source, store, params, measure, dateFilter }) => (dispatch, getState) => {
   const filters = getState().get('data').getIn(['filters'])
   if (filters) {

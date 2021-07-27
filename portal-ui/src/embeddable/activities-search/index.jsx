@@ -26,20 +26,19 @@ const ActivitiesSearch = (props) => {
       button: searchButton
     };
     let child;
-    if (searchType==='simpleSearch'){
-      child = (<SearchWidget height={height} labels={labels} searchExtendedSlug={searchExtendedSlug}/>);
-    }else{
-      child = (<ExtendedSearchWidget height={height} labels={labels} />);
+    if (searchType === 'simpleSearch') {
+      return (<Container style={{ "height": `${height}px` }} className={"body"} fluid={true}>
+        <SearchWidget height={height} labels={labels} searchExtendedSlug={searchExtendedSlug} />
+      </Container>);
+
+    } else {
+      const newSource = `activitiesSearch`;
+      return <DataProvider source={newSource} app={'activitiesSearch'} store={newSource}>
+        <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
+          <ExtendedSearchWidget height={height} labels={labels} store={newSource} />
+        </DataConsumer></Container>
+      </DataProvider>
     }
-    const newSource = `activitiesSearch`;
-    return <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}>
-      {child}
-    </Container>
-    /*NO DATA NEEDED FOR THIS COMPONENT return <DataProvider source={newSource} app={'activitiesSearch'} store={newSource} >
-      <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
-        {child}
-      </DataConsumer></Container>
-    </DataProvider>*/
   }
 ;
 export default ActivitiesSearch;

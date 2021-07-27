@@ -1,13 +1,6 @@
 version: '3'
 
 services:
-  ui:
-    build:
-      context: ./
-    volumes:
-      - ui:/var/www/ui
-    restart: "no"
-
   wordpress:
     image: library/wordpress:5.7-fpm-alpine
     depends_on:

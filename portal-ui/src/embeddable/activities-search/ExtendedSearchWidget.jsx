@@ -1,78 +1,106 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Dropdown, Form, Input, Pagination } from "semantic-ui-react";
 import './ExtendedSearchWidget.scss';
-import organisations from './json/organizations.json'
-import sectors from './json/sectors.json'
-import locations from './json/locations.json'
 import TopList from '../top-lists/TopList';
-import activityData from './json/activityResult.json';
+import { loadSearchData } from "../reducers/data";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
 
 const ExtendedSearchWidget = (props) => {
-
-  const getOrganisations = () => {
-    const elements = [];
-    organisations.items.organizations.filter(o => {
-      if (o.children) {
-        const oTempChildren = o.children.filter(o2 => {
-          const tempChildren2 = o2.children.filter(o3 => {
-            return o3.listDefinitionIds.includes(1);
-          })
-          if (tempChildren2.length > 0) {
-            o2.children = [...tempChildren2];
-            return true
-          }
-          return false;
-        })
-        if (oTempChildren.length > 0) {
-          o.children = [...oTempChildren];
-          return true;
-        }
-        return false;
-      } else {
-        return false;
-      }
-    })
-    organisations.items.organizations.forEach(o => {
-      let level = 1;
-      addToMap(o, elements, '', level);
-    })
-    return elements;
-  }
-  const getSectors = (scheme) => {
-    return getElements(sectors.items[scheme]);
-
-  }
-  const getLocations = () => {
-    return getElements(locations.items.locations);
-
-  }
-  const getElements = (originalArray) => {
-    const elements = [];
-    originalArray.forEach(s => {
-      let level = 1;
-      addToMap(s, elements, '', level);
-    })
-    return elements;
-  }
-  const addToMap = (object, arrayOfObjects, ancestor, level) => {
-    arrayOfObjects.push({
-      key: object.id,
-      text: ancestor + object.name,
-      value: object.id,
-      level: level
-    });
-    if (object.children) {
-      object.children.forEach(c => addToMap(c, arrayOfObjects, `${ancestor}  ${object.name} ->`, level + 1))
-    }
-  }
-  const { labels } = props;
+  const [activePage, setActivePage] = useState(1);
+  const listDefinitions = [];
+  const [selectedFilters, setSelectedFilters] = useState({});
+  const [keyword, setKeyword] = useState(1);
+  const { labels, data, store, loadData, data_locations, data_sectors, data_organizations } = props;
   const tableLabels = {};
+
   const fields = [];
   fields.push('project-title');
   fields.push("donor-agency")
   fields.push("primary-sector")
   fields.push('actual-commitments');
   fields.push('actual-disbursements');
+
+  const populateDropDown = (filterObject, scheme) => {
+    if (filterObject === undefined) {
+      return [];
+    }
+    const keyPrefix = scheme.substring(0, 1);
+    const listDefinition = filterObject.listDefinitions.find(ld => ld.name === scheme);
+    listDefinitions[keyPrefix] = listDefinition;
+    return getElements(filterObject.items[listDefinition.items], keyPrefix);
+  }
+  const getElements = (originalArray, keyPrefix) => {
+    const elements = [];
+    originalArray.forEach(s => {
+      let level = 1;
+      addToMap(s, elements, '', level, keyPrefix);
+    })
+    return elements;
+  }
+  const addToMap = (object, arrayOfObjects, ancestor, level, keyPrefix) => {
+    arrayOfObjects.push({
+      key: `${keyPrefix}_${object.id}${level}`,
+      text: `${ancestor}${object.name}`,
+      value: `${level}_${object.id}`,
+      level: level,
+      keyPrefix: keyPrefix,
+      id: object.id,
+
+    });
+    if (object.children) {
+      object.children.forEach(c => addToMap(c, arrayOfObjects, `${ancestor}  ${object.name} ->`, level + 1, keyPrefix))
+    }
+  }
+  const pageFrom = () => {
+    return 1 + (data.page - 1) * data.recordsperpage;
+  }
+  const pageTo = () => {
+    const to = 10 + (data.page - 1) * data.recordsperpage;
+    return to > data.count ? data.count : to;
+  }
+  const handleKeywordChange = (e, { value }) => {
+    setKeyword(value);
+  }
+  const handlePaginationChange = (e, { activePage }) => {
+    setActivePage(activePage);
+    const filters = {};
+    const pageSize = 10;
+    const page = activePage;
+    loadData({ filters, keyword, page, pageSize, store });
+  };
+  const handleDropdownChange = (e, { value, options }) => {
+    if (value) {
+      const selectedOptions = options.filter(o => value.includes(o.value));
+      //keyprefix is the same for all we just pick the first one
+      setSelectedFilters(selectedFiltersOld => {
+        const newSelectedFilters = { ...selectedFiltersOld }
+        newSelectedFilters[selectedOptions[0].keyPrefix] = selectedOptions;
+        return newSelectedFilters;
+      })
+    }
+  }
+  const buildFilters = () => {
+    const filters = {};
+    Object.keys(selectedFilters).forEach(k => {
+      selectedFilters[k].forEach(l => {
+        if (filters[listDefinitions[k].filterIds[l.level - 1]] === undefined) {
+          filters[listDefinitions[k].filterIds[l.level - 1]] = [l.id];
+        }
+        filters[listDefinitions[k].filterIds[l.level - 1]].push();
+      })
+    });
+    return filters;
+  }
+  const doSearchActivities = (e) => {
+
+    const pageSize = 10;
+    const filters = buildFilters();
+    console.log(filters);
+    loadData({ filters: {}, keyword, page: activePage, pageSize, store });
+  }
+  console.log(data_locations);
+  debugger;
   return <>
     <div className={"search-widget"}>
       <div className="list-header">
@@ -81,7 +109,7 @@ const ExtendedSearchWidget = (props) => {
       <Form>
         <Form.Field>
           <label>{labels.description}</label>
-          <Input placeholder={labels.hint} type='text' />
+          <Input placeholder={labels.hint} type='text' onChange={handleKeywordChange} />
         </Form.Field>
         <Form.Field>
           <label>Donor Agency</label>
@@ -91,7 +119,8 @@ const ExtendedSearchWidget = (props) => {
             multiple
             search
             selection
-            options={getOrganisations()}
+            options={populateDropDown(data_organizations, "Donor")}
+            onChange={handleDropdownChange}
           />
         </Form.Field>
         <Form.Field>
@@ -102,18 +131,20 @@ const ExtendedSearchWidget = (props) => {
             multiple
             search
             selection
-            options={getSectors('primary')}
+            options={populateDropDown(data_sectors, 'Primary Sectors')}
+            onChange={handleDropdownChange}
           />
         </Form.Field>
         <Form.Field>
           <label>Secondary Sector</label>
           <Dropdown
-            placeholder='Secondary'
+            placeholder='Secondary Sector'
             fluid
             multiple
             search
             selection
-            options={getSectors('secondary')}
+            options={populateDropDown(data_sectors, 'Secondary Sectors')}
+            onChange={handleDropdownChange}
           />
         </Form.Field>
         <Form.Field>
@@ -124,20 +155,48 @@ const ExtendedSearchWidget = (props) => {
             multiple
             search
             selection
-            options={getLocations()}
+            options={populateDropDown(data_locations, "Locations")}
+            onChange={handleDropdownChange}
           />
         </Form.Field>
-        <Button className="primary-button" type='link'>{labels.button}</Button>
+        <Button className="primary-button" type='link' onClick={doSearchActivities}>{labels.button}</Button>
       </Form>
 
     </div>
     <div>
-      <div className="results-value">Activity result 1-10 of 64</div>
-      <TopList data={activityData} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable/>
-      <Pagination defaultActivePage={5} totalPages={10} />
+      <div className="results-value">Activity
+        result {pageFrom()} - {pageTo()} of {data.count}</div>
+      <TopList data={data} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable />
+      <Pagination defaultActivePage={data.page} totalPages={data.totalpagecount}
+                  onPageChange={handlePaginationChange} />
       {//TODO GALI TO ADD TOTALS
       }
     </div>
   </>;
+
 }
-export default ExtendedSearchWidget;
+
+const mapStateToProps = (state, ownProps) => {
+  const { store } = ownProps
+  return {
+    data: state.getIn(['data', ...store, 'data']),
+    error: state.getIn(['data', ...store, 'error']),
+    loading: state.getIn(['data', ...store, 'loading']),
+    data_locations: state.getIn(['data', ...(store + 'locations'), 'data']),
+    error_locations: state.getIn(['data', ...(store + 'locations'), 'error']),
+    loading_locations: state.getIn(['data', ...(store + 'locations'), 'loading']),
+    data_sectors: state.getIn(['data', ...(store + 'sectors'), 'data']),
+    error_sectors: state.getIn(['data', ...(store + 'sectors'), 'error']),
+    loading_sectors: state.getIn(['data', ...(store + 'sectors'), 'loading']),
+    data_organizations: state.getIn(['data', ...(store + 'organizations'), 'data']),
+    error_organizations: state.getIn(['data', ...(store + 'organizations'), 'error']),
+    loading_organizations: state.getIn(['data', ...(store + 'organizations'), 'loading']),
+
+  }
+}
+
+const mapActionCreators = {
+  loadData: loadSearchData
+};
+
+export default connect(mapStateToProps, mapActionCreators)(injectIntl(ExtendedSearchWidget));

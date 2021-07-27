@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl';
 import DataContext from './DataContext'
 import { Container, Loader, Segment } from "semantic-ui-react";
-import { getData, setData } from "../reducers/data";
+import { getData, loadFilters, setData } from "../reducers/data";
 
 class DataProvider extends React.Component {
 
@@ -12,6 +12,10 @@ class DataProvider extends React.Component {
     if (app === "csv") {
       this.props.onSetData({ app, csv, store, params })
     } else {
+      if (app === 'activitiesSearch') {
+        const filterArray = ['locations', 'sectors','organizations'];
+        this.props.loadFilters_({ filterArray, store });
+      }
       this.props.onLoadData({ app, source, store, measure, dateFilter });
     }
 
@@ -24,6 +28,11 @@ class DataProvider extends React.Component {
       if (app === "csv") {
         this.props.onSetData({ app, csv, store, params })
       } else {
+
+        if (app === 'activitiesSearch') {
+          const filterArray = ['locations', 'sectors','organizations'];
+          this.props.loadFilters_({ filterArray, store });
+        }
         this.props.onLoadData({ app, source, store, params })
       }
     }
@@ -72,7 +81,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapActionCreators = {
   onSetData: setData,
-  onLoadData: getData
+  onLoadData: getData,
+  loadFilters_: loadFilters
 };
 
 export default connect(mapStateToProps, mapActionCreators)(injectIntl(DataProvider));

@@ -1,12 +1,14 @@
 import { get, post } from '../../api/commons';
 
 const API_ROOT = process.env.REACT_APP_API_URL;
+const FILTERS_API = '/filters'
 const TOP_API = '/dashboard/tops';
 const GIS_API = '/gis/cluster'
 const TOTAL_API = '/public/totalByMeasure'
 const COUNT_API = '/public/projectCount'
 const TOP_DONORS_API = '/public/donorFunding';
 const TOP_PROJECTS_API = '/public/topprojects';
+const SEARCH_API = '/public/searchprojects';
 
 const SCORECARD_API = '/scorecard/stats';
 const URL_TAXONOMY = API_ROOT + '/categories'
@@ -46,6 +48,24 @@ const topDonorsFilters = {
   }
 };
 
+const searchApiJson = {
+  "page": 1,
+  "recordsPerPage": 10,
+  "add_columns": [
+    "Activity Id",
+    "Actual Start Date",
+    "Primary Sector",
+    "Project Title"
+  ],
+  "add_measures": [
+    "Actual Commitments",
+    "Actual Disbursements"
+  ],
+  "rowTotals": true,
+  "show_empty_rows": true,
+  "name": "Activity search"
+};
+
 //TODO settings came from settings
 export const getCategories = (params) => {
   return get(URL_TAXONOMY, params)
@@ -53,6 +73,21 @@ export const getCategories = (params) => {
 export const loadAMpSettings = () => {
   return get(AMP_SETTINGS_API);
 }
+export const loadAmpFilters = (filterName) => {
+  const url = API_ROOT + FILTERS_API + '/' + filterName;
+  return get(url);
+}
+export const searchActivities = (filters, keyword, page, pageSize) => {
+  const url = API_ROOT + SEARCH_API;
+  searchApiJson.page = page;
+  searchApiJson.recordsPerPage = pageSize;
+  searchApiJson.filters = {};
+  if (keyword) {
+    searchApiJson.filters.keyword = keyword;
+  }
+  return post(url, searchApiJson);
+};
+
 export const getData = (path, params, app, measure, dateFilter) => {
   const route = path.split('/');
   let url;
@@ -102,9 +137,11 @@ export const getData = (path, params, app, measure, dateFilter) => {
       topDonorsFilters.settings['currency-code'] = route[3];
       measure = null;
       filters = topDonorsFilters;
-
       break;
-
+    case "activitiesSearch":
+      url = API_ROOT + SEARCH_API;
+      filters = searchApiJson;
+      break
     default:
       url = API_ROOT + "/dashboard/ftype";
       break;
