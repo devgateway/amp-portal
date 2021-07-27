@@ -6,14 +6,16 @@
   border:1px solid $menu-border;
   padding: $base-unit;
   position: relative;
+  width: $extend + 10;
   h3{
     color: lighten($login-blue, 10%);
-    font-size: 13px !important;
+    font-size: $module-font-size - 1 !important;
+    margin-bottom: $base-unit;
     text-transform: uppercase;
   }
   .value{
     color: $body-text-color;
-    font-size: $menu-font-size;
+    font-size: $menu-font-size + 1;
   }
   .indicator{
     background-size: $extend $extend;

@@ -72,7 +72,7 @@ $module-letter-spacing: 0.04em;
   background-repeat: no-repeat;
   background-size: $base-unit + 10 $base-unit + 10;
   background-position: 0 1px;
-  padding-left: $base-unit-md;
+  padding-left: $base-unit-md - 3;
 }
 
 // side modules mixing

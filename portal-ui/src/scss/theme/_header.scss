@@ -110,12 +110,14 @@
         margin: 0;
         justify-content: center;
         height: $base-unit-xlg - 30;
-        min-width: 12%;
-        padding: 0px 1%;
+        padding: 0 $base-unit-md - 5 0 0;
         align-self: flex-end;
 
         a {
           color: $menu-text-color;
+          font-size: $menu-font-size - 1;
+          outline:none;
+          text-transform: capitalize;
 
           &:hover {
             filter: brightness(10%);

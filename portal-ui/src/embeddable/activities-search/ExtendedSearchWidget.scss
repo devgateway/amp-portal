@@ -44,6 +44,7 @@
     }
 
     .field {
+      margin: 0 0 0.8em;
       &.field input:-webkit-autofill {
         background-color: $input-bg !important;
         border-color: darken($separator-grey, 5%) !important;
@@ -56,9 +57,64 @@
       }
 
       > label {
-        font-size: $menu-font-size;
+        font-size: $menu-font-size - 2;
         color: $menu-text-color;
       }
     }
+  }
+}
+
+// search results page
+.wp-block-column.search-results-content{
+  display: flex;
+  flex-direction: column;
+  .ui.fluid.container.body{
+    min-height: $base-unit-xlg * 10;
+  }
+  .ui.multiple.search.dropdown>input.search{
+    margin-left: $base-unit-sm + 2;
+    margin-top: -3px;
+  }
+  .ui.form .field>.selection.dropdown{
+    border:1px solid $menu-border !important;
+    height: $base-unit-lg - 10;
+    .ui.label{
+      background: $header-bg;
+      box-shadow: none;
+    }
+    .text{
+      color: $body-text-color;
+      font-size: $menu-font-size - 4;
+      line-height: 170%;
+    }
+  }
+  .ui.selection.dropdown .menu{
+    box-shadow: none;
+    border:1px solid $menu-border;
+    margin-top: -$base-unit-md;
+    >.item{
+      padding: $base-unit-sm - 3 0 !important;
+      .text{
+        font-size: $module-font-size;
+      }
+    }
+  }
+  .ui.pagination.menu{
+    border: none;
+    box-shadow: none;
+    display:flex;
+    font-size: $module-font-size;
+    justify-content: center;
+    .item{
+      &:before{
+        background-color: $header-bg;
+      }
+    }
+  }
+  .results-value{
+    color: $body-text-color;
+    font-size:$menu-font-size;
+    margin-top: $base-unit-lg;
+    padding: $base-unit-md 0;
   }
 }

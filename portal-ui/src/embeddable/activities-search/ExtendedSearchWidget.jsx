@@ -132,7 +132,7 @@ const ExtendedSearchWidget = (props) => {
 
     </div>
     <div>
-      <div>Activity result 1-10 of 64</div>
+      <div className="results-value">Activity result 1-10 of 64</div>
       <TopList data={activityData} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable/>
       <Pagination defaultActivePage={5} totalPages={10} />
       {//TODO GALI TO ADD TOTALS
