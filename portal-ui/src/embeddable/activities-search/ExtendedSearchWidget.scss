@@ -69,7 +69,10 @@
   display: flex;
   flex-direction: column;
   .ui.fluid.container.body{
-    min-height: $base-unit-xlg * 10;
+    min-height: $base-unit-xlg * 15;
+    @media (max-width: 1024px) {
+      min-height: $base-unit-xlg * 22;
+    }
   }
   .ui.multiple.search.dropdown>input.search{
     margin-left: $base-unit-sm + 2;
@@ -105,6 +108,7 @@
     display:flex;
     font-size: $module-font-size;
     justify-content: center;
+    margin: $base-unit-md 0 $base-unit-md + 15 0;
     .item{
       &:before{
         background-color: $header-bg;

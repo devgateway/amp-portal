@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Dropdown, Form, Input, Pagination } from "semantic-ui-react";
 import './ExtendedSearchWidget.scss';
 import TopList from '../top-lists/TopList';
+import Totals from '../totals/index.jsx';
 import { loadSearchData } from "../reducers/data";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
@@ -169,8 +170,7 @@ const ExtendedSearchWidget = (props) => {
       <TopList data={data} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable />
       <Pagination defaultActivePage={data.page} totalPages={data.totalpagecount}
                   onPageChange={handlePaginationChange} />
-      {//TODO GALI TO ADD TOTALS
-      }
+      <Totals/>
     </div>
   </>;
 
