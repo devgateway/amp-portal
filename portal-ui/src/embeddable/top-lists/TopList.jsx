@@ -8,6 +8,7 @@ import { formatKMB, getGlobalSettings } from "../chart/utils";
 import { injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { AMP_PREVIEW_URL } from "../Constants";
+import { buildXlsData } from "../utils/exportUtils";
 
 const TopList = (props) => {
   const {
@@ -22,7 +23,9 @@ const TopList = (props) => {
     linkFields,
     identity,
     linkOwnColumn,
-    isBigTable
+    isBigTable,
+    exportData,
+    linkField
   } = props;
   const globalSettings = getGlobalSettings(settings);
   const formatter = formatKMB(intl, globalSettings.precision + 1, globalSettings.decimalSeparator, false, null);
@@ -31,23 +34,26 @@ const TopList = (props) => {
       text={d[f] ? d[f] : ''}
       length={ellipsisLength} tail={"..."} />;
   }
-  //TODO GALI TO STYLE LINKS
   const rowCell = (d, f) => {
-    if (topSize === 'top5' && !numberFields.includes(f)) {
-      if (linkFields.includes((f))) {
-        return <Button as='a' href={`${process.env.REACT_APP_AMP_URL}${AMP_PREVIEW_URL}${d['activity-id']}`}
-                       target="_blank">{ellipsis(d, f, 20)}</Button>
-      } else {
-        return ellipsis(d, f, 20);
-      }
+    if (f === linkField) {
+      return <Button as='a' href={`${process.env.REACT_APP_AMP_URL}${AMP_PREVIEW_URL}${d['activity-id']}`}
+                     target="_blank" icon><Icon name="file alternate outline"></Icon></Button>
     } else {
-      if (numberFields.includes(f) && !isBigTable) {
-        return `${formatter(d[f + '-raw'])} ${currency}`;
+      if (topSize === 'top5' && !numberFields.includes(f)) {
+        if (linkFields.includes((f))) {
+          return <Button as='a' href={`${process.env.REACT_APP_AMP_URL}${AMP_PREVIEW_URL}${d['activity-id']}`}
+                         target="_blank">{ellipsis(d, f, 20)}</Button>
+        } else {
+          return ellipsis(d, f, 20);
+        }
+      } else {
+        if (numberFields.includes(f) && !isBigTable) {
+          return `${formatter(d[f + '-raw'])} ${currency}`;
+        }
+        return ellipsis(d, f, 50);
       }
-      return ellipsis(d, f, 50);
     }
   }
-  //TODO GALI TO ADJUST TOOLTIP STYLE
   const header = () =>
     labels.tooltip && labels.tooltip.length > 0 ?
       <Popup basic content={labels.tooltip} trigger={<h3>{labels.title}</h3>} /> : <h3>{labels.title}</h3>;
@@ -55,7 +61,7 @@ const TopList = (props) => {
     data.data.map((d) =>
       (
         <Table.Row key={hash(d[identity])}>
-          {fields.map(f => <Table.Cell> {rowCell(d, f)} </Table.Cell>)}
+          {fields.map(f => <Table.Cell textAlign={f === linkField ? 'center' : ''}> {rowCell(d, f)} </Table.Cell>)}
         </Table.Row>))
 
   const tableHeaders = () => {
@@ -64,17 +70,19 @@ const TopList = (props) => {
       header.push(['']);
     }
     const mergedHeader = [...header, ...fields.map(f => {
-      return <Table.HeaderCell>{data.headers[f]}</Table.HeaderCell>
+      return <Table.HeaderCell>{f === linkField ? '' : data.headers[f]}</Table.HeaderCell>
     })];
     return mergedHeader;
+  }
+  const localExportData = () => {
+    buildXlsData(data, 'Aid Management platform', labels.title);
   }
   return <div className={"top-list"}>
     <div className="list-header">
       {header()}
-      <Button floated='right'>Download XLS</Button>
+      <Button floated='right' onClick={(e) => exportData ? exportData() : localExportData()}>Download XLS</Button>
     </div>
     <div className="description">{labels.description}</div>
-
     <Table celled>
       {isBigTable && (
         <Table.Header>

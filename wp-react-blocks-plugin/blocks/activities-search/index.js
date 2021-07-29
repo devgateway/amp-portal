@@ -79,7 +79,7 @@ registerBlockType(process.env.BLOCKS_NS + '/activities-search',
         type: 'string',
         default: 'Locations'
       },
-      searchDonorLocationEnabled: {
+      searchDonorEnabled: {
         type: 'boolean',
         default: true
       },

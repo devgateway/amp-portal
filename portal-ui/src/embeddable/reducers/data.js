@@ -54,12 +54,21 @@ export const setData = ({ csv, store, params }) => (dispatch, getState) => {
   dispatch({ type: LOAD_DATA_DONE, store, data })
 
 }
-export const loadSearchData = ({ filters, keyword, page, pageSize, store, currency }) => (dispatch, getState) => {
-  debugger;
-  dispatch({ type: LOAD_DATA, store })
-  api.searchActivities(filters, keyword, page, pageSize, currency)
-    .then(data => dispatch({ type: LOAD_DATA_DONE, store, data }))
-    .catch(error => dispatch({ type: LOAD_DATA_ERROR, store, error }))
+export const loadSearchData = ({
+                                 filters,
+                                 keyword,
+                                 page,
+                                 pageSize,
+                                 store,
+                                 currency,
+                                 isDownload
+                               }) => (dispatch, getState) => {
+
+  let newStore = `${store}${isDownload ? '-download' : ''}`;
+  dispatch({ type: LOAD_DATA, store: newStore })
+  api.searchActivities(filters, keyword, page, pageSize, currency, isDownload)
+    .then(data => dispatch({ type: LOAD_DATA_DONE, store: newStore, data }))
+    .catch(error => dispatch({ type: LOAD_DATA_ERROR, store: newStore, error }))
 }
 export const loadFilters = ({ filterArray, store }) => (dispatch, getState) => {
   filterArray.forEach(filter => {
@@ -118,8 +127,7 @@ export default (state = initialState, action) => {
         .setIn([...store, 'data'], action.data)
     }
     case LOAD_DATA: {
-      const { store } = action
-
+      const { store } = action;
       return state.deleteIn([...store, 'error']).setIn([...store, 'loading'], true)
     }
     case LOAD_DATA_ERROR: {

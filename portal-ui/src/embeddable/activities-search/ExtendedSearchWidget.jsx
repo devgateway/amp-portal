@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, Form, Input, Pagination } from "semantic-ui-react";
 import './ExtendedSearchWidget.scss';
 import TopList from '../top-lists/TopList';
@@ -6,6 +6,7 @@ import Totals from '../totals/index.jsx';
 import { loadSearchData } from "../reducers/data";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
+import { buildXlsData } from "../utils/exportUtils";
 
 const ExtendedSearchWidget = (props) => {
   const [activePage, setActivePage] = useState(1);
@@ -25,12 +26,20 @@ const ExtendedSearchWidget = (props) => {
   const tableLabels = {};
 
   const fields = [];
+  fields.push('activity-id');
   fields.push('project-title');
   fields.push("donor-agency")
   fields.push("primary-sector")
+  fields.push("actual-start-date")
   fields.push('actual-commitments');
   fields.push('actual-disbursements');
 
+  useEffect(() => {
+      if (props.data_download) {
+        buildXlsData(props.data_download, 'Aid Management platform', 'ActivityExport');
+      }
+    }, [props.data_download]
+  )
   const populateDropDown = (filterObject, scheme) => {
     if (filterObject === undefined) {
       return [];
@@ -56,7 +65,6 @@ const ExtendedSearchWidget = (props) => {
       level: level,
       keyPrefix: keyPrefix,
       id: object.id,
-
     });
     if (object.children) {
       object.children.forEach(c => addToMap(c, arrayOfObjects, `${ancestor}  ${object.name} ->`, level + 1, keyPrefix))
@@ -73,14 +81,7 @@ const ExtendedSearchWidget = (props) => {
     setKeyword(value);
   }
   const handlePaginationChange = (e, { activePage }) => {
-    loadData({
-      filters: buildFilters(),
-      keyword,
-      page: activePage,
-      pageSize: data.recordsperpage,
-      store,
-      currency: data['Currency']
-    });
+    callSearchActivities(false);
   };
   const handleDropdownChange = (e, { value, options }) => {
     if (value) {
@@ -105,15 +106,22 @@ const ExtendedSearchWidget = (props) => {
     });
     return filters;
   }
-  const doSearchActivities = (e) => {
+  const callSearchActivities = (isDownload) => {
     loadData({
       filters: buildFilters(),
       keyword,
       page: activePage,
       pageSize: data.recordsperpage,
       store,
-      currency: data['Currency']
+      currency: data['Currency'],
+      isDownload
     });
+  }
+  const doSearchActivities = (e) => {
+    callSearchActivities(false);
+  }
+  const exportData = () => {
+    callSearchActivities(true);
   }
   return <>
     <div className={"search-widget"}>
@@ -182,7 +190,8 @@ const ExtendedSearchWidget = (props) => {
     <div>
       <div className="results-value">Activity
         result {pageFrom()} - {pageTo()} of {data.count}</div>
-      <TopList data={data} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable />
+      <TopList data={data} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable
+               exportData={exportData} linkField="activity-id" />
       <Pagination defaultActivePage={data.page} totalPages={data.totalpagecount}
                   onPageChange={handlePaginationChange} />
       <Totals data={data} />
@@ -198,6 +207,9 @@ const mapStateToProps = (state, ownProps) => {
     data: state.getIn(['data', ...store, 'data']),
     error: state.getIn(['data', ...store, 'error']),
     loading: state.getIn(['data', ...store, 'loading']),
+    data_download: state.getIn(['data', ...(store + '-download'), 'data']),
+    error_download: state.getIn(['data', ...(store + '-download'), 'error']),
+    loading_download: state.getIn(['data', ...(store + '-download'), 'loading']),
     data_locations: state.getIn(['data', ...(store + 'locations'), 'data']),
     error_locations: state.getIn(['data', ...(store + 'locations'), 'error']),
     loading_locations: state.getIn(['data', ...(store + 'locations'), 'loading']),

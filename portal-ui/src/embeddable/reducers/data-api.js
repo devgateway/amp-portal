@@ -49,10 +49,9 @@ const topDonorsFilters = {
 };
 
 const searchApiJson = {
-  "page": 1,
-  "recordsPerPage": 10,
   "add_columns": [
     "Activity Id",
+    "Donor Agency",
     "Actual Start Date",
     "Primary Sector",
     "Project Title"
@@ -77,16 +76,22 @@ export const loadAmpFilters = (filterName) => {
   const url = API_ROOT + FILTERS_API + '/' + filterName;
   return get(url);
 }
-export const searchActivities = (filters, keyword, page, pageSize, currency) => {
+export const searchActivities = (filters, keyword, page, pageSize, currency, isDownload) => {
   const url = API_ROOT + SEARCH_API;
-  searchApiJson.page = page;
-  searchApiJson.recordsPerPage = pageSize;
-  searchApiJson.filters = filters;
-  searchApiJson.settings = { 'currency-code': currency };
-  if (keyword) {
-    searchApiJson.filters.keyword = keyword;
+  const newSearchApiJson = { ...searchApiJson };
+  if (!isDownload) {
+    newSearchApiJson.page = page;
+    newSearchApiJson.recordsPerPage = pageSize;
+  } else {
+    newSearchApiJson.page = 0;
+    newSearchApiJson.recordsPerPage = -1;
   }
-  return post(url, searchApiJson);
+  newSearchApiJson.filters = filters;
+  newSearchApiJson.settings = { 'currency-code': currency };
+  if (keyword) {
+    newSearchApiJson.filters.keyword = keyword;
+  }
+  return post(url, newSearchApiJson);
 };
 
 export const getData = (path, params, app, measure, dateFilter) => {
