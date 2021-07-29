@@ -42,6 +42,54 @@ registerBlockType(process.env.BLOCKS_NS + '/activities-search',
       searchType: {
         type: 'string',
         default: 'simpleSearch'
+      },
+      searchFiltersPrimarySectorsEnabled: {
+        type: 'boolean',
+        default: true
+      },
+      searchPrimarySectorTitle: {
+        type: 'string',
+        default: 'Primary Sector'
+      },
+      searchPrimarySectorPlaceHolder: {
+        type: 'string',
+        default: 'Primary Sector'
+      },
+      searchFiltersSecondarySectorsEnabled: {
+        type: 'boolean',
+        default: true
+      },
+      searchSecondarySectorTitle: {
+        type: 'string',
+        default: 'Secondary Sector'
+      },
+      searchSecondarySectorPlaceHolder: {
+        type: 'string',
+        default: 'Secondary Sector'
+      },
+      searchFiltersLocationEnabled: {
+        type: 'boolean',
+        default: true
+      },
+      searchLocationTitle: {
+        type: 'string',
+        default: 'Locations'
+      },
+      searchLocationPlaceHolder: {
+        type: 'string',
+        default: 'Locations'
+      },
+      searchDonorLocationEnabled: {
+        type: 'boolean',
+        default: true
+      },
+      searchDonorTitle: {
+        type: 'string',
+        default: 'Donor Agency'
+      },
+      searchDonorPlaceHolder: {
+        type: 'string',
+        default: 'DonorAgency'
       }
     }
     ,

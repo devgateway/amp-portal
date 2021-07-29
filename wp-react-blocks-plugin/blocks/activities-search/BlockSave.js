@@ -11,7 +11,19 @@ const SaveComponent = (props) => {
       searchHint,
       searchButton,
       searchExtendedSlug,
-      searchType
+      searchType,
+      searchFiltersPrimarySectorsEnabled,
+      searchPrimarySectorTitle,
+      searchPrimarySectorPlaceHolder,
+      searchFiltersSecondarySectorsEnabled,
+      searchSecondarySectorTitle,
+      searchSecondarySectorPlaceHolder,
+      searchFiltersLocationEnabled,
+      searchLocationTitle,
+      searchLocationPlaceHolder,
+      searchFiltersDonorEnabled,
+      searchDonorTitle,
+      searchDonorPlaceHolder
     }
   } = props;
   const blockProps = useBlockProps.save({
@@ -30,7 +42,18 @@ const SaveComponent = (props) => {
          data-search-button={searchButton}
          data-search-extended-slug={searchExtendedSlug}
          data-search-type={searchType}
-
+         data-search-filter-primary-sector={searchFiltersPrimarySectorsEnabled}
+         data-search-filter-primary-sector-title={searchPrimarySectorTitle}
+         data-search-filter-primary-sector-placeholder={searchPrimarySectorPlaceHolder}
+         data-search-filter-secondary-sector={searchFiltersSecondarySectorsEnabled}
+         data-search-filter-secondary-sector-title={searchSecondarySectorTitle}
+         data-search-filter-secondary-sector-placeholder={searchSecondarySectorPlaceHolder}
+         data-search-filter-location={searchFiltersLocationEnabled}
+         data-search-filter-location-title={searchLocationTitle}
+         data-search-filter-location-placeholder={searchLocationPlaceHolder}
+         data-search-filter-donor={searchFiltersDonorEnabled}
+         data-search-filter-donor-title={searchDonorTitle}
+         data-search-filter-donor-placeholder={searchDonorPlaceHolder}
     >
       <InnerBlocks.Content />
     </div>

@@ -1,5 +1,8 @@
 import { __ } from '@wordpress/i18n';
-import { CheckboxControl, PanelBody, PanelRow, SelectControl, TextControl } from '@wordpress/components';
+import {
+  CheckboxControl, PanelBody, PanelRow, SelectControl, TextControl,
+  Placeholder
+} from '@wordpress/components';
 import { Component } from '@wordpress/element'
 import apiFetch from '@wordpress/api-fetch';
 
@@ -15,7 +18,40 @@ export const SizeConfig = ({ height, setAttributes, initialOpen }) => {
       />
     </PanelRow>
   </PanelBody>)
-
+}
+export const FilterConfig = ({
+                               label, chkLabel, chkVariable, chkName,
+                               titleLabel, titleVariable, titleVariableName,
+                               placeholderLabel, placeholderVariable, placeholderVariableName, setAttributes
+                             }) => {
+  return (
+    <Placeholder label={label}>
+      <PanelRow>
+        <CheckboxControl
+          label={chkLabel}
+          checked={chkVariable}
+          onChange={(chkVariable) => setAttributes({ [chkName]: chkVariable })}
+        />
+      </PanelRow>
+      <PanelRow>
+        <TextControl
+          label={titleLabel}
+          value={titleVariable}
+          onChange={(titleVariable) => setAttributes({ [titleVariableName]: titleVariable })}
+        />
+      </PanelRow>
+      <PanelRow>
+        <TextControl
+          label={placeholderLabel}
+          value={placeholderVariable}
+          onChange={(placeholderVariable) => {
+            const attribute = {};
+            attribute[placeholderVariableName] = placeholderVariable;
+            return setAttributes(attribute)
+          }}
+        />
+      </PanelRow>
+    </Placeholder>);
 }
 
 export class BaseBlockEdit extends Component {

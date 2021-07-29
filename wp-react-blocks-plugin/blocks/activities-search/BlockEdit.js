@@ -10,14 +10,15 @@ import {
   ResizableBox,
   SelectControl,
   TextControl,
-
-  TextareaControl
+  PanelHeader,
+  TextareaControl,
+  Placeholder
 } from '@wordpress/components';
 
 import { InnerBlocks } from '@wordpress/editor'; // or wp.editor
 import { __ } from '@wordpress/i18n';
-import { Button as Btn, Grid } from 'semantic-ui-react'
-import { BaseBlockEdit, SizeConfig } from '../commons/index'
+import { Button as Btn, Divider, Grid } from 'semantic-ui-react'
+import { BaseBlockEdit, SizeConfig, FilterConfig } from '../commons/index'
 
 class BlockEdit extends BaseBlockEdit {
 
@@ -42,19 +43,42 @@ class BlockEdit extends BaseBlockEdit {
         searchHint,
         searchButton,
         searchExtendedSlug,
-        searchType
+        searchType,
+        searchFiltersPrimarySectorsEnabled,
+        searchPrimarySectorTitle,
+        searchPrimarySectorPlaceHolder,
+        searchFiltersSecondarySectorsEnabled,
+        searchSecondarySectorTitle,
+        searchSecondarySectorPlaceHolder,
+        searchFiltersDonorEnabled,
+        searchDonorTitle,
+        searchDonorPlaceHolder,
+        searchFiltersLocationEnabled,
+        searchLocationTitle,
+        searchLocationPlaceHolder
       }
     } = this.props;
-
     let queryString = `data-height=${height}`;
-    queryString += `data-search-title=${searchTitle}`;
-    queryString += `data-search-description=${searchDescription}`;
-    queryString += `data-search-hint=${searchHint}`;
-    queryString += `data-search-tooltip=${searchTooltip}`;
-    queryString += `data-search-button=${searchButton}`;
-    queryString += `data-search-type=${searchType}`;
-    queryString += `data-search-extended-slug=${searchExtendedSlug}`;
-    const divStyles = { height: height + 'px', width: '100%' }
+    queryString += `&data-search-title=${searchTitle}`;
+    queryString += `&data-search-description=${searchDescription}`;
+    queryString += `&data-search-hint=${searchHint}`;
+    queryString += `&data-search-tooltip=${searchTooltip}`;
+    queryString += `&data-search-button=${searchButton}`;
+    queryString += `&data-search-type=${searchType}`;
+    queryString += `&data-search-extended-slug=${searchExtendedSlug}`;
+    queryString += `&data-search-filter-primary-sector=${searchFiltersPrimarySectorsEnabled}`;
+    queryString += `&data-search-filter-primary-sector-title=${searchPrimarySectorTitle}`;
+    queryString += `&data-search-filter-primary-sector-placeholder=${searchPrimarySectorPlaceHolder}`;
+    queryString += `&data-search-filter-secondary-sector=${searchFiltersSecondarySectorsEnabled}`;
+    queryString += `&data-search-filter-secondary-sector-title=${searchSecondarySectorTitle}`;
+    queryString += `&data-search-filter-secondary-sector-placeholder=${searchSecondarySectorPlaceHolder}`;
+    queryString += `&data-search-filter-location=${searchFiltersLocationEnabled}`;
+    queryString += `&data-search-filter-location-title=${searchLocationTitle}`;
+    queryString += `&data-search-filter-location-placeholder=${searchLocationPlaceHolder}`;
+    queryString += `&data-search-filter-donor=${searchFiltersDonorEnabled}`;
+    queryString += `&data-search-filter-donor-title=${searchDonorTitle}`;
+    queryString += `&data-search-filter-donor-placeholder=${searchDonorPlaceHolder}`;
+    const divStyles = { height: height + 'px', width: '100%' };
     return ([isSelected && (
         <InspectorControls>
           <Panel header={__("Top List Configuration")}>
@@ -71,6 +95,52 @@ class BlockEdit extends BaseBlockEdit {
                   ]}
                 />
               </PanelRow>
+            </PanelBody>
+            <PanelBody initialOpen={false} title={__("Filters")}>
+              <FilterConfig label={__("Donor Agency")} chkLabel={__("Enable Donor Agency")}
+                            chkVariable={searchFiltersDonorEnabled}
+                            setAttributes={setAttributes}
+                            chkName="searchFiltersDonorEnabled"
+                            titleLabel={__('Title')} titleVariable={searchDonorTitle}
+                            titleVariableName="searchDonorTitle"
+                            placeholderLabel={__('Placeholder')}
+                            placeholderVariable={searchDonorPlaceHolder}
+                            placeholderVariableName="searchDonorPlaceHolder"
+                            setAttributes={setAttributes}
+              />
+              <FilterConfig label={__("Primary Sectors")} chkLabel={__("Enable Primary Sectors")}
+                            chkVariable={searchFiltersPrimarySectorsEnabled}
+                            setAttributes={setAttributes}
+                            chkName="searchFiltersPrimarySectorsEnabled"
+                            titleLabel={__('Title')} titleVariable={searchPrimarySectorTitle}
+                            titleVariableName="searchPrimarySectorTitle"
+                            placeholderLabel={__('Placeholder')}
+                            placeholderVariable={searchPrimarySectorPlaceHolder}
+                            placeholderVariableName="searchPrimarySectorPlaceHolder"
+                            setAttributes={setAttributes}
+              />
+              <FilterConfig label={__("Secondary Sectors")} chkLabel={__("Enable Secondary Sectors")}
+                            chkVariable={searchFiltersSecondarySectorsEnabled}
+                            setAttributes={setAttributes}
+                            chkName="searchFiltersSecondarySectorsEnabled"
+                            titleLabel={__('Title')} titleVariable={searchSecondarySectorTitle}
+                            titleVariableName="searchSecondarySectorTitle"
+                            placeholderLabel={__('Placeholder')}
+                            placeholderVariable={searchSecondarySectorPlaceHolder}
+                            placeholderVariableName="searchSecondarySectorPlaceHolder"
+                            setAttributes={setAttributes}
+              />
+              <FilterConfig label={__("Locations")} chkLabel={__("Enable Locations")}
+                            chkVariable={searchFiltersLocationEnabled}
+                            setAttributes={setAttributes}
+                            chkName="searchFiltersLocationEnabled"
+                            titleLabel={__('Title')} titleVariable={searchLocationTitle}
+                            titleVariableName="searchLocationTitle"
+                            placeholderLabel={__('Placeholder')}
+                            placeholderVariable={searchLocationPlaceHolder}
+                            placeholderVariableName="searchLocationPlaceHolder"
+                            setAttributes={setAttributes}
+              />
             </PanelBody>
             <SizeConfig initialOpen={false} setAttributes={setAttributes} height={height}></SizeConfig>
             <PanelBody initialOpen={false} title={__("Labels")}>

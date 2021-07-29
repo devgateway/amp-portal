@@ -77,11 +77,12 @@ export const loadAmpFilters = (filterName) => {
   const url = API_ROOT + FILTERS_API + '/' + filterName;
   return get(url);
 }
-export const searchActivities = (filters, keyword, page, pageSize) => {
+export const searchActivities = (filters, keyword, page, pageSize, currency) => {
   const url = API_ROOT + SEARCH_API;
   searchApiJson.page = page;
   searchApiJson.recordsPerPage = pageSize;
-  searchApiJson.filters = {};
+  searchApiJson.filters = filters;
+  searchApiJson.settings = { 'currency-code': currency };
   if (keyword) {
     searchApiJson.filters.keyword = keyword;
   }
@@ -139,8 +140,8 @@ export const getData = (path, params, app, measure, dateFilter) => {
       filters = topDonorsFilters;
       break;
     case "activitiesSearch":
-      url = API_ROOT + SEARCH_API;
-      filters = searchApiJson;
+      //this coming from wp
+      return searchActivities({}, null, 1, 10, 'USD');
       break
     default:
       url = API_ROOT + "/dashboard/ftype";

@@ -54,9 +54,10 @@ export const setData = ({ csv, store, params }) => (dispatch, getState) => {
   dispatch({ type: LOAD_DATA_DONE, store, data })
 
 }
-export const loadSearchData = ({ filters, keyword, page, pageSize, store }) => (dispatch, getState) => {
+export const loadSearchData = ({ filters, keyword, page, pageSize, store, currency }) => (dispatch, getState) => {
+  debugger;
   dispatch({ type: LOAD_DATA, store })
-  api.searchActivities(filters, keyword, page, pageSize)
+  api.searchActivities(filters, keyword, page, pageSize, currency)
     .then(data => dispatch({ type: LOAD_DATA_DONE, store, data }))
     .catch(error => dispatch({ type: LOAD_DATA_ERROR, store, error }))
 }

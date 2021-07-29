@@ -11,8 +11,17 @@ const ExtendedSearchWidget = (props) => {
   const [activePage, setActivePage] = useState(1);
   const listDefinitions = [];
   const [selectedFilters, setSelectedFilters] = useState({});
-  const [keyword, setKeyword] = useState(1);
-  const { labels, data, store, loadData, data_locations, data_sectors, data_organizations } = props;
+  const [keyword, setKeyword] = useState();
+  const {
+    labels,
+    data,
+    store,
+    loadData,
+    data_locations,
+    data_sectors,
+    data_organizations,
+    filtersConfiguration
+  } = props;
   const tableLabels = {};
 
   const fields = [];
@@ -64,11 +73,14 @@ const ExtendedSearchWidget = (props) => {
     setKeyword(value);
   }
   const handlePaginationChange = (e, { activePage }) => {
-    setActivePage(activePage);
-    const filters = {};
-    const pageSize = 10;
-    const page = activePage;
-    loadData({ filters, keyword, page, pageSize, store });
+    loadData({
+      filters: buildFilters(),
+      keyword,
+      page: activePage,
+      pageSize: data.recordsperpage,
+      store,
+      currency: data['Currency']
+    });
   };
   const handleDropdownChange = (e, { value, options }) => {
     if (value) {
@@ -94,14 +106,15 @@ const ExtendedSearchWidget = (props) => {
     return filters;
   }
   const doSearchActivities = (e) => {
-
-    const pageSize = 10;
-    const filters = buildFilters();
-    console.log(filters);
-    loadData({ filters: {}, keyword, page: activePage, pageSize, store });
+    loadData({
+      filters: buildFilters(),
+      keyword,
+      page: activePage,
+      pageSize: data.recordsperpage,
+      store,
+      currency: data['Currency']
+    });
   }
-  console.log(data_locations);
-  debugger;
   return <>
     <div className={"search-widget"}>
       <div className="list-header">
@@ -112,10 +125,10 @@ const ExtendedSearchWidget = (props) => {
           <label>{labels.description}</label>
           <Input placeholder={labels.hint} type='text' onChange={handleKeywordChange} />
         </Form.Field>
-        <Form.Field>
-          <label>Donor Agency</label>
+        {filtersConfiguration.donorFilters.enabled && (<Form.Field>
+          <label>{filtersConfiguration.donorFilters.title}</label>
           <Dropdown
-            placeholder='Donor Agency'
+            placeholder={filtersConfiguration.donorFilters.placeholder}
             fluid
             multiple
             search
@@ -123,23 +136,25 @@ const ExtendedSearchWidget = (props) => {
             options={populateDropDown(data_organizations, "Donor")}
             onChange={handleDropdownChange}
           />
-        </Form.Field>
-        <Form.Field>
-          <label>Primary Sector</label>
+        </Form.Field>)}
+        {filtersConfiguration.primarySectorFilters.enabled && (
+          <Form.Field>
+            <label>{filtersConfiguration.primarySectorFilters.title}</label>
+            <Dropdown
+              placeholder={filtersConfiguration.primarySectorFilters.placeholder}
+              fluid
+              multiple
+              search
+              selection
+              options={populateDropDown(data_sectors, 'Primary Sectors')}
+              onChange={handleDropdownChange}
+            />
+          </Form.Field>)
+        }
+        {filtersConfiguration.secondarySectorFilters.enabled && (<Form.Field>
+          <label>{filtersConfiguration.secondarySectorFilters.title}r</label>
           <Dropdown
-            placeholder='Primary Sector'
-            fluid
-            multiple
-            search
-            selection
-            options={populateDropDown(data_sectors, 'Primary Sectors')}
-            onChange={handleDropdownChange}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Secondary Sector</label>
-          <Dropdown
-            placeholder='Secondary Sector'
+            placeholder={filtersConfiguration.primarySectorFilters.placeholder}
             fluid
             multiple
             search
@@ -147,11 +162,11 @@ const ExtendedSearchWidget = (props) => {
             options={populateDropDown(data_sectors, 'Secondary Sectors')}
             onChange={handleDropdownChange}
           />
-        </Form.Field>
-        <Form.Field>
-          <label>Locations</label>
+        </Form.Field>)}
+        {filtersConfiguration.locationFilters.enabled && (<Form.Field>
+          <label>{filtersConfiguration.locationFilters.title}</label>
           <Dropdown
-            placeholder='Locations'
+            placeholder={filtersConfiguration.locationFilters.placeholder}
             fluid
             multiple
             search
@@ -159,7 +174,7 @@ const ExtendedSearchWidget = (props) => {
             options={populateDropDown(data_locations, "Locations")}
             onChange={handleDropdownChange}
           />
-        </Form.Field>
+        </Form.Field>)}
         <Button className="primary-button" type='link' onClick={doSearchActivities}>{labels.button}</Button>
       </Form>
 
@@ -170,7 +185,7 @@ const ExtendedSearchWidget = (props) => {
       <TopList data={data} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable />
       <Pagination defaultActivePage={data.page} totalPages={data.totalpagecount}
                   onPageChange={handlePaginationChange} />
-      <Totals/>
+      <Totals data={data} />
     </div>
   </>;
 
@@ -179,6 +194,7 @@ const ExtendedSearchWidget = (props) => {
 const mapStateToProps = (state, ownProps) => {
   const { store } = ownProps
   return {
+    settings: state.getIn(['data', ...['amp-settings'], 'data']),
     data: state.getIn(['data', ...store, 'data']),
     error: state.getIn(['data', ...store, 'error']),
     loading: state.getIn(['data', ...store, 'loading']),
