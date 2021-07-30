@@ -73,6 +73,16 @@ code {
 .ui.container.fluid.desktop {
   max-width: 1366px !important;
 }
+.ui.container.header{
+  width: $extend !important;
+}
+.ui.container.desktop {
+  background-color: $body-bg;
+  margin-top: -$base-unit-lg;
+  padding-top: $base-unit-md;
+  width: $extend !important;
+}
+
 
 
 .ui.primary.button {

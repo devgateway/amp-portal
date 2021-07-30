@@ -11,7 +11,7 @@
     float: right;
     font-size: $module-font-size;
     text-align: right;
-    width: $extend / 2;
+    width: $extend / 1.8;
     @media (max-width: 1024px) {
       width: $extend;
     }

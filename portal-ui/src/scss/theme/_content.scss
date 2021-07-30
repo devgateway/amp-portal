@@ -195,3 +195,14 @@ p:empty {
 .wp-block-spacer {
   clear: none;
 }
+
+.wp-block-tcdi-components-tabbed-posts{
+  &.white{
+    .entry-content{
+      background-color: $header-bg;
+      .content{
+        padding: $base-unit-md $base-unit-lg;
+      }
+    }
+  }
+}

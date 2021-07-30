@@ -128,7 +128,7 @@ const ExtendedSearchWidget = (props) => {
       <div className="list-header">
         <h3>{labels.title}</h3>
       </div>
-      <Form>
+      <Form className="advanced-search">
         <Form.Field>
           <label>{labels.description}</label>
           <Input placeholder={labels.hint} type='text' onChange={handleKeywordChange} />
@@ -187,15 +187,16 @@ const ExtendedSearchWidget = (props) => {
       </Form>
 
     </div>
-    <div>
+    <div className="results-wrapper">
       <div className="results-value">Activity
         result {pageFrom()} - {pageTo()} of {data.count}</div>
       <TopList data={data} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable
                exportData={exportData} linkField="activity-id" />
       <Pagination defaultActivePage={data.page} totalPages={data.totalpagecount}
                   onPageChange={handlePaginationChange} />
-      <Totals data={data} />
+
     </div>
+    <div><Totals data={data} /></div>
   </>;
 
 }
