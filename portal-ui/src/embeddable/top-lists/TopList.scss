@@ -24,9 +24,6 @@
       background-color: transparent;
       color: $theme-light-green;
     }
-    &.full-list-link{
-      display: none;
-    }
   }
   .ui.celled.table{
     @include border-radius(0);
@@ -82,9 +79,11 @@
        }
      }
   }
-  .button{
-    &.full-list-link{
-      display: block;
+}
+.wp-block-column{
+  &.full-stats{
+    .ui.button.full-list-link{
+      display: none;
     }
   }
 }

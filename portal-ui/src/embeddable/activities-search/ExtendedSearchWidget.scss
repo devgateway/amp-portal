@@ -84,6 +84,16 @@
     padding-left: $base-unit-md;
     padding-top: $base-unit + 5;
   }
+  .top-list .ui.celled.table tr td{
+    &:last-child,
+    &:nth-child(6){
+      color: darken($theme-green, 5%);
+      font-weight: bold;
+    }
+  }
+  .top-list .ui.celled.table tr th:first-child{
+    width: $base-unit-lg + 15;
+  }
   .ui.fluid.container.body{
     min-height: $base-unit-xlg * 17;
     @media (max-width: 1024px) {

@@ -1,7 +1,22 @@
 .top-chart {
   margin: 0 !important;
   background-color: #FFFFFF;
-
+  margin-top: 30px;
+  .top-chart-title{
+    color: #05315c;
+    font-weight: bold;
+    font-family:Verdana;
+    font-size: 15px;
+  }
+  .value{
+    color: #666666;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+    .currency{
+      font-weight: 300;
+    }
+  }
   .row {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
