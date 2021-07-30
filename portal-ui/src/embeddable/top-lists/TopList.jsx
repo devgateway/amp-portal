@@ -56,7 +56,7 @@ const TopList = (props) => {
   }
   const header = () =>
     labels.tooltip && labels.tooltip.length > 0 ?
-      <Popup basic content={labels.tooltip} trigger={<h3>{labels.title}</h3>} /> : <h3>{labels.title}</h3>;
+      <Popup basic className="tooltip" content={labels.tooltip} trigger={<h3>{labels.title}</h3>} /> : <h3>{labels.title}</h3>;
   const tableBody = () =>
     data.data.map((d) =>
       (
@@ -112,4 +112,3 @@ TopList.propTypes = {
   isBigTable: PropTypes.bool,
 }
 TopList.defaultProps = { numberFields: [], linkOwnColumn: false, isBigTable: false }
-

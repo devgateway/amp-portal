@@ -87,3 +87,15 @@
     }
   }
 }
+
+.ui.top.left.popup.tooltip{
+  border: 1px solid $menu-border;
+  box-shadow: none;
+  min-width: $base-unit-xlg * 3;
+  width: $base-unit-xlg * 3;
+  .content{
+    font-size:$module-font-size;
+    line-height: 150%;
+    width: auto !important;
+  }
+}
