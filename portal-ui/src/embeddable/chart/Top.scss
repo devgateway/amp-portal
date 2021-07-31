@@ -4,17 +4,25 @@
   margin-top: 30px;
   .top-chart-title{
     color: #05315c;
-    font-weight: bold;
-    font-family:Verdana;
+    font-family: 'Open Sans', sans-serif;
     font-size: 15px;
+    font-weight: 800;
   }
   .value{
     color: #666666;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: bold;
     text-align: right;
     .currency{
       font-weight: 300;
+      display: inline-block;
+      margin-right: -5px;
+      margin-top: 2px;
+    }
+    .amount{
+      float: left;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 800;
     }
   }
   .row {

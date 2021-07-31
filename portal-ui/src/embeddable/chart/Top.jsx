@@ -61,8 +61,8 @@ const Top = ({
   return (
     <Grid className={"container top-chart"}>
       {showLegend && <Grid.Row>
-        <Grid.Column computer={9} mobile={16} className="top-chart-title">{legends.title}</Grid.Column>
-        <Grid.Column computer={7} mobile={16} className="value">{`${formatValue(options.total)} ${options.currency}`}</Grid.Column>
+        <Grid.Column computer={8} mobile={16} className="top-chart-title">{legends.title}</Grid.Column>
+        <Grid.Column computer={8} mobile={16} className="value"> <span className="amount">${formatValue(options.total)}</span> <span className="currency">${options.currency}</span></Grid.Column>
       </Grid.Row>
       }
       <div className={'inner'}>

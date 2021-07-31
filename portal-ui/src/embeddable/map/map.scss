@@ -150,12 +150,15 @@
 }
 
 .view-more {
+  border: none;
   width: 100px;
   height: 30px;
-  background-color: #FFFFFF;
+  margin-bottom: 30px;
+  outline: none;
   text-align: center;
 
   a, a:hover {
+    background-color: #FFFFFF;
     width: 100px !important;
     text-decoration: underline;
     cursor: pointer;
@@ -164,6 +167,9 @@
   }
 }
 
+.leaflet-touch .leaflet-bar{
+  border: none;
+}
 .map-control {
   top: 65px;
 
