@@ -72,12 +72,12 @@ export const getCategories = (params) => {
 export const loadAMpSettings = () => {
   return get(AMP_SETTINGS_API);
 }
-export const loadAmpFilters = (filterName) => {
-  const url = API_ROOT + FILTERS_API + '/' + filterName;
+export const loadAmpFilters = (filterName, locale) => {
+  const url = `${API_ROOT + FILTERS_API}/${filterName}?language=${locale}`;
   return get(url);
 }
-export const searchActivities = (filters, keyword, page, pageSize, currency, isDownload) => {
-  const url = API_ROOT + SEARCH_API;
+export const searchActivities = (filters, keyword, page, pageSize, currency, isDownload, locale) => {
+  const url = API_ROOT + SEARCH_API + '?language=' + locale;
   const newSearchApiJson = { ...searchApiJson };
   if (!isDownload) {
     newSearchApiJson.page = page;
@@ -94,21 +94,21 @@ export const searchActivities = (filters, keyword, page, pageSize, currency, isD
   return post(url, newSearchApiJson);
 };
 
-export const getData = (path, params, app, measure, dateFilter) => {
+export const getData = (path, params, app, measure, dateFilter, locale) => {
   const route = path.split('/');
   let url;
   let isPost = true;
   let filters = filters_data;
   switch (app) {
     case 'top':
-      url = API_ROOT + TOP_API + '/' + route[0] + '?limit=' + route[1];
+      url = `${API_ROOT + TOP_API}/${route[0]}?limit=${route[1]}&language=${locale}`
       break
     case 'funding':
-      url = API_ROOT + "/dashboard/" + route[0];
+      url = `${API_ROOT}/dashboard/${route[0]}?language=${locale}`;
       filters = filters_dataFT;
       break;
     case 'donorScoreCard':
-      url = API_ROOT + SCORECARD_API;
+      url = `${API_ROOT + SCORECARD_API}?language=${locale}`
       isPost = false;
       break;
     case 'map':
@@ -125,6 +125,7 @@ export const getData = (path, params, app, measure, dateFilter) => {
       } else {
         url = API_ROOT + TOTAL_API;
       }
+      url = `${url}?language=${locale}`;
       filters = filters_data
       break;
     case "topLists":
@@ -140,13 +141,14 @@ export const getData = (path, params, app, measure, dateFilter) => {
         url += `&lastUpdated=true`
 
       }
+      url = `${url}&language=${locale}`;
       topDonorsFilters.settings['currency-code'] = route[3];
       measure = null;
       filters = topDonorsFilters;
       break;
     case "activitiesSearch":
       //this coming from wp
-      return searchActivities({}, null, 1, 10, 'USD');
+      return searchActivities({}, null, 1, 10, 'USD', false, locale);
       break
     default:
       url = API_ROOT + "/dashboard/ftype";

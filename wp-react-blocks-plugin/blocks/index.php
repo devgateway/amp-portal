@@ -17,10 +17,18 @@ defined( 'ABSPATH' ) || exit;
  * Load all translations for our plugin from the MO file.
 */
 add_action( 'init', 'wp_react_lib_init' );
+if ( ! function_exists('write_log')) {
+   function write_log ( $log )  {
+      if ( is_array( $log ) || is_object( $log ) ) {
+         error_log( print_r( $log, true ) );
+      } else {
+         error_log( $log );
+      }
+   }
+}
 
 function wp_react_lib_init() {
       // automatically load dependencies and version
-
         $asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
 
         wp_register_script(
@@ -49,5 +57,6 @@ function wp_react_lib_init() {
             'editor_style'  => 'wp-lib-block-editor',
             'style'         => 'wp-lib-block-block',
         ) );
+        wp_set_script_translations( 'wp-lib-block-editor', 'default');
 
 }

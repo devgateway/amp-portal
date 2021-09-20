@@ -103,6 +103,7 @@ const Chart = (props) => {
     'data-chart-amp-no-updates': noUpdate = 'No Updates',
     'data-chart-amp-no-updates-tooltip': noUpdateTooltip = 'Donor was configured as “Donor with no updates” within the quarter',
     'data-chart-amp-size': ampSize = 11,
+    locale,
     intl
   } = props;
   let newSource = source;
@@ -175,7 +176,8 @@ const Chart = (props) => {
   dateFilter.from = dateFrom;
   dateFilter.to = dateTo;
   return <Container className={"chart container"} fluid={true}>
-    <DataProvider store={newSource.split("/")} source={newSource} app={app} measure={measure} dateFilter={dateFilter}>
+    <DataProvider store={newSource.split("/")} source={newSource} app={app} measure={measure}
+                  dateFilter={dateFilter} locale={locale}>
       <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
         {child}
       </DataConsumer></Container>

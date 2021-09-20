@@ -8,21 +8,21 @@ import { getData, loadFilters, setData } from "../reducers/data";
 class DataProvider extends React.Component {
 
   componentDidMount() {
-    const { source, store, app, measure, dateFilter, params, csv } = this.props
+    const { source, store, app, measure, dateFilter, params, csv, locale } = this.props
     if (app === "csv") {
       this.props.onSetData({ app, csv, store, params })
     } else {
       if (app === 'activitiesSearch') {
-        const filterArray = ['locations', 'sectors','organizations'];
-        this.props.loadFilters_({ filterArray, store });
+        const filterArray = ['locations', 'sectors', 'organizations'];
+        this.props.loadFilters_({ filterArray, store, locale });
       }
-      this.props.onLoadData({ app, source, store, measure, dateFilter });
+      this.props.onLoadData({ app, source, store, measure, dateFilter, locale });
     }
 
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { filters, app, source, store, params, csv } = this.props
+    const { filters, app, source, store, params, csv, locale } = this.props
 
     if (filters !== prevProps.filters || app !== prevProps.app || prevProps.source !== source || csv !== prevProps.csv) {
       if (app === "csv") {
@@ -30,10 +30,10 @@ class DataProvider extends React.Component {
       } else {
 
         if (app === 'activitiesSearch') {
-          const filterArray = ['locations', 'sectors','organizations'];
-          this.props.loadFilters_({ filterArray, store });
+          const filterArray = ['locations', 'sectors', 'organizations'];
+          this.props.loadFilters_({ filterArray, store, locale });
         }
-        this.props.onLoadData({ app, source, store, params })
+        this.props.onLoadData({ app, source, store, params, locale })
       }
     }
   }

@@ -1,4 +1,4 @@
-import { Button, Container, Flag, Menu } from "semantic-ui-react";
+import { Button, Container, Menu } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import { MenuConsumer, MenuProvider, utils } from "@devgateway/wp-react-lib";
 import { injectIntl } from "react-intl";
@@ -10,12 +10,12 @@ const getPath = (menu, match) => {
   menu.items.forEach(item => {
     if (item.child_items) {
       item.child_items.forEach(ch => {
-        if (ch.slug == match.params.slug) {
+        if (ch.slug === match.params.slug) {
           path.push(item)
           path.push(ch)
         }
       })
-    } else if (item.slug == match.params.slug && item.url != '/') {
+    } else if (item.slug === match.params.slug && item.url !== '/') {
       path.push(item)
     }
 
@@ -30,7 +30,7 @@ const BreadCrumbs = withRouter(injectIntl(({ menu, match, intl }) => {
   let path = getPath(menu, match)
   return <React.Fragment>
     <a href={"#"}> Home </a>
-    {path.map(i => !i.child_items ? <a className={i.slug == match.params.slug ? 'active' : ''}
+    {path.map(i => !i.child_items ? <a className={i.slug === match.params.slug ? 'active' : ''}
                                        href={utils.replaceLink(i.url, intl.locale)}> {i.post_title}</a> :
       <span>{i.post_title} </span>)}
   </React.Fragment>
@@ -48,10 +48,10 @@ const MyMenuItems = injectIntl(withRouter(({
                                              intl: { locale }
                                            }) => {
 
-  useEffect((e) => {
+  useEffect(() => {
     if (!selected) {
       const pathSelected = getPath(menu, match)
-      const items = pathSelected.filter(i => i.menu_item_parent == 0)
+      const items = pathSelected.filter(i => i.menu_item_parent === 0)
       if (items) {
         onSetSelected(items[0])
       }
@@ -67,12 +67,12 @@ const MyMenuItems = injectIntl(withRouter(({
         <Menu.Item
           key={i.ID}
           className={`divided ${i.child_items ? 'has-child-items' : ''} 
-                   ${selected && selected.ID == i.ID ? 'selected' : ''}  ${active == i.slug ? "active" : ""}`}
+                   ${selected && selected.ID === i.ID ? 'selected' : ''}  ${active === i.slug ? "active" : ""}`}
         >
 
-          {withIcons && <div className={"mark"}></div>} {i.child_items ?
-          <span onMouseOver={e => onSetSelected(i)}>{i.title}</span> :
-          <a onMouseOver={e => onSetSelected(i)} href={utils.replaceLink(i.url, locale)}
+          {withIcons && <div className={"mark"}/>} {i.child_items ?
+          <span onMouseOver={() => onSetSelected(i)}>{i.title}</span> :
+          <a onMouseOver={() => onSetSelected(i)} href={utils.replaceLink(i.url, locale)}
              target={i.type_label === 'Custom Link' ? "_blank" : "_self"}>{i.title}</a>}
 
         </Menu.Item>);
@@ -101,7 +101,8 @@ const Header = ({ intl, match }) => {
     }
   }
   const [selected, setSelected] = useState()
-  const { slug } = match.params
+  const { slug } = match.params;
+  const logoUrl = process.env.REACT_APP_USE_HASH_LINKS ? `/#/${intl.locale}` : `/${intl.locale}`;
   const showSubPages = false;
   return <React.Fragment>
 
@@ -111,9 +112,9 @@ const Header = ({ intl, match }) => {
         <Container fluid={true} className={"background"}>
           <Menu className={"branding"} text>
             <Menu.Item>
-              <a href="/">
+              <a href={logoUrl}>
                 <img className="logo" loading="lazy"
-                     src={`${process.env.REACT_APP_AMP_URL}/aim/default/displayFlag.do`} />
+                     src={`${process.env.REACT_APP_AMP_URL}/aim/default/displayFlag.do`} alt=""/>
                 <span className="label">{intl.formatMessage({
                   id: 'app.title-small',
                   defaultMessage: "AMP Portal"
@@ -123,7 +124,7 @@ const Header = ({ intl, match }) => {
             <Menu.Menu className={"pages"}>
               <MenuConsumer>
                 <MyMenuItems active={slug} selected={selected}
-                             onSetSelected={setSelected}></MyMenuItems>
+                             onSetSelected={setSelected}/>
               </MenuConsumer>
             </Menu.Menu>
             <span className="lang">
@@ -136,7 +137,7 @@ const Header = ({ intl, match }) => {
                           >FR</Button>
                         </span>
             <Menu.Item fitted className="login">
-              <img src='/login.svg' /> Login to AMP
+              <img src='/login.svg' alt="" /> Login to AMP
             </Menu.Item>
           </Menu>
 
@@ -144,7 +145,7 @@ const Header = ({ intl, match }) => {
 
         {showSubPages && (<Container fluid={true} className={"child"}>
           {selected && selected.child_items && <Menu fluid text>
-            <MyMenuItems active={slug} locale={intl.locale} withIcons onSetSelected={e => null}
+            <MyMenuItems active={slug}  withIcons onSetSelected={() => null}
                          menu={{ items: selected.child_items }}>}</MyMenuItems>
 
           </Menu>}
@@ -154,7 +155,7 @@ const Header = ({ intl, match }) => {
 
       {showSubPages && (<Container className={"url breadcrumbs"}>
           <MenuConsumer>
-            <BreadCrumbs></BreadCrumbs>
+            <BreadCrumbs/>
           </MenuConsumer>
         </Container>
       )}

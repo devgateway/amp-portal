@@ -4,6 +4,7 @@ import {getPosts} from '../reducers/actions'
 import {PostContext} from './Context'
 
 import {Container, Loader, Segment} from "semantic-ui-react";
+import LocalizedProvider from "./LocalizedProvider"
 
 class PostProvider extends React.Component {
 
@@ -46,8 +47,8 @@ class PostProvider extends React.Component {
             search
         } = this.props
 
-        if (categories != prevProps.categories || locale != prevProps.locale || slug != prevProps.slug ||
-            taxonomy != prevProps.taxonomy || page != prevProps.page || perPage != prevProps.perPage || search != prevProps.search
+        if (categories !== prevProps.categories || locale !== prevProps.locale || slug !== prevProps.slug ||
+            taxonomy !== prevProps.taxonomy || page !== prevProps.page || perPage !== prevProps.perPage || search !== prevProps.search
         ) {
             this.props.onLoadPost({
                 slug,
@@ -104,4 +105,4 @@ const mapActionCreators = {
     onLoadPost: getPosts
 };
 
-export default connect(mapStateToProps, mapActionCreators)(PostProvider);
+export default LocalizedProvider(connect(mapStateToProps, mapActionCreators)(PostProvider));

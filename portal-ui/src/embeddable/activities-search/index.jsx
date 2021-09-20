@@ -27,6 +27,7 @@ const ActivitiesSearch = (props) => {
       'data-search-filter-donor': searchFilterDonorB = 'true',
       'data-search-filter-donor-title': searchDonorTitle = 'Donor Agency',
       'data-search-filter-donor-placeholder': searchDonorPlaceHolder = 'Donor Agency',
+      locale = 'en'
     }
       = props;
     const labels = {
@@ -67,7 +68,7 @@ const ActivitiesSearch = (props) => {
 
     } else {
       const newSource = `activitiesSearch`;
-      return <DataProvider source={newSource} app={'activitiesSearch'} store={newSource}>
+      return <DataProvider source={newSource} app={'activitiesSearch'} store={newSource} locale={locale}>
         <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
           <ExtendedSearchWidget height={height} labels={labels} store={newSource}
                                 filtersConfiguration={filtersConfiguration} />
