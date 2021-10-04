@@ -70,7 +70,7 @@ const MyMenuItems = injectIntl(withRouter(({
                    ${selected && selected.ID === i.ID ? 'selected' : ''}  ${active === i.slug ? "active" : ""}`}
         >
 
-          {withIcons && <div className={"mark"}/>} {i.child_items ?
+          {withIcons && <div className={"mark"} />} {i.child_items ?
           <span onMouseOver={() => onSetSelected(i)}>{i.title}</span> :
           <a onMouseOver={() => onSetSelected(i)} href={utils.replaceLink(i.url, locale)}
              target={i.type_label === 'Custom Link' ? "_blank" : "_self"}>{i.title}</a>}
@@ -94,10 +94,11 @@ const Header = ({ intl, match }) => {
     handleClick('fr', e);
   }
   const handleClick = (l, e) => {
+    const slugUrl = slug ? `/${slug}` : ``;
     if (l === intl.locale) {
       e.preventDefault();
     } else {
-      history.push(`/${l}`);
+      history.push(`/${l}${slugUrl}`);
     }
   }
   const [selected, setSelected] = useState()
@@ -114,7 +115,7 @@ const Header = ({ intl, match }) => {
             <Menu.Item>
               <a href={logoUrl}>
                 <img className="logo" loading="lazy"
-                     src={`${process.env.REACT_APP_AMP_URL}/aim/default/displayFlag.do`} alt=""/>
+                     src={`${process.env.REACT_APP_AMP_URL}/aim/default/displayFlag.do`} alt="" />
                 <span className="label">{intl.formatMessage({
                   id: 'app.title-small',
                   defaultMessage: "AMP Portal"
@@ -124,7 +125,7 @@ const Header = ({ intl, match }) => {
             <Menu.Menu className={"pages"}>
               <MenuConsumer>
                 <MyMenuItems active={slug} selected={selected}
-                             onSetSelected={setSelected}/>
+                             onSetSelected={setSelected} />
               </MenuConsumer>
             </Menu.Menu>
             <span className="lang">
@@ -137,7 +138,7 @@ const Header = ({ intl, match }) => {
                           >FR</Button>
                         </span>
             <Menu.Item fitted className="login">
-              <img src='/login.svg' alt="" /> Login to AMP
+              <img src='/login.svg' alt="" /> {intl.locale === 'en' ? 'Login to AMP' : 'Se Connecter'}
             </Menu.Item>
           </Menu>
 
@@ -145,7 +146,7 @@ const Header = ({ intl, match }) => {
 
         {showSubPages && (<Container fluid={true} className={"child"}>
           {selected && selected.child_items && <Menu fluid text>
-            <MyMenuItems active={slug}  withIcons onSetSelected={() => null}
+            <MyMenuItems active={slug} withIcons onSetSelected={() => null}
                          menu={{ items: selected.child_items }}>}</MyMenuItems>
 
           </Menu>}
@@ -155,7 +156,7 @@ const Header = ({ intl, match }) => {
 
       {showSubPages && (<Container className={"url breadcrumbs"}>
           <MenuConsumer>
-            <BreadCrumbs/>
+            <BreadCrumbs />
           </MenuConsumer>
         </Container>
       )}

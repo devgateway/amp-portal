@@ -13,6 +13,10 @@ const ExtendedSearchWidget = (props) => {
   const listDefinitions = [];
   const [selectedFilters, setSelectedFilters] = useState({});
   const [keyword, setKeyword] = useState();
+  useEffect(() => {
+    const { theParams } = props;
+    setKeyword(theParams.get('keyword'));
+  }, {})
   const {
     labels,
     data,
@@ -131,7 +135,7 @@ const ExtendedSearchWidget = (props) => {
       <Form className="advanced-search">
         <Form.Field>
           <label>{labels.description}</label>
-          <Input placeholder={labels.hint} type='text' onChange={handleKeywordChange} />
+          <Input placeholder={labels.hint} type='text' onChange={handleKeywordChange} value={keyword} />
         </Form.Field>
         {filtersConfiguration.donorFilters.enabled && (<Form.Field>
           <label>{filtersConfiguration.donorFilters.title}</label>

@@ -94,7 +94,7 @@ export const searchActivities = (filters, keyword, page, pageSize, currency, isD
   return post(url, newSearchApiJson);
 };
 
-export const getData = (path, params, app, measure, dateFilter, locale) => {
+export const getData = (path, params, app, measure, dateFilter, locale, keyword) => {
   const route = path.split('/');
   let url;
   let isPost = true;
@@ -148,7 +148,7 @@ export const getData = (path, params, app, measure, dateFilter, locale) => {
       break;
     case "activitiesSearch":
       //this coming from wp
-      return searchActivities({}, null, 1, 10, 'USD', false, locale);
+      return searchActivities({}, keyword, 1, 10, 'USD', false, locale);
       break
     default:
       url = API_ROOT + "/dashboard/ftype";

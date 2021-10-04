@@ -27,7 +27,8 @@ const ActivitiesSearch = (props) => {
       'data-search-filter-donor': searchFilterDonorB = 'true',
       'data-search-filter-donor-title': searchDonorTitle = 'Donor Agency',
       'data-search-filter-donor-placeholder': searchDonorPlaceHolder = 'Donor Agency',
-      locale = 'en'
+      locale: locale = 'en',
+      theParams
     }
       = props;
     const labels = {
@@ -63,15 +64,17 @@ const ActivitiesSearch = (props) => {
     let child;
     if (searchType === 'simpleSearch') {
       return (<Container style={{ "height": `${height}px` }} className={"body"} fluid={true}>
-        <SearchWidget height={height} labels={labels} searchExtendedSlug={searchExtendedSlug} />
+        <SearchWidget height={height} labels={labels} searchExtendedSlug={searchExtendedSlug} locale={locale} />
       </Container>);
 
     } else {
       const newSource = `activitiesSearch`;
-      return <DataProvider source={newSource} app={'activitiesSearch'} store={newSource} locale={locale}>
+
+      return <DataProvider source={newSource} app={'activitiesSearch'} store={newSource} locale={locale}
+                           keyword={theParams.get('keyword')}>
         <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
           <ExtendedSearchWidget height={height} labels={labels} store={newSource}
-                                filtersConfiguration={filtersConfiguration} />
+                                filtersConfiguration={filtersConfiguration} theParams={theParams} />
         </DataConsumer></Container>
       </DataProvider>
     }

@@ -8,7 +8,7 @@ import { getData, loadFilters, setData } from "../reducers/data";
 class DataProvider extends React.Component {
 
   componentDidMount() {
-    const { source, store, app, measure, dateFilter, params, csv, locale } = this.props
+    const { source, store, app, measure, dateFilter, params, csv, locale, keyword } = this.props
     if (app === "csv") {
       this.props.onSetData({ app, csv, store, params })
     } else {
@@ -16,7 +16,7 @@ class DataProvider extends React.Component {
         const filterArray = ['locations', 'sectors', 'organizations'];
         this.props.loadFilters_({ filterArray, store, locale });
       }
-      this.props.onLoadData({ app, source, store, measure, dateFilter, locale });
+      this.props.onLoadData({ app, source, store, measure, dateFilter, locale, keyword });
     }
 
   }
