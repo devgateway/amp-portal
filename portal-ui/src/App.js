@@ -61,7 +61,8 @@ class IntlRoutes extends Component {
     return (
       <IntlProvider key={locale} locale={locale} messages={messages[locale]}>
         <InjectTitle />
-        <AppContextProvider getComponent={getComponentByNameIgnoreCase} store={store} locale={locale} theParams={theParams}>
+        <AppContextProvider getComponent={getComponentByNameIgnoreCase} store={store} locale={locale}
+                            theParams={theParams}>
           <Switch>
             {
               //Category Route
@@ -81,7 +82,7 @@ class IntlRoutes extends Component {
                   store={"home"}>
                   <ResponsiveContainer>
                     <PageConsumer>
-                      <Page/>
+                      <Page />
                     </PageConsumer>
                   </ResponsiveContainer>
                 </PageProvider>
@@ -93,7 +94,7 @@ class IntlRoutes extends Component {
               let params = queryString.parse(props.location.search)
               const UIComponent = getComponentByNameIgnoreCase(props.match.params.name)
               return (<Container fluid={true} className={"embeddable"}>
-                {UIComponent ? <UIComponent {...params}/> :
+                {UIComponent ? <UIComponent {...params} /> :
                   <Segment color={"red"} textAlign={"center"}><h1>Wrong Component Name</h1></Segment>}
               </Container>)
             }}>
@@ -139,15 +140,17 @@ class IntlRoutes extends Component {
               //page route
             }
             <Route path="/:lan/:slug/" exact render={props => {
+              debugger;
               return (
                 <PageProvider
                   slug={props.match.params.slug}
                   store={props.match.params.slug}
                   theParams={theParams}
+                  messages={messages}
                 >
                   <ResponsiveContainer>
                     <PageConsumer>
-                      <Page/>
+                      <Page />
                     </PageConsumer>
                   </ResponsiveContainer>
                 </PageProvider>
@@ -163,7 +166,7 @@ class IntlRoutes extends Component {
                 store={props.match.params.slug}>
                 <ResponsiveContainer>
                   <PageConsumer>
-                    <Page/>
+                    <Page />
                   </PageConsumer>
                 </ResponsiveContainer>
               </PageProvider>
@@ -182,7 +185,7 @@ class IntlRoutes extends Component {
                   locale={locale}
                 >
                   <PostConsumer>
-                    <Post/>
+                    <Post />
                   </PostConsumer>
                 </PostProvider>
               </ResponsiveContainer>
@@ -200,8 +203,8 @@ const MainRoutes = () => {
   return (<ConnectedRouter history={history}>
 
     <Switch>
-      <Route path="/:lan" render={(props) => <IntlRoutes {...props} />}/>
-      <Redirect to="/en"/>
+      <Route path="/:lan" render={(props) => <IntlRoutes {...props} />} />
+      <Redirect to="/en" />
     </Switch>
 
   </ConnectedRouter>)
