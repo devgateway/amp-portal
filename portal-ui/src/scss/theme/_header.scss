@@ -18,6 +18,8 @@
     .logo{
       width: 33px;
       height: 20px;
+      border:1px solid pink;
+      margin-left: -$base-unit-md;
     }
     .label {
       color: #354052;
@@ -223,6 +225,26 @@
           color: $green;
 
         }
+      }
+    }
+  }
+}
+
+// French navigation
+html:lang(fr){
+  .container.header .menu .pages,
+  .container.header .branding .pages{
+    .item{
+      justify-content: flex-start;
+      margin-left: 0;
+      margin-right: 0;
+      padding: 0;
+      width: 15%;
+      &:first-child{
+        width: $extend / 10;
+      }
+      a{
+        width: $extend - 20;
       }
     }
   }

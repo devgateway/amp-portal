@@ -37,8 +37,9 @@ const messages = {
 };
 
 
-const InjectTitle = injectIntl(({ intl }) => {
+const InjectTitle = injectIntl(({ intl, locale }) => {
   document.title = intl.formatMessage({ id: 'app.title', defaultMessage: process.env.REACT_APP_TITLE });
+  document.documentElement.lang=locale;
   return null;
 })
 
@@ -60,7 +61,7 @@ class IntlRoutes extends Component {
     const theParams = new URLSearchParams(this.props.location.search);
     return (
       <IntlProvider key={locale} locale={locale} messages={messages[locale]}>
-        <InjectTitle />
+        <InjectTitle locale={locale}/>
         <AppContextProvider getComponent={getComponentByNameIgnoreCase} store={store} locale={locale}
                             theParams={theParams}>
           <Switch>

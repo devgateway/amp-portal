@@ -1,5 +1,18 @@
 @import "../../scss/vars";
 
+.top-stats-home{
+  .top-list{
+    td{
+      &:first-child{
+        padding-right: 0;
+        a{
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
 .top-list{
   @include module-container($module-bg);
   width: $extend;

@@ -4,7 +4,7 @@
   @include border-radius(4px);
   background-color: $header-bg;
   border:1px solid $menu-border;
-  padding: $base-unit;
+  padding: $base-unit + 10;
   position: relative;
   width: $extend + 10;
   h3{
@@ -15,13 +15,13 @@
   }
   .value{
     color: $body-text-color;
-    font-size: $menu-font-size + 1;
+    font-size: $chart-font-size;
   }
   .indicator{
     background-size: $extend $extend;
     display: block;
-    height: $base-unit + 5;
-    width: $base-unit + 5;
+    height: $base-unit + 13;
+    width: $base-unit + 13;
     position: absolute;
     right: $base-unit;
     top: $base-unit;
