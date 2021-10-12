@@ -271,7 +271,7 @@ const Chart = ({
     )
   }
   return (
-    <div style={{ height: height }}>
+    <div style={{ height: height, background: 'white' }}>
       {options && options.data && <ResponsiveBar
         colorBy={colors.colorBy}
         animate={true}
