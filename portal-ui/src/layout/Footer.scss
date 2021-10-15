@@ -1,0 +1,75 @@
+@import '../scss/vars';
+
+.container.amp.footer {
+  background: #FFFFFF;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  /*position: absolute;*/
+  bottom: 0px;
+
+  .ui.container {
+    width: 100% !important;
+
+    .contact-us {
+      color: #616160;
+    }
+  }
+
+  a{
+    color: $link-color;
+  }
+
+}
+
+.container.default.footer {
+  margin-top: 100px;
+  padding: 15px;
+  background-color: #FFFFFF;
+
+  .header {
+    font-weight: 400;
+    color: white;
+    text-transform: uppercase;
+    margin: 0px;
+  }
+
+  .dg-logo {
+    width: 135px;
+    height: 50.63px;
+  }
+
+  .usaid-logo {
+    width: 160px;
+    height: 50px;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 15px;
+    color: #289df4;
+    padding: 1rem 0;
+
+    .haiti-img {
+      width: 20px;
+      height: 12px;
+    }
+
+    a {
+      color: #ffffff;
+
+      &:hover {
+        color: #f0f0f0;
+      }
+    }
+  }
+}
+
+.footer-text{
+  color: $darkest-gray;
+  display: flex;
+  border-right: 2px solid $darkest-gray;
+  img{
+    margin-left: $base-unit-md + 10;
+  }
+}

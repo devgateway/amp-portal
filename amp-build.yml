@@ -1,0 +1,67 @@
+[ jdeanquin@sulfur amppp ]$ cat docker-compose.yml
+version: '2'
+services:
+  wordpress:
+    image: phosphorus.migrated.devgateway.org:5000/amppp-wp:$AMPPP_WEBAPP_TAG
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp_home:/var/www/html
+    labels:
+      - "country=$AMPPP_COUNTRY"
+      - "traefik.frontend.rule=Host:wp.$AMPPP_HOST"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_default"
+    networks:
+      - default
+      - nginxproxy
+  ui:
+    restart: unless-stopped
+    image: phosphorus.migrated.devgateway.org:5000/amppp-ui:$AMPPP_WEBAPP_TAG
+    container_name: $AMPPP_HOST-website
+    labels:
+      - "country=$AMPPP_COUNTRY"
+      - "traefik.frontend.rule=Host:$AMPPP_HOST"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_default"
+    volumes:
+      - wp_home:/var/www/html
+    depends_on:
+      - db
+      - wordpress
+    networks:
+      - default
+      - nginxproxy
+  db:
+    restart: unless-stopped
+    image: phosphorus.migrated.devgateway.org:5000/amppp-mariadb
+    container_name: $AMPPP_HOST-db
+    ports:
+      - "3306" # bind to a random port on host to support allow connections to mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    labels:
+      - "database-backup=$AMPPP_COUNTRY-$AMPPP_DB_VERSION.pgsql"
+      - "traefik.enable=false"
+    volumes:
+      - /opt/amppp_dbs/$AMPPP_COUNTRY-$AMPPP_DB_VERSION.sql:/backups/amppp_database.sql:ro
+      - mysql_data:/var/lib/mysql:rw
+      - /opt/docker/amppp/initdb/02-init_$AMPPP_WEBAPP_TAG.sh:/docker-entrypoint-initdb.d/02-init_$AMPPP_WEBAPP_TAG.sh:ro
+volumes:
+  mysql_data:
+    driver: local
+  wp_home:
+    driver: local
+networks:
+  default:
+  nginxproxy:
+    external:
+      name: traefik_default

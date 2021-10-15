@@ -1,0 +1,1 @@
+export const AMP_PREVIEW_URL = '/TEMPLATE/reamp/modules/activity/preview/index.html#/activity/';

@@ -1,0 +1,116 @@
+@import "../../scss/vars";
+
+.top-stats-home{
+  .top-list{
+    td{
+      &:first-child{
+        padding-right: 0;
+        a{
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
+.top-list{
+  @include module-container($module-bg);
+  width: $extend;
+  .list-header{
+    overflow: hidden;
+  }
+  h3{
+    @include module-title;
+    float: left;
+    margin-bottom: 0;
+  }
+  .description{
+    @include module-description;
+  }
+  .button{
+    background-color: transparent;
+    color: $link-color;
+    font-size: 12px;
+    padding: 7px 0;
+    text-decoration: underline;
+    cursor: pointer;
+    text-transform: capitalize;
+    &:hover{
+      background-color: transparent;
+      color: $theme-light-green;
+    }
+  }
+  .ui.celled.table{
+    @include border-radius(0);
+    table-layout: fixed;
+    tr{
+      &:nth-child(even){
+        background-color: $table-cell-bg;
+      }
+    }
+    tr th{
+      @include border-radius(0);
+      background-color: $theme-blue;
+      color: $header-bg;
+      font-size: 10px;
+      &:first-child{
+        @include border-radius(0);
+      }
+      &:last-child{
+        @include border-radius(0);
+      }
+    }
+    tr td{
+      color: $body-text-color;
+      font-size: 13px;
+    }
+  }
+}
+
+// short lists in homepage
+.short-list{
+  h3{
+    margin-bottom: $base-unit;
+  }
+  .ui.celled.table{
+    background-color: transparent;
+    border: none;
+    thead{
+      display:none;
+    }
+    tr{
+      &:nth-child(even){
+        background-color: transparent;
+      }
+    }
+     tr td{
+       border-right: none;
+       &:last-child{
+         border-left: none;
+         border-right: none;
+         color: $theme-green;
+         font-weight: 900;
+         text-align: right;
+       }
+     }
+  }
+}
+.wp-block-column{
+  &.full-stats{
+    .ui.button.full-list-link{
+      display: none;
+    }
+  }
+}
+
+.ui.top.left.popup.tooltip{
+  border: 1px solid $menu-border;
+  box-shadow: none;
+  min-width: $base-unit-xlg * 3;
+  width: $base-unit-xlg * 3;
+  .content{
+    font-size:$module-font-size;
+    line-height: 150%;
+    width: auto !important;
+  }
+}

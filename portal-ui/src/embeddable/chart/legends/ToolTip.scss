@@ -1,0 +1,62 @@
+.generic-tooltip {
+  -webkit-box-shadow: 0 0 7px 2px rgba(204, 204, 204, 0.38);
+  box-shadow: 0 0 7px 2px rgba(204, 204, 204, 0.38);
+  border-radius: 5px;
+  background-color: #ffffff;
+  padding: 0px;
+  text-align: left !important;
+  border: 1px solid #DDD;
+  max-width: 400px;
+  min-width: max-content;
+  .formattedValue {
+    .generic-tooltip {
+      .currency {
+        font-size: 14px;
+      }
+    }
+
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .currency {
+    margin-left: 5px;
+  }
+
+  .of-total {
+    margin-left: 10px;
+  }
+
+  .tooltip-header {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 7px;
+  }
+
+  .tooltip-header.tooltip-color {
+    color: #0c0c0c;
+  }
+
+  .grey {
+    background-color: #F5F5F5;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top: 1px solid #DDD;
+  }
+
+  .inner {
+    color: black;
+    font-size: 14px;
+    line-height: 2.2em;
+  }
+
+  .element {
+    padding: 5px;
+  }
+}
+.generic-tooltip.wide {
+  min-width: auto;
+}

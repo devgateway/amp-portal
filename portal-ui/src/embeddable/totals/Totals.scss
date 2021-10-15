@@ -1,0 +1,39 @@
+@import "../../scss/vars";
+
+.ui.fluid.container.totals{
+  background-color: $header-bg;
+  border:1px solid $menu-border;
+  overflow: hidden;
+  margin-top: $base-unit-md;
+  padding: $base-unit-md;
+  table{
+    @include border-radius(0);
+    float: right;
+    font-size: $module-font-size;
+    text-align: right;
+    width: $extend / 1.8;
+    @media (max-width: 1024px) {
+      width: $extend;
+    }
+    th{
+      background-color: $totals-bg;
+      border-bottom: none;
+      border-left:1px solid $menu-border;
+      color: $body-text-color;
+      font-weight: 700;
+      &:first-child{
+        @include border-radius(0);
+        border-left: none;
+      }
+      &:last-child{
+        @include border-radius(0);
+      }
+    }
+    td{
+      border-left:1px solid $menu-border;
+      &:first-child{
+        border-left: none;
+      }
+    }
+  }
+}

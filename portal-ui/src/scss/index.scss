@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap');
+@import 'vars';
+
+html {
+  height: 100%;
+  font-size: 18px !important;
+}
+
+body {
+
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #000;
+  background-color: transparent !important;
+  font-size: 18px !important;
+}
+
+.ui {
+  .container {
+    width: $total-width !important;
+  }
+}
+
+.ui.container.embeddable {
+  margin: 0px !important;
+
+  .chart {
+    margin: 0px !important;
+  }
+  .container{
+    margin: 0px !important;
+  }
+
+}
+
+.content {
+  width: $total-width !important;
+}
+
+.amp {
+  width: $total-width !important;
+
+  .inner {
+    width: 1350px;
+  }
+}
+
+
+iframe {
+  margin: 0px;
+  padding: 0px;
+
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.ui {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.ui.container.narrow {
+  max-width: 1080px;
+}
+
+.ui.container.fluid.desktop {
+  max-width: 1366px !important;
+}
+.ui.container.header{
+  width: $extend !important;
+}
+.ui.container.desktop {
+  background-color: $body-bg;
+  margin-top: -$base-unit-lg;
+  padding-top: $base-unit-md;
+  width: $extend !important;
+}
+
+
+
+.ui.primary.button {
+  background-color: $light-blue !important;
+
+}
+
+.ui.secondary.button {
+  background-color: $green !important;
+
+}
+
+@import "theme/index";

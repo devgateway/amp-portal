@@ -1,0 +1,20 @@
+{
+  "app.title": "Aid Management Platform",
+  "app.totals": "Totals",
+  "app.title-small": "AMP Portal",
+  "app.view-full-list": "View Full List",
+  "app.download-xls": "Download XLS",
+  "app.data-loading": "Data Loading",
+  "amp.dashboard:chart-thousand": "k",
+  "amp.dashboard:chart-million": "M",
+  "amp.dashboard:chart-billion": "B",
+  "amp.dashboard:chart-trillion": "T",
+  "amp.dashboard:chart-peta": "P",
+  "amp.dashboard:chart-exa": "E",
+  "amp.others": "Others",
+  "amp.chart.dashboard:of-total": "of Total",
+  "amp.chart.dashboard:of-year-total": "of Year Total",
+  "amp.chart.dashboard:inunits": "In units",
+  "amp.chart.dashboard:inthousands": "In thousands",
+  "amp.chart.dashboard:inmillions": "In millions"
+}
