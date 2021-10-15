@@ -36,7 +36,7 @@ const MapComponent = ({ height, baseMap, viewMore, zoom, data, labels }) => {
     </Control>
     <MyGeoJSON data={data} ref={geoJsonLayer} />
     <Control position={viewMore.position} className="leaflet-control leaflet-bar">
-      <div className="view-more"><a href={viewMore.link} target="_blank" rel='noreferrer'>View more</a></div>
+      <div className="view-more"><a href={viewMore.link} target="_blank" rel='noreferrer'>{viewMore.text}</a></div>
     </Control>
   </MapContainer>);
 }

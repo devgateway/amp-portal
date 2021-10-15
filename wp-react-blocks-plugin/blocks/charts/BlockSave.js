@@ -20,6 +20,8 @@ const SaveComponent = (props) => {
       toggleChartLabel,
       chartTitle,
       chartDescription,
+      viewMoreLabel,
+      viewMoreUrl,
       legendPosition,
       legendsWidth,
       showLegends,
@@ -80,6 +82,8 @@ const SaveComponent = (props) => {
          data-toggle-chart-label={toggleChartLabel}
 
          data-chart-title={chartTitle}
+         data-chart-view-more-label={viewMoreLabel}
+         data-chart-view-more-url={viewMoreUrl}
          data-chart-description={chartDescription}
 
          data-legends-width={legendsWidth}

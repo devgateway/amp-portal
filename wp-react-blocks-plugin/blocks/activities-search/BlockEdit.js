@@ -29,7 +29,6 @@ class BlockEdit extends BaseBlockEdit {
 
   componentDidMount() {
     super.componentDidMount();
-    console.log(this.state.react_amp_url)
   }
 
   render() {
@@ -55,7 +54,9 @@ class BlockEdit extends BaseBlockEdit {
         searchDonorPlaceHolder,
         searchFiltersLocationEnabled,
         searchLocationTitle,
-        searchLocationPlaceHolder
+        searchLocationPlaceHolder,
+        pagingTitle,
+        pagingOf
       }
     } = this.props;
     let queryString = `data-height=${height}`;
@@ -78,6 +79,9 @@ class BlockEdit extends BaseBlockEdit {
     queryString += `&data-search-filter-donor=${searchFiltersDonorEnabled}`;
     queryString += `&data-search-filter-donor-title=${searchDonorTitle}`;
     queryString += `&data-search-filter-donor-placeholder=${searchDonorPlaceHolder}`;
+    queryString += `&data-search-paging-title=${pagingTitle}`;
+    queryString += `&data-search-paging-of=${pagingOf}`;
+
     const divStyles = { height: height + 'px', width: '100%' };
     return ([isSelected && (
         <InspectorControls>
@@ -96,7 +100,8 @@ class BlockEdit extends BaseBlockEdit {
                 />
               </PanelRow>
             </PanelBody>
-            <PanelBody initialOpen={false} title={__("Filters")}>
+
+            {searchType === 'Extended search' && <PanelBody initialOpen={false} title={__("Filters")}>
               <FilterConfig label={__("Donor Agency")} chkLabel={__("Enable Donor Agency")}
                             chkVariable={searchFiltersDonorEnabled}
                             setAttributes={setAttributes}
@@ -142,6 +147,7 @@ class BlockEdit extends BaseBlockEdit {
                             setAttributes={setAttributes}
               />
             </PanelBody>
+            }
             <SizeConfig initialOpen={false} setAttributes={setAttributes} height={height}></SizeConfig>
             <PanelBody initialOpen={false} title={__("Labels")}>
               <PanelRow>
@@ -177,6 +183,20 @@ class BlockEdit extends BaseBlockEdit {
                   label={__('Tooltip')}
                   value={searchTooltip}
                   onChange={(searchTooltip) => setAttributes({ searchTooltip })}
+                />
+              </PanelRow>
+              <PanelRow>
+                <TextControl
+                  label={__('Paging title')}
+                  value={pagingTitle}
+                  onChange={(pagingTitle) => setAttributes({ pagingTitle })}
+                />
+              </PanelRow>
+              <PanelRow>
+                <TextControl
+                  label={__('Paging of')}
+                  value={pagingOf}
+                  onChange={(pagingOf) => setAttributes({ pagingOf })}
                 />
               </PanelRow>
             </PanelBody>

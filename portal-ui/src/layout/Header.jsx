@@ -84,13 +84,9 @@ const Header = ({ intl, match }) => {
   const history = useHistory();
 
   const goToEng = (e) => {
-    console.log('go to eng clicked');
-    console.log(e);
     handleClick('en', e);
   }
   const goToFrench = (e) => {
-    console.log('go to french clicked');
-    console.log(e);
     handleClick('fr', e);
   }
   const handleClick = (l, e) => {

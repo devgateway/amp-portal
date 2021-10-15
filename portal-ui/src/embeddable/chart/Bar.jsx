@@ -3,6 +3,7 @@ import { ResponsiveBar } from '@nivo/bar'
 import { injectIntl } from 'react-intl';
 import { BoxLegendSvg } from "@nivo/legends";
 import { useTheme } from '@nivo/core'
+import './bar.scss';
 import {
   colorSchemes,
   isCategoricalColorScheme,
@@ -13,6 +14,7 @@ import * as d3 from 'd3';
 import { formatKMB, getGlobalSettings } from "./utils";
 import ToolTip from "./legends/ToolTip";
 import { connect } from "react-redux";
+import { Button, Grid, Radio } from "semantic-ui-react";
 
 /**
  * Base code taken from TCDI project
@@ -73,13 +75,13 @@ const Chart = ({
                  legendPosition,
                  tickRotation,
                  //tickColor,
-                 measure,
+                 translatedMeasure,
                  layout = "vertical",
                  settings
                }) => {
   const keys = Array.from(options.keysAndLegends.keys());
   const globalSettings = getGlobalSettings(settings);
-  const [filter, setFilter] = useState([])
+  const [filter, setFilter] = useState([]);
   const applyFilter = (values) => {
 
     if (filter) {
@@ -162,7 +164,7 @@ const Chart = ({
             x={(-1 * (width) / 2 + 2)}
             y={-6} rx={3} ry={3}
             width={(width) + 2} height={22}
-            fill="rgba(0, 0, 0, .03)" />
+            fill="rgba(255, 255, 255)" />
       <rect transform={`rotate(${tickRotation})`}
             x={(-1 * (width) / 2)}
             y={-12}
@@ -211,8 +213,12 @@ const Chart = ({
     symbolSize: 20,
   }
 
-  let margin = { top: 0, right: 25, bottom: 60, left: 50 }
 
+  let margin = { top: 0, right: 25, bottom: 60, left: 50 }
+  if (intl.locale === 'fr') {
+    legendPosition = 'bottom';
+    legendsConfig.itemWidth = itemWidth + 50;
+  }
   if (legendPosition === 'right' && showLegends) {
     Object.assign(legendsConfig, { anchor: "bottom-right", translateX: 40 + itemWidth, translateY: 0, })
     margin = { top: 0, right: 20 + itemWidth, bottom: 60, left: 50 }
@@ -220,147 +226,121 @@ const Chart = ({
   if (legendPosition === 'bottom' && showLegends) {
     Object.assign(legendsConfig, { anchor: "bottom" })
     Object.assign(legendsConfig, { direction: "row" })
-    Object.assign(legendsConfig, { anchor: "bottom-right", translateX: 0, translateY: 90 })
+    Object.assign(legendsConfig, { anchor: "bottom-right", translateX: 0, translateY: 100 })
     margin = { top: 0, right: 25, bottom: 100, left: 50 }
   }
   if (legendPosition === 'left' && showLegends) {
     Object.assign(legendsConfig, { anchor: "bottom-left", translateX: (40 + itemWidth) * -1, translateY: 0 })
     margin = { top: 0, right: 25, bottom: 60, left: itemWidth + 40 }
   }
+
   margin.top = 70;
   margin.bottom = 100;
-  const ChartTitle = (data) => {
-    const { width } = data;
-    const textWIth = getTextWidth(legends.title + " / " + measure, "16px Roboto") + 15
-    const groupedWIth = getTextWidth('grouped', "10px Roboto") + 15;
-    const commonStyle =
-      {
-        fill: "rgb(51, 51, 51)",
-        fontFamily: "Roboto"
-      }
-    const style = {
-      ...commonStyle,
-      fontSize: "16px",
 
-    };
-    const styleSwitcher = { ...style, fontSize: '10px', cursor: 'pointer' }
-    return (
-      <g transform={`translate(-${textWIth / 2},0)`}>
-        <text
-          x={(width / 2) - (100)}
-          y={0}
-          style={{ ...styleSwitcher, fontWeight: `${groupMode === 'stacked' ? 'bold' : 'normal'}` }}
-          onClick={(e) => groupMode === 'grouped' ? setGroupMode('stacked') : e.preventDefault()}
-        >stacked
-        </text>
-        <text
-          x={(width / 2) - (100 - groupedWIth)}
-          y={0}
-          style={{ ...styleSwitcher, fontWeight: `${groupMode === 'grouped' ? 'bold' : 'normal'}` }}
-          onClick={(e) => groupMode === 'stacked' ? setGroupMode('grouped') : e.preventDefault()}
-        >grouped
-        </text>
-        <text
-          x={width / 2}
-          y={-40}
-          style={style}
-        >
-          {legends.title + " / " + measure}
-        </text>
-      </g>
-    )
-  }
   return (
-    <div style={{ height: height, background: 'white' }}>
-      {options && options.data && <ResponsiveBar
-        colorBy={colors.colorBy}
-        animate={true}
-        layout={layout}
-        enableLabel={true}
-        motionStiffness={55}
-        motionDamping={11}
-        {...options}
-        minValue="auto"
-        keys={applyFilter(keys)}
-        data={applyFilter(options.data)}
-        groupMode={groupMode ? groupMode : "grouped"}
-        margin={margin}
-        padding={0.1}
-        colors={d => getColor(d.id, d.data)}
-        borderColor="#000"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{ renderTick: CustomTick }}
-        axisLeft={{
-          format: value =>
-            formatValue(value),
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: -40
+    <Grid className="bar-container">
+      <Grid.Row className="bar-title"><span>{legends.title + " / " + translatedMeasure}</span></Grid.Row>
+      <Grid.Row> <Radio label='Grouped' checked={groupMode === 'grouped'}
+                        onClick={() => setGroupMode('grouped')} /><Radio label='Stacked'
+                                                                         checked={groupMode === 'stacked'}
+                                                                         onClick={() => setGroupMode('stacked')} /></Grid.Row>
+      <Grid.Row style={{ height: `${height - 125}px`, background: 'white' }}>
+        {options && options.data && <ResponsiveBar
+          colorBy={colors.colorBy}
+          animate={true}
+          layout={layout}
+          enableLabel={true}
+          motionStiffness={55}
+          motionDamping={11}
+          {...options}
+          minValue="auto"
+          keys={applyFilter(keys)}
+          data={applyFilter(options.data)}
+          groupMode={groupMode ? groupMode : "grouped"}
+          margin={margin}
+          padding={0.1}
+          colors={d => getColor(d.id, d.data)}
+          borderColor="#000"
+          axisTop={null}
+          axisRight={null}
+          axisBottom={{ renderTick: CustomTick }}
+          axisLeft={{
+            format: value =>
+              formatValue(value),
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legendPosition: 'middle',
+            legendOffset: -40
 
-        }}
-        labelSkipWidth={40}
-        labelSkipHeight={12}
-        labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        layers={["grid", "axes", "bars", "markers", BarLegend, 'annotations', ChartTitle]}
-        legends={showLegends ? [
-          {
-            data: keys.map((k) => {
-              let theColor;
-              if (filter.indexOf(k) > -1) {
-                theColor = '#EEE'
-              } else {
-                theColor = getColorByKey(k)
-              }
-              return {
-                color: theColor,
-                id: k,
-                label: options.keysAndLegends.get(k)
-              }
-            }),
-            ...legendsConfig,
-            onClick: (d) => toggle(d.id),
-            effects: [
-              {
-                on: 'hover',
-                style: {
-                  itemOpacity: .6
+          }}
+          labelSkipWidth={40}
+          labelSkipHeight={12}
+          labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+          layers={["grid", "axes", "bars", "markers", BarLegend, 'annotations']}
+          legends={showLegends ? [
+            {
+              data: keys.map((k) => {
+                let theColor;
+                if (filter.indexOf(k) > -1) {
+                  theColor = '#EEE'
+                } else {
+                  theColor = getColorByKey(k)
                 }
-              }
-            ]
-          }
-        ] : []}
-        onMouseEnter={(_data, event) => event.target.style.fill = lightenDarkenColor(getColor(_data.id, _data.data), 30)}
-        onMouseLeave={(_data, event) => event.target.style.fill = getColor(_data.id, _data.data)}
-        tooltip={(e) =>
-          (
-            <ToolTip
-              color={e.color}
-              titleLabel={`${options.keysAndLegends.get(e.id)} / ${e.indexValue}`}
-              formattedValue={e.data.formattedAmount}
-              value={e.value}
-              total={options.total}
-              id={e.data.id}
-              currencyCode={options.currency}
-              globalSettings={globalSettings}
-            />)}
+                return {
+                  color: theColor,
+                  id: k,
+                  label: options.keysAndLegends.get(k)
+                }
+              }),
+              ...legendsConfig,
+              onClick: (d) => toggle(d.id),
+              effects: [
+                {
+                  on: 'hover',
+                  style: {
+                    itemOpacity: .6
+                  }
+                }
+              ]
+            }
+          ] : []}
+          onMouseEnter={(_data, event) => event.target.style.fill = lightenDarkenColor(getColor(_data.id, _data.data), 30)}
+          onMouseLeave={(_data, event) => event.target.style.fill = getColor(_data.id, _data.data)}
+          tooltip={(e) =>
+            (
+              <ToolTip
+                color={e.color}
+                titleLabel={`${options.keysAndLegends.get(e.id)} / ${e.indexValue}`}
+                formattedValue={e.data.formattedAmount}
+                value={e.value}
+                total={options.total}
+                id={e.data.id}
+                currencyCode={options.currency}
+                globalSettings={globalSettings}
+              />)}
 
-        theme={{
-          tooltip: {
-            basic: { whiteSpace: "pre", display: "flex", alignItems: "center" },
-            container: {
-              background: "transparent",
-              boxShadow: ""
+          theme={{
+            tooltip: {
+              basic: { whiteSpace: "pre", display: "flex", alignItems: "center" },
+              container: {
+                background: "transparent",
+                boxShadow: ""
+              },
+              table: {},
+              tableCell: { padding: "3px 5px" },
+
             },
-            table: {},
-            tableCell: { padding: "3px 5px" },
-
-          },
-        }}
-      />}
-    </div>
+          }}
+        />}
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column>
+          <Button className="explore-chart-link" as='a' href={legends.viewMoreUrl}
+                  target="_blank">{legends.viewMoreLabel}</Button>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   )
 }
 

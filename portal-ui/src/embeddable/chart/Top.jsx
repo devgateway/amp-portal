@@ -3,7 +3,7 @@ import { ResponsiveBar } from '@nivo/bar';
 import { injectIntl } from "react-intl";
 import { formatKMB, getGlobalSettings } from "./utils";
 import SimpleLegend from "./legends/SimpleLegend";
-import { Grid } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import './Top.scss';
 import ToolTip from "./legends/ToolTip";
 import { getColor } from './TopChartUtils';
@@ -61,8 +61,9 @@ const Top = ({
   return (
     <Grid className={"container top-chart"}>
       {showLegend && <Grid.Row>
-        <Grid.Column computer={8} mobile={16} className="top-chart-title">{legends.title}</Grid.Column>
-        <Grid.Column computer={8} mobile={16} className="value"> <span className="amount">${formatValue(options.total)}</span> <span className="currency">${options.currency}</span></Grid.Column>
+        <Grid.Column computer={12} mobile={16} className="top-chart-title">{legends.title}</Grid.Column>
+        <Grid.Column computer={4} mobile={16} className="value"> <span
+          className="amount">${formatValue(options.total)}</span></Grid.Column>
       </Grid.Row>
       }
       <div className={'inner'}>
@@ -121,6 +122,11 @@ const Top = ({
           />
         </div>
       </div>
+      <Grid.Row>
+        <Grid.Column computer={16} mobile={16}>
+          <Button className="explore-chart-link" as='a' href={legends.viewMoreUrl}
+                  target="_blank">{legends.viewMoreLabel}</Button></Grid.Column>
+      </Grid.Row>
     </Grid>
   );
 }

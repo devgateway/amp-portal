@@ -1,30 +1,34 @@
+@import "../../scss/vars";
+
 .top-chart {
   margin: 0 !important;
   background-color: #FFFFFF;
   margin-top: 30px;
-  .top-chart-title{
-    color: #05315c;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 800;
+
+  .top-chart-title {
+    @include chart-title;
   }
-  .value{
+
+  .value {
     color: #666666;
     font-size: 19px;
     font-weight: bold;
     text-align: right;
-    .currency{
+
+    .currency {
       font-weight: 300;
       display: inline-block;
       margin-right: -5px;
       margin-top: 2px;
     }
-    .amount{
+
+    .amount {
       float: left;
       font-family: 'Open Sans', sans-serif;
       font-weight: 800;
     }
   }
+
   .row {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
@@ -34,5 +38,13 @@
 
   .inner {
     width: 100%;
+  }
+
+  .button.explore-chart-link {
+    @include view-more-link;
+
+    &:hover {
+      @include view-more-link-hover;
+    }
   }
 }

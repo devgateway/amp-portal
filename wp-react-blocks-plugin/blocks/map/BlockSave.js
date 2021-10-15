@@ -13,7 +13,8 @@ const SaveComponent = (props) => {
       zoomTextIn,
       zoomTextOut,
       centerText,
-      resetText
+      resetText,
+      viewMoreText
     }
   } = props;
   const blockProps = useBlockProps.save({
@@ -34,6 +35,7 @@ const SaveComponent = (props) => {
          data-zoom-title-in={zoomTextIn}
          data-center-text={centerText}
          data-reset-text={resetText}
+         data-view-more-text={viewMoreText}
     >
       <InnerBlocks.Content />
     </div>

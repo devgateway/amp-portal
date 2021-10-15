@@ -1,4 +1,4 @@
-import React from 'react'
+//import  React from 'react'
 import asyncComponent from "../AsyncComponent";
 
 import data from './reducers/data'
@@ -45,6 +45,6 @@ const components = {
 
 export const getComponentByNameIgnoreCase = (name) => {
 
-  const k = Object.keys(components).filter(value => value.toLowerCase() == name.toLowerCase())
+  const k = Object.keys(components).filter(value => value.toLowerCase() === name.toLowerCase())
   return components[k]
 }

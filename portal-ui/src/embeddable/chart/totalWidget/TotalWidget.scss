@@ -6,7 +6,7 @@
   border:1px solid $menu-border;
   padding: $base-unit + 10;
   position: relative;
-  width: $extend + 10;
+  width: $extend;
   h3{
     color: lighten($login-blue, 10%);
     font-size: $module-font-size - 1 !important;

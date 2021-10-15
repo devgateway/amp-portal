@@ -33,6 +33,8 @@
     font-size: 12px;
     padding: 7px 0;
     text-decoration: underline;
+    cursor: pointer;
+    text-transform: capitalize;
     &:hover{
       background-color: transparent;
       color: $theme-light-green;

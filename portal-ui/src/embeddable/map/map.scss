@@ -167,9 +167,10 @@
   }
 }
 
-.leaflet-touch .leaflet-bar{
+.leaflet-touch .leaflet-bar {
   border: none;
 }
+
 .map-control {
   top: 65px;
 
@@ -182,5 +183,15 @@
     width: 26px;
     background: white;
     border-radius: 4px;
+  }
+}
+
+html:lang(fr) {
+  .leaflet-control.leaflet-bar {
+    .view-more {
+      a, a:hover {
+        width: 200px!important;
+      }
+    }
   }
 }

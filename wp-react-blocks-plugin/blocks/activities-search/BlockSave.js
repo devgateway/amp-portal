@@ -23,7 +23,9 @@ const SaveComponent = (props) => {
       searchLocationPlaceHolder,
       searchFiltersDonorEnabled,
       searchDonorTitle,
-      searchDonorPlaceHolder
+      searchDonorPlaceHolder,
+      pagingTitle,
+      pagingOf
     }
   } = props;
   const blockProps = useBlockProps.save({
@@ -54,6 +56,8 @@ const SaveComponent = (props) => {
          data-search-filter-donor={searchFiltersDonorEnabled}
          data-search-filter-donor-title={searchDonorTitle}
          data-search-filter-donor-placeholder={searchDonorPlaceHolder}
+         data-search-paging-title={pagingTitle}
+         data-search-paging-of={pagingOf}
     >
       <InnerBlocks.Content />
     </div>

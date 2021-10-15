@@ -4,7 +4,7 @@ import BlockSave from "./BlockSave";
 import BlockEdit from "./BlockEdit";
 import { Map } from '../icons/index'
 
-registerBlockType(process.env.BLOCKS_NS+'/map',
+registerBlockType(process.env.BLOCKS_NS + '/map',
   {
     title: __('AMP Map Component'),
     icon: Map,
@@ -51,6 +51,9 @@ registerBlockType(process.env.BLOCKS_NS+'/map',
       centerText: {
         type: 'string',
         default: 'centerText'
+      }, viewMore: {
+        type: 'string',
+        default: 'View more'
       }
 
     }

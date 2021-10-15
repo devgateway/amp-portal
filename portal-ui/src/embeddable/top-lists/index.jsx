@@ -15,7 +15,8 @@ const TopLists = (props) => {
       'data-top-title': topTitle = 'Top Donor',
       'data-top-description': topDescription = 'Top donor description',
       'data-top-show-donor-group': topShowDonorGroupStr = 'false',
-      'data-top-tooltip': topTooltip
+      'data-top-tooltip': topTooltip,
+      locale
 
     }
       = props;
@@ -23,6 +24,7 @@ const TopLists = (props) => {
     const labels = { title: topTitle, description: topDescription, tooltip: topTooltip };
     const fields = [];
     const numberFields = [];
+    const numberFieldsFormatted = [];
     const linkFields = [];
     let identity;
     if (topType === 'topDonors') {
@@ -34,6 +36,7 @@ const TopLists = (props) => {
         identity = 'donor-agency';
       }
       fields.push('actual-commitments');
+      numberFieldsFormatted.push('actual-commitments');
     } else {
       if (topType === 'topProjects') {
         identity = 'project-title';
@@ -74,9 +77,9 @@ const TopLists = (props) => {
     const child = (<TopList
       height={height} topType={topType} topSize={topSize} labels={labels} currency={topCurrency} fields={fields}
       topShowDonorGroup={topShowDonorGroup} numberFields={numberFields} linkFields={linkFields} identity={identity}
-      isBigTable={topSize === "top10"} />);
+      isBigTable={topSize === "top10"} numberFieldsFormatted={numberFieldsFormatted} />);
     const newSource = `${topType}/${topSize}/${topMonth}/${topCurrency}/${topShowDonorGroup}`;
-    return <DataProvider source={newSource} app={'topLists'} store={newSource} measure={topFundingType}>
+    return <DataProvider source={newSource} app={'topLists'} store={newSource} measure={topFundingType} locale={locale}>
       <Container style={{ "height": `${height}px` }} className={"body"} fluid={true}><DataConsumer>
         {child}
       </DataConsumer></Container>

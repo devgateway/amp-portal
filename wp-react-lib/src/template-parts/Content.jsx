@@ -43,9 +43,8 @@ class Content extends React.Component {
       locale,
       messages,
       preview,
-      theParams
+      theParams,
     } = this.props
-
     if (post) {
       const contentParts = post.content ? post.content.rendered.split("<!--more-->") : []
       const intro = contentParts.length > 1 ? contentParts[0] : null

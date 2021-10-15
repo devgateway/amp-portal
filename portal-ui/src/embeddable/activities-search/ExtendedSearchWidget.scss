@@ -179,3 +179,12 @@
 .advanced-search-title{
   margin-bottom: 0;
 }
+html:lang(fr){
+  .ui.form {
+    &.advanced-search {
+      .ui.button{
+        width:$base-unit-lg * 6;
+      }
+    }
+    }
+}

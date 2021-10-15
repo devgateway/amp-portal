@@ -14,14 +14,15 @@ const Map = (props) => {
     'data-zoom-title-out': zoomTitleOut = 'Zoom Out',
     'data-zoom-level': zoomLevel = 8,
     'data-view-more-position': viewMorePosition = 'bottomleft',
+    'data-view-more-text': viewMoreText = 'View more',
     'data-view-more-link': viewMoreLink = "https://www.developmentgateway.org",
     'data-center-text': centerText = 'Center',
-    'data-reset-text': resetText = 'Reset',
+    'data-reset-text': resetText = 'Reset'
 
   }
     = props;
   const adminLevelParam = ADMIN_LEVEL_ID_TO_VALUE.find(a => a.id === adminLevel).value;
-  const viewMore = { link: viewMoreLink, position: viewMorePosition };
+  const viewMore = { link: viewMoreLink, position: viewMorePosition, text: viewMoreText };
   const zoom = { level: zoomLevel, titleIn: zoomTitleIn, titleOut: zoomTitleOut };
   const labels = { reset: resetText, center: centerText };
   const child = (<MapComponent

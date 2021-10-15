@@ -1,0 +1,34 @@
+@import "../../scss/vars";
+
+.bar-container {
+  margin: 0px !important;
+  height: 100%;
+  background-color: white;
+
+  .ui.radio.checkbox:last-child {
+    margin-left: 10px;
+  }
+
+  .row {
+    padding: 0.5rem 1rem !important;
+  }
+
+  .bar-title {
+    @include chart-title;
+    text-transform: capitalize;
+
+    > span {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+
+  .button.explore-chart-link {
+    @include view-more-link;
+
+    &:hover {
+      @include view-more-link-hover;
+    }
+  }
+}

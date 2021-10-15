@@ -1,5 +1,9 @@
 {
   "app.title": "Plateforme de gestion de l'aide",
+  "app.title-small": "Portail publique MGAE",
+  "app.totals": "Totaux",
+  "app.view-full-list": "voir la liste complète",
+  "app.download-xls": "Télécharger XLS",
   "amp.dashboard:chart-thousand": "k",
   "amp.dashboard:chart-million": "M",
   "amp.dashboard:chart-billion": "B",

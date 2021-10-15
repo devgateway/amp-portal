@@ -53,10 +53,11 @@ class BlockEdit extends BaseBlockEdit {
       return 0;
     });
   }
-componentDidMount() {
-  super.componentDidMount();
-  console.log(this.state.react_amp_url)
-}
+
+  componentDidMount() {
+    super.componentDidMount();
+    console.log(this.state.react_amp_url)
+  }
 
   render() {
     const {
@@ -67,6 +68,7 @@ componentDidMount() {
         adminLevel,
         viewMoreLink,
         viewMorePosition,
+        viewMoreText,
         zoomLevel,
         zoomTextIn,
         zoomTextOut,
@@ -78,6 +80,7 @@ componentDidMount() {
     let queryString = `data-height=${height}&data-base-map=${baseMap}&data-admin-level=${adminLevel}&data-view-more-link=${viewMoreLink}`;
     queryString += `&data-view-more-position=${viewMorePosition}&data-zoom-level=${zoomLevel}&data-zoom-title-out=${zoomTextOut}`;
     queryString += `&data-zoom-title-in=${zoomTextIn}&data-reset-text=${resetText}&data-center-text=${centerText}`;
+    queryString += `&data-view-more-text=${viewMoreText}`;
 
     const divStyles = { height: height + 'px', width: '100%' }
     return ([isSelected && (
@@ -136,6 +139,13 @@ componentDidMount() {
               <PanelRow></PanelRow></PanelBody>
 
             <PanelBody initialOpen={false} title={__("Labels")}>
+              <PanelRow>
+                <TextControl
+                  label={__('View more Text')}
+                  value={viewMoreText}
+                  onChange={(viewMoreText) => setAttributes({ viewMoreText })}
+                />
+              </PanelRow>
               <PanelRow>
                 <TextControl
                   label={__('View more link')}

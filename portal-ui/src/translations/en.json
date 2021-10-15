@@ -1,6 +1,9 @@
 {
   "app.title": "Aid Management Platform",
+  "app.totals": "Totals",
   "app.title-small": "AMP Portal",
+  "app.view-full-list": "View Full List",
+  "app.download-xls": "Download XLS",
   "amp.dashboard:chart-thousand": "k",
   "amp.dashboard:chart-million": "M",
   "amp.dashboard:chart-billion": "B",

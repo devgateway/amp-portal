@@ -192,8 +192,7 @@ const ExtendedSearchWidget = (props) => {
 
     </div>
     <div className="results-wrapper">
-      <div className="results-value">Activity
-        result {pageFrom()} - {pageTo()} of {data.count}</div>
+      <div className="results-value">{labels.pagingTitle} {pageFrom()} - {pageTo()} {labels.pagingOf} {data.count}</div>
       <TopList data={data} labels={tableLabels} identity="activity-id" fields={fields} header isBigTable
                exportData={exportData} linkField="activity-id" />
       <Pagination defaultActivePage={data.page} totalPages={data.totalpagecount}

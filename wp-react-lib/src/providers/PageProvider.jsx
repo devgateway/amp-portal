@@ -67,10 +67,10 @@ class PageProvider extends React.Component {
   }
 
   render() {
-    const { pages, meta, loading, error, fallbackComponent, locale, theParams } = this.props
+    const { pages, meta, loading, error, fallbackComponent, locale, theParams, messages } = this.props
     if (pages && pages.length > 0) {
       return <PageContext.Provider
-        value={{ pages, meta, locale, theParams }}>{this.props.children}</PageContext.Provider>
+        value={{ pages, meta, locale, theParams, messages }}>{this.props.children}</PageContext.Provider>
     } else if (error) {
       return <Segment color={"red"}><h1>500</h1>
         <p>The service is not available please try again in a few minutes</p></Segment>

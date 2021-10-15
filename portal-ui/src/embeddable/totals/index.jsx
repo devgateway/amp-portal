@@ -19,7 +19,7 @@ const Totals = ({ data, settings, intl }) => {
         </Table.Header>
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Totals ({data['Currency']})</Table.Cell>
+            <Table.Cell>{intl.formatMessage({ id: 'app.totals', defaultMessage: "Totals" })} ({data['Currency']})</Table.Cell>
             <Table.Cell>{formatNumberWithSettings(null, intl, globalSettings, data.totals['Total Actual Commitments'])}</Table.Cell>
             <Table.Cell>{formatNumberWithSettings(null, intl, globalSettings, data.totals['Total Actual Disbursements'])}</Table.Cell>
           </Table.Row>

@@ -21,7 +21,7 @@ const BarChar = (props) => {
   const intl = useIntl();
   const { data } = props
   const options = buildBarOptions(data, intl);
-  return <Bar {...props} options={options} />
+  return <Bar {...props} options={options} translatedMeasure={data.measures[0].translated}/>
 }
 const TopChart = (props) => {
   const { data, legends, colors, height, groupMode, barHeight } = props
@@ -78,6 +78,8 @@ const Chart = (props) => {
     'data-show-legends': showLegends = "true",
 
     'data-chart-title': title = "Chart title",
+    'data-chart-view-more-label': viewMoreLabel = "Explore this chart",
+    'data-chart-view-more-url': viewMoreUrl = "https://haiti.ampsite.net/TEMPLATE/ampTemplate/dashboard/build/index.html",
     'data-chart-description': chartDescription = "Chart description",
 
     'data-toggle-info-label': toggleInfoLabel = "Info Graphic",
@@ -111,7 +113,9 @@ const Chart = (props) => {
   const legends = {
     title,
     left,
-    chartDescription
+    chartDescription,
+    viewMoreUrl,
+    viewMoreLabel
   };
   const colors = {
     scheme: scheme,
@@ -158,7 +162,7 @@ const Chart = (props) => {
           tickRotation: tickRotation,
           showLegends: showLegends == "true",
           itemWidth: itemWidth,
-          height: `${contentHeight}px`,
+          height: parseInt(contentHeight, 10),
           legendPosition: legendPosition,
           legends: legends,
           colors: colors,

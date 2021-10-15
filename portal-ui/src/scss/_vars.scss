@@ -1,5 +1,5 @@
 $font-family: 'Roboto', sans-serif;
-$font-family-secondary:'Raleway', sans-serif;
+$font-family-secondary: 'Raleway', sans-serif;
 $font-family-tertiary: 'Open Sans', sans-serif;
 
 $header-bg: #ffffff;
@@ -45,8 +45,8 @@ $base-unit-md: 20px;
 $base-unit-lg: 30px;
 $base-unit-xlg: 100px;
 
-$total-width:1366px;
-$inner-width:1350px;
+$total-width: 1366px;
+$inner-width: 1350px;
 $extend: 100%;
 
 // Font sizes
@@ -67,10 +67,10 @@ $module-letter-spacing: 0.04em;
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
   border-radius: $radius;
-  background-clip: padding-box;  /* stops bg color from leaking outside the border: */
+  background-clip: padding-box; /* stops bg color from leaking outside the border: */
 }
 
-@mixin menu-icon{
+@mixin menu-icon {
   background-repeat: no-repeat;
   background-size: $base-unit + 10 $base-unit + 10;
   background-position: 0 1px;
@@ -78,44 +78,48 @@ $module-letter-spacing: 0.04em;
 }
 
 // side modules mixing
-@mixin module-container($bg-color){
+@mixin module-container($bg-color) {
   background-color: $bg-color;
   border: 1px solid $menu-border;
   font-family: $font-family-secondary;
   padding: $base-unit * 2;
   width: $extend;
 }
-@mixin module-title{
+
+@mixin module-title {
   font-size: $chart-font-size !important;
   color: $body-text-color;
   font-weight: 500;
 }
-@mixin module-description{
+
+@mixin module-description {
   color: $body-text-color;
   font-size: $module-font-size;
   letter-spacing: $module-letter-spacing;
   line-height: 150%;
 }
-@mixin primary-button{
+
+@mixin primary-button {
   background-color: $login-blue;
   color: $header-bg;
   font-size: $module-font-size;
-  &:hover{
+  &:hover {
     background-color: $theme-green;
     color: $header-bg;
   }
 }
-@mixin text-button{
+
+@mixin text-button {
   background-color: transparent;
   color: $link-color;
   padding: 0;
   text-decoration: underline;
-  &:hover{
+  &:hover {
     color: $theme-green;
   }
 }
 
-@mixin tabbed-post-label{
+@mixin tabbed-post-label {
   background-color: transparent !important;
   color: $tabbed-post-label-color;
   font-weight: 900;
@@ -126,11 +130,34 @@ $module-letter-spacing: 0.04em;
   padding-left: $base-unit-md + 5;
 }
 
-@mixin tabbed-post-label-active{
+@mixin tabbed-post-label-active {
   background-color: transparent !important;
   background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI1LjIuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIGZvY3VzYWJsZT0iZmFsc2UiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiCgkgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6IzJEQTBGODt9Cjwvc3R5bGU+CjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNTYsOGMxMzcsMCwyNDgsMTExLDI0OCwyNDhTMzkzLDUwNCwyNTYsNTA0UzgsMzkzLDgsMjU2UzExOSw4LDI1Niw4eiBNMzY5LjksMjM5TDIzNC40LDEwMy41CgljLTkuNC05LjQtMjQuNi05LjQtMzMuOSwwbC0xNywxN2MtOS40LDkuNC05LjQsMjQuNiwwLDMzLjlMMjg1LjEsMjU2TDE4My41LDM1Ny42Yy05LjQsOS40LTkuNCwyNC42LDAsMzMuOWwxNywxNwoJYzkuNCw5LjQsMjQuNiw5LjQsMzMuOSwwTDM2OS45LDI3M0MzNzkuMywyNjMuNiwzNzkuMywyNDguNCwzNjkuOSwyMzl6Ii8+Cjwvc3ZnPgo=");
   background-repeat: no-repeat;
   background-size: $base-unit + 8 $base-unit + 8;
   color: $login-blue;
   padding-left: $base-unit-md + 5;
+}
+
+@mixin view-more-link {
+  background-color: transparent;
+  color: #289df4;
+  font-size: 12px;
+  padding: 7px 0;
+  text-decoration: underline;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+@mixin view-more-link-hover {
+  background-color: transparent;
+  color: $theme-light-green;
+}
+
+@mixin chart-title {
+  color: #05315c;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+
 }

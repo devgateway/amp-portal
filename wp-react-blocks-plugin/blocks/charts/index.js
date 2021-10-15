@@ -81,6 +81,15 @@ registerBlockType(process.env.BLOCKS_NS + '/chart',
         type: 'String',
         default: "Chart title"
       },
+
+      viewMoreLabel: {
+        type: 'String',
+        default: "Explore this chart"
+      },
+      viewMoreUrl: {
+        type: 'String',
+        default: ""
+      },
       chartDescription: {
         type: 'String',
         default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet lectus ut " +

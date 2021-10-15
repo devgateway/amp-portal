@@ -27,6 +27,8 @@ const ActivitiesSearch = (props) => {
       'data-search-filter-donor': searchFilterDonorB = 'true',
       'data-search-filter-donor-title': searchDonorTitle = 'Donor Agency',
       'data-search-filter-donor-placeholder': searchDonorPlaceHolder = 'Donor Agency',
+      'data-search-paging-title': pagingTitle = 'Activity Result',
+      'data-search-paging-of': pagingOf = 'of',
       locale: locale = 'en',
       theParams
     }
@@ -36,7 +38,9 @@ const ActivitiesSearch = (props) => {
       description: searchDescription,
       hint: searchHint,
       tooltip: searchTooltip,
-      button: searchButton
+      button: searchButton,
+      pagingTitle,
+      pagingOf
     };
     const filtersConfiguration = {
       primarySectorFilters: {

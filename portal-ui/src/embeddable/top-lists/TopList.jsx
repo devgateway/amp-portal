@@ -20,6 +20,7 @@ const TopList = (props) => {
     intl,
     settings,
     numberFields,
+    numberFieldsFormatted,
     linkFields,
     identity,
     linkOwnColumn,
@@ -56,12 +57,21 @@ const TopList = (props) => {
   }
   const header = () =>
     labels.tooltip && labels.tooltip.length > 0 ?
-      <Popup basic className="tooltip" content={labels.tooltip} trigger={<h3>{labels.title}</h3>} /> : <h3>{labels.title}</h3>;
+      <Popup basic className="tooltip" content={labels.tooltip} trigger={<h3>{labels.title}</h3>} /> :
+      <h3>{labels.title}</h3>;
   const tableBody = () =>
     data.data.map((d) =>
       (
         <Table.Row key={hash(d[identity])}>
-          {fields.map(f => <Table.Cell textAlign={f === linkField ? 'center' : ''}> {rowCell(d, f)} </Table.Cell>)}
+          {fields.map(f => {
+            let textAlign = '';
+            if (f === linkField) {
+              textAlign = 'center';
+            } else if (numberFields.includes(f) || numberFieldsFormatted.includes(f)) {
+              textAlign = 'right';
+            }
+            return <Table.Cell textAlign={textAlign}> {rowCell(d, f)} </Table.Cell>;
+          })}
         </Table.Row>))
 
   const tableHeaders = () => {
@@ -80,7 +90,10 @@ const TopList = (props) => {
   return <div className={"top-list"}>
     <div className="list-header">
       {header()}
-      <Button floated='right' onClick={(e) => exportData ? exportData() : localExportData()}>Download XLS</Button>
+      <Button floated='right' onClick={(e) => exportData ? exportData() : localExportData()}>{intl.formatMessage({
+        id: 'app.download-xls',
+        defaultMessage: "Download XLS"
+      })}</Button>
     </div>
     <div className="description">{labels.description}</div>
     <Table celled>
@@ -95,7 +108,10 @@ const TopList = (props) => {
         {tableBody()}
       </Table.Body>
     </Table>
-    <Button className="full-list-link">View Full List</Button>
+    <Button className="full-list-link" as="a" href={'/#/' + intl.locale + '/top-stats'}>{intl.formatMessage({
+      id: 'app.view-full-list',
+      defaultMessage: "View Full List"
+    })}</Button>
   </div>;
 }
 
@@ -110,5 +126,6 @@ TopList.propTypes = {
   numberFields: PropTypes.array,
   linkOwnColumn: PropTypes.bool,
   isBigTable: PropTypes.bool,
+  numberFieldsFormatted: PropTypes.array
 }
-TopList.defaultProps = { numberFields: [], linkOwnColumn: false, isBigTable: false }
+TopList.defaultProps = { numberFields: [], numberFieldsFormatted: [], linkOwnColumn: false, isBigTable: false }

@@ -90,6 +90,14 @@ registerBlockType(process.env.BLOCKS_NS + '/activities-search',
       searchDonorPlaceHolder: {
         type: 'string',
         default: 'DonorAgency'
+      },
+      pagingTitle: {
+        type: 'string',
+        default: 'Activity Result'
+      },
+      pagingOf: {
+        type: 'string',
+        default: 'of'
       }
     }
     ,

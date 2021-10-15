@@ -89,6 +89,8 @@ class BlockEdit extends BaseBlockEdit {
         toggleInfoLabel,
         toggleChartLabel,
         chartTitle,
+        viewMoreLabel,
+        viewMoreUrl,
         chartDescription,
         showLegends,
         legendPosition,
@@ -133,6 +135,8 @@ class BlockEdit extends BaseBlockEdit {
     queryString += `&data-chart-amp-no-updates=${noUpdates}`;
     queryString += `&data-chart-amp-no-updates-tooltip=${noUpdatesTooltip}`;
     queryString += `&data-chart-amp-size=${ampSize}`;
+    queryString += `&data-chart-view-more-label=${viewMoreLabel}`;
+    queryString += `&data-chart-view-more-url=${viewMoreUrl}`;
 
 
     const divStyles = { height: `${height}px`, width: '100%!important' }
@@ -319,6 +323,20 @@ class BlockEdit extends BaseBlockEdit {
                   label={__('Chart title')}
                   value={chartTitle}
                   onChange={(chartTitle) => setAttributes({ chartTitle })}
+                />
+              </PanelRow>
+              <PanelRow>
+                <TextControl
+                  label={__('View more label')}
+                  value={viewMoreLabel}
+                  onChange={(viewMoreLabel) => setAttributes({ viewMoreLabel })}
+                />
+              </PanelRow>
+              <PanelRow>
+                <TextControl
+                  label={__('View more url')}
+                  value={viewMoreUrl}
+                  onChange={(viewMoreUrl) => setAttributes({ viewMoreUrl })}
                 />
               </PanelRow>
               {app === 'donorScoreCard' && (
