@@ -39,7 +39,7 @@ class DataProvider extends React.Component {
   }
 
   render() {
-    const { data, loading, error } = this.props
+    const { data, loading, error, intl } = this.props
 
     if (data) {
       return <DataContext.Provider value={data}>{this.props.children}</DataContext.Provider>
@@ -50,7 +50,7 @@ class DataProvider extends React.Component {
       </Segment>
     } else if (loading) {
       return (<Container>
-        <h1>Data Loading</h1>
+        <h1>{intl.formatMessage({ id: 'app.data-loading', defaultMessage: 'Data Loading' })}</h1>
         <Loader inverted content='Loading' />
 
       </Container>)
